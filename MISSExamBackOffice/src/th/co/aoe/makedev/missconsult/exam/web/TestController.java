@@ -1,0 +1,321 @@
+// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 5/27/2012 12:06:10 AM
+// Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   TestController.java
+
+package th.co.aoe.makedev.missconsult.exam.web;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import th.co.aoe.makedev.missconsult.exam.form.TestForm;
+import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
+import th.co.aoe.makedev.missconsult.xstream.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
+import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
+import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
+import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
+
+@Controller
+@RequestMapping(value={"/test"})
+@SessionAttributes(value={"testForm"})
+public class TestController
+{
+
+    @Autowired
+    public TestController(MissExamService missExamService)
+    {
+        logger.debug("########################### @Autowired TestController #######################");
+        this.missExamService = missExamService;
+    }
+    private List getGroup(){
+    Pagging page = new Pagging();
+    page.setPageNo(1);
+    page.setPageSize(20);
+    MissExamGroup missExamGroup = new MissExamGroup();
+    missExamGroup.setPagging(page);
+    VResultMessage vresultMessage = missExamService.searchMissExamGroup(missExamGroup);
+    return vresultMessage.getResultListObj();
+}
+    @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String init(Model model)
+    {
+       /* Pagging page = new Pagging();
+        page.setPageNo(1);
+        page.setPageSize(20);
+        MissExamGroup missExamGroup = new MissExamGroup();
+        missExamGroup.setPagging(page);
+        VResultMessage vresultMessage = missExamService.searchMissExamGroup(missExamGroup);*/
+        model.addAttribute("missExamGroups", getGroup());
+       
+        TestForm testForm = new TestForm();
+        testForm.getMissExam().getPagging().setPageSize(3);
+        VResultMessage  vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
+        model.addAttribute("missExams", vresultMessage.getResultListObj());
+        testForm.getPaging().setPageSize(3);
+        testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+        model.addAttribute("testForm", testForm);
+        return "exam/template/testSearch";
+    }
+    @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doSearch(HttpServletRequest request, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
+    {
+        String mode = testForm.getMode();
+      //  String missExam_selectboxes[] = request.getParameterValues("missExam_selectbox");
+        //testForm.getMissExam().setMsSeriesName();
+        MissExamGroup missExamGroup =null;
+        String megId = testForm.getMegId();
+        if(megId!=null && !megId.equals("0")){
+        	missExamGroup=new MissExamGroup();
+        	missExamGroup.setMegId(Long.parseLong(megId));
+        } 
+        testForm.getMissExam().setMissExamGroup(missExamGroup);
+        if(mode != null && mode.equals("deleteItems"))
+        {
+        	testForm.getMissExam().setMeIds(testForm.getMeIdArray());
+            missExamService.deleteMissExam(testForm.getMissExam(), "deleteMissExamItems");
+            testForm.getPaging().setPageNo(1);
+        } else
+        if(mode != null && mode.equals("delete")){
+            missExamService.deleteMissExam(testForm.getMissExam(), "deleteMissExam");
+            testForm.getPaging().setPageNo(1);
+        }
+       /* else
+        if(mode != null && mode.equals("doBack"))
+        {
+            if(model.containsAttribute("testForm"))
+            	testForm = (TestForm)model.asMap().get("testForm");
+            else
+            	testForm = new TestForm();
+            missExam_selectboxes = testForm.getMissExam_selectbox();
+        }*/
+       // model.addAttribute("missExams", missExamService.listMissExam());
+     /*   testForm.setMissExam_selectbox(missExam_selectboxes);
+        testForm.getMissExam().setMeIds(missExam_selectboxes);*/
+        testForm.getPaging().setPageSize(3);
+        logger.debug((new StringBuilder("xxxx=testForm.getMissExam().getPagging()=")).append(testForm.getMissExam().getPagging()).toString());
+        logger.debug((new StringBuilder("xxxx=testForm.getPaging()=")).append(testForm.getPaging()).toString());
+        testForm.getMissExam().setPagging(testForm.getPaging());
+        VResultMessage vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
+       /* String meIdArray = "";
+        if(missExam_selectboxes != null && missExam_selectboxes.length > 0)
+        {
+            int meId_size = missExam_selectboxes.length;
+            String meIds[] = missExam_selectboxes;
+            for(int i = 0; i < meId_size; i++)
+                if(i != meId_size - 1)
+                    meIdArray = (new StringBuilder(String.valueOf(meIdArray))).append(meIds[i]).append(",").toString();
+                else
+                    meIdArray = (new StringBuilder(String.valueOf(meIdArray))).append(meIds[i]).toString();
+
+        }*/
+        testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+       // model.addAttribute("meIdArray", meIdArray);
+        model.addAttribute("missExams", vresultMessage.getResultListObj());
+        model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("testForm", testForm);
+        return "exam/template/testSearch";
+    }
+
+    @RequestMapping(value={"/exam/{meId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getItem(@PathVariable String meId, Model model)
+    {
+
+        TestForm testForm = null;
+        if(model.containsAttribute("testForm"))
+        	testForm = (TestForm)model.asMap().get("testForm");
+        else
+        	testForm = new TestForm();
+        testForm.setMode("edit");
+        MissExam missExam = missExamService.findMissExamById(Long.valueOf(Long.parseLong(meId)));
+        testForm.setMissExam(missExam);
+      /*  MissSeriesMap missSeriesMap = new MissSeriesMap();
+        missSeriesMap.setMsId(Long.valueOf(Long.parseLong(meId)));*/
+     //   VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMap);
+      //  List missSeriesMaps = vresultMessage.getResultListObj();
+        /*StringBuffer sb = new StringBuffer();
+        int index = 0;
+        if(missSeriesMaps != null && missSeriesMaps.size() > 0)
+        {
+            int size = missSeriesMaps.size();
+            for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
+            {
+                MissSeriesMap entry = (MissSeriesMap)iterator.next();
+                if(index != size - 1)
+                    sb.append((new StringBuilder()).append(entry.getMeId()).append(",").toString());
+                else
+                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());
+                index++;
+            }
+
+        }*/
+      //  model.addAttribute("missSeriesMap", sb);
+      //  model.addAttribute("missExams", missExamService.listMissExam());
+        model.addAttribute("testForm", testForm);
+        model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("display", "display: none");
+        return "exam/template/testManagement";
+    }
+
+    @RequestMapping(value={"/new"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getNewForm(Model model)
+    {
+    	TestForm testForm = null;
+          if(model.containsAttribute("testForm"))
+        	  testForm = (TestForm)model.asMap().get("testForm");
+          else
+        	  testForm = new TestForm();
+          testForm.setMissExam(new MissExam());
+          testForm.setMode("new");
+          model.addAttribute("missExamGroups", getGroup());
+          model.addAttribute("display", "display: none");
+        return "exam/template/testManagement";
+    }
+
+    @RequestMapping(value={"/exam/{meId}/question/new"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getNewQuestion(@PathVariable String meId, Model model)
+    {
+    	TestForm testForm = null;
+        if(model.containsAttribute("testForm"))
+      	  testForm = (TestForm)model.asMap().get("testForm");
+        else
+      	  testForm = new TestForm();
+        testForm.getMissExam().setMeId(Long.parseLong(meId));
+        MissQuestion missQuestion= new MissQuestion();
+        missQuestion.setMissExam(testForm.getMissExam());
+        testForm.setMissQuestion(missQuestion);
+        testForm.setModeQuestion("new");
+      //  model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("display", "display: none");
+        return "exam/template/questionManagementSection";
+    }
+
+  /*  @RequestMapping(value={"/exam/{meId}/question/{mqId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getQuestion(@PathVariable String meId, @PathVariable String mqId, Model model)
+    {
+        return "exam/template/questionManagement";
+    }*/
+
+    @RequestMapping(value={"/exam/{meId}/questions"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getQuestionList(@PathVariable String meId, Model model)
+    {
+    	logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    	 TestForm testForm = null;
+         if(model.containsAttribute("testForm"))
+         	testForm = (TestForm)model.asMap().get("testForm");
+         else
+         	testForm = new TestForm();
+         testForm.setMode("edit");
+    	List missQuestions=null;
+    	if(meId!=null && !meId.equals("0")){
+    		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
+    	}
+        model.addAttribute("missQuestions", missQuestions);
+        model.addAttribute("testForm", testForm);
+        return "exam/template/questionListSection";
+    }
+    @RequestMapping(value={"/exam/{meId}/question/{mqId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getQuestionItem(@PathVariable String meId,@PathVariable String mqId, Model model)
+    {
+    	logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    	 TestForm testForm = null;
+         if(model.containsAttribute("testForm"))
+         	testForm = (TestForm)model.asMap().get("testForm");
+         else
+         	testForm = new TestForm();
+         testForm.setModeQuestion("edit");
+         MissQuestion missQuestion=null;
+    //	if(meId!=null && !meId.equals("0")){
+    		missQuestion = missExamService.findMissQuestionById(Long.parseLong(mqId));
+    //	}
+    	 
+    	testForm.setMissQuestion(missQuestion);
+    	model.addAttribute("display", "display: none");
+      //  model.addAttribute("missQuestions", missQuestions);
+        model.addAttribute("testForm", testForm);
+        return "exam/template/questionManagementSection";
+    } 
+    @RequestMapping(value={"/action/{section}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doAction(HttpServletRequest request,@PathVariable String section, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
+    {
+        String mode = testForm.getMode();
+        String message = "";
+        testForm.getMissExam().setSection(section);
+  
+        Long id = null;
+        if(mode != null)
+            if(mode.equals("new"))
+            {
+                id = missExamService.saveMissExam(testForm.getMissExam());
+                testForm.getMissExam().setMeId(id);
+                testForm.setMode("edit");
+                message = "Save success !";
+            } else
+            if(mode.equals("edit"))
+            {
+                missExamService.updateMissExam(testForm.getMissExam());
+                id = testForm.getMissExam().getMeId();
+               // logger.debug("idxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx="+id);
+                message = "Update success !";
+            }
+      
+        MissExam missExam = missExamService.findMissExamById(id);
+        logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx==>"+missExam);
+        testForm.setMissExam(missExam);
+        model.addAttribute("message", message);
+        model.addAttribute("display", "display: block");
+        testForm.getMissExam().setSection(section);
+        model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("testForm", testForm);
+        
+        return "exam/template/testManagement";
+    }
+    @RequestMapping(value={"/action/exam/question"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doQuestionAction(HttpServletRequest request, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
+    {
+        String mode = testForm.getModeQuestion();
+        String message = "";
+     //   testForm.getMissExam().setSection(section);
+        Long id = null;
+        if(mode != null)
+            if(mode.equals("new"))
+            {
+                id = missExamService.saveMissQuestion(testForm.getMissQuestion());
+                testForm.getMissQuestion().setMqId(id);
+                testForm.setModeQuestion("edit");
+                message = "Save success !";
+            } else
+            if(mode.equals("edit"))
+            {
+                missExamService.updateMissQuestion(testForm.getMissQuestion());
+                id = testForm.getMissQuestion().getMqId();
+                message = "Update success !";
+            }
+      
+        MissQuestion missQuestion = missExamService.findMissQuestionById(id);
+        //logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx==>"+missQuestion);
+        testForm.setMissQuestion(missQuestion);
+        model.addAttribute("message", message);
+        model.addAttribute("display", "display: block");
+       // testForm.getMissExam().setSection(section);
+        //model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("testForm", testForm);
+        
+        return "exam/template/questionManagementSection";
+    }
+    private static Logger logger = Logger.getRootLogger();
+    private MissExamService missExamService;
+
+}
