@@ -20,13 +20,14 @@
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
 
-<script type="text/javascript" src="<c:url value='/resources/ckeditorV2/ckeditor.js'/>"></script>
+
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.pack.js'/>"></script>
 <%-- 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.20.custom.min_bbff81bc5a8d9d5e8cda11.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu_305c7ca38a3344d0476fe44c3f837.js'/>"></script> 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree_51c0096a278d6381f2055339948db37e.js'/>"></script>
  --%>
+ <script type="text/javascript" src="<c:url value='/resources/ckeditorV2/ckeditor.js'/>"></script>
  
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.20.custom.css'/>" type="text/css"  rel="stylesheet" /> 
@@ -34,6 +35,17 @@
 
 <link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
 <link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" /> 
+
+<!-- Bootstrap styles for responsive website layout, supporting different screen sizes -->
+<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-responsive.min.css">
+<!-- Bootstrap CSS fixes for IE6 -->
+<!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
+<!-- Bootstrap Image Gallery styles -->
+<link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
+<!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <%--  --%>
 
 
@@ -87,6 +99,7 @@ right padding is 5px
 bottom padding is 15px
 left padding is 20px */
 </style>
+
 <script type="text/javascript">
 function test(){
 	//$.getJSON('http://172.16.108.9:3000/v1/missSery?callback=?',
@@ -229,6 +242,43 @@ $(document).ready(function() {
 		alert("data="+data);
 		alert("href="+data.rslt.obj.data("href")); */
 		});
+	//var button = $('#button1'), interval;
+	//alert(button)
+	/*
+	new AjaxUpload('button2', {
+        action: 'upload',
+		data : {
+			'key1' : "This data won't",
+			'key2' : "be send because",
+			'key3' : "we will overwrite it"
+		},
+		onSubmit : function(file , ext){
+            // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+				alert("xxx");
+				this.setData({
+					'key': 'This string will be send with the file',
+					'test':'chatchai'
+				});					
+				$('#example2 .text').text('Uploading ' + file);	
+			} else {					
+				// extension is not allowed
+				$('#example2 .text').text('Error: only images are allowed');
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			$('#example2 .text').text('Uploaded ' + file);		
+			alert(file);
+			//alert(response)
+			response=response.replace("<pre>","");
+			response=response.replace("</pre>","");
+			  var obj = jQuery.parseJSON(response);
+			alert(obj)
+		}		
+	});
+	*/
 });
 function loadDynamicPage(pageId){
 	//	var id="1";
@@ -323,11 +373,26 @@ function appendContent(data){
     <!-- <h3><strong>Miss - Home</strong></h3> -->
       <fieldset style="font-family: sans-serif;">   
     <!--  <form   class="well" style="background-color:white;border: 2px solid #DDD" > -->
-     <form   class="well" style="border: 2px solid #DDD" >
+     <form   class="well" style="border: 2px solid #DDD" method="post" enctype="multipart/form-data">
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	   <!--   <fieldset style="font-family: sans-serif;">    -->
-	     <h3><strong>Miss - Home</strong><input type="button" value="Aoe" onclick="test()" /><span id="test"></span></h3>  
+	     <h3><strong>Miss - Home</strong>
+	      
+	      <!--  <form id="fileupload" action="server/php/" method="POST" enctype="multipart/form-data">
+	        <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+	       </form> --> 
+	      <!--  <li id="example2" class="example">
+		<p>You can make a list of allowed file types</p>
+		<a href="#" id="button2">Upload Image</a>
+		<p class="text"></p>		
+	  
+	</li> -->
+	     </h3>  
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
 	    					<table border="0" width="100%" style="font-size: 13px">
 	    					<tr>
@@ -416,5 +481,9 @@ function appendContent(data){
 	 </div>
     </div>
 </div>
+ 
+   <script src="<c:url value='/resources/js/ajaxupload.js'/>"></script>
+
+
 </body>
 </html>
