@@ -5,7 +5,10 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,9 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.TestForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
+import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
@@ -197,6 +202,7 @@ public class TestController
         missQuestion.setMissExam(testForm.getMissExam());
         testForm.setMissQuestion(missQuestion);
         testForm.setModeQuestion("new");
+        testForm.setMcSize("1");
       //  model.addAttribute("missExamGroups", getGroup());
         model.addAttribute("display", "display: none");
         return "exam/template/questionManagementSection";
@@ -208,6 +214,37 @@ public class TestController
         return "exam/template/questionManagement";
     }*/
 
+    @RequestMapping(value={"/exam/{meId}/questions"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String uestionListAction(@PathVariable String meId, @ModelAttribute(value="testForm") TestForm testForm, Model model)
+    {
+    	
+    	/* TestForm testForm = null;
+         if(model.containsAttribute("testForm"))
+         	testForm = (TestForm)model.asMap().get("testForm");
+         else
+         	testForm = new TestForm();*/
+        
+         String mode = testForm.getMode();
+         logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mode="+mode);
+        /* if(mode != null && mode.equals("deleteItems"))
+         {
+         	testForm.getMissExam().setMeIds(testForm.getMqIdArray());
+             missExamService.deleteMissQuestion(testForm.getMissExam(), "deleteMissExamItems");
+             testForm.getPaging().setPageNo(1);
+         } else*/
+         if(mode != null && mode.equals("delete")){
+             missExamService.deleteMissQuestion(testForm.getMissQuestion());//, "deleteMissExam");
+             testForm.getPaging().setPageNo(1);
+         }
+    	List missQuestions=null;
+    	if(meId!=null && !meId.equals("0")){
+    		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
+    	}
+    	 testForm.setMode("edit");
+        model.addAttribute("missQuestions", missQuestions);
+        model.addAttribute("testForm", testForm);
+        return "exam/template/questionListSection";
+    }
     @RequestMapping(value={"/exam/{meId}/questions"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getQuestionList(@PathVariable String meId, Model model)
     {
@@ -218,10 +255,11 @@ public class TestController
          else
          	testForm = new TestForm();
          testForm.setMode("edit");
+        
     	List missQuestions=null;
     	if(meId!=null && !meId.equals("0")){
     		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
-    	}
+    	} 
         model.addAttribute("missQuestions", missQuestions);
         model.addAttribute("testForm", testForm);
         return "exam/template/questionListSection";
@@ -240,10 +278,28 @@ public class TestController
     //	if(meId!=null && !meId.equals("0")){
     		missQuestion = missExamService.findMissQuestionById(Long.parseLong(mqId));
     //	}
-    	 
+    		List<MissChoice> missChoices=missQuestion.getMissChoices();
+    		String mcIdArray="";
+    		int i=0;
+    		int size=0;
+    		if (missChoices!=null && missChoices.size()>0) {
+    			size=missChoices.size();
+				for (MissChoice missChoice : missChoices) {
+					  //for(int i = 0; i < meId_size; i++)
+			                if(i != (size - 1))
+			                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).append(",").toString();
+			                else
+			                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();
+				i++;
+				}
+				
+			}
+    		testForm.setMcSize(size+"");
+    	testForm.setMcIdArray(mcIdArray);
     	testForm.setMissQuestion(missQuestion);
     	model.addAttribute("display", "display: none");
       //  model.addAttribute("missQuestions", missQuestions);
+    	//missExamService
         model.addAttribute("testForm", testForm);
         return "exam/template/questionManagementSection";
     } 
@@ -286,8 +342,8 @@ public class TestController
     public String doQuestionAction(HttpServletRequest request, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
     {
         String mode = testForm.getModeQuestion();
-        String message = "";
-     //   testForm.getMissExam().setSection(section);
+        String message = ""; 
+        logger.debug("xxxxxxxxxxxxxxxxxxxxxxx doQuestionAction mode="+mode);
         Long id = null;
         if(mode != null)
             if(mode.equals("new"))
@@ -299,18 +355,81 @@ public class TestController
             } else
             if(mode.equals("edit"))
             {
-                missExamService.updateMissQuestion(testForm.getMissQuestion());
+                missExamService.updateMissQuestion(testForm.getMissQuestion(),ServiceConstant.MISS_QUESTION_UPDATE);
                 id = testForm.getMissQuestion().getMqId();
                 message = "Update success !";
             }
       
-        MissQuestion missQuestion = missExamService.findMissQuestionById(id);
-        //logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx==>"+missQuestion);
+        String mcIdArrayStr = testForm.getMcIdArray();
+        String mcIdNewArrayStr = testForm.getMcIdNewArray();
+        Map mcIdMap=new HashMap();
+        if(mcIdArrayStr!=null && mcIdArrayStr.length()>0){
+        	String[] mcIds= mcIdArrayStr.split(",");
+        	for (int i = 0; i < mcIds.length; i++) {
+        		mcIdMap.put(mcIds[i],mcIds[i]);
+			}
+        }
+        logger.debug("  mcIdMap="+mcIdMap.size());
+        List<MissChoice> updateChoices=new ArrayList<MissChoice>();
+        List<MissChoice> addChoices=new ArrayList<MissChoice>();
+        if(mcIdNewArrayStr!=null && mcIdNewArrayStr.length()>0){
+        	String[] mcNewIds= mcIdNewArrayStr.split("12345i6789");
+        	  logger.debug("  mcNewIds="+mcNewIds.length);
+        	for(int i=0;i<mcNewIds.length;i++){
+        		 logger.debug(" mcNewIds="+mcNewIds[i]);
+        		String[] keyValue= mcNewIds[i].split("9876i54321");
+        		  logger.debug("  key="+keyValue[0]+",value="+keyValue[1]); 
+        		if(mcIdMap.containsKey(keyValue[0])){
+        			mcIdMap.remove(keyValue[0]);
+        			MissChoice choice=new MissChoice();
+        			choice.setMcId(Long.parseLong(keyValue[0]));
+        			choice.setMcName(keyValue[1]);
+        			choice.setMissQuestion(testForm.getMissQuestion());
+        			updateChoices.add(choice);
+        		}else{
+        			MissChoice choice=new MissChoice();
+        			choice.setMcName(keyValue[1]);
+        			choice.setMissQuestion(testForm.getMissQuestion());
+        			addChoices.add(choice);
+        		}
+        	}
+        }
+       
+        String[] deleteChoices = new String[mcIdMap.size()];
+        mcIdMap.keySet().toArray(deleteChoices);
+        logger.debug(" addChoices ="+addChoices.size());
+        logger.debug(" updateChoices ="+updateChoices.size());
+        logger.debug(" deleteChoices ="+deleteChoices.length);
+        
+        MissQuestion missQuestion=new MissQuestion();
+        missQuestion.setMqId(id);
+       // missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_CHOICES_UPDATE);
+        missQuestion.setMissChoicesAdd(addChoices);
+        missQuestion.setMissChoicesUpdate(updateChoices);
+        missQuestion.setMcIds(deleteChoices);
+        missExamService.updateMissQuestion(missQuestion, ServiceConstant.MISS_QUESTION_CHOICES_UPDATE);
+       // missExamService.saveMissChoice(misschoice)
+         missQuestion = missExamService.findMissQuestionById(id);
+        List<MissChoice> missChoices=missQuestion.getMissChoices();
+		String mcIdArray="";
+		int i=0;
+		int size=0;
+		if (missChoices!=null && missChoices.size()>0) {
+			  size=missChoices.size();
+			for (MissChoice missChoice : missChoices) {
+				  //for(int i = 0; i < meId_size; i++)
+		                if(i != (size - 1))
+		                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).append(",").toString();
+		                else
+		                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();
+			i++;
+			}
+		}
+		testForm.setMcSize(size+"");
+		testForm.setMcIdArray(mcIdArray);
         testForm.setMissQuestion(missQuestion);
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
-       // testForm.getMissExam().setSection(section);
-        //model.addAttribute("missExamGroups", getGroup());
         model.addAttribute("testForm", testForm);
         
         return "exam/template/questionManagementSection";

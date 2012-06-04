@@ -32,6 +32,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -374,15 +375,17 @@ public class MissExamServiceImpl extends PostCommon
 
     public Long saveMissQuestion(MissQuestion missQuestion)
     {
-        missQuestion.setServiceName("saveMissQuestion");
+        //missQuestion.setServiceName("saveMissQuestion");
+    	missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SAVE);//);
         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
         missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
         return missQuestion.getMqId();
     }
 
-    public int updateMissQuestion(MissQuestion missQuestion)
+    public int updateMissQuestion(MissQuestion missQuestion,String service)
     {
-        missQuestion.setServiceName("updateMissQuestion");
+        //missQuestion.setServiceName("updateMissQuestion");
+    	missQuestion.setServiceName(service);
         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
         missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
         return missQuestion.getUpdateRecord().intValue();
@@ -692,7 +695,46 @@ public class MissExamServiceImpl extends PostCommon
         missTodo.setServiceName("searchMissTodo");
         return postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
     }
+ 
+     
+    public Long saveMissAttach(MissAttach missAttach)
+    {
+        missAttach.setServiceName("saveMissAttach");
+        VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
+        missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
+        return missAttach.getMatId();
+    }
 
+    public int updateMissAttach(MissAttach missAttach)
+    {
+        missAttach.setServiceName("updateMissAttach");
+        VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
+        missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
+        return missAttach.getUpdateRecord().intValue();
+    }
+
+    public int deleteMissAttach(MissAttach missAttach)
+    {
+        missAttach.setServiceName("deleteMissAttach");
+        VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
+        missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
+        return missAttach.getUpdateRecord().intValue();
+    }
+
+    public MissAttach findMissAttachById(Long megId)
+    {
+        MissAttach missAttach = new MissAttach();
+        missAttach.setMatId(megId);
+        missAttach.setServiceName("findMissAttachById");
+        VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
+        return (MissAttach)resultMessage.getResultListObj().get(0);
+    }
+
+    public VResultMessage searchMissAttach(MissAttach missAttach)
+    {
+        missAttach.setServiceName("searchMissAttach");
+        return postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
+    }
     public static void main(String args[])
     {
         MissExamServiceImpl main = new MissExamServiceImpl();
@@ -836,9 +878,9 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissQuestion missQuestion = findMissQuestionById(new Long(1L));
         System.out.println(missQuestion);
-        updateMissQuestion(missQuestion);
+        //updateMissQuestion(missQuestion);
         MissQuestion missQuestionSave = new MissQuestion();
-        saveMissQuestion(missQuestionSave);
+        //saveMissQuestion(missQuestionSave);
         MissQuestion missQuestionSearch = new MissQuestion();
         VResultMessage vresult = searchMissQuestion(missQuestionSearch);
         System.out.println(vresult);
