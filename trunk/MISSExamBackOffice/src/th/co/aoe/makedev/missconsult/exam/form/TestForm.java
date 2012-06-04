@@ -36,6 +36,13 @@ public class TestForm extends CommonForm
     //for search
     private String megId;
     private String meIdArray;
+    
+    
+    private String mqIdArray;
+    // for choice
+    private String mcIdArray;// mcId1,mcId2
+    private String mcIdNewArray; // mcId1@$@value1$$*$$mcId2@$@value2
+    private String mcSize="0";
 
 	public MissExam getMissExam() {
 		return missExam;
@@ -76,6 +83,38 @@ public class TestForm extends CommonForm
 
 	public void setModeQuestion(String modeQuestion) {
 		this.modeQuestion = modeQuestion;
+	}
+
+	public String getMcIdArray() {
+		return mcIdArray;
+	}
+
+	public String getMcIdNewArray() {
+		return mcIdNewArray;
+	}
+
+	public void setMcIdNewArray(String mcIdNewArray) {
+		this.mcIdNewArray = mcIdNewArray;
+	}
+
+	public void setMcIdArray(String mcIdArray) {
+		this.mcIdArray = mcIdArray;
+	}
+
+	public String getMcSize() {
+		return mcSize;
+	}
+
+	public void setMcSize(String mcSize) {
+		this.mcSize = mcSize;
+	}
+
+	public String getMqIdArray() {
+		return mqIdArray;
+	}
+
+	public void setMqIdArray(String mqIdArray) {
+		this.mqIdArray = mqIdArray;
 	}
 
 	/*public String getMesIdArray() {
