@@ -18,6 +18,43 @@ $(document).ready(function() {
 	var selected = $( ".selector" ).tabs( "option", "selected" );
 	//setter
 	$( ".selector" ).tabs( "option", "selected", 3 ); */
+	new AjaxUpload('button2', {
+        action: 'upload',
+		/* data : {
+			'key1' : "This data won't",
+			'key2' : "be send because",
+			'key3' : "we will overwrite it"
+		}, */
+		onSubmit : function(file , ext){
+            // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+				/* Setting data */
+				//alert("xxx");
+				this.setData({
+					'key': 'This string will be send with the file',
+					'test':'chatchai'
+				});					
+				//$('#example2 .text').text('Uploading ' + file);
+				
+			} else {					
+				// extension is not allowed
+				//$('#example2 .text').text('Error: only images are allowed');
+				alert('Error: only images are allowed');
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			//$('#example2 .text').text('Uploaded ' + file);	
+			$("#miss_photo").attr("src","getfile/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc")
+			//alert(file);
+			//alert(response)
+			response=response.replace("<pre>","");
+			response=response.replace("</pre>","");
+			  var obj = jQuery.parseJSON(response);
+			//alert(obj)
+		}		
+	});
 });
 function doAction(action,formID,sectionID){
 	/* $("#mode").val(mode);
@@ -114,7 +151,9 @@ function doAction(action,formID,sectionID){
     					<form:input path="missAccount.maName" id="maName"/>
     				<!-- 	<input type="text" width="100%" /> -->
     					</td>
-    					 <td width="25%" align="right" rowspan="2"><img src="<c:url value='/resources/images/photo.png'/>"/><div align="right"><input type="button" value="Upload"></div></td>
+    					 <td width="25%" align="right" rowspan="2">
+    					<!--  <img id="miss_photo" width="128"  src=""/>
+    					 <div align="right"><input  id="button2" type="button" value="Upload"></div> --></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Address:</td>
@@ -182,7 +221,11 @@ function doAction(action,formID,sectionID){
     					<form:input path="missAccount.maContactLastname" id="maContactLastname" cssStyle="width:120px"/>
     					<!-- <input type="text" style="width: 120px" /> -->
     					</td>
-    					 <td width="25%"  align="right"  rowspan="8"><img src="<c:url value='/resources/images/photo.png'/>"/><div align="right"><input type="button" value="Upload"></div></td>
+    					 <td width="25%"  align="right"  rowspan="8">
+    					 <%-- <img src="<c:url value='/resources/images/photo.png'/>"/><div align="right"><input type="button" value="Upload"></div> --%>
+    					 <img id="miss_photo" width="128"  src="<c:url value='/resources/images/photo.png'/>"/>
+    					 <div align="right"><input  id="button2" type="button" value="Upload"></div>
+    					 </td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Gender:</td>

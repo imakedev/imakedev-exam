@@ -10,6 +10,35 @@ $(document).ready(function() {
 		dateFormat:"dd/mm/yy" 
 	});
 	$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
+	new AjaxUpload('company_photo', {
+        action: 'upload/company/${companyForm.missAccount.maId}',
+		onSubmit : function(file , ext){
+            // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+				/* Setting data */
+				this.setData({
+					'key': 'This string will be send with the file',
+					'test':'chatchai'
+				});					
+			$('#candidate_img').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");	
+			} else {					
+				// extension is not allowed
+				alert('Error: only images are allowed') ;
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			response=response.replace("<pre>","");
+			response=response.replace("</pre>","");
+			  var obj = jQuery.parseJSON(response);
+			$("#candidate_img").attr("src","getfile/company/${companyForm.missAccount.mcaId}/"+obj.hotlink);
+			//$('#example2 .text').text('Uploaded ' + file);		
+			//alert(file);
+			//alert(response)
+		
+		}		
+	});
 });
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());
@@ -87,7 +116,7 @@ function doAction(action,formID,sectionID){
     					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maName"/>
     					</td>
-    					 <td width="25%" align="right" rowspan="2"><img src="<c:url value='/resources/images/photo.png'/>"/><div align="center"><input type="button" value="Upload"></div></td>
+    					 <td width="25%" align="right" rowspan="2"></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Address:</td>
@@ -151,7 +180,11 @@ function doAction(action,formID,sectionID){
     					<!-- <input type="text" style="width: 120px" /> -->
     					<form:input path="missAccount.maContactLastname" cssStyle="width:120px"/>
     					</td>
-    					 <td width="25%" align="right" rowspan="8"><img src="<c:url value='/resources/images/photo.png'/>"/><div align="center"><input type="button" value="Upload"></div></td>
+    					 <td width="25%" align="right" rowspan="8"><img src="<c:url value='/resources/images/photo.png'/>"/>
+    					 <div align="right">
+    					 <!-- <input type="button" value="Upload"> -->
+    					 <a id="company_photo" class="btn btn-mini"><i class="icon-picture"></i>&nbsp;Upload</a>
+    					 </div></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Gender:</td>
