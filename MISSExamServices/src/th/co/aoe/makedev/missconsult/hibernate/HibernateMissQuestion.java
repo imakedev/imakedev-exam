@@ -8,12 +8,14 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
 import th.co.aoe.makedev.missconsult.managers.MissQuestionService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -22,6 +24,9 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public class HibernateMissQuestion  extends HibernateCommon implements MissQuestionService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	private static final String[] ignore_id=new String[]{"missTemplate","missExam","missChoices"};
+	private static final String[] ignore_exam_id=new String[]{"missExamGroup","missExamType"};
+	private static final String[] ignore_question_id=new String[]{"missQuestion"}; 
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -30,18 +35,46 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissQuestion findMissQuestionById(Long mqId)
+	public th.co.aoe.makedev.missconsult.xstream.MissQuestion findMissQuestionById(Long mqId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		MissQuestion missQuestion = null;
+		th.co.aoe.makedev.missconsult.xstream.MissQuestion xmissQuestion =null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where missQuestion.mqId=:mqId");
 		query.setParameter("mqId", mqId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missQuestion=(MissQuestion)obj;
+			xmissQuestion = new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
+			BeanUtils.copyProperties(missQuestion,xmissQuestion,ignore_id);	
+			xmissQuestion.setPagging(null);
+			
+			if(missQuestion.getMissExam()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissExam missExam = new th.co.aoe.makedev.missconsult.xstream.MissExam();
+				BeanUtils.copyProperties(missQuestion.getMissExam(),missExam,ignore_exam_id); 
+				xmissQuestion.setMissExam(missExam);
+			}
+			if(missQuestion.getMissTemplate()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissTemplate missTemplate = new th.co.aoe.makedev.missconsult.xstream.MissTemplate();
+				BeanUtils.copyProperties(missQuestion.getMissTemplate(),missTemplate); 
+				xmissQuestion.setMissTemplate(missTemplate);
+			}
+			query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId");
+			query.setParameter("mqId", mqId);
+			@SuppressWarnings("unchecked")
+			List<MissChoice> missChoices= (List<MissChoice>) query.list();
+			List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>();
+			for (MissChoice missChoice : missChoices) {
+				th.co.aoe.makedev.missconsult.xstream.MissChoice  xmissChoice= new th.co.aoe.makedev.missconsult.xstream.MissChoice();
+				BeanUtils.copyProperties(missChoice, xmissChoice,ignore_question_id);
+				xmissChoice.setPagging(null);
+				xmissChoices.add(xmissChoice);
+			}
+			xmissQuestion.setMissChoices(xmissChoices);
+			
 		}
-	  return missQuestion;
+	  return xmissQuestion;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public Long saveMissQuestion(MissQuestion transientInstance)
