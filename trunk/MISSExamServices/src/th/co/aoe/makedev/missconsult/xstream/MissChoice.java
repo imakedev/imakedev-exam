@@ -24,10 +24,16 @@ public class MissChoice extends VServiceXML implements Serializable {
 	private String mcName;
 
 	private String mcScore;
+	
+	private String[] mcIds;
 
 	@XStreamAlias("missQuestion")
 	private MissQuestion missQuestion;
-
+	
+	/*@XStreamImplicit
+	@XStreamAlias("missChoices")
+	private List<MissChoice> missChoices;*/
+ 
     public MissChoice() {
     }
 
@@ -78,6 +84,22 @@ public class MissChoice extends VServiceXML implements Serializable {
 	public void setMissQuestion(MissQuestion missQuestion) {
 		this.missQuestion = missQuestion;
 	}
+
+	public String[] getMcIds() {
+		return mcIds;
+	}
+
+	public void setMcIds(String[] mcIds) {
+		this.mcIds = mcIds;
+	}
+
+	/*public List<MissChoice> getMissChoices() {
+		return missChoices;
+	}
+
+	public void setMissChoices(List<MissChoice> missChoices) {
+		this.missChoices = missChoices;
+	}*/
 	
 /*	public Set<MissTest> getMissTests() {
 		return this.missTests;

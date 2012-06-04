@@ -63,6 +63,9 @@ public class MissCandidate implements Serializable {
 
 	@Column(name="MCA_PICTURE")
 	private String mcaPicture;
+	
+	@Column(name="MCA_PICTURE_PATH")
+	private String mcaPicturePath;
 
 	@Column(name="MCA_STATUS")
 	private String mcaStatus;
@@ -85,7 +88,10 @@ public class MissCandidate implements Serializable {
     @ManyToOne
 	@JoinColumn(name="MS_ID")
 	private MissSery missSery;
-
+    
+	@Column(name="MCA_PICTURE_HOTLINK")
+	private String mcaPictureHotlink;
+    
 	/*//bi-directional many-to-one association to MissTest
 	@OneToMany(mappedBy="missCandidate")
 	private Set<MissTest> missTests;*/
@@ -239,6 +245,22 @@ public class MissCandidate implements Serializable {
 
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
+	}
+
+	public String getMcaPicturePath() {
+		return mcaPicturePath;
+	}
+
+	public void setMcaPicturePath(String mcaPicturePath) {
+		this.mcaPicturePath = mcaPicturePath;
+	}
+
+	public String getMcaPictureHotlink() {
+		return mcaPictureHotlink;
+	}
+
+	public void setMcaPictureHotlink(String mcaPictureHotlink) {
+		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
 	
 	/*public Set<MissTest> getMissTests() {

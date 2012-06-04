@@ -62,9 +62,12 @@ public class MissAccount implements Serializable {
 
 	@Column(name="MA_CONTACT_PHONE")
 	private String maContactPhone;
-
+	
 	@Column(name="MA_CONTACT_PICTURE")
 	private String maContactPicture;
+	
+	@Column(name="MA_CONTACT_PICTURE_PATH")
+	private String maContactPicturePath;
 
 	@Column(name="MA_CONTACT_TITLE")
 	private String maContactTitle;
@@ -448,6 +451,14 @@ public class MissAccount implements Serializable {
 
 	public void setMaRegisterDate(Timestamp maRegisterDate) {
 		this.maRegisterDate = maRegisterDate;
+	}
+
+	public String getMaContactPicturePath() {
+		return maContactPicturePath;
+	}
+
+	public void setMaContactPicturePath(String maContactPicturePath) {
+		this.maContactPicturePath = maContactPicturePath;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {
