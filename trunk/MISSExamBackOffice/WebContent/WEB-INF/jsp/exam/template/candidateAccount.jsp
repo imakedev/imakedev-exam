@@ -10,6 +10,35 @@ $(document).ready(function() {
 		dateFormat:"dd/mm/yy" 
 	});
 	$('#tabs').tabs('select', parseInt($("#_candidate_section").val()));
+	new AjaxUpload('candidate_photo', {
+        action: 'upload/candidate/${candidateForm.missCandidate.mcaId}',
+		onSubmit : function(file , ext){
+            // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+				/* Setting data */
+				this.setData({
+					'key': 'This string will be send with the file',
+					'test':'chatchai'
+				});					
+			$('#candidate_img').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");	
+			} else {					
+				// extension is not allowed
+				alert('Error: only images are allowed') ;
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			response=response.replace("<pre>","");
+			response=response.replace("</pre>","");
+			  var obj = jQuery.parseJSON(response);
+			$("#candidate_img").attr("src","getfile/candidate/${candidateForm.missCandidate.mcaId}/"+obj.hotlink);
+			//$('#example2 .text').text('Uploaded ' + file);		
+			//alert(file);
+			//alert(response)
+		
+		}		
+	});
 });
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());
@@ -125,7 +154,11 @@ function doAction(action,formID,sectionID){
     					<!-- <input type="text" width="100%" /> -->
     					 <form:input path="missCandidate.mcaCitizenId"/>
     					</td>
-    					 <td width="25%" align="right" rowspan="9"><img src="<c:url value='/resources/images/photo.png'/>"/><div align="center"><input type="button" value="Upload"></div></td>
+    					 <td width="25%" align="right" rowspan="9"><img id="candidate_img" src="<c:url value='/resources/images/photo.png'/>"/>
+    					 <div align="right">
+    					<!--  <input type="button" id="candidate_photo" value="Upload"> -->
+    					  <a id="candidate_photo" class="btn btn-mini"><i class="icon-picture"></i>&nbsp;Upload</a>
+    					 </div></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Email:</td>

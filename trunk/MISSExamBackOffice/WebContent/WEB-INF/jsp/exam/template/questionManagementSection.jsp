@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+
 <script type="text/javascript">
+var indexRow=parseInt('${testForm.mcSize}')+1;
 $(document).ready(function() {
 //	$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
@@ -17,6 +19,56 @@ $(document).ready(function() {
 
 	}); */
 });
+function addRow(tableID) {
+	//alert(indexRow);
+    var table = document.getElementById(tableID);
+
+    var rowCount = indexRow;//table.rows.length;
+    var row = table.insertRow(rowCount);
+	//alert(rowCount)
+    var cell1 = row.insertCell(0);
+    var element1 = document.createElement("input");
+	
+    element1.type = "checkbox";
+    element1.value = "choice_add_"+rowCount;
+    element1.name = "chk";
+    cell1.appendChild(element1);
+    //cell1.appendChild(rowCount + 1);
+    var count = document.createTextNode(rowCount);
+    cell1.appendChild(count);
+    
+  /*   var cell2 = row.insertCell(1);
+    cell2.innerHTML = rowCount + 1; */
+
+    var cell2 = row.insertCell(1);
+    var element2 = document.createElement("input");
+    element2.type = "text";
+    element2.id = "choice_add_"+rowCount;
+    cell2.appendChild(element2);
+    indexRow++;
+}
+
+function deleteRow(tableID) {
+    try {
+    var table = document.getElementById(tableID);
+    var rowCount = table.rows.length;
+
+    for(var i=0; i<rowCount; i++) {
+        var row = table.rows[i];
+        var chkbox = row.cells[0].childNodes[0];
+        if(null != chkbox && true == chkbox.checked) {
+           table.deleteRow(i);
+          // alert(document.getElementsByName(chkbox.name)[0].value);
+           //alert(chkbox.name);
+            rowCount--;
+            i--;
+        }
+
+    }
+    }catch(e) {
+        alert(e);
+    }
+}
 function goBackQuestions(){
 	  $.ajax({
 		  type: "get",
@@ -39,13 +91,41 @@ function doQuestionAction(action,mode,id){
 	}else{
 		$("#mqId").val("0");
 	}
-	//alert(action)
+	var chkArray=document.getElementsByName("chk");
+	var mcIdNewArray="";
+	for(var i=0;i<chkArray.length;i++){
+		 var chkValue=chkArray[i].value;
+		 var chkappend="";
+		 if(i != (chkArray.length - 1)){
+			 chkappend="12345i6789";
+		 }
+		 if(chkValue.indexOf("edit")!=-1){//edit
+			 mcIdNewArray=mcIdNewArray+chkValue.split("_")[2]+"9876i54321"+document.getElementById(chkArray[i].value).value+chkappend;
+		 }else{// add
+			 mcIdNewArray=mcIdNewArray+"09876i54321"+document.getElementById(chkArray[i].value).value+chkappend;
+		 }
+		 //mcId1@$@value1$$*$$mcId2@$@value2
+	}
+	$("#mcIdNewArray").val(mcIdNewArray);
+	//alert(mcIdNewArray)
 	$.post("test/action/exam/question",$("#testForm_questionList").serialize(), function(data) {
 		  // alert(data);
 		   appendContentWithId(data,"tabs-3")
 		  // alert($("#_content").html());
 		});
   }
+function test(){
+	var editor_data =CKEDITOR.instances['mqNameTh1']; //alert(editor2) // [obj]
+	var selection = editor_data.getSelection();//alert(selection) // [obj]
+	var text = selection.getNative();//alert(text) // ""
+	var ranges = selection.getRanges();// alert(ranges) //[obj]
+	var type = selection.getType();// alert(type) // 2 
+var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10.2.0.76:10000/BPSDownloadServlet/DownloadServlet?id=" />');
+	 ranges[0].deleteContents();
+	 ranges[0].insertNode(newElement);
+	 ranges[0].selectNodeContents( newElement ); 
+	// CKEDITOR.dialog.getCurrent().hide();
+}
 </script>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -55,6 +135,8 @@ function doQuestionAction(action,mode,id){
 <form:form  id="testForm_questionList" name="testForm_questionList" modelAttribute="testForm" cssClass="well"  method="post" action="">
 			<form:hidden path="modeQuestion"/>
             <form:hidden path="missQuestion.mqId"/>
+            <form:hidden path="mcIdArray"/>
+             <form:hidden path="mcIdNewArray"/>
 			<strong>Question&nbsp;
 							 <c:if test="${testForm.modeQuestion=='new'}">
 	    					 New
@@ -63,7 +145,7 @@ function doQuestionAction(action,mode,id){
 	    					 Edit
 	    					 </c:if>
 			</strong>
-    		 <table border="0" width="100%" style="font-size: 12px">
+    		 <table border="0" width="100%" style="font-size: 12px;">
 			    	<tr>
     					<td width="25%" align="right">Test&nbsp;:&nbsp;</td>
     					<td width="75%">${testForm.missExam.meName}</td>
@@ -87,23 +169,48 @@ function doQuestionAction(action,mode,id){
 	    					</select></td>
     				</tr>
     				<tr>
-    					<td width="25%" align="right">Question&nbsp;:&nbsp;</td>
-    					<td width="75%"><img src="" /></td>
+    					<td width="25%" align="right"><!-- Question&nbsp;:&nbsp; --></td>
+    					<td width="75%"></td>
     				</tr>
+    				<tr style="padding: 2pt">
+    					<td width="25%" align="left" colspan="2">
+    					<a class="btn"  onclick="test()"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a><br/>
+    					 </td> 
+    				</tr>
+    				 
     				<tr>
     					<td width="25%" align="left" colspan="2">
     					<form:textarea path="missQuestion.mqNameTh1" cols="4" rows="4" id="mqNameTh1"/>  
     					<!-- <textarea cols="4" rows="4" id="mqName"></textarea> -->
     					<script>
     					if (CKEDITOR.instances['mqNameTh1']) {
+    						//alert("remove ")
     			            CKEDITOR.remove(CKEDITOR.instances['mqNameTh1']);
     			         }
-    					CKEDITOR.replace( 'mqNameTh1',
-    						    {
-    						        toolbar : 'Basic',
-    						      //  uiColor : '#9AB8F3'
-    						    });
+    				 
+						var editor0=CKEDITOR.replace( 'mqNameTh1',
+									{
+										// Defines a simpler toolbar to be used in this sample.
+										// Note that we have added out "MyButton" button here.
+										//height : 50,
+										//Preview - 
+										//toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link' ] ]
+								toolbar : [
+										    { name: 'document', items : [ 'Source','-','Preview','-'] }, 
+											{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+											{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+											{ name: 'links', items : [ 'Link','Unlink'] },
+											{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+											'/',
+									  	 	{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+											{ name: 'colors', items : [ 'TextColor','BGColor'] } 
+											//{ name: 'tools', items : [ 'MyButton' ] }
+										]
+									});
+						 
+					 
     					</script>
+    					 
     					</td> 
     				</tr>
     				<tr>
@@ -114,7 +221,8 @@ function doQuestionAction(action,mode,id){
     		</table>
 </form:form>
 			<div> Choices:</div>
-			<table class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
+			
+			<table id="dataTable" class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class">Order</div></th>
@@ -122,29 +230,38 @@ function doQuestionAction(action,mode,id){
           		</tr>
         	</thead>
         	<tbody>
-          	<tr>
-            	<td>1</td>
-            	<td><input type="text" value="AA"/></td>
-            	 
-          	</tr>
-          	<tr>
-            	<td>2</td>
+        	 <c:if test="${testForm.modeQuestion=='edit'}">
+        	 	<c:forEach items="${testForm.missQuestion.missChoices}" var="missChoice" varStatus="loop"> 
+	    					<tr>
+	    					 		 <td><INPUT type="checkbox" name="chk" value="choice_edit_${missChoice.mcId}"/>${loop.index+1}</td>
+            						<td><input type="text" id="choice_edit_${missChoice.mcId}" value="${missChoice.mcName}"/></td> 
+	    	 				</tr>
+	    	 	</c:forEach>
+	    	</c:if>
+	    	<c:if test="${testForm.modeQuestion=='new'}">
+	    		<tr>
+            		<td><INPUT type="checkbox" name="chk" value="choice_add_1"/>1</td>
+            		<td><input type="text" id="choice_add_1" value=""/></td>
+          		</tr>
+          	<!-- <tr>
+            	<td><INPUT type="checkbox" name="chk"/>2</td>
             	<td><input type="text" value="BB"/></td> 
-            	 
           	</tr>
           	<tr>
-            	<td>3</td>
+            	<td><INPUT type="checkbox" name="chk"/>3</td>
             	<td><input type="text" value="CC"/></td>
-            	 
           	</tr>
           	<tr>
-            	<td>4</td>
+            	<td><INPUT type="checkbox" name="chk"/>4</td>
             	<td><input type="text" value="DD"/></td>
-            	 
-          	</tr>
+          	</tr> -->
+	    	</c:if>
+             
         	</tbody>
       </table>
-			
+			<INPUT type="button" value="Add Choice" onclick="addRow('dataTable')" />
+ 
+    <INPUT type="button" value="Delete Choice" onclick="deleteRow('dataTable')" />
 			<div align="center">
 			<a class="btn btn-info"  onclick="goBackQuestions()"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a>	
     					 <a class="btn btn-primary"  onclick="doQuestionAction('action','${testForm.modeQuestion}','${testForm.missQuestion.mqId}')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a>

@@ -46,13 +46,19 @@ function loadQuestion(_url){
 		});
 	
 }
- function doQuestionAction(action,formID,sectionID){
+ function doQuestionAction(mode,id){
 	//alert($("#maCustomizePassMessage").val());
-	/* $("#meIntroduction").val(CKEDITOR.instances["meIntroduction"].getData());
-	$("#meInstruction").val(CKEDITOR.instances["meInstruction"].getData());
-	$.post("test/"+action+"/"+sectionID,$("#"+formID).serialize(), function(data) {
-		    appendContent(data);
-		}); */
+	 $("#mode").val(mode);
+		if(mode=='deleteItems'){
+			$("#mqIdArray").val(id);
+		}else if(mode!='search'){
+			$("#mqId").val(id);
+		}else {
+			$("#mqId").val("0");
+		}
+		$.post("test/exam/"+$("#meId").val()+"/questions",$("#testForm_question").serialize(), function(data) {
+			    appendContentWithId(data,"tabs-3");
+			});
   } 
 </script>
 <div id="dialog-confirm-Question-Delete" title="Delete Question" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
@@ -61,7 +67,13 @@ function loadQuestion(_url){
 			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm" cssClass="well"  method="post" action="">
 			<strong>Question List</strong>
     				<div>${testForm.missExam.meName}</div>
-    				
+    		<form:hidden path="mode"/>
+    		<form:hidden path="missExam.meId" id="meId"/>
+            <form:hidden path="missQuestion.mqId" id="mqId"/>
+            <form:hidden path="mqIdArray" id="mqIdArray"/>
+            <form:hidden path="paging.pageNo" id="pageNo"/>
+            <form:hidden path="paging.pageSize" id="pageSize"/> 
+            <form:hidden path="pageCount" id="pageCount"/> 
     		</form:form>	
     		<div align="right"><a class="btn btn-primary"  onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;<span style="font-weight:bold;color:  white;">Add</span></a></div>	
     	 <table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
@@ -79,7 +91,7 @@ function loadQuestion(_url){
             	<td>${missQuestion.mqNameTh1}</td> 
             	<td  style="text-align: center;">
             	<i title="Edit" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
-            	<i title="Delete" onclick="confirmDelete('delete','${testForm.missExam.meId}')" style="cursor: pointer;" class="icon-trash"></i>
+            	<i title="Delete" onclick="confirmDelete('delete','${missQuestion.mqId}')" style="cursor: pointer;" class="icon-trash"></i>
             	<%-- <a href="<c:url value='/test/exam/1/question/2'/>">Edit</a> Delete --%>
             	</td> 
           	</tr>
