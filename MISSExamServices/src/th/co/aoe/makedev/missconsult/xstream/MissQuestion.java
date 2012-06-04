@@ -1,10 +1,12 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 
 /**
@@ -40,15 +42,35 @@ public class MissQuestion extends VServiceXML implements Serializable {
 	private String mqNameTh2;
 
 	private String mqNameTh3;
-	private Long mqChoose; 
+	private Long mqChoose=1l;
     @XStreamAlias("missExam")
 	private MissExam missExam;
 
     @XStreamAlias("missTemplate")
 	private MissTemplate missTemplate;
+    
+    
+    @XStreamImplicit(itemFieldName="missChoices")
+    private List<MissChoice> missChoices;
+    
+    @XStreamImplicit(itemFieldName="missChoicesAdd")
+    private List<MissChoice> missChoicesAdd;
+    
+    @XStreamImplicit(itemFieldName="missChoicesUpdate")
+    private List<MissChoice> missChoicesUpdate;
 
+    private String[] mcIds ;
 	
-    public MissQuestion() {
+
+	public List<MissChoice> getMissChoices() {
+		return missChoices;
+	}
+
+	public void setMissChoices(List<MissChoice> missChoices) {
+		this.missChoices = missChoices;
+	}
+
+	public MissQuestion() {
     }
 
 	public Long getMqId() {
@@ -185,6 +207,30 @@ public class MissQuestion extends VServiceXML implements Serializable {
 
 	public void setMqChoose(Long mqChoose) {
 		this.mqChoose = mqChoose;
+	}
+
+	public String[] getMcIds() {
+		return mcIds;
+	}
+
+	public void setMcIds(String[] mcIds) {
+		this.mcIds = mcIds;
+	}
+
+	public List<MissChoice> getMissChoicesAdd() {
+		return missChoicesAdd;
+	}
+
+	public void setMissChoicesAdd(List<MissChoice> missChoicesAdd) {
+		this.missChoicesAdd = missChoicesAdd;
+	}
+
+	public List<MissChoice> getMissChoicesUpdate() {
+		return missChoicesUpdate;
+	}
+
+	public void setMissChoicesUpdate(List<MissChoice> missChoicesUpdate) {
+		this.missChoicesUpdate = missChoicesUpdate;
 	}
 	
 /*	public Set<MissTest> getMissTests() {

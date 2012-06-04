@@ -43,6 +43,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maContactPhone;
 
 	private String maContactPicture;
+	
+	private String maContactPicturePath;
 
 	private String maContactTitle;
 
@@ -414,6 +416,14 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaRegisterDate(Timestamp maRegisterDate) {
 		this.maRegisterDate = maRegisterDate;
+	}
+
+	public String getMaContactPicturePath() {
+		return maContactPicturePath;
+	}
+
+	public void setMaContactPicturePath(String maContactPicturePath) {
+		this.maContactPicturePath = maContactPicturePath;
 	}
 
 /*	public String getMaSex() {

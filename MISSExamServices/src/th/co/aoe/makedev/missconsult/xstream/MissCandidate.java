@@ -42,6 +42,8 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String mcaPhone;
 
 	private String mcaPicture;
+	
+	private String mcaPicturePath;
 
 	private String mcaStatus;
 
@@ -56,7 +58,7 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	@XStreamAlias("missSery")
 	private MissSery missSery;
-
+	private String mcaPictureHotlink;
 	 
 	//ext 
 	private String section; 
@@ -232,6 +234,22 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+
+	public String getMcaPicturePath() {
+		return mcaPicturePath;
+	}
+
+	public void setMcaPicturePath(String mcaPicturePath) {
+		this.mcaPicturePath = mcaPicturePath;
+	}
+
+	public String getMcaPictureHotlink() {
+		return mcaPictureHotlink;
+	}
+
+	public void setMcaPictureHotlink(String mcaPictureHotlink) {
+		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
 	
 	/*public Set<MissTest> getMissTests() {
