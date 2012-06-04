@@ -23,6 +23,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public interface MissExamService
@@ -112,7 +113,7 @@ public interface MissExamService
 
     public abstract Long saveMissQuestion(MissQuestion missquestion);
 
-    public abstract int updateMissQuestion(MissQuestion missquestion);
+    public abstract int updateMissQuestion(MissQuestion missquestion,String service);
 
     public abstract int deleteMissQuestion(MissQuestion missquestion);
 
@@ -193,4 +194,15 @@ public interface MissExamService
     public abstract MissTodo findMissTodoById(Long long1);
 
     public abstract VResultMessage searchMissTodo(MissTodo misstodo);
+    
+    
+    public abstract Long saveMissAttach(MissAttach missAttach);
+    
+    public abstract int updateMissAttach(MissAttach missAttach);
+
+    public abstract int deleteMissAttach(MissAttach missAttach);
+
+    public abstract MissAttach findMissAttachById(Long long1);
+
+    public abstract VResultMessage searchMissAttach(MissAttach missAttach);
 }
