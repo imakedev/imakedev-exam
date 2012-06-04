@@ -74,7 +74,12 @@ public class ServiceConstant {
 	public static final String MISS_QUESTION_DELETE = "deleteMissQuestion";
 	public static final String MISS_QUESTION_SEARCH = "searchMissQuestion";
 	public static final String MISS_QUESTION_FIND_BY_ID = "findMissQuestionById"; 
-	public static final String MISS_QUESTION_LIST = "listMissQuestion"; 	
+	public static final String MISS_QUESTION_LIST = "listMissQuestion";
+	
+	public static final String MISS_QUESTION_CHOICES_SAVE = "saveMissChoices"; 
+	public static final String MISS_QUESTION_CHOICES_UPDATE = "updateMissChoices"; 
+	public static final String MISS_QUESTION_CHOICES_DELETE = "deleteMissChoices"; 
+	
 	
 	
 	// MISS_SERIES_MAP
@@ -127,5 +132,12 @@ public class ServiceConstant {
 	public static final String MISS_TODO_DELETE = "deleteMissTodo";
 	public static final String MISS_TODO_SEARCH = "searchMissTodo";
 	public static final String MISS_TODO_FIND_BY_ID = "findMissTodoById"; 
+	
+	// MISS_ATTACH
+	public static final String MISS_ATTACH_SAVE = "saveMissAttach";
+	public static final String MISS_ATTACH_UPDATE = "updateMissAttach";
+	public static final String MISS_ATTACH_DELETE = "deleteMissAttach";
+	public static final String MISS_ATTACH_SEARCH = "searchMissAttach";
+	public static final String MISS_ATTACH_FIND_BY_ID = "findMissAttachById"; 
 
 }
