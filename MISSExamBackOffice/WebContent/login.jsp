@@ -40,7 +40,7 @@ function goHome(){
             <label>Password
             <span class="small">Min. size 6 chars</span>
             </label>
-            <input type="text" name="j_password" id="password" />
+            <input type="password" name="j_password" id="password" />
             <label>&nbsp;</label>
            <!--   <input name="submit" type="submit" value="Log-in"/> -->
               <button type="submit">Log-in</button>
