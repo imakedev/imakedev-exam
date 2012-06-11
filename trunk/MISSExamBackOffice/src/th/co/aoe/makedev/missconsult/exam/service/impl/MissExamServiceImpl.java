@@ -18,12 +18,15 @@ import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
@@ -32,7 +35,6 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
-import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -707,7 +709,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissAttach(MissAttach missAttach)
     {
-        missAttach.setServiceName("updateMissAttach");
+        missAttach.setServiceName(ServiceConstant.MISS_ATTACH_UPDATE);
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
         missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
         return missAttach.getUpdateRecord().intValue();
@@ -721,10 +723,11 @@ public class MissExamServiceImpl extends PostCommon
         return missAttach.getUpdateRecord().intValue();
     }
 
-    public MissAttach findMissAttachById(Long megId)
+    public MissAttach findMissAttachById(String matModule,Long matRef)
     {
         MissAttach missAttach = new MissAttach();
-        missAttach.setMatId(megId);
+        missAttach.setMatModule(matModule);
+        missAttach.setMatRef(matRef);
         missAttach.setServiceName("findMissAttachById");
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
         return (MissAttach)resultMessage.getResultListObj().get(0);
@@ -735,6 +738,132 @@ public class MissExamServiceImpl extends PostCommon
         missAttach.setServiceName("searchMissAttach");
         return postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
     }
+    
+	@Override
+	public Long saveMissContact(MissContact missContact) {
+		// TODO Auto-generated method stub
+		missContact.setServiceName(ServiceConstant.MISS_CONTACT_SAVE);
+	    VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	    missContact = (MissContact)resultMessage.getResultListObj().get(0);
+	    return missContact.getMcontactId();
+	}
+
+	@Override
+	public int updateMissContact(MissContact missContact) {
+		// TODO Auto-generated method stub
+		missContact.setServiceName(ServiceConstant.MISS_CONTACT_UPDATE);
+        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+        missContact = (MissContact)resultMessage.getResultListObj().get(0);
+        return missContact.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteMissContact(MissContact missContact,String service) {
+		// TODO Auto-generated method stub
+		missContact.setServiceName(service);
+        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+        missContact = (MissContact)resultMessage.getResultListObj().get(0);
+        return missContact.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissContact findMissContactById(Long long1) {
+		// TODO Auto-generated method stub
+		 MissContact missContact = new MissContact();
+	        missContact.setMcontactId(long1);
+	        missContact.setServiceName(ServiceConstant.MISS_CONTACT_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	        return (MissContact)resultMessage.getResultListObj().get(0);
+	}
+
+	@Override
+	public VResultMessage searchMissContact(MissContact missContact) {
+		// TODO Auto-generated method stub
+		missContact.setServiceName(ServiceConstant.MISS_CONTACT_SEARCH);
+        return postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	}
+	 
+	public List listContacts(Long long1,String mcontactType)
+	    {
+		 
+	        MissContact missContact = new MissContact();
+	        missContact.setMcontactRef(long1);
+	        missContact.setMcontactType(mcontactType);
+	        missContact.setServiceName(ServiceConstant.MISS_CONTACT_LIST);
+	        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	        return resultMessage.getResultListObj();
+	    }
+	@Override
+	public Long saveMissManual(MissManual missManual) {
+		// TODO Auto-generated method stub
+		missManual.setServiceName(ServiceConstant.MISS_MANUAL_SAVE);
+	    VResultMessage resultMessage = postMessage(missManual, missManual.getClass().getName(), "missManual", true);
+	    missManual = (MissManual)resultMessage.getResultListObj().get(0);
+	    return missManual.getMmId();
+	}
+
+	@Override
+	public int updateMissManual(MissManual missManual) {
+		// TODO Auto-generated method stub
+		missManual.setServiceName(ServiceConstant.MISS_MANUAL_UPDATE);
+        VResultMessage resultMessage = postMessage(missManual, missManual.getClass().getName(), "missManual", true);
+        missManual = (MissManual)resultMessage.getResultListObj().get(0);
+        return missManual.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteMissManual(MissManual missManual,String service) {
+		// TODO Auto-generated method stub
+		missManual.setServiceName(service);
+        VResultMessage resultMessage = postMessage(missManual, missManual.getClass().getName(), "missManual", true);
+        missManual = (MissManual)resultMessage.getResultListObj().get(0);
+        return missManual.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissManual findMissManualById(Long long1) {
+		// TODO Auto-generated method stub
+		 MissManual missManual = new MissManual();
+	        missManual.setMmId(long1);
+	        missManual.setServiceName(ServiceConstant.MISS_MANUAL_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(missManual, missManual.getClass().getName(), "missManual", true);
+	        return (MissManual)resultMessage.getResultListObj().get(0);
+	}
+
+	@Override
+	public VResultMessage searchMissManual(MissManual missManual) {
+		// TODO Auto-generated method stub
+		missManual.setServiceName(ServiceConstant.MISS_MANUAL_SEARCH);
+        return postMessage(missManual, missManual.getClass().getName(), "missManual", true);
+	}
+	@Override
+	public int updateMissAccountLogo(MissAccount missAccount) {
+		// TODO Auto-generated method stub
+		missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_UPDATE_LOGO);
+	    VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
+	    missAccount = (MissAccount)resultMessage.getResultListObj().get(0);
+	    return missAccount.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int updateMissCandidatePhoto(MissCandidate missCandidate) {
+		// TODO Auto-generated method stub
+		missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_UPDATE_PHOTO);
+	    VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
+	    missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
+	    return missCandidate.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int updateMissContactPhoto(MissContact missContact) {
+		// TODO Auto-generated method stub
+		missContact.setServiceName(ServiceConstant.MISS_CONTACT_UPDATE_PHOTO);
+	    VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	    missContact = (MissContact)resultMessage.getResultListObj().get(0);
+	    return missContact.getUpdateRecord().intValue();
+	}
+
+	
     public static void main(String args[])
     {
         MissExamServiceImpl main = new MissExamServiceImpl();
@@ -982,4 +1111,7 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage vresult = searchMissTodo(missTodoSearch);
         System.out.println((new StringBuilder("xx")).append(vresult.getResultListObj()).toString());
     }
+
+	
+
 }
