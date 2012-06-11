@@ -144,8 +144,11 @@ public class TestController
         else
         	testForm = new TestForm();
         testForm.setMode("edit");
-        MissExam missExam = missExamService.findMissExamById(Long.valueOf(Long.parseLong(meId)));
-        testForm.setMissExam(missExam);
+        if(meId!=null && meId.length()>0){
+        	 MissExam missExam = missExamService.findMissExamById(Long.valueOf(Long.parseLong(meId)));
+             testForm.setMissExam(missExam);
+        }
+       
       /*  MissSeriesMap missSeriesMap = new MissSeriesMap();
         missSeriesMap.setMsId(Long.valueOf(Long.parseLong(meId)));*/
      //   VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMap);
