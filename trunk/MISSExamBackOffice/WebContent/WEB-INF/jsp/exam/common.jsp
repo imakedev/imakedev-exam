@@ -177,7 +177,7 @@ $(document).ready(function() {
 					},
 					"metadata" : { id : "root_aoee2"},
 					"children" : [
-						{ attributes: { id : "pjson_2" }, data: { title : "Miss", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
+						{ attributes: { id : "pjson_2" }, data: { title : "MC", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
 						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
 						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
 					          ] 
@@ -331,16 +331,23 @@ function appendContent(data){
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
-    	<div id="header2" align="left" >
-    	<h1><img src="<c:url value='/resources/images/logowebmc.png'/>"  /> </h1>
+    	<div id="header2" align="left"  style="height: 66px">
+    	<!--  width="200px" height="33px" -->
+    	<div align="left"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" width="200px" height="33px" />
+    	
+    	 </h1> </div> 
+    	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" />
+    	</h1>
+    	  </div> 
     	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
-        <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown">hh:mm</span><br/><br/>
+       <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown">hh:mm</span><br/><br/>
         TH | EN        
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
             <a href="j_spring_security_logout">Logout</a>
             </div>
            </div>
+          
           <!--  <div   align="right" >
             <a href="j_spring_security_logout">Logout</a>
             </div> -->
@@ -370,14 +377,14 @@ function appendContent(data){
     <strong>Heads up!</strong> Best check yo self, you're not looking too good.2
     </div> -->
  
-    <!-- <h3><strong>Miss - Home</strong></h3> -->
+    <!-- <h3><strong>MC - Home</strong></h3> -->
       <fieldset style="font-family: sans-serif;">   
     <!--  <form   class="well" style="background-color:white;border: 2px solid #DDD" > -->
      <form   class="well" style="border: 2px solid #DDD" method="post" enctype="multipart/form-data">
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	   <!--   <fieldset style="font-family: sans-serif;">    -->
-	     <h3><strong>Miss - Home</strong>
+	     <h3><strong>MC - Home</strong>
 	      
 	      <!--  <form id="fileupload" action="server/php/" method="POST" enctype="multipart/form-data">
 	        <span class="btn btn-success fileinput-button">
@@ -436,7 +443,7 @@ function appendContent(data){
 <!-- <br/>
 	   <form id="form" name="myform"  class="well" method="post" action="#">
           <fieldset>            
-            <legend><h2><span>Miss - Home</span></h2></legend>           
+            <legend><h2><span>MC - Home</span></h2></legend>           
            <div style=" margin-bottom:3px; border-bottom:1px dashed #666;">
            		<div style="float:left; width:50%;"><strong>To Do..</strong></div>
                 <div style="float:right;width:50%;" align="right">
