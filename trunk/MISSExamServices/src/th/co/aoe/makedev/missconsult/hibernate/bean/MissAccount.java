@@ -2,7 +2,6 @@ package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -37,46 +34,23 @@ public class MissAccount implements Serializable {
 
 	@Column(name="MA_BACKGROUND_PICTURE")
 	private String maBackgroundPicture;
-
-    @Temporal( TemporalType.DATE)
-	@Column(name="MA_CONTACT_BIRTH_DATE")
-	private Date maContactBirthDate;
-
-	@Column(name="MA_CONTACT_DEPARTMENT")
-	private String maContactDepartment;
-
-	@Column(name="MA_CONTACT_EMAIL")
-	private String maContactEmail;
-
-	@Column(name="MA_CONTACT_FAX")
-	private String maContactFax;
-
-	@Column(name="MA_CONTACT_GENDER")
-	private String maContactGender;
-
-	@Column(name="MA_CONTACT_LASTNAME")
-	private String maContactLastname;
-
-	@Column(name="MA_CONTACT_NAME")
-	private String maContactName;
-
-	@Column(name="MA_CONTACT_PHONE")
-	private String maContactPhone;
 	
-	@Column(name="MA_CONTACT_PICTURE")
-	private String maContactPicture;
-	
-	@Column(name="MA_CONTACT_PICTURE_PATH")
-	private String maContactPicturePath;
-
-	@Column(name="MA_CONTACT_TITLE")
-	private String maContactTitle;
+	@Column(name="MA_GRADE")
+	private String maGrade;
 
 	@Column(name="MA_CUSTOMIZE_COLOR")
 	private String maCustomizeColor;
 
-	@Column(name="MA_CUSTOMIZE_LOGO")
-	private String maCustomizeLogo;
+	@Column(name="MA_CUSTOMIZE_LOGO_PATH")
+	private String maCustomizeLogoPath;
+	
+
+	@Column(name="MA_CUSTOMIZE_LOGO_FILE_NAME")
+	private String maCustomizeLogoFileName;
+
+	@Column(name="MA_CUSTOMIZE_LOGO_HOTLIK")
+	private String maCustomizeLogoHotlink;
+	
 	@Lob()
 	@Column(name="MA_CUSTOMIZE_PASS_MESSAGE")
 	private String maCustomizePassMessage;
@@ -99,6 +73,7 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_LOGO")
 	private String maLogo;
 
+ 
 	@Column(name="MA_NAME")
 	private String maName;
 
@@ -162,6 +137,8 @@ public class MissAccount implements Serializable {
 		this.maSex = maSex;
 	}*/
 
+
+
 	public MissAccount() {
     }
 
@@ -197,85 +174,6 @@ public class MissAccount implements Serializable {
 		this.maBackgroundPicture = maBackgroundPicture;
 	}
 
-	public Date getMaContactBirthDate() {
-		return this.maContactBirthDate;
-	}
-
-	public void setMaContactBirthDate(Date maContactBirthDate) {
-		this.maContactBirthDate = maContactBirthDate;
-	}
-
-	public String getMaContactDepartment() {
-		return this.maContactDepartment;
-	}
-
-	public void setMaContactDepartment(String maContactDepartment) {
-		this.maContactDepartment = maContactDepartment;
-	}
-
-	public String getMaContactEmail() {
-		return this.maContactEmail;
-	}
-
-	public void setMaContactEmail(String maContactEmail) {
-		this.maContactEmail = maContactEmail;
-	}
-
-	public String getMaContactFax() {
-		return this.maContactFax;
-	}
-
-	public void setMaContactFax(String maContactFax) {
-		this.maContactFax = maContactFax;
-	}
-
-	public String getMaContactGender() {
-		return this.maContactGender;
-	}
-
-	public void setMaContactGender(String maContactGender) {
-		this.maContactGender = maContactGender;
-	}
-
-	public String getMaContactLastname() {
-		return this.maContactLastname;
-	}
-
-	public void setMaContactLastname(String maContactLastname) {
-		this.maContactLastname = maContactLastname;
-	}
-
-	public String getMaContactName() {
-		return this.maContactName;
-	}
-
-	public void setMaContactName(String maContactName) {
-		this.maContactName = maContactName;
-	}
-
-	public String getMaContactPhone() {
-		return this.maContactPhone;
-	}
-
-	public void setMaContactPhone(String maContactPhone) {
-		this.maContactPhone = maContactPhone;
-	}
-
-	public String getMaContactPicture() {
-		return this.maContactPicture;
-	}
-
-	public void setMaContactPicture(String maContactPicture) {
-		this.maContactPicture = maContactPicture;
-	}
-
-	public String getMaContactTitle() {
-		return this.maContactTitle;
-	}
-
-	public void setMaContactTitle(String maContactTitle) {
-		this.maContactTitle = maContactTitle;
-	}
 
 	public String getMaCustomizeColor() {
 		return this.maCustomizeColor;
@@ -285,12 +183,29 @@ public class MissAccount implements Serializable {
 		this.maCustomizeColor = maCustomizeColor;
 	}
 
-	public String getMaCustomizeLogo() {
-		return this.maCustomizeLogo;
+
+	public String getMaCustomizeLogoPath() {
+		return maCustomizeLogoPath;
 	}
 
-	public void setMaCustomizeLogo(String maCustomizeLogo) {
-		this.maCustomizeLogo = maCustomizeLogo;
+	public void setMaCustomizeLogoPath(String maCustomizeLogoPath) {
+		this.maCustomizeLogoPath = maCustomizeLogoPath;
+	}
+
+	public String getMaCustomizeLogoFileName() {
+		return maCustomizeLogoFileName;
+	}
+
+	public void setMaCustomizeLogoFileName(String maCustomizeLogoFileName) {
+		this.maCustomizeLogoFileName = maCustomizeLogoFileName;
+	}
+
+	public String getMaCustomizeLogoHotlink() {
+		return maCustomizeLogoHotlink;
+	}
+
+	public void setMaCustomizeLogoHotlink(String maCustomizeLogoHotlink) {
+		this.maCustomizeLogoHotlink = maCustomizeLogoHotlink;
 	}
 
 	public String getMaCustomizePassMessage() {
@@ -453,36 +368,13 @@ public class MissAccount implements Serializable {
 		this.maRegisterDate = maRegisterDate;
 	}
 
-	public String getMaContactPicturePath() {
-		return maContactPicturePath;
+	public String getMaGrade() {
+		return maGrade;
 	}
 
-	public void setMaContactPicturePath(String maContactPicturePath) {
-		this.maContactPicturePath = maContactPicturePath;
+	public void setMaGrade(String maGrade) {
+		this.maGrade = maGrade;
 	}
 
-	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {
-		return this.missAccountSeriesMaps;
-	}
-
-	public void setMissAccountSeriesMaps(Set<MissAccountSeriesMap> missAccountSeriesMaps) {
-		this.missAccountSeriesMaps = missAccountSeriesMaps;
-	}
-	
-	public Set<MissCandidate> getMissCandidates() {
-		return this.missCandidates;
-	}
-
-	public void setMissCandidates(Set<MissCandidate> missCandidates) {
-		this.missCandidates = missCandidates;
-	}
-	
-	public Set<MissTodo> getMissTodos() {
-		return this.missTodos;
-	}
-
-	public void setMissTodos(Set<MissTodo> missTodos) {
-		this.missTodos = missTodos;
-	}*/
 	
 }
