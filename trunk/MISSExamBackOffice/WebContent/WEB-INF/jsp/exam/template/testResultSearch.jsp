@@ -29,7 +29,7 @@
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Title:</td>
+	    					 <td align="left" width="17%">Position:</td>
 	    					 <td align="left" width="17%">  <input type="text" name="registerNo" />
 	    					 </td>
 	    					<td align="left" width="17%">Department:</td>
@@ -104,8 +104,8 @@
             	<td>14</td> 
             	<td>12</td>
             	<td>D/M/Y h:m</td>
-            	<td><a onclick="loadDynamicPage('result/report/')">xx</a></td>
-            	<td><a onclick="loadDynamicPage('result/response/1')">xx</a></td>
+            	<td><a onclick="loadDynamicPage('result/report/')">IPAI</a></td>
+            	<td><a onclick="loadDynamicPage('result/response/1')">Pending</a></td>
           	</tr>
          	<tr>
             	<td><input type="checkbox" /></td>
@@ -119,8 +119,8 @@
             	<td>14</td> 
             	<td>12</td>
             	<td>D/M/Y h:m</td>
-            	<td><a onclick="loadDynamicPage('result/report/1')">xx</a></td>
-            	<td><a onclick="loadDynamicPage('result/response/1')">xx</a></td>
+            	<td><a onclick="loadDynamicPage('result/report/1')">IPAI</a></td>
+            	<td><a onclick="loadDynamicPage('result/response/1')">Pending</a></td>
           	</tr>
           		<tr>
             	<td><input type="checkbox" /></td>
@@ -134,8 +134,8 @@
             	<td>14</td> 
             	<td>12</td>
             	<td>D/M/Y h:m</td>
-            	<td><a onclick="loadDynamicPage('result/report/1')">xx</a></td>
-            	<td><a onclick="loadDynamicPage('result/response/1')">xx</a></td>
+            	<td><a onclick="loadDynamicPage('result/report/1')">IPAI</a></td>
+            	<td><a onclick="loadDynamicPage('result/response/1')">Complete</a></td>
           	</tr>
         	</tbody>
       </table>
