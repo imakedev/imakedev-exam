@@ -79,7 +79,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 			String maRegisterNo = instance.getMaRegisterNo();
 			Timestamp maRegisterFrom = instance.getMaRegisterFrom();
 			Timestamp maRegisterTo = instance.getMaRegisterTo();
-			String maContactName = instance.getMaContactName();
+			//String maContactName = instance.getMaContactName();
 			String maPhone = instance.getMaPhone();
 			String maName = instance.getMaName();
 		
@@ -102,11 +102,11 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}
-			if(maContactName !=null && maContactName.trim().length() > 0){  
+			/*if(maContactName !=null && maContactName.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
-			}
+			}*/
 			if(maPhone !=null && maPhone.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
@@ -150,7 +150,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				String maRegisterNo = instance.getMaRegisterNo();
 				Timestamp maRegisterFrom = instance.getMaRegisterFrom();
 				Timestamp maRegisterTo = instance.getMaRegisterTo();
-				String maContactName = instance.getMaContactName();
+				//String maContactName = instance.getMaContactName();
 				String maPhone = instance.getMaPhone();
 				String maName = instance.getMaName();
 			
@@ -173,11 +173,11 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 					sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
 				}
-				if(maContactName !=null && maContactName.trim().length() > 0){  
+				/*if(maContactName !=null && maContactName.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
-				}
+				}*/
 				if(maPhone !=null && maPhone.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
@@ -237,22 +237,22 @@ int result = query.executeUpdate();*/
 					" missAccount.maPhone =:maPhone ,  " +
 					" missAccount.maFax =:maFax ,  " + 
 					" missAccount.maEmail =:maEmail ,  " +
-					" missAccount.maContactName =:maContactName ,  " +					
-					" missAccount.maContactLastname =:maContactLastname ,  " +
+				//	" missAccount.maContactName =:maContactName ,  " +					
+				/*	" missAccount.maContactLastname =:maContactLastname ,  " +
 					" missAccount.maContactGender =:maContactGender ,  " + 
 					" missAccount.maContactBirthDate =:maContactBirthDate ,  " + 
 					" missAccount.maContactTitle =:maContactTitle ,  " +
 					" missAccount.maContactDepartment =:maContactDepartment ,  " +
 					" missAccount.maContactPhone =:maContactPhone ,  " +
 					" missAccount.maContactFax =:maContactFax ,  " +
-					" missAccount.maContactEmail =:maContactEmail  " +
+					" missAccount.maContactEmail =:maContactEmail  " +*/
 					" where missAccount.maId ="+transientInstance.getMaId());
 			query.setParameter("maName", transientInstance.getMaName());
 			query.setParameter("maAddress", transientInstance.getMaAddress());
 			query.setParameter("maPhone", transientInstance.getMaPhone());
 			query.setParameter("maFax", transientInstance.getMaFax());
 			query.setParameter("maEmail", transientInstance.getMaEmail());
-			query.setParameter("maContactName", transientInstance.getMaContactName());
+			/*query.setParameter("maContactName", transientInstance.getMaContactName());
 			query.setParameter("maContactLastname", transientInstance.getMaContactLastname());
 			query.setParameter("maContactGender", transientInstance.getMaContactGender());
 			query.setParameter("maContactBirthDate", transientInstance.getMaContactBirthDate());  
@@ -260,7 +260,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maContactDepartment", transientInstance.getMaContactDepartment());
 			query.setParameter("maContactPhone", transientInstance.getMaContactPhone());
 			query.setParameter("maContactFax", transientInstance.getMaContactFax());
-			query.setParameter("maContactEmail", transientInstance.getMaContactEmail());
+			query.setParameter("maContactEmail", transientInstance.getMaContactEmail());*/
 			return query.executeUpdate();
 		}else if(section.equals("2")||section.equals("6")  ){
 			query=session.createQuery("update MissAccount missAccount " +
@@ -277,6 +277,22 @@ int result = query.executeUpdate();*/
 		/*Query query=session.createQuery("delete MissSeriesMap missSeriesMap where missSeriesMap.id.msId ="+msId.intValue());
 		int result = query.executeUpdate();*/
 		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	public int updateMissAccountLogo(MissAccount transientInstance,String section)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		Query query=null;
+			query=session.createQuery("update MissAccount missAccount " +
+					" set missAccount.maCustomizeLogoPath =:maCustomizeLogoPath," +
+					" missAccount.maCustomizeLogoFileName =:maCustomizeLogoFileName ," +
+					" missAccount.maCustomizeLogoHotlink =:maCustomizeLogoHotlink " +
+					" where missAccount.maId ="+transientInstance.getMaId());
+			query.setParameter("maCustomizeLogoPath", transientInstance.getMaCustomizeLogoPath());
+			query.setParameter("maCustomizeLogoFileName", transientInstance.getMaCustomizeLogoFileName());
+			query.setParameter("maCustomizeLogoHotlink", transientInstance.getMaCustomizeLogoHotlink());
+			return query.executeUpdate();
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
