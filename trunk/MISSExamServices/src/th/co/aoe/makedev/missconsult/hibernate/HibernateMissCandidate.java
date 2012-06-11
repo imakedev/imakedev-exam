@@ -245,6 +245,22 @@ int result = query.executeUpdate();*/
 		return 0;
 		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	public int updateMissCandidatePhoto(MissCandidate transientInstance,String section)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		Query query=null;
+			query=session.createQuery("update MissCandidate missCandidate " +
+					" set missCandidate.mcaPictureHotlink =:mcaPictureHotlink," +
+					" missCandidate.mcaPictureFileName =:mcaPictureFileName ," +
+					" missCandidate.mcaPicturePath =:mcaPicturePath " +
+					" where missCandidate.mcaId ="+transientInstance.getMcaId());
+			query.setParameter("mcaPictureHotlink", transientInstance.getMcaPictureHotlink());
+			query.setParameter("mcaPictureFileName", transientInstance.getMcaPictureFileName());
+			query.setParameter("mcaPicturePath", transientInstance.getMcaPicturePath());
+			return query.executeUpdate();
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int deleteMissCandidate(MissCandidate persistentInstance)
