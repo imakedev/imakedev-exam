@@ -10,10 +10,10 @@ $(document).ready(function() {
 	    ui.panel   // element, that contains the selected/clicked tab contents
 	    ui.index   // zero-based index of the selected (clicked) tab */
 	   //alert("index="+ui.index+",panel="+ui.panel+",tab="+ui.tab)
-	   if(ui.index==2){
-		 //  alert($("#_meId").val())
+	   if(ui.index==1){
 		 // /exam/{meId}/questions
 		// alert("test/exam/"+$("#_meId").val()+"/questions");
+		 if($("#_meId").val().length>0){
 		  $.ajax({
 			  type: "get",
 			  url: "test/exam/"+$("#_meId").val()+"/questions",
@@ -25,6 +25,7 @@ $(document).ready(function() {
 					// $("#tabs-3").html(data);
 				  }
 			});
+		 }
 	   }else{
 		   $("#tabs-3").html("");
 	   }
@@ -56,7 +57,7 @@ function doAction(action,formID,sectionID){
             <div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Information</a></li>
-				<li><a href="#tabs-2">Evaluations</a></li>
+				<!-- <li><a href="#tabs-2">Evaluations</a></li> -->
 				<li><a href="#tabs-3">Questions</a></li>
 			</ul>
 			<div id="tabs-1">
@@ -91,7 +92,7 @@ function doAction(action,formID,sectionID){
     				<tr>
     					<td width="20%" align="right">Time Limit:</td>
     					<td width="80%">
-    					<form:input path="missExam.meTimeLimit" id="meTimeLimit"/>
+    					<form:input path="missExam.meTimeLimit" id="meTimeLimit" cssStyle="width:50px"/>
     					 minutes</td> 
     				</tr>
     			</table>  
@@ -173,6 +174,7 @@ function doAction(action,formID,sectionID){
 			<!-- <input type="button" value="Save" /><input type="button" value="Delete" /> -->
 			</div>
 			    </div>
+			    <%--
 			<div id="tabs-2">
 			<form:form  id="testForm_evaluation" name="testForm_evaluation" modelAttribute="testForm" cssClass="well"  method="post" action="">
 			    <table border="1" width="100%" style="font-size: 12px">
@@ -183,10 +185,9 @@ function doAction(action,formID,sectionID){
     				 
     			</table>
 			</form:form> 
-			<%--
-			<div align="center"><input type="button" class="btn" value="Save"/></div>
-			 --%>
+			
 			</div>
+			 --%>
 			<div id="tabs-3">
 			<%--
 			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm" cssClass="well"  method="post" action="">

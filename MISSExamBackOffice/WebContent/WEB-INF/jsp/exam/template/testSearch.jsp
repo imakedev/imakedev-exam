@@ -165,6 +165,7 @@ function doAction(mode,id){
 	    					<td align="left" width="50%">
 	    					
 	    					<a class="btn btn-primary" onclick="loadDynamicPage('test/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;Create</a>&nbsp;
+	    					<a class="btn btn-primary" ><i class="icon-plus-sign icon-white"></i>&nbsp;Create Test Empty</a>&nbsp;
 	    					<a class="btn btn-danger" onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a></td>
 	    					
 	    					<td align="right" width="50%">
@@ -186,8 +187,7 @@ function doAction(mode,id){
             	<td><input type="checkbox" name="meIdCheckbox" value="${missExam.meId}"/></td> 
             	<td>&nbsp;${missExam.meName}</td>
             	<td style="text-align: center;">
-            	
-            	<%-- <a onclick="loadDynamicPage('series/item/${missExam.meId}')">Edit</a>&nbsp;<a onclick="confirmDelete('delete','${missExam.meId}')">Delete</a> --%>
+            	<img src="<c:url value='/resources/images/glyphicons_153_more_windows.png'/>" title="Copy" style="cursor: pointer;width: 14px;height: 14px"/>&nbsp;&nbsp;
             	<i title="Edit" onclick="loadDynamicPage('test/exam/${missExam.meId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
             	<i title="Delete" onclick="confirmDelete('delete','${missExam.meId}')" style="cursor: pointer;" class="icon-trash"></i>
             	</td> 
