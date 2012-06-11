@@ -2,7 +2,8 @@ package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
+
+import javax.persistence.Column;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -25,7 +26,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	private String maBackgroundPicture;
 	
-	@XStreamAlias("maContactBirthDate")
+	private String maGrade;
+	/*@XStreamAlias("maContactBirthDate")
 	private Date maContactBirthDate;
 
 	private String maContactDepartment;
@@ -46,11 +48,16 @@ public class MissAccount extends VServiceXML implements Serializable {
 	
 	private String maContactPicturePath;
 
-	private String maContactTitle;
+	private String maContactTitle;*/
 
 	private String maCustomizeColor;
 
-	private String maCustomizeLogo;
+	private String maCustomizeLogoPath;
+	
+	private String maCustomizeLogoFileName;
+
+	private String maCustomizeLogoHotlink;
+
 
 	private String maCustomizePassMessage;
 
@@ -95,7 +102,11 @@ public class MissAccount extends VServiceXML implements Serializable {
 	
 	@XStreamAlias("maRegisterDate")
 	private Timestamp maRegisterDate;
+	
+/*	private String maContactPictureHotlink;*/
 //	private String maSex;
+
+ 
 
 	//ext 
 	private String section; 
@@ -138,86 +149,6 @@ public class MissAccount extends VServiceXML implements Serializable {
 		this.maBackgroundPicture = maBackgroundPicture;
 	}
 
-	public Date getMaContactBirthDate() {
-		return this.maContactBirthDate;
-	}
-
-	public void setMaContactBirthDate(Date maContactBirthDate) {
-		this.maContactBirthDate = maContactBirthDate;
-	}
-
-	public String getMaContactDepartment() {
-		return this.maContactDepartment;
-	}
-
-	public void setMaContactDepartment(String maContactDepartment) {
-		this.maContactDepartment = maContactDepartment;
-	}
-
-	public String getMaContactEmail() {
-		return this.maContactEmail;
-	}
-
-	public void setMaContactEmail(String maContactEmail) {
-		this.maContactEmail = maContactEmail;
-	}
-
-	public String getMaContactFax() {
-		return this.maContactFax;
-	}
-
-	public void setMaContactFax(String maContactFax) {
-		this.maContactFax = maContactFax;
-	}
-
-	public String getMaContactGender() {
-		return this.maContactGender;
-	}
-
-	public void setMaContactGender(String maContactGender) {
-		this.maContactGender = maContactGender;
-	}
-
-	public String getMaContactLastname() {
-		return this.maContactLastname;
-	}
-
-	public void setMaContactLastname(String maContactLastname) {
-		this.maContactLastname = maContactLastname;
-	}
-
-	public String getMaContactName() {
-		return this.maContactName;
-	}
-
-	public void setMaContactName(String maContactName) {
-		this.maContactName = maContactName;
-	}
-
-	public String getMaContactPhone() {
-		return this.maContactPhone;
-	}
-
-	public void setMaContactPhone(String maContactPhone) {
-		this.maContactPhone = maContactPhone;
-	}
-
-	public String getMaContactPicture() {
-		return this.maContactPicture;
-	}
-
-	public void setMaContactPicture(String maContactPicture) {
-		this.maContactPicture = maContactPicture;
-	}
-
-	public String getMaContactTitle() {
-		return this.maContactTitle;
-	}
-
-	public void setMaContactTitle(String maContactTitle) {
-		this.maContactTitle = maContactTitle;
-	}
-
 	public String getMaCustomizeColor() {
 		return this.maCustomizeColor;
 	}
@@ -226,12 +157,30 @@ public class MissAccount extends VServiceXML implements Serializable {
 		this.maCustomizeColor = maCustomizeColor;
 	}
 
-	public String getMaCustomizeLogo() {
-		return this.maCustomizeLogo;
+	
+
+	public String getMaCustomizeLogoPath() {
+		return maCustomizeLogoPath;
 	}
 
-	public void setMaCustomizeLogo(String maCustomizeLogo) {
-		this.maCustomizeLogo = maCustomizeLogo;
+	public void setMaCustomizeLogoPath(String maCustomizeLogoPath) {
+		this.maCustomizeLogoPath = maCustomizeLogoPath;
+	}
+
+	public String getMaCustomizeLogoFileName() {
+		return maCustomizeLogoFileName;
+	}
+
+	public void setMaCustomizeLogoFileName(String maCustomizeLogoFileName) {
+		this.maCustomizeLogoFileName = maCustomizeLogoFileName;
+	}
+
+	public String getMaCustomizeLogoHotlink() {
+		return maCustomizeLogoHotlink;
+	}
+
+	public void setMaCustomizeLogoHotlink(String maCustomizeLogoHotlink) {
+		this.maCustomizeLogoHotlink = maCustomizeLogoHotlink;
 	}
 
 	public String getMaCustomizePassMessage() {
@@ -418,53 +367,12 @@ public class MissAccount extends VServiceXML implements Serializable {
 		this.maRegisterDate = maRegisterDate;
 	}
 
-	public String getMaContactPicturePath() {
-		return maContactPicturePath;
+	public String getMaGrade() {
+		return maGrade;
 	}
 
-	public void setMaContactPicturePath(String maContactPicturePath) {
-		this.maContactPicturePath = maContactPicturePath;
+	public void setMaGrade(String maGrade) {
+		this.maGrade = maGrade;
 	}
-
-/*	public String getMaSex() {
-		return maSex;
-	}
-
-	public void setMaSex(String maSex) {
-		this.maSex = maSex;
-	}*/
-
-/*	public String getMaContactBirthDateStr() {
-		return maContactBirthDateStr;
-	}
-
-	public void setMaContactBirthDateStr(String maContactBirthDateStr) {
-		this.maContactBirthDateStr = maContactBirthDateStr;
-	}*/
-	
-
-	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {
-		return this.missAccountSeriesMaps;
-	}
-
-	public void setMissAccountSeriesMaps(Set<MissAccountSeriesMap> missAccountSeriesMaps) {
-		this.missAccountSeriesMaps = missAccountSeriesMaps;
-	}
-	
-	public Set<MissCandidate> getMissCandidates() {
-		return this.missCandidates;
-	}
-
-	public void setMissCandidates(Set<MissCandidate> missCandidates) {
-		this.missCandidates = missCandidates;
-	}
-	
-	public Set<MissTodo> getMissTodos() {
-		return this.missTodos;
-	}
-
-	public void setMissTodos(Set<MissTodo> missTodos) {
-		this.missTodos = missTodos;
-	}*/
 	
 }
