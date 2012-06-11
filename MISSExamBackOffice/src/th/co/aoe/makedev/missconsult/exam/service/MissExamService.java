@@ -9,12 +9,15 @@ import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
@@ -23,7 +26,6 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
-import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public interface MissExamService
@@ -42,6 +44,7 @@ public interface MissExamService
     public abstract Long saveMissAccount(MissAccount missaccount);
 
     public abstract int updateMissAccount(MissAccount missaccount);
+    public abstract int updateMissAccountLogo(MissAccount transientInstance);
 
     public abstract int deleteMissAccount(MissAccount missaccount, String s);
 
@@ -62,6 +65,7 @@ public interface MissExamService
     public abstract Long saveMissCandidate(MissCandidate misscandidate);
 
     public abstract int updateMissCandidate(MissCandidate misscandidate);
+    public abstract int updateMissCandidatePhoto(MissCandidate transientInstance)  ;
 
     public abstract int deleteMissCandidate(MissCandidate misscandidate, String s);
 
@@ -202,7 +206,30 @@ public interface MissExamService
 
     public abstract int deleteMissAttach(MissAttach missAttach);
 
-    public abstract MissAttach findMissAttachById(Long long1);
+    public abstract MissAttach findMissAttachById(String matModule,Long matRef);
 
     public abstract VResultMessage searchMissAttach(MissAttach missAttach);
+    
+    
+    public abstract Long saveMissContact(MissContact missContact);
+    
+    public abstract int updateMissContact(MissContact missContact);
+    public abstract int updateMissContactPhoto(MissContact transientInstance)  ;
+
+    public abstract int deleteMissContact(MissContact missContact,String service);
+
+    public abstract MissContact findMissContactById(Long long1);
+
+    public abstract VResultMessage searchMissContact(MissContact missContact);
+    public abstract List listContacts(Long long1,String mcontactType);
+    
+    public abstract Long saveMissManual(MissManual missManual);
+    
+    public abstract int updateMissManual(MissManual missManual);
+
+    public abstract int deleteMissManual(MissManual missManual,String service);
+
+    public abstract MissManual findMissManualById(Long long1);
+
+    public abstract VResultMessage searchMissManual(MissManual missManual);
 }
