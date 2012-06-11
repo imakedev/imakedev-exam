@@ -61,8 +61,8 @@ public class MissCandidate implements Serializable {
 	@Column(name="MCA_PHONE")
 	private String mcaPhone;
 
-	@Column(name="MCA_PICTURE")
-	private String mcaPicture;
+	@Column(name="MCA_PICTURE_FILE_NAME")
+	private String mcaPictureFileName;
 	
 	@Column(name="MCA_PICTURE_PATH")
 	private String mcaPicturePath;
@@ -91,7 +91,15 @@ public class MissCandidate implements Serializable {
     
 	@Column(name="MCA_PICTURE_HOTLINK")
 	private String mcaPictureHotlink;
-    
+  
+
+	@Column(name="MCA_POSTION")
+	private String mcaPostion;
+
+	@Column(name="MCA_TITLE_TYPE")
+	private String mcaTitleType;
+	 
+	
 	/*//bi-directional many-to-one association to MissTest
 	@OneToMany(mappedBy="missCandidate")
 	private Set<MissTest> missTests;*/
@@ -191,12 +199,13 @@ public class MissCandidate implements Serializable {
 		this.mcaPhone = mcaPhone;
 	}
 
-	public String getMcaPicture() {
-		return this.mcaPicture;
+
+	public String getMcaPictureFileName() {
+		return mcaPictureFileName;
 	}
 
-	public void setMcaPicture(String mcaPicture) {
-		this.mcaPicture = mcaPicture;
+	public void setMcaPictureFileName(String mcaPictureFileName) {
+		this.mcaPictureFileName = mcaPictureFileName;
 	}
 
 	public String getMcaStatus() {
@@ -262,6 +271,24 @@ public class MissCandidate implements Serializable {
 	public void setMcaPictureHotlink(String mcaPictureHotlink) {
 		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
+
+	public String getMcaPostion() {
+		return mcaPostion;
+	}
+
+	public void setMcaPostion(String mcaPostion) {
+		this.mcaPostion = mcaPostion;
+	}
+
+	public String getMcaTitleType() {
+		return mcaTitleType;
+	}
+
+	public void setMcaTitleType(String mcaTitleType) {
+		this.mcaTitleType = mcaTitleType;
+	}
+
+	
 	
 	/*public Set<MissTest> getMissTests() {
 		return this.missTests;
