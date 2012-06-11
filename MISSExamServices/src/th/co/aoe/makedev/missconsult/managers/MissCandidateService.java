@@ -11,6 +11,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public interface MissCandidateService { 
 		public Long saveMissCandidate(MissCandidate transientInstance) throws DataAccessException;
 		public int updateMissCandidate(MissCandidate transientInstance,String section) throws DataAccessException ;
+		public int updateMissCandidatePhoto(MissCandidate transientInstance,String section) throws DataAccessException ;
 		public int deleteMissCandidate(MissCandidate persistentInstance) throws DataAccessException ;	
 		public MissCandidate findMissCandidateById(Long mcaId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")

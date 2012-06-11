@@ -14,7 +14,8 @@ public class ServiceConstant {
 	public static final String MISS_ACCOUNT_ITEMS_DELETE = "deleteMissAccountItems";
 	public static final String MISS_ACCOUNT_DELETE = "deleteMissAccount";
 	public static final String MISS_ACCOUNT_SEARCH = "searchMissAccount";
-	public static final String MISS_ACCOUNT_FIND_BY_ID = "findMissAccountById"; 
+	public static final String MISS_ACCOUNT_FIND_BY_ID = "findMissAccountById";
+	public static final String MISS_ACCOUNT_UPDATE_LOGO = "updateLogoMissAccount"; 
 	 
 	// MISS_EXAM_GROUP
 	public static final String MISS_EXAM_GROUP_SAVE = "saveMissExamGroup";
@@ -36,7 +37,8 @@ public class ServiceConstant {
 	public static final String MISS_CANDIDATE_ITEMS_DELETE = "deleteMissCandidateItems";
 	public static final String MISS_CANDIDATE_DELETE = "deleteMissCandidate";
 	public static final String MISS_CANDIDATE_SEARCH = "searchMissCandidate";
-	public static final String MISS_CANDIDATE_FIND_BY_ID = "findMissCandidateById"; 
+	public static final String MISS_CANDIDATE_FIND_BY_ID = "findMissCandidateById";
+	public static final String MISS_CANDIDATE_UPDATE_PHOTO = "updatePhotoMissCandidate"; 
 	
 	// MISS_CHOICE
 	public static final String MISS_CHOICE_SAVE = "saveMissChoice";
@@ -139,5 +141,23 @@ public class ServiceConstant {
 	public static final String MISS_ATTACH_DELETE = "deleteMissAttach";
 	public static final String MISS_ATTACH_SEARCH = "searchMissAttach";
 	public static final String MISS_ATTACH_FIND_BY_ID = "findMissAttachById"; 
+	
+	// MISS_CONTACT
+	public static final String MISS_CONTACT_SAVE = "saveMissContact";
+	public static final String MISS_CONTACT_UPDATE = "updateMissContact";
+	public static final String MISS_CONTACT_DELETE = "deleteMissContact";
+	public static final String MISS_CONTACT_SEARCH = "searchMissContact";
+	public static final String MISS_CONTACT_FIND_BY_ID = "findMissContactById";
+	public static final String MISS_CONTACT_ITEMS_DELETE ="deleteMissAccountItems";
+	public static final String MISS_CONTACT_LIST = "listContacts";
+	public static final String MISS_CONTACT_UPDATE_PHOTO = "updatePhotoMissContact"; 
+	
+	// MISS_MANUAL
+	public static final String MISS_MANUAL_SAVE = "saveMissManual";
+	public static final String MISS_MANUAL_UPDATE = "updateMissManual";
+	public static final String MISS_MANUAL_DELETE = "deleteMissManual";
+	public static final String MISS_MANUAL_SEARCH = "searchMissManual";
+	public static final String MISS_MANUAL_FIND_BY_ID = "findMissManualById"; 
+	public static final String MISS_MANUAL_ITEMS_DELETE ="deleteMissManualItems";
 
 }

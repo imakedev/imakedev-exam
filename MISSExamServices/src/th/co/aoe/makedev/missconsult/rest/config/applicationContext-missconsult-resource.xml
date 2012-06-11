@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+ 
+  <!--  
+    missExamResource
+    missExamGroupResource
+ 	missAccountResource
+ 	missAccountSeriesMapResource
+ 	missCandidateResource
+ 	missChoiceResource
+ 	missEvaluationTemplateResource
+ 	missExamTypeResource
+ 	missQuestionResource
+ 	missSeriesMapResource
+ 	missSeryResource
+ 	missSurveySendResource
+ 	missTemplateResource
+ 	missTestResource
+ 	missTestResultResource
+ 	missTodoResource 
+ 	-->
+ 	<bean id="missExamResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissExamResource"
+		scope="prototype"> 
+		<property name="missExamService" ref="missExamService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	<bean id="missExamGroupResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissExamGroupResource"
+		scope="prototype"> 
+		<property name="missExamGroupService" ref="missExamGroupService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missAccountResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountResource"
+		scope="prototype"> 
+		<property name="missAccountService" ref="missAccountService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missAccountSeriesMapResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountSeriesMapResource"
+		scope="prototype"> 
+		<property name="missAccountSeriesMapService" ref="missAccountSeriesMapService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missCandidateResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissCandidateResource"
+		scope="prototype"> 
+		<property name="missCandidateService" ref="missCandidateService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missChoiceResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissChoiceResource"
+		scope="prototype"> 
+		<property name="missChoiceService" ref="missChoiceService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missEvaluationTemplateResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissEvaluationTemplateResource"
+		scope="prototype"> 
+		<property name="missEvaluationTemplateService" ref="missEvaluationTemplateService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missExamTypeResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissExamTypeResource"
+		scope="prototype"> 
+		<property name="missExamTypeService" ref="missExamTypeService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missQuestionResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissQuestionResource"
+		scope="prototype"> 
+		<property name="missQuestionService" ref="missQuestionService"></property>
+		<property name="missChoiceService" ref="missChoiceService"></property>  
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSeriesMapResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeriesMapResource"
+		scope="prototype"> 
+		<property name="missSeriesMapService" ref="missSeriesMapService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSeryResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeryResource"
+		scope="prototype"> 
+		<property name="missSeryService" ref="missSeryService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSurveySendResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSurveySendResource"
+		scope="prototype"> 
+		<property name="missSurveySendService" ref="missSurveySendService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missTemplateResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissTemplateResource"
+		scope="prototype"> 
+		<property name="missTemplateService" ref="missTemplateService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missTestResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissTestResource"
+		scope="prototype"> 
+		<property name="missTestService" ref="missTestService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missTestResultResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissTestResultResource"
+		scope="prototype"> 
+		<property name="missTestResultService" ref="missTestResultService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missTodoResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissTodoResource"
+		scope="prototype"> 
+		<property name="missTodoService" ref="missTodoService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missAttachResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissAttachResource"
+		scope="prototype"> 
+		<property name="missAttachService" ref="missAttachService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	 
+	<bean id="missContactResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissContactResource"
+		scope="prototype"> 
+		<property name="missContactService" ref="missContactService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missManualResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissManualResource"
+		scope="prototype"> 
+		<property name="missManualService" ref="missManualService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+</beans>

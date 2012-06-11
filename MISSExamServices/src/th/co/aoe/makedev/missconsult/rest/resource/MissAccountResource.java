@@ -87,6 +87,11 @@ public class MissAccountResource extends BaseResource {
 							int updateRecord=missAccountService.updateMissAccount(bpsTerm,xbpsTerm.getSection());
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_UPDATE_LOGO)){
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missAccountService.updateMissAccountLogo(bpsTerm,xbpsTerm.getSection());
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_DELETE)){
 							int updateRecord=missAccountService.deleteMissAccount(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);

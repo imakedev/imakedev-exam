@@ -128,6 +128,11 @@ public class MissCandidateResource extends BaseResource {
 							int updateRecord=missCandidateService.updateMissCandidate(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_UPDATE_PHOTO)){
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missCandidateService.updateMissCandidatePhoto(bpsTerm,xbpsTerm.getSection());
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_ITEMS_DELETE)){
 						/*	int updateRecord=missCandidateService.deleteMissCandidate(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+ 
+	<bean id="root" class="org.restlet.ext.spring.SpringRouter">
+		<property name="attachments">
+			<map>
+			    <entry key="/missExam">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missExamResource" />
+					</bean>
+				</entry>
+				<entry key="/missExamGroup">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missExamGroupResource" />
+					</bean>
+				</entry> 
+				 <entry key="/missAccount">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missAccountResource" />
+					</bean>
+				</entry>
+				<entry key="/missAccountSeriesMap">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missAccountSeriesMapResource" />
+					</bean>
+				</entry>
+				<entry key="/missCandidate">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missCandidateResource" />
+					</bean>
+				</entry>
+				<entry key="/missChoice">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missChoiceResource" />
+					</bean>
+				</entry> 
+				 <entry key="/missEvaluationTemplate">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missEvaluationTemplateResource" />
+					</bean>
+				</entry>
+				<entry key="/missExamType">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missExamTypeResource" />
+					</bean>
+				</entry>
+				<entry key="/missQuestion">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missQuestionResource" />
+					</bean>
+				</entry>
+				<entry key="/missSeriesMap">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSeriesMapResource" />
+					</bean>
+				</entry>
+				<entry key="/missSery">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSeryResource" />
+					</bean>
+				</entry>
+				<entry key="/missSurveySend">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSurveySendResource" />
+					</bean>
+				</entry>
+				<entry key="/missTemplate">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missTemplateResource" />
+					</bean>
+				</entry>
+				<entry key="/missTest">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missTestResource" />
+					</bean>
+				</entry>
+				<entry key="/missTestResult">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missTestResultResource" />
+					</bean>
+				</entry>
+				<entry key="/missTodo">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missTodoResource" />
+					</bean>
+				</entry>
+				<entry key="/missAttach">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missAttachResource" />
+					</bean>
+				</entry>
+				<entry key="/missContact">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missContactResource" />
+					</bean>
+				</entry>
+				<entry key="/missManual">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missManualResource" />
+					</bean>
+				</entry>
+				
+			</map>
+		</property>
+		<!--<property name="routes[2].template.variables[URI]">
+			<bean class="org.restlet.util.Variable">
+				<constructor-arg
+					ref="org.restlet.util.Variable.TYPE_URI_ALL" />
+			</bean>
+		</property>
+	--></bean>
+
+	<bean id="org.restlet.routing.Variable.TYPE_URI_ALL"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean" />
+ 
+</beans>

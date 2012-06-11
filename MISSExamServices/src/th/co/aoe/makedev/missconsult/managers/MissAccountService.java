@@ -12,6 +12,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public interface MissAccountService  { 
 		public Long saveMissAccount(MissAccount transientInstance) throws DataAccessException;
 		public int updateMissAccount(MissAccount transientInstance,String section) throws DataAccessException ;
+		public int updateMissAccountLogo(MissAccount transientInstance,String section) throws DataAccessException ;
 		public int deleteMissAccount(MissAccount persistentInstance) throws DataAccessException ;	
 		public MissAccount findMissAccountById(Long maId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
