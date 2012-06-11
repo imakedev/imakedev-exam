@@ -41,7 +41,8 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	private String mcaPhone;
 
-	private String mcaPicture;
+	//private String mcaPicture;
+	private String mcaPictureFileName;
 	
 	private String mcaPicturePath;
 
@@ -59,6 +60,8 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	@XStreamAlias("missSery")
 	private MissSery missSery;
 	private String mcaPictureHotlink;
+	private String mcaPostion;
+	private String mcaTitleType;
 	 
 	//ext 
 	private String section; 
@@ -156,12 +159,13 @@ public class MissCandidate extends VServiceXML implements Serializable {
 		this.mcaPhone = mcaPhone;
 	}
 
-	public String getMcaPicture() {
-		return this.mcaPicture;
+
+	public String getMcaPictureFileName() {
+		return mcaPictureFileName;
 	}
 
-	public void setMcaPicture(String mcaPicture) {
-		this.mcaPicture = mcaPicture;
+	public void setMcaPictureFileName(String mcaPictureFileName) {
+		this.mcaPictureFileName = mcaPictureFileName;
 	}
 
 	public String getMcaStatus() {
@@ -251,6 +255,23 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	public void setMcaPictureHotlink(String mcaPictureHotlink) {
 		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
+
+	public String getMcaPostion() {
+		return mcaPostion;
+	}
+
+	public void setMcaPostion(String mcaPostion) {
+		this.mcaPostion = mcaPostion;
+	}
+
+	public String getMcaTitleType() {
+		return mcaTitleType;
+	}
+
+	public void setMcaTitleType(String mcaTitleType) {
+		this.mcaTitleType = mcaTitleType;
+	}
+
 	
 	/*public Set<MissTest> getMissTests() {
 		return this.missTests;
