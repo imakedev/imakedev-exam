@@ -18,6 +18,47 @@ $(document).ready(function() {
 	   }
 
 	}); */
+	new AjaxUpload('question_img', {
+        action: 'upload/questionImg/${testForm.missQuestion.mqId}',
+		onSubmit : function(file , ext){
+            // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+				/* Setting data */
+				this.setData({
+					'key': 'This string will be send with the file',
+					'test':'chatchai'
+				});					
+			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
+			//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+			} else {					
+				// extension is not allowed
+				alert('Error: only images are allowed') ;
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			//alert(response);
+			/* response=response.replace("<pre>","");
+			response=response.replace("</pre>","");
+			  var obj = jQuery.parseJSON(response);
+			  alert(obj); */
+			//$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+response);
+				var editor_data =CKEDITOR.instances['mqNameTh1']; //alert(editor2) // [obj]
+				var selection = editor_data.getSelection();//alert(selection) // [obj]
+				var text = selection.getNative();//alert(text) // ""
+				var ranges = selection.getRanges();// alert(ranges) //[obj]
+				var type = selection.getType();// alert(type) // 2 
+			var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt=\"\" src=\"getfile/questionImg/${testForm.missQuestion.mqId}/'+response+'\" />');
+				 ranges[0].deleteContents();
+				 ranges[0].insertNode(newElement);
+				 ranges[0].selectNodeContents( newElement ); 
+			//$('#example2 .text').text('Uploaded ' + file);		
+			//alert(file);
+			//alert(response)
+		
+		}		
+	});
 });
 function addRow(tableID) {
 	//alert(indexRow);
@@ -156,7 +197,8 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="75%">
     					
     					<form:select path="missQuestion.missTemplate.mtId">
-    						<form:option value="1" label="Template1"></form:option>
+    						<form:option value="1" label="Template 1"></form:option>
+    						<form:option value="2" label="Template 2"></form:option>
     					</form:select>
     					</td>
     				</tr>
@@ -165,6 +207,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="75%">
     					  		<select name="question_lang" id="question_lang"> 
 											 <option value="1">Thai</option>
+											 <option value="2">Eng</option>
 											<!-- <option value="2">Eng</option>	 -->
 	    					</select></td>
     				</tr>
@@ -174,7 +217,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     				</tr>
     				<tr style="padding: 2pt">
     					<td width="25%" align="left" colspan="2">
-    					<a class="btn"  onclick="test()"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a><br/>
+    					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a><br/>
     					 </td> 
     				</tr>
     				 

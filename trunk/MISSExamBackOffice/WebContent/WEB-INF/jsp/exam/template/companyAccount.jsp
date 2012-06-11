@@ -3,24 +3,47 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#tabs').tabs();
-	$("#maContactBirthDate" ).datepicker({
+	$('#tabs').bind('tabsselect', function(event, ui) {
+		if(ui.index==2){
+			 // /exam/{meId}/questions
+			// alert("test/exam/"+$("#_meId").val()+"/questions");
+			 if($("#_maId").val().length>0){
+			  $.ajax({
+				  type: "get",
+				  url: "company/account/"+$("#_maId").val()+"/contacts",
+				  cache: false
+				 // data: { name: "John", location: "Boston" }
+				}).done(function( data ) {
+					if(data!=null){
+						appendContentWithId(data,"tabs-3")
+						// $("#tabs-3").html(data);
+					  }
+				});
+			 }
+		   }else{
+			   $("#tabs-3").html("");
+		   }
+		});
+	/* $("#maContactBirthDate" ).datepicker({
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
-	});
-	$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
-	new AjaxUpload('company_photo', {
-        action: 'upload/company/${companyForm.missAccount.maId}',
+	}); */
+	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):3;
+	//$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
+	$('#tabs').tabs('select', _company_section-3);
+	
+	new AjaxUpload('company_upload', {
+		 action: 'upload/companyLogo/${companyForm.missAccount.maId}',
 		onSubmit : function(file , ext){
             // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-				/* Setting data */
 				this.setData({
 					'key': 'This string will be send with the file',
 					'test':'chatchai'
 				});					
-			$('#candidate_img').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");	
+				$('#company_photo').attr('src', _path+"resources/images/loading.gif");
 			} else {					
 				// extension is not allowed
 				alert('Error: only images are allowed') ;
@@ -29,16 +52,10 @@ $(document).ready(function() {
 			}		
 		},
 		onComplete : function(file, response){
-			response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			$("#candidate_img").attr("src","getfile/company/${companyForm.missAccount.mcaId}/"+obj.hotlink);
-			//$('#example2 .text').text('Uploaded ' + file);		
-			//alert(file);
-			//alert(response)
-		
+			$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+response);
 		}		
 	});
+	 
 });
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());
@@ -57,13 +74,15 @@ function doAction(action,formID,sectionID){
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>
+   <input type="hidden" id="_maId" name="_maId" value="${companyForm.missAccount.maId}"/>
    <input type="hidden" id="_company_section" name="_company_section" value="${companyForm.missAccount.section}"/>
             <div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Account</a></li>
 				<li><a href="#tabs-2">Profile</a></li>
-				<li><a href="#tabs-3">Unit</a></li>
-				<li><a href="#tabs-4">Customize</a></li>
+				<li><a href="#tabs-3">Contact</a></li>
+				<li><a href="#tabs-4">Unit</a></li>
+				<li><a href="#tabs-5">Customize</a></li>
 			</ul>
 			<div id="tabs-1">
 			<!-- <form class="well"> -->
@@ -166,6 +185,7 @@ function doAction(action,formID,sectionID){
     			</fieldset>
 		<!-- 	</form>
 			<form class="well"> -->
+			<%-- 
 			 <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
@@ -174,83 +194,69 @@ function doAction(action,formID,sectionID){
    		 			<tr valign="top">
     					<td width="25%">First-Lastname:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" style="width: 120px" /> -->
     					<form:input path="missAccount.maContactName" cssStyle="width:120px"/>
     					&nbsp;
-    					<!-- <input type="text" style="width: 120px" /> -->
     					<form:input path="missAccount.maContactLastname" cssStyle="width:120px"/>
     					</td>
     					 <td width="25%" align="right" rowspan="8"><img src="<c:url value='/resources/images/photo.png'/>"/>
     					 <div align="right">
-    					 <!-- <input type="button" value="Upload"> -->
     					 <a id="company_photo" class="btn btn-mini"><i class="icon-picture"></i>&nbsp;Upload</a>
     					 </div></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Gender:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="radio" name="sex"/>Female&nbsp;&nbsp;&nbsp;<input type="radio" name="sex">Male -->
     					<form:radiobutton path="missAccount.maContactGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missAccount.maContactGender" value="1"/>Male
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="maContactBirthDate"  id="maContactBirthDate" cssStyle="width: 75px"/>
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
-    					<td width="25%">Title:</td>
+    					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maContactTitle"/>
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
     					<td width="25%">Department:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maContactDepartment"/>
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Phone:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maContactPhone"/>
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Fax:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maContactFax"/>
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Email:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missAccount.maContactEmail"/>
-    					
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     			</table>
     			</pre>
+    			--%> 
 			<!-- </form> -->
 			  </form:form> 
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_profile','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			<div id="tabs-3">
+    		
+    			</div>
+			<div id="tabs-4">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
@@ -325,7 +331,7 @@ function doAction(action,formID,sectionID){
 			<!-- <div align="center"><input type="button" class="btn" value="Order"/></div> -->
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','5')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div>
 			</div>
-			<div id="tabs-4">
+			<div id="tabs-5">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_customize" name="companyForm_customize" modelAttribute="companyForm" cssClass="well"  method="post" action="">
 			    <fieldset style="font-family: sans-serif;">   
@@ -336,7 +342,14 @@ function doAction(action,formID,sectionID){
     				</tr> -->
    		 			<tr valign="top">
     					<td width="25%">Logo:</td>
-    					<td width="50%" colspan="2"><img src="<c:url value='/resources/images/logowebmc.jpg'/>"/></td>
+    					<td width="50%" colspan="2">
+    					<c:if test="${not empty companyForm.missAccount.maCustomizeLogoHotlink}">
+    						<img id="company_photo"  width="350" height="66" src="getfile/companyLogo/${companyForm.missAccount.maId}/${companyForm.missAccount.maCustomizeLogoHotlink}" />
+    					</c:if>
+    					<c:if test="${empty companyForm.missAccount.maCustomizeLogoHotlink}">
+    						<img id="company_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>
+    					</c:if>
+    					<input  id="company_upload" type="button" value="Upload">(350px × 66px)</td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
@@ -350,9 +363,11 @@ function doAction(action,formID,sectionID){
 	    					</select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
-    				<tr valign="top">
+    				 <tr valign="top">
     					<td width="25%">Background:</td>
-    					<td width="50%" colspan="2"><img src=""/>&nbsp;&nbsp;&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<select name="bpsGroupId" id="bpgGroupId"> 
 											 <option value="0">Green</option>
 											 <option value="20">Gray</option>
 	    					</select></td>

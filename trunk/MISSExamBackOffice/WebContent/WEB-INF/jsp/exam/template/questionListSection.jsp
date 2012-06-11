@@ -88,7 +88,10 @@ function loadQuestion(_url){
         	 <c:forEach items="${missQuestions}" var="missQuestion" varStatus="loop"> 
           	<tr>
             	<td>${loop.index+1}</td>
-            	<td>${missQuestion.mqNameTh1}</td> 
+            	<td>Question ${loop.index+1}</td> 
+            	<%--
+            	${missQuestion.mqNameTh1}
+            	 --%>
             	<td  style="text-align: center;">
             	<i title="Edit" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
             	<i title="Delete" onclick="confirmDelete('delete','${missQuestion.mqId}')" style="cursor: pointer;" class="icon-trash"></i>

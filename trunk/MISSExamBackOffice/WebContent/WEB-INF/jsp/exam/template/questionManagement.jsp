@@ -238,7 +238,7 @@ function callAjax(){
             <div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Information</a></li>
-				<li><a href="#tabs-2">Evaluations</a></li>
+				<!-- <li><a href="#tabs-2">Evaluations</a></li> -->
 				<li><a href="#tabs-3">Questions</a></li>
 			</ul>
 			<div id="tabs-1">
@@ -282,20 +282,17 @@ function callAjax(){
 			</form>
 			<div align="center"><input type="button" value="Save" /><input type="button" value="Delete" /></div>
 			    </div>
+			<%--
 			<div id="tabs-2">
 			<form class="well">
 			    <table border="1" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Evaluations</strong></td>
-    				</tr>
-   		 			 
-    				 
+    				</tr> 
     			</table>
-			</form> 
-			<%--
-			<div align="center"><input type="button" class="btn" value="Save"/></div>
-			 --%>
+			</form>  
 			</div>
+			 --%>
 			<div id="tabs-3">
 			<form class="well">
 			<strong>Question Edit</strong>
@@ -307,7 +304,8 @@ function callAjax(){
     				<tr>
     					<td width="25%" align="right">Template:</td>
     					<td width="75%"><select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Template1</option>
+											 <option value="1">Template 1</option>
+											 <option value="2">Template 1</option>
 												
 	    					</select></td>
     				</tr>
