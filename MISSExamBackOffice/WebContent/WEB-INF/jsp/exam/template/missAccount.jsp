@@ -3,6 +3,27 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#tabs').tabs();
+	$('#tabs').bind('tabsselect', function(event, ui) {
+		if(ui.index==2){
+			 // /exam/{meId}/questions
+			// alert("test/exam/"+$("#_meId").val()+"/questions");
+			 if($("#_maId").val().length>0){
+			  $.ajax({
+				  type: "get",
+				  url: "miss/account/"+$("#_maId").val()+"/contacts",
+				  cache: false
+				 // data: { name: "John", location: "Boston" }
+				}).done(function( data ) {
+					if(data!=null){
+						appendContentWithId(data,"tabs-3")
+						// $("#tabs-3").html(data);
+					  }
+				});
+			 }
+		   }else{
+			   $("#tabs-3").html("");
+		   }
+		});
 	$("#maContactBirthDate" ).datepicker({
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
@@ -11,6 +32,7 @@ $(document).ready(function() {
 	});
 	//alert(parseInt($("#_miss_section").val()))
 	$('#tabs').tabs('select', parseInt($("#_miss_section").val()));
+	
 	//$tabs.tabs('select', 2);
 	/* var $tabs = $('#example').tabs();
 	var selected = $tabs.tabs('option', 'selected'); // => 0 */
@@ -18,44 +40,36 @@ $(document).ready(function() {
 	var selected = $( ".selector" ).tabs( "option", "selected" );
 	//setter
 	$( ".selector" ).tabs( "option", "selected", 3 ); */
-	new AjaxUpload('button2', {
-        action: 'upload',
-		/* data : {
-			'key1' : "This data won't",
-			'key2' : "be send because",
-			'key3' : "we will overwrite it"
-		}, */
+	//getPhoto('','');
+	
+	new AjaxUpload('mc_upload', {
+		 action: 'upload/mcLogo/${missForm.missAccount.maId}',
 		onSubmit : function(file , ext){
-            // Allow only images. You should add security check on the server-side.
+           // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-				/* Setting data */
-				//alert("xxx");
 				this.setData({
 					'key': 'This string will be send with the file',
 					'test':'chatchai'
 				});					
-				//$('#example2 .text').text('Uploading ' + file);
-				
+				$('#mc_photo').attr('src', _path+"resources/images/loading.gif");
 			} else {					
 				// extension is not allowed
-				//$('#example2 .text').text('Error: only images are allowed');
-				alert('Error: only images are allowed');
+				alert('Error: only images are allowed') ;
 				// cancel upload
 				return false;				
 			}		
 		},
 		onComplete : function(file, response){
-			//$('#example2 .text').text('Uploaded ' + file);	
-			$("#miss_photo").attr("src","getfile/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc")
-			//alert(file);
-			//alert(response)
-			response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			//alert(obj)
+			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+response);
 		}		
 	});
 });
+function getPhoto(_id,_hotlink){
+	if(_id!=null && _id.length>0 
+			&& _hotlink!=null && _hotlink.length>0)
+		$("#miss_photo").attr("src","getfile/missAccount/"+_id+"/"+_hotlink)
+	
+}
 function doAction(action,formID,sectionID){
 	/* $("#mode").val(mode);
 	if(mode!='search'){
@@ -84,18 +98,20 @@ function doAction(action,formID,sectionID){
     </div>
 <fieldset style="font-family: sans-serif;">  
 <input type="hidden" id="_miss_section" name="_miss_section" value="${missForm.missAccount.section}"/>
+ <input type="hidden" id="_maId" name="_maId" value="${missForm.missAccount.maId}"/>
 <div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Account</a></li>
 				<li><a href="#tabs-2">Profile</a></li>
-				<li><a href="#tabs-3">Customize</a></li>
+				<li><a href="#tabs-3">Contact</a></li>
+				<li><a href="#tabs-4">Customize</a></li>
 			</ul>
 			<div id="tabs-1">
 			<!-- <form class="well"> -->
 			 <form:form  id="missForm_account" name="missForm_account" modelAttribute="missForm" cssClass="well"  method="post" action="">
 			
 			  <fieldset style="font-family: sans-serif;">   
-	     <h6><strong>Miss - Account</strong></h6> 
+	     <h6><strong>MC - Account</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
    		 			<tr>
     					<td width="25%">&nbsp;</td>
@@ -138,7 +154,7 @@ function doAction(action,formID,sectionID){
 		<!--   <form class="well"> -->
 		
 			  <fieldset style="font-family: sans-serif;">  
-			    <h6><strong>Miss - Profile</strong></h6>  
+			    <h6><strong>MC - Profile</strong></h6>  
 			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
 	   
 			    <table border="0" width="100%" style="font-size: 12px">
@@ -204,10 +220,9 @@ function doAction(action,formID,sectionID){
 				<!-- <form class="well"> -->
 				 <%-- <form:form  id="missForm_profile2" name="missForm_profile2" modelAttribute="missForm" cssClass="well"  method="post" action=""> --%>
 			<!--  <form class="well"> -->
-			
+			<%--
 			  <fieldset style="font-family: sans-serif;">   
 			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
-	    <!--  <legend><h6><strong>Miss - Account</strong></h6></legend>  -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Contct Point Profile</strong></td>
@@ -216,13 +231,10 @@ function doAction(action,formID,sectionID){
     					<td width="25%">First-Lastname:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactName" id="maContactName" cssStyle="width:120px"/>
-    					<!-- <input type="text" style="width: 120px" /> -->
     					&nbsp;
     					<form:input path="missAccount.maContactLastname" id="maContactLastname" cssStyle="width:120px"/>
-    					<!-- <input type="text" style="width: 120px" /> -->
     					</td>
     					 <td width="25%"  align="right"  rowspan="8">
-    					 <%-- <img src="<c:url value='/resources/images/photo.png'/>"/><div align="right"><input type="button" value="Upload"></div> --%>
     					 <img id="miss_photo" width="128"  src="<c:url value='/resources/images/photo.png'/>"/>
     					 <div align="right"><input  id="button2" type="button" value="Upload"></div>
     					 </td>
@@ -231,63 +243,49 @@ function doAction(action,formID,sectionID){
     					<td width="25%">Gender:</td>
     					<td width="50%" colspan="2">
     					<form:radiobutton path="missAccount.maContactGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missAccount.maContactGender" value="1"/>Male
-    					<!-- <input type="radio" name="sex"/>Female&nbsp;&nbsp;&nbsp;<input type="radio" name="sex">Male -->
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
     					<form:input path="maContactBirthDate" id="maContactBirthDate" cssStyle="width: 75px"/>
-    					<!-- <input type="text"  id="datepicker" style="width: 75px"/> -->
-    					
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
-    					<td width="25%">Title:</td>
+    					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactTitle" id="maContactTitle"/>
-    					<!-- <input type="text" width="100%" /> -->
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
     					<td width="25%">Department:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactDepartment" id="maContactDepartment"/>
-    					<!-- <input type="text" width="100%" /> -->
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Phone:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactPhone" id="maContactPhone"/>
-    				<!-- 	<input type="text" width="100%"  -->
     					</td>
-    					<!-- <td width="25%">&nbsp;</td> --> 
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Fax:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactFax" id="maContactFax"/>
-    					<!-- <input type="text" width="100%" /> -->
     					</td>
-    					<!--  <td width="25%">&nbsp;</td> -->
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Email:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missAccount.maContactEmail" id="maContactEmail"/>
-    					<!-- <input type="text" width="100%" /> -->
     					</td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     			</table>
     			</pre>
     			</fieldset>
-    			
+    			--%>
     			<!-- </form> -->
 			  </form:form> 
 			<%--
@@ -296,17 +294,31 @@ function doAction(action,formID,sectionID){
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_profile','1')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			<div id="tabs-3">
+			<!-- <form class="well"> -->
+    			
+			
+			</div>
+			<div id="tabs-4">
 				<!-- <form class="well"> -->
 				 <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
-	      <h6><strong>Miss - Customize</strong></h6> 
+	      <h6><strong>MC - Customize</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<!-- <tr>
-    					<td width="100%" colspan="4"><strong>MissConsult Customize</strong></td>
+    					<td width="100%" colspan="4"><strong>MCConsult Customize</strong></td>
     				</tr> -->
    		 			<tr valign="top">
     					<td width="25%">Logo:</td>
-    					<td width="50%" colspan="2"><img src="<c:url value='/resources/images/logowebmc.jpg'/>"/><div><input type="button" value="browse"/></div></td>
+    					<td width="50%" colspan="2"> 
+    					<c:if test="${not empty missForm.missAccount.maCustomizeLogoHotlink}">
+    						<img id="mc_photo"  width="350" height="66" src="getfile/mcLogo/${missForm.missAccount.maId}/${missForm.missAccount.maCustomizeLogoHotlink}" />
+    					</c:if>
+    					<c:if test="${empty missForm.missAccount.maCustomizeLogoHotlink}">
+    						<img id="mc_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>
+    					</c:if>
+    					<div>
+    					<input  id="mc_upload" type="button" value="Upload">(350px × 66px)
+    					</div></td>
     					
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -323,7 +335,9 @@ function doAction(action,formID,sectionID){
     				</tr>
     				<tr valign="top">
     					<td width="25%">Background:</td>
-    					<td width="50%" colspan="2"><img src=""/>&nbsp;&nbsp;&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<select name="bpsGroupId" id="bpgGroupId"> 
 											 <option value="0">Green</option>
 											 <option value="20">Gray</option>
 	    					</select></td>

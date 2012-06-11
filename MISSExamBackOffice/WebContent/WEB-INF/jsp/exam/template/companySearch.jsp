@@ -322,7 +322,7 @@ function doAction(mode,id){
             		<th width="10%"><div class="th_class">Phone</div></th> 
             		<th width="10%"><div class="th_class">Register No</div></th>
             		<th width="10%"><div class="th_class">Register Date</div></th> 
-            		<th width="5%"><div class="th_class">Total</div></th>
+            		<th width="5%"><div class="th_class">Unit</div></th>
             		<th width="5%"><div class="th_class">Account</div></th> 
             		<th width="5%"><div class="th_class">Edit</div></th>
             		<th width="5%"><div class="th_class">Delete</div></th> 

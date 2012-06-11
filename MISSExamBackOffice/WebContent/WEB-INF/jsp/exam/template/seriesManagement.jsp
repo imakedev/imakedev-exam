@@ -77,6 +77,32 @@ function doAction(action,mode,id){
 	    					<form:input path="missSery.msUnitCost" id="msUnitCost" cssStyle="width:50px"/>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Evaluation File:</td>
+	    					 <td align="left" width="17%">    					
+	    						<input type="file"/>
+	    						 
+	    					 </td>
+	    					<td align="left" width="17%"></td>
+	    					<td align="left" width="17%">
+	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
+	    				 
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Manual File:</td>
+	    					 <td align="left" width="17%">    					
+	    						<input type="file"/>
+	    						 
+	    					 </td>
+	    					<td align="left" width="17%"></td>
+	    					<td align="left" width="17%">
+	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
+	    				 
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
 	    					</table> 
 	    		</form:form>
 	    					<table  border="0" width="100%" style="font-size: 13px">

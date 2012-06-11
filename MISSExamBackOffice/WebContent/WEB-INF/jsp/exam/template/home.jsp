@@ -28,7 +28,7 @@ function openDialog(){
 	   <!--  <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	   <form   class="well" style="border:2px solid #DDD" >
 	   <!--   <fieldset style="font-family: sans-serif;">  -->  
-	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>Miss - Home</strong></h3>  
+	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>MC - Home</strong></h3>  
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
 	    					<table border="0" width="100%" style="font-size: 13px">
 	    					<tr>

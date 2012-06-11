@@ -9,9 +9,10 @@ $(document).ready(function() {
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
 	});
-	$('#tabs').tabs('select', parseInt($("#_candidate_section").val()));
-	new AjaxUpload('candidate_photo', {
-        action: 'upload/candidate/${candidateForm.missCandidate.mcaId}',
+	var _candidate_section=$("#_candidate_section").val().length>0?parseInt($("#_candidate_section").val()):0;
+	$('#tabs').tabs('select', _candidate_section);
+	new AjaxUpload('candidate_upload', {
+        action: 'upload/candidateImg/${candidateForm.missCandidate.mcaId}',
 		onSubmit : function(file , ext){
             // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
@@ -19,8 +20,8 @@ $(document).ready(function() {
 				this.setData({
 					'key': 'This string will be send with the file',
 					'test':'chatchai'
-				});					
-			$('#candidate_img').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");	
+				});					 
+			$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
 			} else {					
 				// extension is not allowed
 				alert('Error: only images are allowed') ;
@@ -29,10 +30,8 @@ $(document).ready(function() {
 			}		
 		},
 		onComplete : function(file, response){
-			response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			$("#candidate_img").attr("src","getfile/candidate/${candidateForm.missCandidate.mcaId}/"+obj.hotlink);
+			//alert(response)
+			$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+response);
 			//$('#example2 .text').text('Uploaded ' + file);		
 			//alert(file);
 			//alert(response)
@@ -154,11 +153,20 @@ function doAction(action,formID,sectionID){
     					<!-- <input type="text" width="100%" /> -->
     					 <form:input path="missCandidate.mcaCitizenId"/>
     					</td>
-    					 <td width="25%" align="right" rowspan="9"><img id="candidate_img" src="<c:url value='/resources/images/photo.png'/>"/>
+    					 <td width="25%" align="right" rowspan="9">
+    					  <c:if test="${not empty candidateForm.missCandidate.mcaPictureHotlink}"> 
+						 	<img id="candidate_photo" width="128" height="128" src="getfile/candidateImg/${candidateForm.missCandidate.mcaId}/${candidateForm.missCandidate.mcaPictureHotlink}" />
+						 </c:if>
+						 <c:if test="${empty candidateForm.missCandidate.mcaPictureHotlink}"> 
+						 	<img id="candidate_photo" width="128"  height="128" src="<c:url value='/resources/images/photo.png'/>" />
+						 </c:if>
     					 <div align="right">
     					<!--  <input type="button" id="candidate_photo" value="Upload"> -->
-    					  <a id="candidate_photo" class="btn btn-mini"><i class="icon-picture"></i>&nbsp;Upload</a>
-    					 </div></td>
+    					  <!-- <a id="candidate_upload" class="btn btn-mini"><i class="icon-picture"></i>&nbsp;Upload</a> -->
+    					  <input  id="candidate_upload" type="button" value="Upload">
+    					 </div>
+    					  <div align="right">(128px × 128px)</div>
+    					  </td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Email:</td>
@@ -176,11 +184,17 @@ function doAction(action,formID,sectionID){
     				<tr valign="top">
     					<td width="25%">First-Lastname:</td>
     					<td width="50%" colspan="2">
+    					<select style="width: 50px" > 
+    					<option value="0">นาย</option>
+    					<option  value="1">นาง</option>
+    					<option  value="2">นางสาว</option>
+    					<option  value="3">อื่นๆ</option>
+    					</select>
     					<!-- <input type="text" style="width: 120px" /> -->
-    					<form:input path="missCandidate.mcaFirstName"/>
+    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px"/>
     					&nbsp;
     					<!-- <input type="text" style="width: 120px" /> -->
-    					<form:input path="missCandidate.mcaLastName"/>
+    					<form:input path="missCandidate.mcaLastName" cssStyle="width:120px"/>
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
@@ -201,7 +215,7 @@ function doAction(action,formID,sectionID){
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
-    					<td width="25%">Title:</td>
+    					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" width="100%" /> -->
     					<form:input path="missCandidate.mcaTitle"/>
