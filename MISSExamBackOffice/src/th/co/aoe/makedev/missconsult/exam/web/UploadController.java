@@ -9,8 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
 @Controller
 public class UploadController {	
 	private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -47,10 +49,10 @@ public class UploadController {
     }
     @RequestMapping(value={"/upload/{module}/{id}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
-    public String doCreateCandidate(HttpServletRequest request, Model model)
+    public String doUpload(HttpServletRequest request, Model model, @PathVariable String module,@PathVariable String id)
     {
     	 String ndPathFileGen=null;
-        MissCandidate missCandidate = new MissCandidate();
+    	 String hotLink="";
        /* logger.debug("xxxxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("test"));
         Map m =request.getParameterMap();
         for (Iterator iterator = m.keySet().iterator(); iterator.hasNext();) {
@@ -70,6 +72,10 @@ public class UploadController {
                 logger.debug("contentType ===> "+contentType);
                 s = FilenameUtils.getName(s);
                 logger.debug("fileName2 ===> "+s);
+                String monthStr= "";
+				  String yearStr="";
+				  
+				  String pathFolder="";
                 FileOutputStream fos = null;
 					try {  
 						byte []filesize = multipart.getBytes(); 
@@ -78,12 +84,26 @@ public class UploadController {
 							long current = System.currentTimeMillis();
 						org.joda.time.DateTime    dt1  = new org.joda.time.DateTime (new Date().getTime()); 
 							
-						  String monthStr= dt1.getMonthOfYear()+"";
-						  String yearStr= dt1.getYear()+"";
+						  monthStr= dt1.getMonthOfYear()+"";
+						  yearStr= dt1.getYear()+"";
 						  monthStr = monthStr.length()>1?monthStr:"0"+monthStr;
 						  //String ndFilePath = "/usr/local/Work/TestDownload/"+yearStr+"_"+monthStr+"";
 						//  String ndFilePath = "/usr/local/Work/TestDownload/";//bundle.getString("richtextImgPath");//+yearStr+"_"+monthStr+"";
-						  String ndFilePath = bundle.getString("richtextImgPath")+yearStr+"_"+monthStr+"";
+						  //String pathFile = ""; 
+						  
+						 /* questionImgPath=/opt/attach/questionImg/
+						  candidateImgPath=/opt/attach/candidateImg/
+						  mcLogoPath=/opt/attach/mcLogo/
+						  companyLogoPath=/opt/attach/companyLogo/
+
+						  attachManualPath=/opt/attach/attachManual/*/
+						 /* if(module.equals("mc")){
+							  
+						  }else if(){
+							  
+						  }*/
+						  pathFolder=yearStr+"_"+monthStr+"";
+						  String ndFilePath = bundle.getString(module+"Path")+pathFolder;
 						  String path =ndFilePath;
 						  createDirectoryIfNeeded(path);
 						  String filename =s ;// multipart.getOriginalFilename();
@@ -92,7 +112,9 @@ public class UploadController {
 						  if(filenameSplit!=null && filenameSplit.length>0){
 							  extension =filenameSplit[filenameSplit.length-1];
 						  }
-						 ndPathFileGen =current+""+genToken()+"."+extension; 
+						  hotLink=current+""+genToken();
+						 ndPathFileGen =hotLink+"."+extension; 
+						 pathFolder=pathFolder+"/"+ndPathFileGen;
 					//	 FileInputStream fin= new FileInputStream(file)
 						 fos = new FileOutputStream(path+"/"+ndPathFileGen);								
 						 fos.write(filesize);
@@ -109,27 +131,98 @@ public class UploadController {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}	 
-					}  
+					} 
+				if(module.equals("mcLogo")){
+					 MissAccount missAccount = new MissAccount();
+					 missAccount.setMaId(Long.parseLong(id));
+					 missAccount.setMaCustomizeLogoFileName(s);
+					 missAccount.setMaCustomizeLogoHotlink(hotLink);
+					  missAccount.setMaCustomizeLogoPath(pathFolder);
+					  missExamService.updateMissAccountLogo(missAccount);
+				}else if(module.equals("companyLogo")){
+					 MissAccount missAccount = new MissAccount();
+					 missAccount.setMaId(Long.parseLong(id));
+					 missAccount.setMaCustomizeLogoFileName(s);
+					 missAccount.setMaCustomizeLogoHotlink(hotLink);
+					  missAccount.setMaCustomizeLogoPath(pathFolder);
+					  missExamService.updateMissAccountLogo(missAccount);
+				}else if(module.equals("candidateImg")){
+					 MissCandidate missCandidate = new MissCandidate();
+					 missCandidate.setMcaId(Long.parseLong(id));
+					 missCandidate.setMcaPictureFileName(s);
+					 missCandidate.setMcaPictureHotlink(hotLink);
+					  missCandidate.setMcaPicturePath(pathFolder);
+					  missExamService.updateMissCandidatePhoto(missCandidate);
+				}else if(module.equals("contactImg")){
+								
+					 MissContact missContact = new MissContact();
+					 missContact.setMcontactId(Long.parseLong(id));
+					 missContact.setMcontactPictureFileName(s);
+					 missContact.setMcontactPictureHotlink(hotLink);
+					  missContact.setMcontactPicturePath(pathFolder);
+					  missExamService.updateMissContactPhoto(missContact);
+				}else if(module.equals("attachManual")){
+					 MissManual missManual = new MissManual();
+					 missManual.setMmId(Long.parseLong(id));
+					 missManual.setMmFileName(s);
+					 missManual.setMmHotlink(hotLink);
+					  missManual.setMmPath(pathFolder);
+					  missExamService.updateMissManual(missManual);
+				}else if(module.equals("questionImg")){
+					 MissAttach missAttach = new MissAttach();
+					 //missAttach.setMatId((Long.parseLong(id));
+					 missAttach.setMatFileName(s);
+					 missAttach.setMatHotlink(hotLink);
+					 missAttach.setMatPath(pathFolder);
+					 missAttach.setMatRef(Long.parseLong(id));
+					 missAttach.setMatModule(module);
+					 missExamService.updateMissAttach(missAttach);
+				}
 		}
        // return missCandidate;
-		 return "hotlink";
+		 return hotLink;
     }
     @RequestMapping(value={"/getfile/{module}/{id}/{hotlink}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable String hotlink)
+    public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable String module
+    		,@PathVariable String id,@PathVariable String hotlink)
     {
     	//String hotlink = request.getQueryString();
 		//String []adminview = hotlink.split("&mode=");
 		//System.out.println(" adminview size="+adminview);
     	
 		//	String filePath = "/usr/local/Work/TestDownload/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc.jpg";
-    	String filePath =  bundle.getString("richtextImgPath")+hotlink+".jpg";
+    	String  content_type= "image/jpeg";
+    	String path= bundle.getString(module+"Path");
+    	String ndPathFileGen="";
+    	//path+"/"+ndPathFileGen
+    	if(module.equals("mcLogo")){
+    		MissAccount missAccount= missExamService.findMissAccountById(Long.parseLong(id));
+    		ndPathFileGen=path+missAccount.getMaCustomizeLogoPath();
+		}else if(module.equals("companyLogo")){
+			MissAccount missAccount=missExamService.findMissAccountById(Long.parseLong(id));
+	    	ndPathFileGen=path+missAccount.getMaCustomizeLogoPath();
+		}else if(module.equals("candidateImg")){
+			MissCandidate missCandidate =missExamService.findMissCandidateById(Long.parseLong(id));
+			 ndPathFileGen=path+missCandidate.getMcaPicturePath();
+		}else if(module.equals("contactImg")){
+			MissContact missContact=missExamService.findMissContactById(Long.parseLong(id));
+			 ndPathFileGen=path+missContact.getMcontactPicturePath();
+		}else if(module.equals("attachManual")){
+			MissManual missManual=missExamService.findMissManualById(Long.parseLong(id));
+			 ndPathFileGen=path+missManual.getMmPath();
+			 content_type="application/pdf";
+		}else if(module.equals("questionImg")){
+			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id));
+			 ndPathFileGen=path+missAttach.getMatPath();
+		}
+    	//String filePath =  bundle.getString(module+"Path")+hotlink+".jpg";
 		//	String fileName = null;
 			  
-				String filenameStr ="เทสfชาติชาย.jpg";// fileName.trim().replaceAll(" ","_");
+			//	String filenameStr ="เทสfชาติชาย.jpg";// fileName.trim().replaceAll(" ","_");
 				//response.setHeader("Content-Type", "application/octet-stream; charset=tis620");
 				response.setHeader("Content-Type", "image/jpeg");
 				
-				logger.debug(" filenameStr==>"+filenameStr);
+			//	logger.debug(" filenameStr==>"+filenameStr);
 			/*	response.addHeader("content-disposition",
 				        "attachment; filename=\"\u0e01เทสfชาติชาย.jpg\"");*/
 			/*	response.addHeader("content-disposition",
@@ -145,7 +238,7 @@ public class UploadController {
 				} 
 			      InputStream stream  = null;
 			      try {   
-			    		  stream = new FileInputStream(filePath);
+			    		  stream = new FileInputStream(ndPathFileGen);
 					         in = new BufferedInputStream(stream);
 			         while (true) {
 			            int data = in.read();

@@ -5,8 +5,8 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,17 +21,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.CompanyForm;
+import th.co.aoe.makedev.missconsult.exam.form.ContactForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/company"})
-@SessionAttributes(value={"companyForm"})
+@SessionAttributes(value={"companyForm","contactForm"})
 public class CompanyController
 {
 
@@ -41,7 +44,7 @@ public class CompanyController
         logger.debug("########################### @Autowired CompanyController #######################");
         this.missExamService = missExamService;
     }
-
+    private String account_type="2";
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model)
     {
@@ -67,7 +70,7 @@ public class CompanyController
         String missExam_selectboxes[] = request.getParameterValues("missExam_selectbox");
         companyForm.getMissAccount().setMaRegisterType(companyForm.getMaRegisterType());
         companyForm.getMissAccount().setMaRegisterNo(companyForm.getMaRegisterNo());
-        companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
+      //  companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
         companyForm.getMissAccount().setMaName(companyForm.getMaName());
         companyForm.getMissAccount().setMaPhone(companyForm.getMaDayTimePhone());
         if(mode != null && mode.equals("deleteItems"))
@@ -127,8 +130,8 @@ public class CompanyController
             companyForm = new CompanyForm();
         companyForm.setMode("edit");
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
-        if(missAccount != null && missAccount.getMaContactBirthDate() != null)
-            companyForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));
+     /*   if(missAccount != null && missAccount.getMaContactBirthDate() != null)
+            companyForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));*/
         companyForm.setMissAccount(missAccount);
         model.addAttribute("companyForm", companyForm);
         model.addAttribute("display", "display: none");
@@ -158,7 +161,7 @@ public class CompanyController
         companyForm.getMissAccount().setSection(section);
         companyForm.getMissAccount().setMaType("0");
         Long id = null;
-        if(companyForm.getMaContactBirthDate() != null && companyForm.getMaContactBirthDate().trim().length() > 0)
+      /*  if(companyForm.getMaContactBirthDate() != null && companyForm.getMaContactBirthDate().trim().length() > 0)
             try
             {
                 companyForm.getMissAccount().setMaContactBirthDate(format1.parse(companyForm.getMaContactBirthDate()));
@@ -166,7 +169,7 @@ public class CompanyController
             catch(ParseException e)
             {
                 e.printStackTrace();
-            }
+            }*/
         logger.debug((new StringBuilder(" debugggggggggg getMaId=")).append(companyForm.getMissAccount().getMaId()).toString());
         if(mode != null)
             if(mode.equals("new"))
@@ -212,6 +215,125 @@ public class CompanyController
         return missCandidate;
     }
 
+    @RequestMapping(value={"/account/{maId}/contacts"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String contactsList(@PathVariable String maId, @ModelAttribute(value="contactForm") ContactForm contactForm, Model model)
+    {
+    	
+    	/* ContactForm contactForm = null;
+         if(model.containsAttribute("contactForm"))
+         	contactForm = (ContactForm)model.asMap().get("contactForm");
+         else
+         	contactForm = new ContactForm();*/
+        
+         String mode = contactForm.getMode();
+         logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mode="+mode);
+         if(mode != null && mode.equals("deleteItems"))
+         {
+        	 logger.debug("Start DELETE mode="+contactForm.getMcontactIdArray());
+        	 contactForm.getMissContact().setMcontactIds(contactForm.getMcontactIdArray());
+             missExamService.deleteMissContact(contactForm.getMissContact(),ServiceConstant.MISS_CONTACT_ITEMS_DELETE);
+             logger.debug("End DELETE mode="+contactForm.getMcontactIdArray());
+         }else if(mode != null && mode.equals("delete")){
+             missExamService.deleteMissContact(contactForm.getMissContact(), ServiceConstant.MISS_CONTACT_DELETE);
+         }
+         contactForm.getPaging().setPageNo(1);
+    	List missContacts=null;
+    	if(maId!=null && !maId.equals("0")){
+    		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
+    		contactForm.setMaId(maId);
+    	}
+    	contactForm.setMode("edit");
+        model.addAttribute("missContacts", missContacts);
+        model.addAttribute("contactForm", contactForm);
+        return "exam/template/contactListSection";
+    }
+    @RequestMapping(value={"/account/{maId}/contacts"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getContactList(@PathVariable String maId, Model model)
+    {
+    	logger.debug("into getQuestionList xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx "+maId);
+    	ContactForm contactForm = null;
+         if(model.containsAttribute("contactForm"))
+        	 contactForm = (ContactForm)model.asMap().get("contactForm");
+         else
+        	 contactForm = new ContactForm();
+         contactForm.setMode("edit");
+        
+    	List missContacts=null;
+    	if(maId!=null && !maId.equals("0")){
+    		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
+    		contactForm.setMaId(maId);
+    	} 
+        model.addAttribute("missContacts", missContacts);
+        model.addAttribute("contactForm", contactForm);
+        return "exam/template/contactListSection";
+    }
+    @RequestMapping(value={"/account/{maId}/contact/{mcontactId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getContactItem(@PathVariable String maId,@PathVariable String mcontactId, Model model)
+    {
+    	logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    	ContactForm contactForm = null;
+         if(model.containsAttribute("contactForm"))
+        	 contactForm = (ContactForm)model.asMap().get("contactForm");
+         else
+        	 contactForm = new ContactForm();
+         contactForm.setMode("edit");
+         MissContact missContact=null;
+    //	if(meId!=null && !meId.equals("0")){
+    		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
+    //	}
+    		model.addAttribute("display", "display: none");
+      //  model.addAttribute("missContacts", missContacts);
+    		contactForm.setMissContact(missContact);
+    	//missExamService
+        model.addAttribute("contactForm", contactForm);
+        return "exam/template/contactManagementSection";
+    } 
+    @RequestMapping(value={"/account/{maId}/contact/new"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getNetContactItem(Model model,@PathVariable String maId)
+    {
+    	ContactForm contactForm = null;
+        if(model.containsAttribute("contactForm"))
+        	contactForm = (ContactForm)model.asMap().get("contactForm");
+        else
+        	contactForm = new ContactForm();
+        MissContact missContact =new MissContact();
+        missContact.setMcontactType(account_type);
+        missContact.setMcontactRef(Long.parseLong(maId));
+        contactForm.setMissContact(missContact);
+        contactForm.setMode("new");
+        model.addAttribute("display", "display: none");
+        return "exam/template/contactManagementSection";
+    }
+    @RequestMapping(value={"/action/account/contact"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doContactAction(HttpServletRequest request, @ModelAttribute(value="contactForm") ContactForm contactForm, BindingResult result, Model model)
+    
+    {
+        String mode = contactForm.getMode();
+        String message = ""; 
+        logger.debug("xxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyy doContactAction mode="+mode);
+        Long id = null;
+        if(mode != null)
+            if(mode.equals("new"))
+            {
+            	contactForm.getMissContact().setMcontactType(account_type);
+                id = missExamService.saveMissContact(contactForm.getMissContact());
+                contactForm.getMissContact().setMcontactId(id);
+                contactForm.setMode("edit");
+                message = "Save success !";
+            } else
+            if(mode.equals("edit"))
+            {
+            	missExamService.updateMissContact(contactForm.getMissContact());
+                id = contactForm.getMissContact().getMcontactId();
+                message = "Update success !";
+            }
+        
+        model.addAttribute("message", message);
+        model.addAttribute("display", "display: block");
+        model.addAttribute("contactForm", contactForm);
+        
+        return "exam/template/contactManagementSection";
+    }
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static Logger logger = Logger.getRootLogger();
     private MissExamService missExamService;
