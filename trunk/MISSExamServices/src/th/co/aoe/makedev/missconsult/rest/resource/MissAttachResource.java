@@ -63,7 +63,7 @@ public class MissAttachResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.MISS_ATTACH_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach ntcCalendarReturn = missAttachService.findMissAttachById(bpsTerm.getMatModule(),bpsTerm.getMatRef());
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach ntcCalendarReturn = missAttachService.findMissAttachById(bpsTerm.getMatModule(),bpsTerm.getMatRef(),bpsTerm.getMatHotlink());
 						logger.debug(" object return ="+ntcCalendarReturn);
 							if(ntcCalendarReturn!=null){
 								VResultMessage vresultMessage = new VResultMessage();

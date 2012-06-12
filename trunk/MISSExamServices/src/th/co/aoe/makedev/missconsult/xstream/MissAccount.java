@@ -3,8 +3,6 @@ package th.co.aoe.makedev.missconsult.xstream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -51,6 +49,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maContactTitle;*/
 
 	private String maCustomizeColor;
+	
+	private String maCustomizeHeadColor;
 
 	private String maCustomizeLogoPath;
 	
@@ -373,6 +373,14 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaGrade(String maGrade) {
 		this.maGrade = maGrade;
+	}
+
+	public String getMaCustomizeHeadColor() {
+		return maCustomizeHeadColor;
+	}
+
+	public void setMaCustomizeHeadColor(String maCustomizeHeadColor) {
+		this.maCustomizeHeadColor = maCustomizeHeadColor;
 	}
 	
 }
