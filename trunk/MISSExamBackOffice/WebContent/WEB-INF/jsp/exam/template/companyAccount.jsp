@@ -30,9 +30,9 @@ $(document).ready(function() {
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
 	}); */
-	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):3;
+	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):4;
 	//$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
-	$('#tabs').tabs('select', _company_section-3);
+	$('#tabs').tabs('select', _company_section-4);
 	
 	new AjaxUpload('company_upload', {
 		 action: 'upload/companyLogo/${companyForm.missAccount.maId}',
@@ -117,7 +117,7 @@ function doAction(action,formID,sectionID){
     			</table>    
     			</fieldset>			
 			</form:form>
-			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_account','3')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_account','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			    </div>
 			<div id="tabs-2">
 			<!-- <form class="well"> -->
@@ -251,7 +251,7 @@ function doAction(action,formID,sectionID){
 			<!-- </form> -->
 			  </form:form> 
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_profile','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_profile','5')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			<div id="tabs-3">
     		
@@ -329,7 +329,7 @@ function doAction(action,formID,sectionID){
     				</div>
 			
 			<!-- <div align="center"><input type="button" class="btn" value="Order"/></div> -->
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','5')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div>
+			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','7')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div>
 			</div>
 			<div id="tabs-5">
 			<!-- <form class="well"> -->
@@ -353,24 +353,39 @@ function doAction(action,formID,sectionID){
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
+    					<td width="25%">Type:</td>
+    					<td width="50%" colspan="2">
+    					<form:select path="missAccount.maGrade">
+    						<form:option value="1">Standard</form:option>
+							<form:option value="2">Premium</form:option>
+    					</form:select>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
     					<td width="25%">Theme Color:</td>
-    					<td width="50%" colspan="2"><select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Blue</option>
-											 <option value="20">Red</option>
-	    					</select>&nbsp;&nbsp;&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Green</option>
-											 <option value="20">Gray</option>
-	    					</select>
+    					<td width="50%" colspan="2">
+    					<form:select path="missAccount.maCustomizeHeadColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="blue">Blue</form:option>
+							<form:option value="green">Green</form:option>
+							<form:option value="orange">Orange</form:option>
+    					</form:select>
+    					&nbsp;&nbsp;&nbsp;<form:select path="missAccount.maCustomizeColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="blue">Blue</form:option>
+							<form:option value="green">Green</form:option>
+							<form:option value="orange">Orange</form:option>
+    					</form:select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Background:</td>
     					<td width="50%" colspan="2">
     					<!-- <img src=""/> -->
-    					<select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Green</option>
-											 <option value="20">Gray</option>
-	    					</select></td>
+    					<form:select path="missAccount.maBackgroundColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="white">White</form:option>
+    					</form:select></td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				<tr>
@@ -438,7 +453,7 @@ function doAction(action,formID,sectionID){
     			</fieldset>
 			</form:form>
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
-			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_customize','6')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_customize','8')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			
 		</div>

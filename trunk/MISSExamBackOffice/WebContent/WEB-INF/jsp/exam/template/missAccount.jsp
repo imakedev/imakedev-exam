@@ -324,23 +324,29 @@ function doAction(action,formID,sectionID){
     				</tr>
     				<tr valign="top">
     					<td width="25%">Theme Color:</td>
-    					<td width="50%" colspan="2"><select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Blue</option>
-											 <option value="20">Red</option>
-	    					</select>&nbsp;&nbsp;&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Green</option>
-											 <option value="20">Gray</option>
-	    					</select>
+    					<td width="50%" colspan="2">
+    					<form:select path="missAccount.maCustomizeHeadColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="blue">Blue</form:option>
+							<form:option value="green">Green</form:option>
+							<form:option value="orange">Orange</form:option>
+    					</form:select>
+    					&nbsp;&nbsp;&nbsp;<form:select path="missAccount.maCustomizeColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="blue">Blue</form:option>
+							<form:option value="green">Green</form:option>
+							<form:option value="orange">Orange</form:option>
+    					</form:select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Background:</td>
     					<td width="50%" colspan="2">
     					<!-- <img src=""/> -->
-    					<select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">Green</option>
-											 <option value="20">Gray</option>
-	    					</select></td>
+    					<form:select path="missAccount.maBackgroundColor">
+    						<form:option value="gray">Gray</form:option>
+							<form:option value="white">White</form:option>
+    					</form:select></td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
     				<tr>
@@ -402,7 +408,7 @@ function doAction(action,formID,sectionID){
     			</fieldset>
 			</form:form>
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_customize','2')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_customize','3')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			
 			</div>
 			

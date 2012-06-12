@@ -174,13 +174,32 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<form:input path="missContact.mcontactFax" id="mcontactFax"/>
     					</td>
     				</tr>
-    				 <tr valign="top">
+    			<c:if test="${contactForm.missContact.mcontactType=='1'}">
+    				<tr valign="top">
+    					<td width="25%">Email 1:</td>
+    					<td width="50%" colspan="2">
+    					<form:input path="missContact.mcontactEmail" id="mcontactEmail"/>
+    					</td>
+    					<td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%">Email 2:</td>
+    					<td width="50%" colspan="2">
+    					<form:input path="missContact.mcontactEmail2" id="mcontactEmail2"/>
+    					</td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    			</c:if>
+    			<c:if test="${contactForm.missContact.mcontactType!='1'}">
+    				<tr valign="top">
     					<td width="25%">Email:</td>
     					<td width="50%" colspan="2">
     					<form:input path="missContact.mcontactEmail" id="mcontactEmail"/>
     					</td>
-    					 <td width="25%">&nbsp;</td>
+    					<td width="25%">&nbsp;</td>
     				</tr>
+    				
+    			</c:if>
     			</table>
     			</pre>
     			</fieldset>

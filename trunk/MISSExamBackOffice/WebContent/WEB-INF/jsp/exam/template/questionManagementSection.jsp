@@ -207,7 +207,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="75%">
     					  		<select name="question_lang" id="question_lang"> 
 											 <option value="1">Thai</option>
-											 <option value="2">Eng</option>
+											<!--  <option value="2">Eng</option> -->
 											<!-- <option value="2">Eng</option>	 -->
 	    					</select></td>
     				</tr>
