@@ -243,6 +243,7 @@ public class CompanyController
     		contactForm.setMaId(maId);
     	}
     	contactForm.setMode("edit");
+    	contactForm.getMissContact().setMcontactType(account_type);
         model.addAttribute("missContacts", missContacts);
         model.addAttribute("contactForm", contactForm);
         return "exam/template/contactListSection";
@@ -263,6 +264,7 @@ public class CompanyController
     		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
     		contactForm.setMaId(maId);
     	} 
+    	contactForm.getMissContact().setMcontactType(account_type);
         model.addAttribute("missContacts", missContacts);
         model.addAttribute("contactForm", contactForm);
         return "exam/template/contactListSection";

@@ -43,6 +43,8 @@ public class TestForm extends CommonForm
     private String mcIdArray;// mcId1,mcId2
     private String mcIdNewArray; // mcId1@$@value1$$*$$mcId2@$@value2
     private String mcSize="0";
+    
+    private String megEmptyId;
 
 	public MissExam getMissExam() {
 		return missExam;
@@ -115,6 +117,14 @@ public class TestForm extends CommonForm
 
 	public void setMqIdArray(String mqIdArray) {
 		this.mqIdArray = mqIdArray;
+	}
+
+	public String getMegEmptyId() {
+		return megEmptyId;
+	}
+
+	public void setMegEmptyId(String megEmptyId) {
+		this.megEmptyId = megEmptyId;
 	}
 
 	/*public String getMesIdArray() {
