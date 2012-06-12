@@ -48,7 +48,41 @@ function toggleCheckbox(){
 			meIdCheckbox[i].checked=_check;
 	}
 }
-
+function loadDialogcreateEmpty(){
+	 $( "#dialog-createEmpty" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Yes": function() { 	
+					$("#dialog-createEmpty").dialog( "close" );
+					doCreateEmpty();
+				},
+				"No": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			}
+		});
+}
+function doCreateEmpty(){
+	//alert($("#megEmptyId").val()+",meName="+$("#meName").val()+",questionCountEmpty="+$("#questionCountEmpty").val()+",choiceCountEmpty="+$("#choiceCountEmpty").val())
+	//alert(document.getElementById("meName").value)
+	/* var data= { 
+		megEmptyId: $("#megEmptyId").val(),
+		meName: $("#meName").val(),
+		questionCountEmpty: $("#questionCountEmpty").val(),
+		choiceCountEmpty: $("#choiceCountEmpty").val()
+		};
+	
+	 $.post("test/createEmpty", data,  function(data) {
+			
+		    appendContent(data);
+		}); */
+	/*  $.post("test/createEmpty", 
+			  $("#testFormEmpty").serialize(), function(data) {
+		    appendContent(data);
+		}); */
+}
 function doDeleteItems(){
 	var meIdCheckbox=document.getElementsByName("meIdCheckbox");
 	//alert(meIdCheckbox.length);
@@ -84,6 +118,29 @@ function doDeleteItems(){
 		  // alert($("#_content").html());
 		}); */
 }
+function copyTest(id){	 
+	 $( "#dialog-confirmCopy" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Yes": function() { 
+					$( this ).dialog( "close" );
+					doCopyTest(id);
+				},
+				"No": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			}
+		});
+ }
+ function doCopyTest(id){
+		$.get("test/copy/"+id, function(data) {
+			  // alert(data);
+			    appendContent(data);
+			  // alert($("#_content").html());
+			});
+	}
 function confirmDelete(mode,id){
 	$( "#dialog-confirmDelete" ).dialog({
 		/* height: 140, */
@@ -100,6 +157,7 @@ function confirmDelete(mode,id){
 		}
 	});
 }
+
 function doAction(mode,id){
 	$("#mode").val(mode);
 	if(mode=='deleteItems'){
@@ -128,6 +186,30 @@ function doAction(mode,id){
 </script> 
  <div id="dialog-confirmDelete" title="Delete Test" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Test ?
+</div>
+ <div id="dialog-confirmCopy" title="Copy Test" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	Are you sure you want to copy Test ?
+</div>
+ <div id="dialog-createEmpty" title="Create Empty Test" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	 <%-- <form:form  id="testFormEmpty" name="testFormEmpty" modelAttribute="testForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+	 	 Group :<form:select path="megEmptyId">
+	    					 	 <form:option  value="0" label="-- Select --"></form:option>
+	    					 	 <form:options itemLabel="megName" items="${missExamGroups}" itemValue="megId"/>
+	    </form:select><br/>
+	    Test Name:<form:input path="missExam.meName" id="meName"/><br/>
+	    Question count:<form:input path="missExam.questionCountEmpty" id="questionCountEmpty"/><br/>
+	    Choice count:<form:input path="missExam.choiceCountEmpty" id="choiceCountEmpty"/>	  
+	 </form:form> --%>
+	 <form id="testFormEmpty"   style="border:2px solid #DDD">
+	 	Group :<select id="megEmptyId">
+	 		 <c:forEach items="${missExamGroups}" var="missExamGroup" varStatus="loop"> 
+	    					 			 <option value="<c:out value="${missExamGroup.megId}"></c:out>"><c:out value="${missExamGroup.megName}"></c:out></option>
+	         </c:forEach>
+	 	</select>
+	 	Test Name:<input type="text" id="meName"/><br/>
+	    Question count:<input type="text" id="questionCountEmpty"/><br/>
+	    Choice count:<input type="text" id="choiceCountEmpty"/>	  
+	 </form>
 </div>
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
@@ -165,7 +247,7 @@ function doAction(mode,id){
 	    					<td align="left" width="50%">
 	    					
 	    					<a class="btn btn-primary" onclick="loadDynamicPage('test/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;Create</a>&nbsp;
-	    					<a class="btn btn-primary" ><i class="icon-plus-sign icon-white"></i>&nbsp;Create Test Empty</a>&nbsp;
+	    					<a class="btn btn-primary" onclick="loadDialogcreateEmpty()"><i class="icon-plus-sign icon-white"></i>&nbsp;Create Test Empty</a>&nbsp;
 	    					<a class="btn btn-danger" onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a></td>
 	    					
 	    					<td align="right" width="50%">
@@ -187,7 +269,7 @@ function doAction(mode,id){
             	<td><input type="checkbox" name="meIdCheckbox" value="${missExam.meId}"/></td> 
             	<td>&nbsp;${missExam.meName}</td>
             	<td style="text-align: center;">
-            	<img src="<c:url value='/resources/images/glyphicons_153_more_windows.png'/>" title="Copy" style="cursor: pointer;width: 14px;height: 14px"/>&nbsp;&nbsp;
+            	<img onclick="copyTest('${missExam.meId}')" src="<c:url value='/resources/images/glyphicons_153_more_windows.png'/>" title="Copy" style="cursor: pointer;width: 14px;height: 14px"/>&nbsp;&nbsp;
             	<i title="Edit" onclick="loadDynamicPage('test/exam/${missExam.meId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
             	<i title="Delete" onclick="confirmDelete('delete','${missExam.meId}')" style="cursor: pointer;" class="icon-trash"></i>
             	</td> 
