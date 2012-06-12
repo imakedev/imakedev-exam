@@ -228,7 +228,8 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaBirthDate =:mcaBirthDate ,  " +
 					" missCandidate.mcaTitle =:mcaTitle ,  " + 
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
-					" missCandidate.mcaPhone =:mcaPhone    " + 
+					" missCandidate.mcaPhone =:mcaPhone  ,  " +
+					" missCandidate.mcaTitleType =:mcaTitleType    " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaType", transientInstance.getMcaType());
 			query.setParameter("mcaCitizenId", transientInstance.getMcaCitizenId());
@@ -240,6 +241,8 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaTitle", transientInstance.getMcaTitle());
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
+			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
+			
 			return query.executeUpdate();
 		}	
 		return 0;

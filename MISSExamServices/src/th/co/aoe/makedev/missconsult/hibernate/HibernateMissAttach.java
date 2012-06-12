@@ -33,7 +33,7 @@ public class HibernateMissAttach  extends HibernateCommon implements MissAttachS
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissAttach findMissAttachById(String matModule,Long matRef)
+	public MissAttach findMissAttachById(String matModule,Long matRef,String hotlink)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		MissAttach missAttach = null;
@@ -41,9 +41,11 @@ public class HibernateMissAttach  extends HibernateCommon implements MissAttachS
 		
 		Query query=session.createQuery(" select missAttach from MissAttach missAttach " +
 				" where missAttach.matModule=:matModule " +
-				" and missAttach.matRef=:matRef ");
+				" and missAttach.matRef=:matRef "+
+				" and missAttach.matHotlink=:matHotlink ");
 		query.setParameter("matModule", matModule);
 		query.setParameter("matRef", matRef);
+		query.setParameter("matHotlink", hotlink);
 		List list=query.list();
 		if(list.size()>0){
 			missAttach=(MissAttach)list.get(0);
@@ -205,14 +207,22 @@ public class HibernateMissAttach  extends HibernateCommon implements MissAttachS
 			
 			Query query=session.createQuery(" select missAttach from MissAttach missAttach " +
 					" where missAttach.matModule=:matModule " +
-					" and missAttach.matRef=:matRef ");
+					" and missAttach.matRef=:matRef " +
+					" and missAttach.matHotlink=:matHotlink ");
 			query.setParameter("matModule", transientInstance.getMatModule());
 			query.setParameter("matRef", transientInstance.getMatRef());
+			query.setParameter("matHotlink", transientInstance.getMatHotlink());
 			List list=query.list();
+			logger.debug(" attach size="+list.size());
 			if(list.size()>0){
 				missAttach=(MissAttach)list.get(0);
+				 missAttach.setMatFileName(transientInstance.getMatFileName());
+				 missAttach.setMatHotlink(transientInstance.getMatHotlink());
+				 missAttach.setMatPath(transientInstance.getMatPath());
+				/* missAttach.setMatRef(Long.parseLong(id));
+				 missAttach.setMatModule(module);*/
 			//	BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);					
-				return update(session, transientInstance);
+				return update(session, missAttach);
 			}else{
 				Long returnId  = null;
 				try{

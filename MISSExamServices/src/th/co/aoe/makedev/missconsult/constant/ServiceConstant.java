@@ -62,6 +62,8 @@ public class ServiceConstant {
 	public static final String MISS_EXAM_SEARCH = "searchMissExam";
 	public static final String MISS_EXAM_FIND_BY_ID = "findMissExamById"; 
 	public static final String MISS_EXAM_LIST = "listMissExam"; 	
+	public static final String MISS_EXAM_COPY = "copyMissExam";
+	public static final String MISS_EXAM_CREATE_EMPTY = "createEmptyMissExam";
 	
 	// MISS_EXAM_TYPE
 	public static final String MISS_EXAM_TYPE_SAVE = "saveMissExamType";
