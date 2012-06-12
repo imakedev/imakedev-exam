@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xmlns="http://java.sun.com/xml/ns/javaee" 
+   xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+   id="WebApp_ID" version="3.0">
+   <display-name>MISSExamBackOffice</display-name>
+   <context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>MISSExamBackOffice.root</param-value>
+	</context-param>
+	<context-param>
+	<param-name>contextConfigLocation</param-name>
+		<param-value>
+		/WEB-INF/context/common.xml
+		/WEB-INF/context/applicationContext-security.xml
+		</param-value>
+		<!-- <param-value>
+		/WEB-INF/context/common.xml
+		</param-value> -->
+	</context-param>  
+    
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+   
+    <!--
+      - Publishes events for session creation and destruction through the application
+      - context. Optional unless concurrent session control is being used.
+      -->
+    <listener>
+      <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+  <!--
+		Location of the Log4J config file, for initialization and refresh checks.
+		Applied by Log4jConfigListener.
+	-->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	</context-param>
+   <servlet>
+      <servlet-name>MISSExamBackOffice</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class> 
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+ <!--   <servlet-mapping>
+      <servlet-name>rest</servlet-name>
+      <url-pattern>/api/*</url-pattern>
+   </servlet-mapping> -->
+   	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+ 		<init-param>
+     		<param-name>jsonpEnabled</param-name>
+     		<param-value>true</param-value>
+    	</init-param>
+		<!-- This should NEVER be present in live -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- Remove this unless you want to use active reverse ajax -->
+		<init-param>
+			<param-name>activeReverseAjaxEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- By default DWR creates application scope objects when they are first 
+			used. This creates them when the app-server is started -->
+		<init-param>
+			<param-name>initApplicationScopeCreatorsAtStartup</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- This enables full streaming mode. It's probably better to leave this 
+			out if you are running across the internet -->
+		<init-param>
+			<param-name>maxWaitAfterWrite</param-name>
+			<param-value>-1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fileUploadMaxBytes</param-name>
+			<param-value>100000</param-value>
+		</init-param>
+		<init-param>
+			<param-name>crossDomainSessionSecurity</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<!-- For more information on these parameters, see: - http://getahead.org/dwr/server/servlet 
+			- http://getahead.org/dwr/reverse-ajax/configuration -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>MISSExamBackOffice</servlet-name>
+		<!-- <url-pattern>/missexambackoffice/*</url-pattern> -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>	
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>httpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>httpMethodFilter</filter-name>
+		<servlet-name>MISSExamBackOffice</servlet-name>
+	</filter-mapping>
+   <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<!-- Displays a stack trace -->
+		<location>/WEB-INF/jsp/uncaughtException.jsp</location>
+	</error-page>
+
+	<!-- eliminate welcome files -->
+	<!-- useful for Servlet 3 container (Tomcat 7 and Jetty 6) -->
+	<!-- <welcome-file-list>
+    	<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list> -->
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>  
+ <!--   <welcome-file-list>
+      <welcome-file />
+   </welcome-file-list> -->
+   
+</web-app>
