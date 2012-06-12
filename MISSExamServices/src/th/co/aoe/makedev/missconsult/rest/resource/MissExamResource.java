@@ -116,6 +116,17 @@ public class MissExamResource extends BaseResource {
 							int updateRecord=missExamService.updateMissExam(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_EXAM_COPY)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missExamService.copyMissExam(bpsTerm);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						else if(serviceName.equals(ServiceConstant.MISS_EXAM_CREATE_EMPTY)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missExamService.createEmptyMissExam(bpsTerm,Integer.parseInt(xbpsTerm.getQuestionCountEmpty()),Integer.parseInt(xbpsTerm.getChoiceCountEmpty()));
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_ITEMS_DELETE)){
 								String[] meIds=xbpsTerm.getMeIds().split(",");
 								int updateRecord=0;
