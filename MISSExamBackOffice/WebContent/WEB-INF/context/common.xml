@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans> 
+	<!-- The one and only FAQService -->
+	
+	<bean id="missExamService" class="th.co.aoe.makedev.missconsult.exam.service.impl.MissExamServiceImpl">
+	</bean>
+<!-- 	<bean id="userRepository" class="th.co.aoe.makedev.missconsult.exam.service.UserRepository">
+	</bean> 
+	<bean id="customUserDetailsService" class="th.co.aoe.makedev.missconsult.exam.service.impl.CustomUserDetailsService">
+	</bean> -->
+	<!-- <bean id="bpsUserService" class="th.co.vlink.bps.service.impl.BpsUserServiceImpl">
+	</bean> -->
+	
+	
+</beans>
