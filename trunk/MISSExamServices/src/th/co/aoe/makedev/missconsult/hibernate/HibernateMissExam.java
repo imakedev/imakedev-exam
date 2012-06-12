@@ -8,13 +8,19 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissTemplate;
 import th.co.aoe.makedev.missconsult.managers.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
@@ -172,6 +178,123 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 	}
 	return 0;
 	}
+	public int createEmptyMissExam(MissExam transientInstance,int questionCountEmpty,int choiceCountEmpty)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		int updateCount=0;
+	
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		logger.debug("meName=="+transientInstance.getMeName());
+		logger.debug("questionCountEmpty=="+questionCountEmpty);
+		logger.debug("choiceCountEmpty=="+choiceCountEmpty);
+		MissExamType missType=new MissExamType();
+		missType.setMetId(1l);
+	
+			/*transientInstance.setMissExamType(missType);
+			Long returnId  = null;
+			try{
+				Object objCopy = session.save(transientInstance);				
+				if(objCopy!=null){
+					returnId =(Long) objCopy;
+					transientInstance.setMeId(returnId);
+					for (int i = 0; i < questionCountEmpty; i++) {
+						MissQuestion missQuestion=new MissQuestion();
+						missQuestion.setMissExam(transientInstance);
+						Object objQuestionId = session.save(missQuestion);
+						if(objQuestionId!=null){
+							missQuestion.setMqId((Long)objQuestionId);
+							for (int j = 0; j < choiceCountEmpty; j++) {
+								 MissChoice missChoice=new MissChoice();
+								 missChoice.setMissQuestion(missQuestion);
+								 session.save(missChoice);
+							}
+						}
+					} 
+					updateCount=1;
+				}
+				
+			} finally {
+					if (session != null) {
+						session = null;
+					} 
+			}*/
+			
+			
+	return updateCount;
+	}
+	
+	public int copyMissExam(MissExam transientInstance)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		int updateCount=0;
+		MissExam missExam = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missExam from MissExam missExam where missExam.meId=:meId");
+		query.setParameter("meId", transientInstance.getMeId());
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missExam=(MissExam)obj;
+			MissExam missExamCopy=new MissExam();
+			BeanUtils.copyProperties(missExam, missExamCopy, new String[]{"missExamGroup","missExamType"});
+			missExamCopy.setMeName(missExamCopy.getMeName()+" Copy");
+			if(missExam.getMissExamGroup()!=null && missExam.getMissExamGroup().getMegId()!=null && missExam.getMissExamGroup().getMegId().intValue()!=0){
+				MissExamGroup missGroupCopy=new MissExamGroup();
+				BeanUtils.copyProperties(missExam.getMissExamGroup(), missGroupCopy);
+				missExamCopy.setMissExamGroup(missGroupCopy);
+			}
+			if(missExam.getMissExamType()!=null && missExam.getMissExamType().getMetId()!=null && missExam.getMissExamType().getMetId().intValue()!=0){
+				MissExamType missTypeCopy=new MissExamType();
+				BeanUtils.copyProperties(missExam.getMissExamType(), missTypeCopy);
+				missExamCopy.setMissExamType(missTypeCopy);
+			}
+			Long returnId  = null;
+			try{
+				Object objCopy = session.save(missExamCopy);				
+				String[] ignore=new String[]{"missExam","missTemplate"};
+				String[] ignore_choice=new String[]{"missQuestion"};
+				if(objCopy!=null){
+					returnId =(Long) objCopy;
+					missExamCopy.setMeId(returnId);
+					StringBuffer sb =new StringBuffer(" select missQuestion from MissQuestion missQuestion where missQuestion.missExam.meId="+missExam.getMeId());
+					query =session.createQuery(sb.toString());
+					List<MissQuestion> list =query.list();   
+					for (MissQuestion missQuestion : list) {
+						MissQuestion missQuestionCopy=new MissQuestion();
+						BeanUtils.copyProperties(missQuestion, missQuestionCopy, ignore);
+						missQuestionCopy.setMissExam(missExamCopy);
+						if(missQuestion.getMissTemplate()!=null && missQuestion.getMissTemplate().getMtId()!=null && missQuestion.getMissTemplate().getMtId().intValue()!=0){
+							MissTemplate missTypeCopy=new MissTemplate();
+							BeanUtils.copyProperties(missQuestion.getMissTemplate(), missTypeCopy);
+							missQuestionCopy.setMissTemplate(missTypeCopy);
+						}
+						Object objQuestionCopy = session.save(missQuestionCopy);
+						if(objQuestionCopy!=null){
+							missQuestionCopy.setMqId((Long)objQuestionCopy);
+							 sb =new StringBuffer(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId="+missQuestion.getMqId());
+							 query =session.createQuery(sb.toString());
+							 List<MissChoice> listChoice =query.list();   
+							 for (MissChoice missChoice : listChoice) {
+								 MissChoice missChoiceCopy=new MissChoice();
+								 BeanUtils.copyProperties(missChoice, missChoiceCopy, ignore_choice);
+								 missChoiceCopy.setMissQuestion(missQuestionCopy);
+								 session.save(missChoiceCopy);
+							 }
+						}
+						
+					}
+					   
+				}
+				
+			} finally {
+					if (session != null) {
+						session = null;
+					} 
+			}
+			updateCount=1;
+		}	
+	return updateCount;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int deleteMissExam(MissExam persistentInstance)
 			throws DataAccessException {

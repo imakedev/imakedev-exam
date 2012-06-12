@@ -29,6 +29,8 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_ADDRESS")
 	private String maAddress;
 
+
+	
 	@Column(name="MA_BACKGROUND_COLOR")
 	private String maBackgroundColor;
 
@@ -41,6 +43,9 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_CUSTOMIZE_COLOR")
 	private String maCustomizeColor;
 
+	@Column(name="MA_CUSTOMIZE_HEAD_COLOR")
+	private String maCustomizeHeadColor;
+	
 	@Column(name="MA_CUSTOMIZE_LOGO_PATH")
 	private String maCustomizeLogoPath;
 	
@@ -374,6 +379,14 @@ public class MissAccount implements Serializable {
 
 	public void setMaGrade(String maGrade) {
 		this.maGrade = maGrade;
+	}
+
+	public String getMaCustomizeHeadColor() {
+		return maCustomizeHeadColor;
+	}
+
+	public void setMaCustomizeHeadColor(String maCustomizeHeadColor) {
+		this.maCustomizeHeadColor = maCustomizeHeadColor;
 	}
 
 	
