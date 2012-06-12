@@ -212,7 +212,7 @@ public class UploadController {
 			 ndPathFileGen=path+missManual.getMmPath();
 			 content_type="application/pdf";
 		}else if(module.equals("questionImg")){
-			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id));
+			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id),hotlink);
 			 ndPathFileGen=path+missAttach.getMatPath();
 		}
     	//String filePath =  bundle.getString(module+"Path")+hotlink+".jpg";

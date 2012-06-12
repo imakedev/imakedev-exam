@@ -133,7 +133,54 @@ public class TestController
         model.addAttribute("testForm", testForm);
         return "exam/template/testSearch";
     }
-
+    @RequestMapping(value={"/copy/{meId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String copyTest(Model model,@PathVariable String meId)
+    {
+        model.addAttribute("missExamGroups", getGroup());
+        MissExam missexam=new MissExam();
+        missexam.setMeId(Long.parseLong(meId));
+        missExamService.copyMissExam(missexam);
+        TestForm testForm = new TestForm();
+        testForm.getMissExam().getPagging().setPageSize(3);
+        VResultMessage  vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
+        model.addAttribute("missExams", vresultMessage.getResultListObj());
+        testForm.getPaging().setPageSize(3);
+        testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+        model.addAttribute("testForm", testForm);
+        return "exam/template/testSearch";
+    }
+    @RequestMapping(value={"/createEmpty"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doCreateEmpty(HttpServletRequest request, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
+    {
+    	String megEmptyId=request.getParameter("megEmptyId");
+    	String meName=request.getParameter("meName");
+    	String questionCountEmpty=request.getParameter("questionCountEmpty");
+    	String choiceCountEmpty=request.getParameter("choiceCountEmpty");
+        logger.debug("megEmptyId====================> "+megEmptyId);
+        logger.debug("meName====================> "+meName);
+        logger.debug("questionCountEmpty====================> "+questionCountEmpty);
+        logger.debug("choiceCountEmpty====================> "+choiceCountEmpty);
+    	//createEmptyMissExam
+    	if(megEmptyId!=null && !megEmptyId.equals("0")){
+    		MissExamGroup missExamGroup =new MissExamGroup();
+    		missExamGroup.setMegId(Long.parseLong(megEmptyId));
+    		testForm.getMissExam().setMissExamGroup(missExamGroup);
+    	}
+    	testForm.getMissExam().setMeName(meName);
+    	testForm.getMissExam().setQuestionCountEmpty(questionCountEmpty);
+    	testForm.getMissExam().setChoiceCountEmpty(choiceCountEmpty);
+    	 missExamService.createEmptyMissExam(testForm.getMissExam());
+    	testForm = new TestForm();
+        testForm.getPaging().setPageSize(3);
+        testForm.getMissExam().setPagging(testForm.getPaging());
+        VResultMessage vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
+     
+        testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+        model.addAttribute("missExams", vresultMessage.getResultListObj());
+        model.addAttribute("missExamGroups", getGroup());
+        model.addAttribute("testForm", testForm);
+        return "exam/template/testSearch";
+    }
     @RequestMapping(value={"/exam/{meId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getItem(@PathVariable String meId, Model model)
     {

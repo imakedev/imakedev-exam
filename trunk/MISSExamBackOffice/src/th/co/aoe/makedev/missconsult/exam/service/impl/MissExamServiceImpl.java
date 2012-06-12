@@ -295,8 +295,24 @@ public class MissExamServiceImpl extends PostCommon
         missExam = (MissExam)resultMessage.getResultListObj().get(0);
         return missExam.getUpdateRecord().intValue();
     }
-
+	@Override
+	public int copyMissExam(MissExam missExam) {
+		// TODO Auto-generated method stub
+			missExam.setServiceName(ServiceConstant.MISS_EXAM_COPY);
+	        VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
+	        missExam = (MissExam)resultMessage.getResultListObj().get(0);
+	        return missExam.getUpdateRecord().intValue();
+	} 
+	@Override
+	public int createEmptyMissExam(MissExam missExam) {
+		// TODO Auto-generated method stub
+			missExam.setServiceName(ServiceConstant.MISS_EXAM_CREATE_EMPTY);
+	        VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
+	        missExam = (MissExam)resultMessage.getResultListObj().get(0);
+	        return missExam.getUpdateRecord().intValue();
+	}
     public int deleteMissExam(MissExam missExam, String service)
+    
     {
         missExam.setServiceName(service);
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
@@ -723,10 +739,11 @@ public class MissExamServiceImpl extends PostCommon
         return missAttach.getUpdateRecord().intValue();
     }
 
-    public MissAttach findMissAttachById(String matModule,Long matRef)
+    public MissAttach findMissAttachById(String matModule,Long matRef,String hotlink)
     {
         MissAttach missAttach = new MissAttach();
         missAttach.setMatModule(matModule);
+        missAttach.setMatHotlink(hotlink);
         missAttach.setMatRef(matRef);
         missAttach.setServiceName("findMissAttachById");
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
@@ -1111,6 +1128,7 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage vresult = searchMissTodo(missTodoSearch);
         System.out.println((new StringBuilder("xx")).append(vresult.getResultListObj()).toString());
     }
+
 
 	
 

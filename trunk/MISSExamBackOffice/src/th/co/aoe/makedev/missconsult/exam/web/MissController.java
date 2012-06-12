@@ -112,6 +112,7 @@ public class MissController
     		contactForm.setMaId(maId);
     	}
     	contactForm.setMode("edit");
+    	contactForm.getMissContact().setMcontactType(account_type);
         model.addAttribute("missContacts", missContacts);
         model.addAttribute("contactForm", contactForm);
         return "exam/template/contactListSection";
@@ -133,6 +134,7 @@ public class MissController
     		contactForm.setMaId(maId);
     	} 
         model.addAttribute("missContacts", missContacts);
+        contactForm.getMissContact().setMcontactType(account_type);
         model.addAttribute("contactForm", contactForm);
         return "exam/template/contactListSection";
     }

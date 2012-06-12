@@ -102,7 +102,10 @@ public interface MissExamService
     public abstract MissExam findMissExamById(Long long1);
 
     public abstract VResultMessage searchMissExam(MissExam missexam);
-
+    
+    public abstract int copyMissExam(MissExam missexam);
+    public abstract int createEmptyMissExam(MissExam missexam);
+    
     public abstract List listMissExam();
 
     public abstract Long saveMissExamType(MissExamType missexamtype);
@@ -206,7 +209,7 @@ public interface MissExamService
 
     public abstract int deleteMissAttach(MissAttach missAttach);
 
-    public abstract MissAttach findMissAttachById(String matModule,Long matRef);
+    public abstract MissAttach findMissAttachById(String matModule,Long matRef,String hotlink);
 
     public abstract VResultMessage searchMissAttach(MissAttach missAttach);
     
