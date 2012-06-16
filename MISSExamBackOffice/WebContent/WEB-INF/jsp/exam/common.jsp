@@ -4,8 +4,10 @@
 <head>
 <title></title>  
 <c:url var="url" value="/" />
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
+<link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />  
 <%-- 
-<script type="text/javascript"
+<script type="text/javascript" 
         src="<c:url value='/dwr/interface/MissExamAjax.js'/>"></script> 
 <script type="text/javascript"
         src="<c:url value='/dwr/engine.js'/>"></script> 
@@ -37,11 +39,15 @@
 <link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" /> 
 
 <!-- Bootstrap styles for responsive website layout, supporting different screen sizes -->
+<!-- 
 <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-responsive.min.css">
+ -->
 <!-- Bootstrap CSS fixes for IE6 -->
 <!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
 <!-- Bootstrap Image Gallery styles -->
+<!-- 
 <link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
+ -->
 <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
 <link rel="stylesheet" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
 <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
@@ -101,43 +107,6 @@ left padding is 20px */
 </style>
 
 <script type="text/javascript">
-function test(){
-	//$.getJSON('http://172.16.108.9:3000/v1/missSery?callback=?',
-	/* $.getJSON('https://twitter.com/users/usejquery.json?callback=?',
-			{
-	   // tags: "cat",
-	    //tagmode: "any",
-	    //format: "text/xml"
-	  },
-			function(json) { //get information about the user usejquery from twitter api
-		//alert("xx="+json);
-	    $("#test").html(json.followers_count);
-		//$('#twitter_followers').text(json.followers_count); //get the follower_count from the json object and put it in a span
-		}); */
-	/* $.ajax({
-	    url: 'http://news.bbc.co.uk?callback=?',
-	    type: 'GET',
-	    success: function(res) {
-	        var headline = $(res.responseText).find('a.tsh').text();
-	        alert(headline);
-	    }
-	}); */
-	/*  $.get("http://172.16.108.9:3000/v1/missSery/", function(data) {
-		 //  alert(data);
-		  if(data!=null){				  
-			//  appendContent(data);
-	                       alert("test="+data);
-		  } 
-	   }); */
-	/*  $.ajax({
-		  url: 'http://172.16.108.9:3000/v1/missSery/',
-		  type: "GET",
-		  success: function(data) {
-			  alert("Load was performed."+data);
-		    //alert('Load was performed.');
-		  }
-		}); */
-}
 var _path="";
 $(document).ready(function() {
 	//alert("aa");
@@ -177,13 +146,13 @@ $(document).ready(function() {
 					},
 					"metadata" : { id : "root_aoee2"},
 					"children" : [
-						{ attributes: { id : "pjson_2" }, data: { title : "MC", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
+						{ attributes: { id : "pjson_2" }, data: { title : "MissConsult", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
 						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
 						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
 					          ] 
 					
 				},
-				{ 
+				/* { 
 					"attr" : { "id" : "report_node" }, 
 					"data" : { 
 						"title" : "Result Report", 
@@ -196,6 +165,11 @@ $(document).ready(function() {
 						{ attributes: { id : "pjson_8" }, data: {title: "Search Report" , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_288","link":"result/search" },"attr" : { "id" : "tree_288" }    }
 						] 
 					
+				} */
+				{ 
+					"data" : {title:"Search Report",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
+					"metadata" : { id : "child_288" ,"link":"result/search"},
+					"attr" : { "id" : "tree_288" }, 
 				},
 				{ 
 					"attr" : { "id" : "management_node" }, 
