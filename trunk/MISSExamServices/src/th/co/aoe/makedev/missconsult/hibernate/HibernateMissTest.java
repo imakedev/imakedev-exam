@@ -30,13 +30,13 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissTest findMissTestById(Long megId)
+	public MissTest findMissTestById(Long mtestId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		MissTest missTest = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missTest from MissTest missTest where missTest.megId=:megId");
-		query.setParameter("megId", megId);
+		Query query=session.createQuery(" select missTest from MissTest missTest where missTest.mtestId=:mtestId");
+		query.setParameter("mtestId", mtestId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missTest=(MissTest)obj;
@@ -68,20 +68,20 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 	private int getSize(Session session, MissTest instance) throws Exception{
 		try {
 			 
-		/*	Long megId = instance.getMegId();
+		/*	Long mtestId = instance.getMegId();
 			String megName = instance.getMegName();
 			 
 			 
 			StringBuffer sb =new StringBuffer(" select count(missTest) from MissTest missTest ");
 			
 			boolean iscriteria = false;
-			if(megId !=null && megId > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missTest.megId="+megId+""):(" where missTest.megId="+megId+""));
+			if(mtestId !=null && mtestId > 0){  
+				//criteria.add(Expression.eq("mtestId", mtestId));	
+				 sb.append(iscriteria?(" and missTest.mtestId="+mtestId+""):(" where missTest.mtestId="+mtestId+""));
 				  iscriteria = true;
 			}
 			if(megName !=null && megName.trim().length() > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
+				//criteria.add(Expression.eq("mtestId", mtestId));	
 				sb.append(iscriteria?(" and lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}
@@ -103,20 +103,20 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
-			/*	Long megId = instance.getMegId();
+			/*	Long mtestId = instance.getMegId();
 				String megName = instance.getMegName();
 			
 			
 				StringBuffer sb =new StringBuffer(" select missTest from MissTest missTest ");
 				
 				boolean iscriteria = false;
-				if(megId !=null && megId > 0){  
-					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missTest.megId="+megId+""):(" where missTest.megId="+megId+""));
+				if(mtestId !=null && mtestId > 0){  
+					//criteria.add(Expression.eq("mtestId", mtestId));	
+					 sb.append(iscriteria?(" and missTest.mtestId="+mtestId+""):(" where missTest.mtestId="+mtestId+""));
 					  iscriteria = true;
 				}
 				if(megName !=null && megName.trim().length() > 0){  
-					//criteria.add(Expression.eq("megId", megId));	
+					//criteria.add(Expression.eq("mtestId", mtestId));	
 					sb.append(iscriteria?(" and lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
 				}

@@ -16,6 +16,8 @@ public class ServiceConstant {
 	public static final String MISS_ACCOUNT_SEARCH = "searchMissAccount";
 	public static final String MISS_ACCOUNT_FIND_BY_ID = "findMissAccountById";
 	public static final String MISS_ACCOUNT_UPDATE_LOGO = "updateLogoMissAccount"; 
+	public static final String MISS_ACCOUNT_REFILL = "refillMissAccount";
+	
 	 
 	// MISS_EXAM_GROUP
 	public static final String MISS_EXAM_GROUP_SAVE = "saveMissExamGroup";
@@ -93,6 +95,14 @@ public class ServiceConstant {
 	public static final String MISS_SERIES_MAP_SEARCH = "searchMissSeriesMap";
 	public static final String MISS_SERIES_MAP_FIND_BY_ID = "findMissSeriesMapById"; 
 	
+	
+	// MISS_SERIES_ATTACH
+	public static final String MISS_SERIES_ATTACH_SAVE = "saveMissSeriesAttach";
+	public static final String MISS_SERIES_ATTACH_UPDATE = "updateMissSeriesAttach";
+	public static final String MISS_SERIES_ATTACH_DELETE = "deleteMissSeriesAttach";
+	public static final String MISS_SERIES_ATTACH_SEARCH = "searchMissSeriesAttach";
+//	public static final String MISS_SERIES_ATTACH_FIND_BY_ID = "findMissSeriesAttachById"; 
+	
 	// MISS_SERIES
 	public static final String MISS_SERIES_SAVE = "saveMissSery";
 	public static final String MISS_SERIES_UPDATE = "updateMissSery";
@@ -128,7 +138,8 @@ public class ServiceConstant {
 	public static final String MISS_TEST_RESULT_UPDATE = "updateMissTestResult";
 	public static final String MISS_TEST_RESULT_DELETE = "deleteMissTestResult";
 	public static final String MISS_TEST_RESULT_SEARCH = "searchMissTestResult";
-	public static final String MISS_TEST_RESULT_FIND_BY_ID = "findMissTestResultById"; 
+	public static final String MISS_TEST_RESULT_FIND_BY_ID = "findMissTestResultById";
+	public static final String MISS_TEST_RESULT_PROCESS = "processMissTestResult"; 
 	
 	// MISS_TODO
 	public static final String MISS_TODO_SAVE = "saveMissTodo";

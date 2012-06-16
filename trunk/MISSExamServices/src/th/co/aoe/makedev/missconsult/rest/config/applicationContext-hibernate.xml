@@ -112,7 +112,12 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissContact</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissManual</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach</value>
 				<!--  -->
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationCalcuation</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationCode</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationMessage</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate</value>
 			</list>
    		</property>
    		<!-- 
@@ -265,4 +270,8 @@
 	<bean id="missManualService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissManual">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
+	<bean id="missSeriesAttachService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeriesAttach">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	
 </beans>

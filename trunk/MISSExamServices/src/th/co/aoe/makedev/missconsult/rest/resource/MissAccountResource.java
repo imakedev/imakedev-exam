@@ -69,6 +69,9 @@ public class MissAccountResource extends BaseResource {
 								th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
 								xntcCalendarReturn.setPagging(null);
+								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
+								//missAccountSeriesMapList.add(e)
+								xntcCalendarReturn.setMissAccountSeriesMapList(missAccountSeriesMapList);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
@@ -85,12 +88,25 @@ public class MissAccountResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_UPDATE)){
 							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missAccountService.updateMissAccount(bpsTerm,xbpsTerm.getSection());
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_REFILL)){
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount ntcCalendarReturn=missAccountService.refill(xbpsTerm.getMaId(),xbpsTerm.getRefill());
+							VResultMessage vresultMessage = new VResultMessage();
+							List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
+							th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+							BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+							xntcCalendarReturn.setPagging(null);
+							xntcCalendars.add(xntcCalendarReturn);
+							vresultMessage.setResultListObj(xntcCalendars);
+							return getRepresentation(entity, vresultMessage, xstream);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_UPDATE_LOGO)){
 							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missAccountService.updateMissAccountLogo(bpsTerm,xbpsTerm.getSection());
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_DELETE)){
 							int updateRecord=missAccountService.deleteMissAccount(bpsTerm);
@@ -196,13 +212,22 @@ public class MissAccountResource extends BaseResource {
 		}
 		return xntcCalendars;
 	} 
-	private void returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissAccount xbpsTerm,int updateRecord){
+/*	private void returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissAccount xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
 		xbpsTerm.setUpdateRecord(updateRecord);
 		xbpsTerms.add(xbpsTerm);
 		vresultMessage.setResultListObj(xbpsTerms);
 		export(entity, vresultMessage, xstream);
+	}*/
+	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissAccount xbpsTerm,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
+		xbpsTerm.setUpdateRecord(updateRecord);
+		xbpsTerms.add(xbpsTerm);
+		vresultMessage.setResultListObj(xbpsTerms);
+		//export(entity, vresultMessage, xstream);	
+		return getRepresentation(entity, vresultMessage, xstream);
 	}
  
 	public MissAccountService getMissAccountService() {

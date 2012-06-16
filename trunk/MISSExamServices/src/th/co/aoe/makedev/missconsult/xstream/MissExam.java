@@ -39,6 +39,10 @@ public class MissExam extends VServiceXML implements Serializable {
 	
 	private String questionCountEmpty;
 	private String choiceCountEmpty;
+	
+	private String totalQuestion;
+	
+	
 
     public MissExam() {
     }
@@ -145,6 +149,14 @@ public class MissExam extends VServiceXML implements Serializable {
 
 	public void setChoiceCountEmpty(String choiceCountEmpty) {
 		this.choiceCountEmpty = choiceCountEmpty;
+	}
+
+	public String getTotalQuestion() {
+		return totalQuestion;
+	}
+
+	public void setTotalQuestion(String totalQuestion) {
+		this.totalQuestion = totalQuestion;
 	}
 	
 	/*public Set<MissQuestion> getMissQuestions() {

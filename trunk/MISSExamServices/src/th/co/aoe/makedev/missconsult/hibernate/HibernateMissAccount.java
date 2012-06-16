@@ -262,7 +262,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maContactFax", transientInstance.getMaContactFax());
 			query.setParameter("maContactEmail", transientInstance.getMaContactEmail());*/
 			return query.executeUpdate();
-		}else if(section.equals("3")||section.equals("8")  ){
+		}else if(section.equals("4")||section.equals("9")  ){
 			query=session.createQuery("update MissAccount missAccount " +
 					" set missAccount.maCustomizePassMessage =:maCustomizePassMessage ," +
 					"  missAccount.maCustomizeRejectMessage =:maCustomizeRejectMessage , " +
@@ -304,13 +304,93 @@ int result = query.executeUpdate();*/
 			query.setParameter("maCustomizeLogoHotlink", transientInstance.getMaCustomizeLogoHotlink());
 			return query.executeUpdate();
 	}
-	
+	@Override
+	public MissAccount refill(Long maId,Long refill) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		MissAccount missAccount = null;
+		Query query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
+		query.setParameter("maId", maId);
+		Long refill_add=0l;
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missAccount=(MissAccount)obj;
+		}
+		if(missAccount!=null){
+			Long total=missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l;
+			logger.debug(" total===>"+total);
+			logger.debug(" refill===>"+refill);
+			refill_add=total+refill;
+			logger.debug(" refill_add===>"+refill_add);
+			
+			query=session.createQuery("update MissAccount missAccount " +
+					" set missAccount.maTotalUnit =:maTotalUnit" +
+					" where missAccount.maId ="+maId);
+			query.setParameter("maTotalUnit", refill_add);
+			query.executeUpdate();
+			missAccount.setMaTotalUnit(refill_add);
+		} 
+		return missAccount;
+	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int deleteMissAccount(MissAccount persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@Override
+	public List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> listMissAccountSeriesMapByMaId(Long maId)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xmissAccountSeriesMapList=null;
+		try { 
+			StringBuffer sb =new StringBuffer(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId="+maId);
+			Query query=session.createQuery(sb.toString());
+			//query.setParameter("maId", maId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> missAccountSeriesMapList = query.list();
+			if(missAccountSeriesMapList!=null && missAccountSeriesMapList.size()>0){
+				   xmissAccountSeriesMapList=new 
+						 ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missAccountSeriesMapList.size());
+				for (th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMapList) {
+					th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap xmissAccountSeriesMap =new 
+							th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
+					xmissAccountSeriesMap.setMaId(maId);
+					xmissAccountSeriesMap.setMsId(missAccountSeriesMap.getId().getMsId());
+					xmissAccountSeriesMap.setMasmAvailable(missAccountSeriesMap.getMasmAvailable());
+					xmissAccountSeriesMap.setMasmExpire(missAccountSeriesMap.getMasmExpire());
+					xmissAccountSeriesMap.setMasmOrderUnit(missAccountSeriesMap.getMasmOrderUnit());
+					xmissAccountSeriesMap.setMasmStatus(missAccountSeriesMap.getMasmStatus());
+					
+					 query=session.createQuery("select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId="+missAccountSeriesMap.getId().getMsId().intValue());
+					 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> missSeriesMapList = query.list();
+					 query =session.createQuery("select missSery from MissSery missSery where missSery.msId="+missAccountSeriesMap.getId().getMsId().intValue());
+					 Object obj=query.uniqueResult();
+					 if(obj!=null){
+						 th.co.aoe.makedev.missconsult.hibernate.bean.MissSery missSery =(th.co.aoe.makedev.missconsult.hibernate.bean.MissSery)obj;
+						 xmissAccountSeriesMap.setSeryName(missSery.getMsSeriesName());
+						 xmissAccountSeriesMap.setSeryUnit(missSery.getMsUnitCost().toString());
+					 }
+					 StringBuffer groupStr=new StringBuffer("");
+					 for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : missSeriesMapList) {
+						 query =session.createQuery("select missExam from MissExam missExam where missExam.meId="+missSeriesMap.getId().getMeId().intValue());
+						 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> missExamList = query.list();
+						 if(missExamList!=null && missExamList.size()>0){
+							 groupStr.append(missExamList.get(0).getMissExamGroup().getMegName()+" ");
+						 }
+					}
+					 xmissAccountSeriesMap.setGroupStr(groupStr.toString());
+					 xmissAccountSeriesMapList.add(xmissAccountSeriesMap);
+				}
+			}
+			return xmissAccountSeriesMapList;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	 
 
 }

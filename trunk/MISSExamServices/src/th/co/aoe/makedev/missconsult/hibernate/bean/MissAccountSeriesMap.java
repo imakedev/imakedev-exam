@@ -31,6 +31,10 @@ public class MissAccountSeriesMap implements Serializable {
 
 	@Column(name="MASM_STATUS")
 	private String masmStatus;
+	
+	@Column(name="MASM_AVAILABLE")
+	private String masmAvailable;
+	
 
 	//bi-directional many-to-one association to MissAccount
     @ManyToOne
@@ -91,6 +95,14 @@ public class MissAccountSeriesMap implements Serializable {
 
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
+	}
+
+	public String getMasmAvailable() {
+		return masmAvailable;
+	}
+
+	public void setMasmAvailable(String masmAvailable) {
+		this.masmAvailable = masmAvailable;
 	}
 	
 }

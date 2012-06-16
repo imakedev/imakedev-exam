@@ -38,8 +38,9 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		// TODO Auto-generated method stub
 		MissManual missManual = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
-		query.setParameter("mmId", mmId);
+	//	Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
+		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.missSery.msId=:msId");
+		query.setParameter("msId", mmId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missManual=(MissManual)obj;
@@ -193,7 +194,39 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	public int updateMissManual(MissManual transientInstance,String section)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		
+		MissManual missManual = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		
+		Query query=session.createQuery(" select missManual from MissManual missManual " +
+				" where missManual.missSery.msId=:msId ");
+		query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		List list=query.list();
+		logger.debug(" attach size="+list.size());
+		if(list.size()>0){
+			 missManual=(MissManual)list.get(0);
+			 missManual.setMmFileName(transientInstance.getMmFileName());
+			 missManual.setMmHotlink(transientInstance.getMmHotlink());
+			 missManual.setMmPath(transientInstance.getMmPath());
+			/* missManual.setMatRef(Long.parseLong(id));
+			 missManual.setMatModule(module);*/
+		//	BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);					
+			return update(session, missManual);
+		}else{
+			Long returnId  = null;
+			try{
+				Object obj = session.save(transientInstance);
+			
+				if(obj!=null){
+					returnId =(Long) obj;
+				}
+			} finally {
+					if (session != null) {
+						session = null;
+					} 
+			}
+			return returnId.intValue(); 
+		}
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
