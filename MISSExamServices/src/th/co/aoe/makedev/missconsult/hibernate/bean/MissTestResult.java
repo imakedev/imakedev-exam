@@ -2,6 +2,7 @@ package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -27,20 +30,27 @@ public class MissTestResult implements Serializable {
 	@Column(name="MTR_ID")
 	private Long mtrId;
 
-	@Column(name="MTEST_ID")
-	private Long mtestId;
+	@Column(name="ME_ID")
+	private Long meId;
 
-	@Column(name="MTR_CODE")
-	private String mtrCode;
+	@Column(name="MS_ID")
+	private Long msId;
 
-	@Column(name="MTR_RESPONSE_STATUS")
-	private String mtrResponseStatus;
+	@Column(name="MTR_END_TIME")
+	private Timestamp mtrEndTime;
 
-	@Column(name="MTR_RESULT")
-	private String mtrResult;
+	@Column(name="MTR_RESULT_CODE")
+	private String mtrResultCode;
 
+	@Column(name="MTR_START_TIME")
+	private Timestamp mtrStartTime;
+
+	@Column(name="MTR_STATUS")
+	private String mtrStatus;
+
+    @Temporal( TemporalType.DATE)
 	@Column(name="MTR_TEST_DATE")
-	private Timestamp mtrTestDate;
+	private Date mtrTestDate;
 
 	//bi-directional many-to-one association to MissCandidate
     @ManyToOne
@@ -58,43 +68,59 @@ public class MissTestResult implements Serializable {
 		this.mtrId = mtrId;
 	}
 
-	public Long getMtestId() {
-		return this.mtestId;
+	public Long getMeId() {
+		return this.meId;
 	}
 
-	public void setMtestId(Long mtestId) {
-		this.mtestId = mtestId;
+	public void setMeId(Long meId) {
+		this.meId = meId;
 	}
 
-	public String getMtrCode() {
-		return this.mtrCode;
+	public Long getMsId() {
+		return this.msId;
 	}
 
-	public void setMtrCode(String mtrCode) {
-		this.mtrCode = mtrCode;
+	public void setMsId(Long msId) {
+		this.msId = msId;
 	}
 
-	public String getMtrResponseStatus() {
-		return this.mtrResponseStatus;
+	public Timestamp getMtrEndTime() {
+		return this.mtrEndTime;
 	}
 
-	public void setMtrResponseStatus(String mtrResponseStatus) {
-		this.mtrResponseStatus = mtrResponseStatus;
+	public void setMtrEndTime(Timestamp mtrEndTime) {
+		this.mtrEndTime = mtrEndTime;
 	}
 
-	public String getMtrResult() {
-		return this.mtrResult;
+	public String getMtrResultCode() {
+		return this.mtrResultCode;
 	}
 
-	public void setMtrResult(String mtrResult) {
-		this.mtrResult = mtrResult;
+	public void setMtrResultCode(String mtrResultCode) {
+		this.mtrResultCode = mtrResultCode;
 	}
 
-	public Timestamp getMtrTestDate() {
+	public Timestamp getMtrStartTime() {
+		return this.mtrStartTime;
+	}
+
+	public void setMtrStartTime(Timestamp mtrStartTime) {
+		this.mtrStartTime = mtrStartTime;
+	}
+
+	public String getMtrStatus() {
+		return this.mtrStatus;
+	}
+
+	public void setMtrStatus(String mtrStatus) {
+		this.mtrStatus = mtrStatus;
+	}
+
+	public Date getMtrTestDate() {
 		return this.mtrTestDate;
 	}
 
-	public void setMtrTestDate(Timestamp mtrTestDate) {
+	public void setMtrTestDate(Date mtrTestDate) {
 		this.mtrTestDate = mtrTestDate;
 	}
 

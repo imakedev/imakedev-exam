@@ -3,10 +3,8 @@ package th.co.aoe.makedev.missconsult.hibernate.bean;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,47 +19,111 @@ import javax.persistence.Table;
 public class MissEvaluationTemplate implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="MET_ID")
-	private Long metId;
+	@EmbeddedId
+	private MissEvaluationTemplatePK id;
 
-	@Column(name="MET_NAME")
-	private String metName;
+	@Column(name="AXIS_1")
+	private Long axis1;
 
-	@Column(name="MET_XSLT_FILE")
-	private String metXsltFile;
+	@Column(name="AXIS_2")
+	private Long axis2;
+
+	@Column(name="AXIS_3")
+	private Long axis3;
+
+	@Column(name="AXIS_4")
+	private Long axis4;
+
+	@Column(name="AXIS_5")
+	private Long axis5;
+
+	@Column(name="AXIS_6")
+	private Long axis6;
+
+	@Column(name="AXIS_7")
+	private Long axis7;
+
+	@Column(name="AXIS_8")
+	private Long axis8;
 
 	//bi-directional many-to-one association to MissExam
     @ManyToOne
-	@JoinColumn(name="ME_ID")
+	@JoinColumn(name="ME_ID",insertable=false,updatable=false)
 	private MissExam missExam;
 
     public MissEvaluationTemplate() {
     }
 
-	public Long getMetId() {
-		return this.metId;
+	public MissEvaluationTemplatePK getId() {
+		return this.id;
 	}
 
-	public void setMetId(Long metId) {
-		this.metId = metId;
+	public void setId(MissEvaluationTemplatePK id) {
+		this.id = id;
+	}
+	
+	public Long getAxis1() {
+		return this.axis1;
 	}
 
-	public String getMetName() {
-		return this.metName;
+	public void setAxis1(Long axis1) {
+		this.axis1 = axis1;
 	}
 
-	public void setMetName(String metName) {
-		this.metName = metName;
+	public Long getAxis2() {
+		return this.axis2;
 	}
 
-	public String getMetXsltFile() {
-		return this.metXsltFile;
+	public void setAxis2(Long axis2) {
+		this.axis2 = axis2;
 	}
 
-	public void setMetXsltFile(String metXsltFile) {
-		this.metXsltFile = metXsltFile;
+	public Long getAxis3() {
+		return this.axis3;
+	}
+
+	public void setAxis3(Long axis3) {
+		this.axis3 = axis3;
+	}
+
+	public Long getAxis4() {
+		return this.axis4;
+	}
+
+	public void setAxis4(Long axis4) {
+		this.axis4 = axis4;
+	}
+
+	public Long getAxis5() {
+		return this.axis5;
+	}
+
+	public void setAxis5(Long axis5) {
+		this.axis5 = axis5;
+	}
+
+	public Long getAxis6() {
+		return this.axis6;
+	}
+
+	public void setAxis6(Long axis6) {
+		this.axis6 = axis6;
+	}
+
+	public Long getAxis7() {
+		return this.axis7;
+	}
+
+	public void setAxis7(Long axis7) {
+		this.axis7 = axis7;
+	}
+
+	public Long getAxis8() {
+		return this.axis8;
+	}
+
+	public void setAxis8(Long axis8) {
+		this.axis8 = axis8;
 	}
 
 	public MissExam getMissExam() {

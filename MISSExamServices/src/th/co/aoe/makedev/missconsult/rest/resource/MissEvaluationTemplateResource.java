@@ -61,7 +61,7 @@ public class MissEvaluationTemplateResource extends BaseResource {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_FIND_BY_ID)){
+						/*if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_FIND_BY_ID)){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate ntcCalendarReturn = missEvaluationTemplateService.findMissEvaluationTemplateById(bpsTerm.getMetId());
 						logger.debug(" object return ="+ntcCalendarReturn);
 							if(ntcCalendarReturn!=null){
@@ -74,7 +74,7 @@ public class MissEvaluationTemplateResource extends BaseResource {
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
-						} 
+						} */
 						if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missEvaluationTemplateService.saveMissEvaluationTemplate(bpsTerm)).intValue();
@@ -133,97 +133,7 @@ public class MissEvaluationTemplateResource extends BaseResource {
 	
 	}
 
-	@Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("into Post MissEvaluationTemplateResource");
-		InputStream in = null;
-		try {
-			in = entity.getStream();
-			xstream.processAnnotations(th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate xbpsTerm = new th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate) ntcCalendarObj;
-				if (xbpsTerm != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate();
-					BeanUtils.copyProperties(bpsTerm, xbpsTerm); 
-					
-					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
-						logger.debug(" BPS servicename = "
-								+ xbpsTerm.getServiceName());
-						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate ntcCalendarReturn = missEvaluationTemplateService.findMissEvaluationTemplateById(bpsTerm.getMetId());
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate();
-								BeanUtils.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
-								
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
-								export(entity, vresultMessage, xstream);
-							}
-						} 
-						if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missEvaluationTemplateService.saveMissEvaluationTemplate(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missEvaluationTemplateService.updateMissEvaluationTemplate(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_DELETE)){
-							int updateRecord=missEvaluationTemplateService.deleteMissEvaluationTemplate(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_EVALUATION_TEMPLATE_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missEvaluationTemplateService.searchMissEvaluationTemplate(bpsTerm,page);
-							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate>) result
-										.get(0);
-								String faqs_size = (String) result.get(1);
-//								 
-								VResultMessage vresultMessage = new VResultMessage();
-
-								List<th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate>();
-								if (faqs_size != null && !faqs_size.equals(""))
-									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissEvaluationTemplateObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-							}
-						}
-						
-					} else {
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			logger.debug(" into Finally Call");
-			try {
-				if (in != null)
-					in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub

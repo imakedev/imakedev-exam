@@ -2,6 +2,7 @@ package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -85,6 +86,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maType;
 
 	private Long maUsedUnit;
+	
+	private Long maAvailableUnit;
 
 	private String maUsername;
 
@@ -103,6 +106,7 @@ public class MissAccount extends VServiceXML implements Serializable {
 	@XStreamAlias("maRegisterDate")
 	private Timestamp maRegisterDate;
 	
+	private List<MissAccountSeriesMap> missAccountSeriesMapList;
 /*	private String maContactPictureHotlink;*/
 //	private String maSex;
 
@@ -113,9 +117,20 @@ public class MissAccount extends VServiceXML implements Serializable {
 		private String[] meIds;
 	//	private String testStr;
 		private String maIds;
+		private Long refill;
 	//private String maContactBirthDateStr;
     public MissAccount() {
+    	
     }
+
+	public List<MissAccountSeriesMap> getMissAccountSeriesMapList() {
+		return missAccountSeriesMapList;
+	}
+
+	public void setMissAccountSeriesMapList(
+			List<MissAccountSeriesMap> missAccountSeriesMapList) {
+		this.missAccountSeriesMapList = missAccountSeriesMapList;
+	}
 
 	public Long getMaId() {
 		return this.maId;
@@ -381,6 +396,22 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaCustomizeHeadColor(String maCustomizeHeadColor) {
 		this.maCustomizeHeadColor = maCustomizeHeadColor;
+	}
+
+	public Long getMaAvailableUnit() {
+		return maAvailableUnit;
+	}
+
+	public void setMaAvailableUnit(Long maAvailableUnit) {
+		this.maAvailableUnit = maAvailableUnit;
+	}
+
+	public Long getRefill() {
+		return refill;
+	}
+
+	public void setRefill(Long refill) {
+		this.refill = refill;
 	}
 	
 }

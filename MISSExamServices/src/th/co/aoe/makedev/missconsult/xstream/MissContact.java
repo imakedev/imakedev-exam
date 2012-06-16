@@ -17,7 +17,8 @@ public class MissContact  extends VServiceXML implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long mcontactId;
-
+	private String mcontactUsername;
+	private String mcontactPassword;
 	private Date mcontactBirthDate;
 
 	private String mcontactDepartment;
@@ -201,6 +202,22 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	public Long getMcontactRef() {
 		return this.mcontactRef;
+	}
+
+	public String getMcontactUsername() {
+		return mcontactUsername;
+	}
+
+	public void setMcontactUsername(String mcontactUsername) {
+		this.mcontactUsername = mcontactUsername;
+	}
+
+	public String getMcontactPassword() {
+		return mcontactPassword;
+	}
+
+	public void setMcontactPassword(String mcontactPassword) {
+		this.mcontactPassword = mcontactPassword;
 	}
 
 	public void setMcontactRef(Long mcontactRef) {

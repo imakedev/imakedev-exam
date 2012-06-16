@@ -31,13 +31,13 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissTestResult findMissTestResultById(Long megId)
+	public MissTestResult findMissTestResultById(Long mtrId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		MissTestResult missTestResult = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.megId=:megId");
-		query.setParameter("megId", megId);
+		Query query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.mtrId=:mtrId");
+		query.setParameter("mtrId", mtrId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missTestResult=(MissTestResult)obj;
@@ -153,6 +153,11 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+	}
+	@Override
+	public int processMissTestResult() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	 
 

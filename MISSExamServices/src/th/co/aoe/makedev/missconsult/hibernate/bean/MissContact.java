@@ -26,7 +26,13 @@ public class MissContact implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="MCONTACT_ID")
 	private Long mcontactId;
-
+	
+	@Column(name="MCONTACT_USERNAME")
+	private String mcontactUsername;
+	
+	@Column(name="MCONTACT_PASSWORD")
+	private String mcontactPassword;
+	
     @Temporal( TemporalType.DATE)
 	@Column(name="MCONTACT_BIRTH_DATE")
 	private Date mcontactBirthDate;
@@ -226,6 +232,22 @@ public class MissContact implements Serializable {
 
 	public void setMcontactType(String mcontactType) {
 		this.mcontactType = mcontactType;
+	}
+
+	public String getMcontactUsername() {
+		return mcontactUsername;
+	}
+
+	public void setMcontactUsername(String mcontactUsername) {
+		this.mcontactUsername = mcontactUsername;
+	}
+
+	public String getMcontactPassword() {
+		return mcontactPassword;
+	}
+
+	public void setMcontactPassword(String mcontactPassword) {
+		this.mcontactPassword = mcontactPassword;
 	}
 
 }

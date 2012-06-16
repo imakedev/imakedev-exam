@@ -190,7 +190,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 		MissExamType missType=new MissExamType();
 		missType.setMetId(1l);
 	
-			/*transientInstance.setMissExamType(missType);
+			transientInstance.setMissExamType(missType);
 			Long returnId  = null;
 			try{
 				Object objCopy = session.save(transientInstance);				
@@ -217,7 +217,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 					if (session != null) {
 						session = null;
 					} 
-			}*/
+			}
 			
 			
 	return updateCount;

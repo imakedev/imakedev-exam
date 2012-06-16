@@ -26,6 +26,10 @@ public class MissSery extends VServiceXML implements Serializable {
 	private String testStr;
 	private String msIds;
 
+	private String manualFile;
+	private String manualFileHotlink;
+	private String templateFile;
+	private String templateFileHotlink;
 
     public MissSery() {
     }
@@ -76,6 +80,38 @@ public class MissSery extends VServiceXML implements Serializable {
 
 	public void setMsIds(String msIds) {
 		this.msIds = msIds;
+	}
+
+	public String getManualFile() {
+		return manualFile;
+	}
+
+	public void setManualFile(String manualFile) {
+		this.manualFile = manualFile;
+	}
+
+	public String getTemplateFile() {
+		return templateFile;
+	}
+
+	public void setTemplateFile(String templateFile) {
+		this.templateFile = templateFile;
+	}
+
+	public String getManualFileHotlink() {
+		return manualFileHotlink;
+	}
+
+	public void setManualFileHotlink(String manualFileHotlink) {
+		this.manualFileHotlink = manualFileHotlink;
+	}
+
+	public String getTemplateFileHotlink() {
+		return templateFileHotlink;
+	}
+
+	public void setTemplateFileHotlink(String templateFileHotlink) {
+		this.templateFileHotlink = templateFileHotlink;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {

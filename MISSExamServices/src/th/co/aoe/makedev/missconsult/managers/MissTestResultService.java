@@ -14,4 +14,5 @@ public interface MissTestResultService {
 		public MissTestResult findMissTestResultById(Long mtrId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissTestResult(MissTestResult persistentInstance,	Pagging pagging)throws DataAccessException  ;
+		public int processMissTestResult()throws DataAccessException  ;
 }

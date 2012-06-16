@@ -27,12 +27,17 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 
 	private String masmStatus;
 
+	private String masmAvailable;
+	
 	@XStreamAlias("missAccount")
 	private MissAccount missAccount;
 
 	@XStreamAlias("missSery")
 	private MissSery missSery;
-
+	
+	private String groupStr;
+	private String seryName;
+	private String seryUnit;
     public MissAccountSeriesMap() {
     }
 
@@ -100,6 +105,54 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
+	}
+
+
+
+	public String getMasmAvailable() {
+		return masmAvailable;
+	}
+
+
+
+	public void setMasmAvailable(String masmAvailable) {
+		this.masmAvailable = masmAvailable;
+	}
+
+
+
+	public String getGroupStr() {
+		return groupStr;
+	}
+
+
+
+	public String getSeryName() {
+		return seryName;
+	}
+
+
+
+	public void setSeryName(String seryName) {
+		this.seryName = seryName;
+	}
+
+
+
+	public void setGroupStr(String groupStr) {
+		this.groupStr = groupStr;
+	}
+
+
+
+	public String getSeryUnit() {
+		return seryUnit;
+	}
+
+
+
+	public void setSeryUnit(String seryUnit) {
+		this.seryUnit = seryUnit;
 	}
 	
 }

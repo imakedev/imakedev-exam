@@ -2,6 +2,7 @@ package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -13,22 +14,25 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("MissTestResult")
-public class MissTestResult extends VServiceXML implements Serializable {
+public class MissTestResult  extends VServiceXML implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long mtrId;
 
-	private Long mtestId;
+	private Long meId;
 
-	private String mtrCode;
+	private Long msId;
 
-	private String mtrResponseStatus;
+	private Timestamp mtrEndTime;
 
-	private String mtrResult;
+	private String mtrResultCode;
 
-	@XStreamAlias("mtrTestDate")
-	private Timestamp mtrTestDate;
+	private Timestamp mtrStartTime;
 
+	private String mtrStatus;
+
+	private Date mtrTestDate;
+	
 	@XStreamAlias("missCandidate")
 	private MissCandidate missCandidate;
 
@@ -43,43 +47,59 @@ public class MissTestResult extends VServiceXML implements Serializable {
 		this.mtrId = mtrId;
 	}
 
-	public Long getMtestId() {
-		return this.mtestId;
+	public Long getMeId() {
+		return this.meId;
 	}
 
-	public void setMtestId(Long mtestId) {
-		this.mtestId = mtestId;
+	public void setMeId(Long meId) {
+		this.meId = meId;
 	}
 
-	public String getMtrCode() {
-		return this.mtrCode;
+	public Long getMsId() {
+		return this.msId;
 	}
 
-	public void setMtrCode(String mtrCode) {
-		this.mtrCode = mtrCode;
+	public void setMsId(Long msId) {
+		this.msId = msId;
 	}
 
-	public String getMtrResponseStatus() {
-		return this.mtrResponseStatus;
+	public Timestamp getMtrEndTime() {
+		return this.mtrEndTime;
 	}
 
-	public void setMtrResponseStatus(String mtrResponseStatus) {
-		this.mtrResponseStatus = mtrResponseStatus;
+	public void setMtrEndTime(Timestamp mtrEndTime) {
+		this.mtrEndTime = mtrEndTime;
 	}
 
-	public String getMtrResult() {
-		return this.mtrResult;
+	public String getMtrResultCode() {
+		return this.mtrResultCode;
 	}
 
-	public void setMtrResult(String mtrResult) {
-		this.mtrResult = mtrResult;
+	public void setMtrResultCode(String mtrResultCode) {
+		this.mtrResultCode = mtrResultCode;
 	}
 
-	public Timestamp getMtrTestDate() {
+	public Timestamp getMtrStartTime() {
+		return this.mtrStartTime;
+	}
+
+	public void setMtrStartTime(Timestamp mtrStartTime) {
+		this.mtrStartTime = mtrStartTime;
+	}
+
+	public String getMtrStatus() {
+		return this.mtrStatus;
+	}
+
+	public void setMtrStatus(String mtrStatus) {
+		this.mtrStatus = mtrStatus;
+	}
+
+	public Date getMtrTestDate() {
 		return this.mtrTestDate;
 	}
 
-	public void setMtrTestDate(Timestamp mtrTestDate) {
+	public void setMtrTestDate(Date mtrTestDate) {
 		this.mtrTestDate = mtrTestDate;
 	}
 
