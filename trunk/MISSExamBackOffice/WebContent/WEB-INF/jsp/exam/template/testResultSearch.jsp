@@ -10,6 +10,20 @@
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Series<font color="red">*</font>:</td>
+	    					 <td align="left" width="17%">    					
+	    					 <select id="mcaSeries">
+	    					      <option value="-1">-- Select Series --</option>
+	    					      
+	    					      <%--
+	    					      <c:forEach items="${missSeries}" var="missSery" varStatus="loop"> 
+	    					 			 <option value="<c:out value="${missSery.msId}"></c:out>"><c:out value="${missSery.msSeriesName}"></c:out></option>
+	    					 	 </c:forEach>
+	    					 	  --%>
+	    					    </select>	
+	    					 </td>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Username:</td>
 	    					 <td align="left" width="17%">    					
 	    					<input type="text">	

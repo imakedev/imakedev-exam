@@ -38,6 +38,7 @@ $(document).ready(function() {
 			}		
 		},
 		onComplete : function(file, response){
+			var obj = jQuery.parseJSON(response); //obj.hotlink
 			//alert(response);
 			/* response=response.replace("<pre>","");
 			response=response.replace("</pre>","");
@@ -49,7 +50,7 @@ $(document).ready(function() {
 				var text = selection.getNative();//alert(text) // ""
 				var ranges = selection.getRanges();// alert(ranges) //[obj]
 				var type = selection.getType();// alert(type) // 2 
-			var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt=\"\" src=\"getfile/questionImg/${testForm.missQuestion.mqId}/'+response+'\" />');
+			var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt=\"\" src=\"getfile/questionImg/${testForm.missQuestion.mqId}/'+obj.hotlink+'\" />');
 				 ranges[0].deleteContents();
 				 ranges[0].insertNode(newElement);
 				 ranges[0].selectNodeContents( newElement ); 

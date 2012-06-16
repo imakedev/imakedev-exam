@@ -1,6 +1,11 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <script>
+var megEmptyIdG;;
+var meNameG; 
+var questionCountEmptyG;
+var choiceCountEmptyG;
+
 $(document).ready(function() {
 	renderPageSelect();
 	/*  $("input[id=msSeriesName],[id=msUnitCost]").keypress(function(event) {
@@ -10,6 +15,10 @@ $(document).ready(function() {
 	 	   }
 	 });
 	  */
+	megEmptyIdG= $( "#megEmptyId" );
+	meNameG= $( "#meName" );
+	questionCountEmptyG= $( "#questionCountEmpty" );
+	choiceCountEmptyG= $( "#choiceCountEmpty" );
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -54,7 +63,7 @@ function loadDialogcreateEmpty(){
 			modal: true,
 			buttons: {
 				"Yes": function() { 	
-					$("#dialog-createEmpty").dialog( "close" );
+					$(this).dialog( "close" );
 					doCreateEmpty();
 				},
 				"No": function() {
@@ -67,17 +76,18 @@ function loadDialogcreateEmpty(){
 function doCreateEmpty(){
 	//alert($("#megEmptyId").val()+",meName="+$("#meName").val()+",questionCountEmpty="+$("#questionCountEmpty").val()+",choiceCountEmpty="+$("#choiceCountEmpty").val())
 	//alert(document.getElementById("meName").value)
-	/* var data= { 
-		megEmptyId: $("#megEmptyId").val(),
-		meName: $("#meName").val(),
-		questionCountEmpty: $("#questionCountEmpty").val(),
-		choiceCountEmpty: $("#choiceCountEmpty").val()
+	 var data= { 
+		megEmptyId:megEmptyIdG.val(),
+		meName: meNameG.val(),
+		questionCountEmpty: questionCountEmptyG.val(),
+		choiceCountEmpty: choiceCountEmptyG.val()
 		};
-	
+//	alert();	
 	 $.post("test/createEmpty", data,  function(data) {
 			
 		    appendContent(data);
-		}); */
+		}); 
+	// $( "#dialog-createEmpty" ).dialog( "close" );
 	/*  $.post("test/createEmpty", 
 			  $("#testFormEmpty").serialize(), function(data) {
 		    appendContent(data);

@@ -4,7 +4,7 @@
 $(document).ready(function() {
 	$('#tabs').tabs();
 	$('#tabs').bind('tabsselect', function(event, ui) {
-		if(ui.index==2){
+		if(ui.index==1){
 			 // /exam/{meId}/questions
 			// alert("test/exam/"+$("#_meId").val()+"/questions");
 			 if($("#_maId").val().length>0){
@@ -19,9 +19,29 @@ $(document).ready(function() {
 						// $("#tabs-3").html(data);
 					  }
 				});
+			  $("#tabs-4").html("");
 			 }
-		   }else{
+		   }else if(ui.index==3){
+				 // /exam/{meId}/questions
+				// alert("test/exam/"+$("#_meId").val()+"/questions");
+				 if($("#_maId").val().length>0){
+				  $.ajax({
+					  type: "get",
+					  url: "company/item/unit/"+$("#_maId").val(),
+					  cache: false
+					 // data: { name: "John", location: "Boston" }
+					}).done(function( data ) {
+						if(data!=null){
+							appendContentWithId(data,"tabs-4");
+							// $("#tabs-3").html(data);
+						  }
+					});
+				  $("#tabs-3").html("");
+				 }
+				
+			   }else{
 			   $("#tabs-3").html("");
+			   $("#tabs-4").html("");
 		   }
 		});
 	/* $("#maContactBirthDate" ).datepicker({
@@ -30,9 +50,9 @@ $(document).ready(function() {
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
 	}); */
-	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):4;
+	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):5;
 	//$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
-	$('#tabs').tabs('select', _company_section-4);
+	$('#tabs').tabs('select', _company_section-5);
 	
 	new AjaxUpload('company_upload', {
 		 action: 'upload/companyLogo/${companyForm.missAccount.maId}',
@@ -52,7 +72,8 @@ $(document).ready(function() {
 			}		
 		},
 		onComplete : function(file, response){
-			$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+response);
+			var obj = jQuery.parseJSON(response); //obj.hotlink			
+			$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
 	 
@@ -69,6 +90,7 @@ function doAction(action,formID,sectionID){
 		    appendContent(data);
 		});
   }
+ 
 </script>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -78,14 +100,14 @@ function doAction(action,formID,sectionID){
    <input type="hidden" id="_company_section" name="_company_section" value="${companyForm.missAccount.section}"/>
             <div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Account</a></li>
+			<!-- 	<li><a href="#tabs-1">Account</a></li> -->
 				<li><a href="#tabs-2">Profile</a></li>
 				<li><a href="#tabs-3">Contact</a></li>
+				<li><a href="#tabs-3_1">Role</a></li>
 				<li><a href="#tabs-4">Unit</a></li>
 				<li><a href="#tabs-5">Customize</a></li>
 			</ul>
-			<div id="tabs-1">
-			<!-- <form class="well"> -->
+			<%-- <div id="tabs-1">
 			<form:form  id="companyForm_account" name="companyForm_account" modelAttribute="companyForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Account</strong></h6> 
@@ -93,32 +115,26 @@ function doAction(action,formID,sectionID){
    		 			<tr>
     					<td width="25%">&nbsp;</td>
     					<td width="50%" colspan="2">Username&nbsp;&nbsp;:&nbsp;&nbsp;
-    					<!-- <input type="text" value="Moooo1" > -->
     					<form:input path="missAccount.maUsername"/>
     					</td>
-    					 
     					<td width="25%">&nbsp;</td>
     				</tr>
     				<tr>
     					<td width="25%">&nbsp;</td>
     					<td width="50%" colspan="2">Password&nbsp;&nbsp;:&nbsp;&nbsp;
-    					<!-- <input type="password" value="1111"/> -->
     						<form:password path="missAccount.maPassword"/>
     					</td>
-    					  					
     					<td width="25%">&nbsp;</td>
     				</tr>
     				<tr>
     					<td colspan="4" align="center">
-    					<!-- <input type="button" class="btn" value="Save"/> -->
     					</td> 
     				</tr>
-    				 
     			</table>    
     			</fieldset>			
 			</form:form>
 			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_account','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
-			    </div>
+			    </div> --%>
 			<div id="tabs-2">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_profile" name="companyForm_profile" modelAttribute="companyForm" cssClass="well"  method="post" action="">
@@ -256,39 +272,38 @@ function doAction(action,formID,sectionID){
 			<div id="tabs-3">
     		
     			</div>
+    			<div id="tabs-3_1">
+    		
+    			</div>
+    			
 			<div id="tabs-4">
 			<!-- <form class="well"> -->
-			<form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
+			<%-- <form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Unit</strong></h6> 
 			   <div>
 			    <table border="0" width="100%" style="font-size: 12px">
-			    	<!-- <tr>
-    					<td width="100%" colspan="3"><strong>Company Unit</strong></td>
-    				</tr> -->
    		 			<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Total Unit: 100</td>
+    					<td width="60%">Total Unit: ${companyForm.missAccount.maTotalUnit}</td>
+    					 <td width="20%">&nbsp;</td> 
+    				</tr>
+    				<tr valign="top">
+    					<td width="20%">&nbsp;</td>
+    					<td width="60%">Used Unit: ${companyForm.missAccount.maUsedUnit}</td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Used Unit: 100</td>
+    					<td width="60%">Available Unit: ${companyForm.missAccount.maAvailableUnit}</td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Available Unit: 100</td>
+    					<td width="60%">Re-fill <form:input path="refill"/><input type="button" value="Re-fill" onclick="doRefill()"></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
-    				<tr valign="top">
-    					<td width="20%">&nbsp;</td>
-    					<td width="60%">Re-fill <input type="text" /> <input type="button" value="Re-fill"></td>
-    					 <td width="20%">&nbsp;</td>
-    				</tr>
-    				
     			</table>
-    			 
     			</div>
     			 </fieldset>
     			 </form:form>
@@ -304,32 +319,18 @@ function doAction(action,formID,sectionID){
           		</tr>
         	</thead>
         	<tbody>
-          	<tr>
-            	<td>Series1</td>
-            	<td>Personality Aptitude</td>
-            	<td>2</td>
-            	<td>20</td>
+        	 <c:forEach items="${companyForm.missAccount.missAccountSeriesMapList}" var="missAccountSeriesMap" varStatus="loop"> 
+        	 	<tr>
+            	<td>${missAccountSeriesMap.seryName}</td>
+            	<td>${missAccountSeriesMap.groupStr}</td>
+            	<td>${missAccountSeriesMap.seryUnit}</td>
+            	<td>${missAccountSeriesMap.masmAvailable}</td>
             	<td><input type="text"></td> 
           	</tr>
-          	<tr>
-            	<td>Series2</td>
-            	<td>Motivation Management</td>
-            	<td>2</td>
-            	<td>20</td>
-            	<td><input type="text"></td> 
-          	</tr>
-          	<tr>
-            	<td>Survey</td>
-            	<td>Survey</td>
-            	<td>2</td>
-            	<td>30</td>
-            	<td><input type="text"></td> 
-          	</tr>
+        	 </c:forEach>
     				</table>
     				</div>
-			
-			<!-- <div align="center"><input type="button" class="btn" value="Order"/></div> -->
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','7')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div>
+			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','7')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div> --%>
 			</div>
 			<div id="tabs-5">
 			<!-- <form class="well"> -->
@@ -453,7 +454,7 @@ function doAction(action,formID,sectionID){
     			</fieldset>
 			</form:form>
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
-			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_customize','8')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_customize','9')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			
 		</div>

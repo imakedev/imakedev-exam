@@ -46,7 +46,12 @@ $(document).ready(function() {
 			response=response.replace("</pre>","");
 			  var obj = jQuery.parseJSON(response);
 			  alert(obj); */
-			$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+response);
+			  var obj = jQuery.parseJSON(response); //obj.hotlink
+			$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+obj.hotlink);
+			$("#mcontactPictureFileName").val(obj.filename);
+			$("#mcontactPictureHotlink").val(obj.hotlink);
+			$("#mcontactPicturePath").val(obj.filepath);
+			 
 			//$('#example2 .text').text('Uploaded ' + file);		
 			//alert(file);
 			//alert(response)
@@ -113,18 +118,21 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 			<!--  <form class="well"> -->
 			  <input type="hidden" value="${contactForm.missContact.mcontactRef}" id="maId"/>
 			  <input type="hidden" value="${contactForm.missContact.mcontactType}" id="mcontactType"/>
+			  
+			  <form:hidden path="missContact.mcontactPictureFileName" id="mcontactPictureFileName" />
+			  <form:hidden path="missContact.mcontactPictureHotlink" id="mcontactPictureHotlink" />
+			  <form:hidden path="missContact.mcontactPicturePath" id="mcontactPicturePath" />
+			   
 			  <fieldset style="font-family: sans-serif;">   
 			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Contct Point Profile</strong></td>
     				</tr>
-   		 			<tr valign="top">
-    					<td width="25%">First-Lastname:</td>
+    				<tr valign="top">
+    					<td width="25%">Username:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactName" id="mcontactName" cssStyle="width:120px"/>
-    					&nbsp;
-    					<form:input path="missContact.mcontactLastname" id="mcontactLastname" cssStyle="width:120px"/>
+    					<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
     					</td>
     					 <td width="25%"  align="right"  rowspan="8">
     					 <c:if test="${not empty contactForm.missContact.mcontactPictureHotlink}"> 
@@ -137,6 +145,38 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					 <div align="right"><input  id="contact_upload" type="button" value="Upload"></div>
     					 <div align="right">(128px × 128px)</div>
     					 </td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%">Password:</td>
+    					<td width="50%" colspan="2">
+    					<input type="password" value="${contactForm.missContact.mcontactPassword}" id="mcontactPassword" name="missContact.mcontactPassword">
+    					<%-- <form:password path="missContact.mcontactPassword" id="mcontactPassword"/> --%>
+    					</td>
+    				</tr>
+   		 			<tr valign="top">
+    					<td width="25%">First-Lastname:</td>
+    					<td width="50%" colspan="2">
+    					<form:select path="missContact.mcontactTitleType" cssStyle="width:70px">
+    						<form:option value="0">นาย</form:option>
+    						<form:option value="1">นาง</form:option>
+    						<form:option value="2">นางสาว</form:option>
+    						<form:option value="3">ระบุ 	&rarr;</form:option>
+    					</form:select>
+    					<form:input path="missContact.mcontactName" id="mcontactName" cssStyle="width:120px"/>
+    					&nbsp;
+    					<form:input path="missContact.mcontactLastname" id="mcontactLastname" cssStyle="width:120px"/>
+    					</td>
+    					<%--  <td width="25%"  align="right"  rowspan="8">
+    					 <c:if test="${not empty contactForm.missContact.mcontactPictureHotlink}"> 
+						 	<img id="contact_photo" width="128" height="128" src="getfile/contactImg/${contactForm.missContact.mcontactId}/${contactForm.missContact.mcontactPictureHotlink}" />
+						 </c:if>
+						 <c:if test="${empty contactForm.missContact.mcontactPictureHotlink}"> 
+						 	<img id="contact_photo" width="128"  height="128" src="<c:url value='/resources/images/photo.png'/>" />
+						 </c:if>
+    					 
+    					 <div align="right"><input  id="contact_upload" type="button" value="Upload"></div>
+    					 <div align="right">(128px × 128px)</div>
+    					 </td> --%>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Gender:</td>
@@ -174,7 +214,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<form:input path="missContact.mcontactFax" id="mcontactFax"/>
     					</td>
     				</tr>
-    			<c:if test="${contactForm.missContact.mcontactType=='1'}">
+    		<%-- 	<c:if test="${contactForm.missContact.mcontactType=='1'}"> --%>
     				<tr valign="top">
     					<td width="25%">Email 1:</td>
     					<td width="50%" colspan="2">
@@ -189,7 +229,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					</td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
-    			</c:if>
+    			<%-- </c:if>
     			<c:if test="${contactForm.missContact.mcontactType!='1'}">
     				<tr valign="top">
     					<td width="25%">Email:</td>
@@ -199,7 +239,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="25%">&nbsp;</td>
     				</tr>
     				
-    			</c:if>
+    			</c:if> --%>
     			</table>
     			</pre>
     			</fieldset>
