@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import th.co.aoe.makedev.missconsult.exam.form.SeriesForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -119,6 +121,16 @@ public class SeriesController
             seriesForm = new SeriesForm();
         seriesForm.setMode("edit");
         MissSery missSery = missExamService.findMissSeryById(Long.valueOf(Long.parseLong(msId)));
+        MissManual missManual=missExamService.findMissManualById(Long.parseLong(msId));
+        if(missManual!=null){
+        	missSery.setManualFile(missManual.getMmFileName());
+        	missSery.setManualFileHotlink(missManual.getMmHotlink());
+        }
+        MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch("template",Long.parseLong(msId),null,null);
+        if(missSeriesAttach!=null){
+        	missSery.setTemplateFile(missSeriesAttach.getMsatFileName());
+        	missSery.setTemplateFileHotlink(missSeriesAttach.getMsatHotlink());
+        }
         seriesForm.setMissSery(missSery);
         MissSeriesMap missSeriesMap = new MissSeriesMap();
         missSeriesMap.setMsId(Long.valueOf(Long.parseLong(msId)));

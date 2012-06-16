@@ -28,6 +28,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
@@ -880,7 +881,13 @@ public class MissExamServiceImpl extends PostCommon
 	    return missContact.getUpdateRecord().intValue();
 	}
 
-	
+	@Override
+	public MissAccount refillMissAccount(MissAccount missAccount) {
+		// TODO Auto-generated method stub
+		missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_REFILL);
+	    VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
+        return (MissAccount)resultMessage.getResultListObj().get(0);
+	}
     public static void main(String args[])
     {
         MissExamServiceImpl main = new MissExamServiceImpl();
@@ -1129,7 +1136,36 @@ public class MissExamServiceImpl extends PostCommon
         System.out.println((new StringBuilder("xx")).append(vresult.getResultListObj()).toString());
     }
 
+	@Override
+	public int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach) {
+		// TODO Auto-generated method stub
+		  missSeriesAttach.setServiceName(ServiceConstant.MISS_SERIES_ATTACH_UPDATE);
+	        VResultMessage resultMessage = postMessage(missSeriesAttach, missSeriesAttach.getClass().getName(), "missSeriesAttach", true);
+	        missSeriesAttach = (MissSeriesAttach)resultMessage.getResultListObj().get(0);
+	        return missSeriesAttach.getUpdateRecord().intValue();
+	}
 
-	
+	@Override
+	public int deleteMissSeriesAttach(MissSeriesAttach missSeriesAttach) {
+		// TODO Auto-generated method stub
+		  missSeriesAttach.setServiceName(ServiceConstant.MISS_SERIES_ATTACH_DELETE);
+	        VResultMessage resultMessage = postMessage(missSeriesAttach, missSeriesAttach.getClass().getName(), "missSeriesAttach", true);
+	        missSeriesAttach = (MissSeriesAttach)resultMessage.getResultListObj().get(0);
+	        return missSeriesAttach.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissSeriesAttach findMissSeriesAttachSearch(String matModule,
+			Long matRef1, Long matRef2, String hotlink) {
+		// TODO Auto-generated method stub
+		    MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
+	        missSeriesAttach.setMsatModule(matModule);
+	        missSeriesAttach.setMsatHotlink(hotlink);
+	        missSeriesAttach.setMsatRef1(matRef1);
+	        missSeriesAttach.setMsatRef2(matRef2);
+	        missSeriesAttach.setServiceName(ServiceConstant.MISS_SERIES_ATTACH_SEARCH);
+	        VResultMessage resultMessage = postMessage(missSeriesAttach, missSeriesAttach.getClass().getName(), "missSeriesAttach", true);
+	        return (MissSeriesAttach)resultMessage.getResultListObj().get(0);
+	}
 
 }
