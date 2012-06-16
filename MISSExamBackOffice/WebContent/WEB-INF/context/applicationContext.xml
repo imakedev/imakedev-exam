@@ -15,10 +15,16 @@
 
 	<!-- Activates various annotations to be detected in bean classes -->
 	<context:annotation-config />
-
+<!--
+		- The controllers are autodetected POJOs labeled with the @Controller annotation.
+		<context:component-scan base-package="x.y.z.service, x.y.z.controller" /> 
+		or 
+		<context:component-scan base-package="x.y.z.service"/>
+		<context:component-scan base-package="x.y.z.controller"/> 
+	-->
 	<!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
 	 For example @Controller and @Service. Make sure to set the correct base-package -->
-	<context:component-scan base-package="org.krams" />
+	<context:component-scan base-package="th.co.aoe.makedev.missconsult.exam.web"/>
 
 	<!-- Configures the annotation-driven Spring MVC Controller programming model.
 	Note that, with Spring 3.0, this tag works in Servlet MVC only!  -->
@@ -26,13 +32,34 @@
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" /> 
  	
+ 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> 
+ 		<property name="webBindingInitializer">
+			<bean class="th.co.aoe.makedev.missconsult.exam.web.MissConsultBindingInitializer"/>
+		</property>
+	</bean>
+
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.servlet.PageNotFound">pageNotFound</prop>
+				<prop key="org.springframework.dao.DataAccessException">dataAccessFailure</prop>
+				<prop key="org.springframework.transaction.TransactionException">dataAccessFailure</prop>
+			</props>
+		</property>
+	</bean>
  	<!-- Imports logging configuration -->
-	<import resource="trace-context.xml"/>
+	<!-- <import resource="trace-context.xml"/> -->
 	
 	<!-- Imports datasource configuration -->
-	<import resource="spring-data.xml"/>
+	<!-- <import resource="spring-data.xml"/> -->
 	
 	<bean id="deployProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"
-        p:location="/WEB-INF/spring.properties" />
+        p:location="/WEB-INF/missconsult.properties" />
         
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages"/>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<!-- one of the properties available; the maximum file size in bytes -->
+    	<property name="maxUploadSize" value="104857600"/>
+	</bean>
 </beans>
