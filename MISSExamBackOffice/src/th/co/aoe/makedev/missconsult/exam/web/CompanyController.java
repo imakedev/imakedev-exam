@@ -132,12 +132,49 @@ public class CompanyController
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
      /*   if(missAccount != null && missAccount.getMaContactBirthDate() != null)
             companyForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));*/
+       Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
+       Long totalUnit= missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l; 
+       missAccount.setMaAvailableUnit(totalUnit - usedUnit);
         companyForm.setMissAccount(missAccount);
         model.addAttribute("companyForm", companyForm);
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
-
+    @RequestMapping(value={"/item/unit/{maId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getItemUnit(@PathVariable String maId, Model model)
+    {
+        CompanyForm companyForm = null;
+        if(model.containsAttribute("companyForm"))
+            companyForm = (CompanyForm)model.asMap().get("companyForm");
+        else
+            companyForm = new CompanyForm();
+        companyForm.setMode("edit");
+        MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
+     /*   if(missAccount != null && missAccount.getMaContactBirthDate() != null)
+            companyForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));*/
+       Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
+       Long totalUnit= missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l; 
+       missAccount.setMaAvailableUnit(totalUnit - usedUnit);
+        companyForm.setMissAccount(missAccount);
+        model.addAttribute("companyForm", companyForm);
+        model.addAttribute("display", "display: none");
+        return "exam/template/unitListSection";
+    }
+    @RequestMapping(value={"/item/refile/{maId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    public MissAccount doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
+    {
+        MissAccount missAccount = new MissAccount();
+        missAccount.setMaId(Long.valueOf(maId));
+        missAccount.setRefill(Long.valueOf(amount));
+       
+        missAccount = missExamService.refillMissAccount(missAccount);
+      Long maTotalUnit=missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l;
+      Long maUsedUnit=missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
+      missAccount.setMaAvailableUnit(maTotalUnit-maUsedUnit);
+      //  missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
+        return missAccount;
+    }
     @RequestMapping(value={"/new"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getNewForm(Model model)
     {

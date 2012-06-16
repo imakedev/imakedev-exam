@@ -130,7 +130,15 @@ public class CompanyForm extends CommonForm
         this.maContactBirthDate = maContactBirthDate;
     }
 
-    private static final long serialVersionUID = 1L;
+    public String getRefill() {
+		return refill;
+	}
+
+	public void setRefill(String refill) {
+		this.refill = refill;
+	}
+
+	private static final long serialVersionUID = 1L;
     private MissAccount missAccount;
     private String maContactBirthDate;
     private String maRegisterType;
@@ -142,4 +150,6 @@ public class CompanyForm extends CommonForm
     private String maName;
     private String missExam_selectbox[];
     private String maIdArray;
+    
+    private String refill;
 }

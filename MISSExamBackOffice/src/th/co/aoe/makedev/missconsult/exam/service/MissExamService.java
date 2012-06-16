@@ -19,6 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
@@ -51,6 +52,8 @@ public interface MissExamService
     public abstract MissAccount findMissAccountById(Long long1);
 
     public abstract VResultMessage searchMissAccount(MissAccount missaccount);
+    
+    public abstract MissAccount refillMissAccount(MissAccount missaccount);
 
     public abstract Long saveMissAccountSeriesMap(MissAccountSeriesMap missaccountseriesmap);
 
@@ -235,4 +238,10 @@ public interface MissExamService
     public abstract MissManual findMissManualById(Long long1);
 
     public abstract VResultMessage searchMissManual(MissManual missManual);
+    
+    public abstract int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+
+    public abstract int deleteMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+
+    public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
 }

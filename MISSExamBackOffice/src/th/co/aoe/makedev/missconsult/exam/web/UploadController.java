@@ -30,7 +30,12 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissFile;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissSery;
+
+import com.google.gson.Gson;
 @Controller
 public class UploadController {	
 	private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -49,10 +54,13 @@ public class UploadController {
     }
     @RequestMapping(value={"/upload/{module}/{id}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
-    public String doUpload(HttpServletRequest request, Model model, @PathVariable String module,@PathVariable String id)
+    public  String doUpload(HttpServletRequest request, Model model, @PathVariable String module,@PathVariable String id)
     {
     	 String ndPathFileGen=null;
+    	 MissFile missFile =new MissFile();
     	 String hotLink="";
+    	 String s="";
+    	 String pathFolder="";
        /* logger.debug("xxxxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("test"));
         Map m =request.getParameterMap();
         for (Iterator iterator = m.keySet().iterator(); iterator.hasNext();) {
@@ -67,7 +75,7 @@ public class UploadController {
         MultipartFile multipart = multipartRequest.getFile("userfile");
 		if(multipart!=null){
                 String contentType = multipart.getContentType();
-                String s = multipart.getOriginalFilename();
+                 s = multipart.getOriginalFilename();
                 logger.debug("fileName ===> "+s);
                 logger.debug("contentType ===> "+contentType);
                 s = FilenameUtils.getName(s);
@@ -75,7 +83,7 @@ public class UploadController {
                 String monthStr= "";
 				  String yearStr="";
 				  
-				  String pathFolder="";
+				  //String pathFolder="";
                 FileOutputStream fos = null;
 					try {  
 						byte []filesize = multipart.getBytes(); 
@@ -163,6 +171,9 @@ public class UploadController {
 					  missExamService.updateMissContactPhoto(missContact);
 				}else if(module.equals("attachManual")){
 					 MissManual missManual = new MissManual();
+					 MissSery missSery=new MissSery();
+					 missSery.setMsId(Long.parseLong(id));
+					 missManual.setMissSery(missSery);
 					 missManual.setMmId(Long.parseLong(id));
 					 missManual.setMmFileName(s);
 					 missManual.setMmHotlink(hotLink);
@@ -177,10 +188,34 @@ public class UploadController {
 					 missAttach.setMatRef(Long.parseLong(id));
 					 missAttach.setMatModule(module);
 					 missExamService.updateMissAttach(missAttach);
+				}else if(module.equals("template")){
+					 MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
+					 missSeriesAttach.setMsatRef1(Long.parseLong(id));
+					 missSeriesAttach.setMsatModule(module);
+					 missSeriesAttach.setMsatHotlink(hotLink);
+					 missSeriesAttach.setMsatPath(pathFolder);
+					 missSeriesAttach.setMsatFileName(s);
+					 missExamService.updateMissSeriesAttach(missSeriesAttach);
+				}else if(module.equals("evaluation")){
+					String[] ids=id.split("_");
+					 MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
+					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[0])); //msId
+					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[1])); //meId
+					 missSeriesAttach.setMsatModule(module);
+					 missSeriesAttach.setMsatHotlink(hotLink);
+					 missSeriesAttach.setMsatPath(pathFolder);
+					 missSeriesAttach.setMsatFileName(s);
+					 missExamService.updateMissSeriesAttach(missSeriesAttach);
 				}
 		}
        // return missCandidate;
-		 return hotLink;
+		missFile.setHotlink(hotLink);
+		missFile.setFilename(s);
+		missFile.setFilepath(pathFolder);
+		Gson gson=new Gson();
+		gson.toJson(missFile );
+	//	return hotLink;
+		 return gson.toJson(missFile );
     }
     @RequestMapping(value={"/getfile/{module}/{id}/{hotlink}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable String module
@@ -191,7 +226,10 @@ public class UploadController {
 		//System.out.println(" adminview size="+adminview);
     	
 		//	String filePath = "/usr/local/Work/TestDownload/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc.jpg";
+    	 
+    	                                          
     	String  content_type= "image/jpeg";
+    	String  content_disposition= "";
     	String path= bundle.getString(module+"Path");
     	String ndPathFileGen="";
     	//path+"/"+ndPathFileGen
@@ -211,17 +249,31 @@ public class UploadController {
 			MissManual missManual=missExamService.findMissManualById(Long.parseLong(id));
 			 ndPathFileGen=path+missManual.getMmPath();
 			 content_type="application/pdf";
+			 content_disposition="attachment; filename="+missManual.getMmFileName();
 		}else if(module.equals("questionImg")){
 			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id),hotlink);
 			 ndPathFileGen=path+missAttach.getMatPath();
+		}else if(module.equals("template")){ // jasper
+			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(id),null,hotlink);
+			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
+			 content_type="";
+			 content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
+		}else if(module.equals("evaluation")){
+			String[] ids=id.split("_");
+			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
+			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
+			 content_type="application/vnd.ms-excel";
+			 content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
 		}
     	//String filePath =  bundle.getString(module+"Path")+hotlink+".jpg";
 		//	String fileName = null;
 			  
 			//	String filenameStr ="เทสfชาติชาย.jpg";// fileName.trim().replaceAll(" ","_");
 				//response.setHeader("Content-Type", "application/octet-stream; charset=tis620");
-				response.setHeader("Content-Type", "image/jpeg");
-				
+    	    if(content_type.length()>0)
+				response.setHeader("Content-Type", content_type);
+			if(content_disposition.length()>0)
+				response.addHeader("Content-Disposition",content_disposition);
 			//	logger.debug(" filenameStr==>"+filenameStr);
 			/*	response.addHeader("content-disposition",
 				        "attachment; filename=\"\u0e01เทสfชาติชาย.jpg\"");*/
