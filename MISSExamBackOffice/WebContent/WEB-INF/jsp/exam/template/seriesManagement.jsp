@@ -14,8 +14,95 @@ $(document).ready(function() {
 		   //$("#"+indexStr+"missExam_mapping").val(missSeriesMapArray[i]);
 	   }
    }
+   new AjaxUpload('template_file', {
+       action: 'upload/template/${seriesForm.missSery.msId}',
+		onSubmit : function(file , ext){
+           // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jasper)$/.test(ext)){
+				/* Setting data */
+				this.setData({
+				});					
+			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
+			//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+			} else {					
+				// extension is not allowed
+				alert('Error: only jasper are allowed') ;
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			//alert(file+","+response);
+			var obj = jQuery.parseJSON(response);
+			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
+			$('#template_file_attached').attr('onclick',path_file);
+			$('#template_file_attached').html(file);
+			$('#template_file_attached').attr('style','cursor: pointer;');	
+		}		
+	});
+   new AjaxUpload('manual_file', {
+       action: 'upload/attachManual/${seriesForm.missSery.msId}',
+		onSubmit : function(file , ext){
+           // Allow only images. You should add security check on the server-side.
+			if (ext && /^(pdf|PDF)$/.test(ext)){
+				/* Setting data */
+				this.setData({
+				});					
+			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
+			//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+			} else {					
+				// extension is not allowed
+				alert('Error: only pdf are allowed') ;
+				// cancel upload
+				return false;				
+			}		
+		},
+		onComplete : function(file, response){
+			var obj = jQuery.parseJSON(response);
+			//alert(file+","+obj.hotlink);
+			var path_file='getFileAttached("getfile/attachManual/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
+			$('#manual_file_attached').attr('onclick',path_file);
+			$('#manual_file_attached').html(file);
+			$('#manual_file_attached').attr('style','cursor: pointer;');
+			//$('#example2 .text').text('Uploaded ' + file);		
+		}		
+	});
    
+   for(var i=1;i<=5;i++){ 
+	   new AjaxUpload('evaluation_file_'+i, {
+	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+			onSubmit : function(file , ext){
+	           // Allow only images. You should add security check on the server-side.
+				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+					/* Setting data */
+					this.setData({
+					});					
+				//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
+				//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+				} else {					
+					// extension is not allowed
+					alert('Error: only xls are allowed') ;
+					// cancel upload
+					return false;				
+				}		
+			},
+			onComplete : function(file, response){
+				var obj = jQuery.parseJSON(response);
+				/* var path_file='getFileAttached("getfile/attachManual/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
+				$('#manual_file_attached').attr('onclick',path_file);
+				$('#manual_file_attached').html(file);
+				$('#manual_file_attached').attr('style','cursor: pointer;'); */
+			}		
+		});
+   }
 });
+function getFileAttached(path){
+	// alert(path)
+    var div = document.createElement("div");
+    document.body.appendChild(div);
+    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + path + "'></iframe>";
+	  // Create an IFRAME.
+}
 function doAction(action,mode,id){
 	$("#mode").val(mode);
 	if(mode!='search'){
@@ -79,28 +166,23 @@ function doAction(action,mode,id){
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Evaluation File:</td>
-	    					 <td align="left" width="17%">    					
-	    						<input type="file"/>
-	    						 
+	    					 <td align="left" width="17%">Template File:</td>
+	    					 <td align="left" width="51%" colspan="3">    					
+		    					<a class="btn" id="template_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
+		    					<span id="template_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/template/${seriesForm.missSery.msId}/${seriesForm.missSery.templateFileHotlink}')">
+	    				${seriesForm.missSery.templateFile}</span>
 	    					 </td>
-	    					<td align="left" width="17%"></td>
-	    					<td align="left" width="17%">
-	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
-	    				 
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Manual File:</td>
-	    					 <td align="left" width="17%">    					
-	    						<input type="file"/>
-	    						 
+	    					 <td align="left" width="51%" colspan="3">    			
+	    						<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
+	    						<span id="manual_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/attachManual/${seriesForm.missSery.msId}/${seriesForm.missSery.manualFileHotlink}')">
+	    						${seriesForm.missSery.manualFile}</span>
 	    					 </td>
-	    					<td align="left" width="17%"></td>
-	    					<td align="left" width="17%">
-	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
-	    				 
+	    					 
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					</table> 
@@ -130,8 +212,9 @@ function doAction(action,mode,id){
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="1_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>
-	    		</td>
+	    		</select>&nbsp;     					
+	    						<a class="btn" id="evaluation_file_1"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> (Evaluation File)
+	    						</td>
           	</tr>
           	<tr>
             	<td>2</td>
@@ -142,7 +225,8 @@ function doAction(action,mode,id){
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="2_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>
+	    		</select>&nbsp;     					
+	    						<a class="btn" id="evaluation_file_2"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> (Evaluation File)
 	    		</td>
           	</tr>
           	<tr>
@@ -154,7 +238,8 @@ function doAction(action,mode,id){
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="3_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>
+	    		</select>&nbsp;     					
+	    						<a class="btn" id="evaluation_file_3"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> (Evaluation File)
 	    		</td>
           	</tr>
           	<tr>
@@ -166,7 +251,8 @@ function doAction(action,mode,id){
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="4_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>
+	    		</select>&nbsp;     					
+	    						<a class="btn" id="evaluation_file_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> (Evaluation File)
 	    		</td>
           	</tr>
           	<tr>
@@ -178,7 +264,8 @@ function doAction(action,mode,id){
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="5_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>
+	    		</select>&nbsp;     					
+	    						<a class="btn" id="evaluation_file_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> (Evaluation File)
 	    		</td>
           	</tr>
           	

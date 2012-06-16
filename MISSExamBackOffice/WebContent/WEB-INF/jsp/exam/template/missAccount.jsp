@@ -4,7 +4,7 @@
 $(document).ready(function() {
 	$('#tabs').tabs();
 	$('#tabs').bind('tabsselect', function(event, ui) {
-		if(ui.index==2){
+		if(ui.index==1){
 			 // /exam/{meId}/questions
 			// alert("test/exam/"+$("#_meId").val()+"/questions");
 			 if($("#_maId").val().length>0){
@@ -31,7 +31,7 @@ $(document).ready(function() {
 		dateFormat:"dd/mm/yy" 
 	});
 	//alert(parseInt($("#_miss_section").val()))
-	$('#tabs').tabs('select', parseInt($("#_miss_section").val()));
+	$('#tabs').tabs('select', parseInt($("#_miss_section").val())-1);
 	
 	//$tabs.tabs('select', 2);
 	/* var $tabs = $('#example').tabs();
@@ -60,7 +60,9 @@ $(document).ready(function() {
 			}		
 		},
 		onComplete : function(file, response){
-			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+response);
+			//alert(response)
+			var obj = jQuery.parseJSON(response); //obj.hotlink
+			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
 });
@@ -101,17 +103,17 @@ function doAction(action,formID,sectionID){
  <input type="hidden" id="_maId" name="_maId" value="${missForm.missAccount.maId}"/>
 <div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Account</a></li>
+				<!-- <li><a href="#tabs-1">Account</a></li> -->
 				<li><a href="#tabs-2">Profile</a></li>
 				<li><a href="#tabs-3">Contact</a></li>
+				<li><a href="#tabs-3_1">Role</a></li>
 				<li><a href="#tabs-4">Customize</a></li>
 			</ul>
-			<div id="tabs-1">
-			<!-- <form class="well"> -->
+			<%-- <div id="tabs-1">
 			 <form:form  id="missForm_account" name="missForm_account" modelAttribute="missForm" cssClass="well"  method="post" action="">
 			
 			  <fieldset style="font-family: sans-serif;">   
-	     <h6><strong>MC - Account</strong></h6> 
+	     <h6><strong>MissConsult - Account</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
    		 			<tr>
     					<td width="25%">&nbsp;</td>
@@ -122,39 +124,24 @@ function doAction(action,formID,sectionID){
     				<tr>
     					<td width="25%">&nbsp;</td>
     					<td width="50%" colspan="2">Password&nbsp;&nbsp;:&nbsp;&nbsp;
-    					<!-- <input type="password"/> -->
     					<form:password path="missAccount.maPassword" id="maPassword"/></td>
-    					  					
     					<td width="25%">&nbsp;</td>
     				</tr>
     				<tr>
     					<td colspan="4" align="center">
-    					<%--
-    					<input type="button" class="btn" value="Save"/>
-    					<div align="center"><a class="btn">&nbsp;Save</a></div>
-    					 --%>
-    				
     					</td> 
-    					
     				</tr>
-    				 
     			</table>    
     			</fieldset>			
 			</form:form>
 				<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_account','0')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
-			<%--
-			<div align="center"><button type="button">Save</button></div>
-			<div align="center"><a class="btn">&nbsp;Save</a></div>
-			<div align="center"><a class="btn btn-primary"><i class="icon-plus-sign icon-white"></i>&nbsp;<span style="color: white;">Save</span></a></div>
-			<div align="center"><a class="btn btn-success"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;">Save</span></a></div>
-			 --%>
-			    </div>
+			  </div> --%>
 			<div id="tabs-2">
 		 <form:form  id="missForm_profile" name="missForm_profile" modelAttribute="missForm" method="post" cssClass="well" action="">
 		<!--   <form class="well"> -->
 		
 			  <fieldset style="font-family: sans-serif;">  
-			    <h6><strong>MC - Profile</strong></h6>  
+			    <h6><strong>MissConsult - Profile</strong></h6>  
 			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
 	   
 			    <table border="0" width="100%" style="font-size: 12px">
@@ -298,11 +285,17 @@ function doAction(action,formID,sectionID){
     			
 			
 			</div>
+			<div id="tabs-3_1">
+			<!-- <form class="well"> -->
+    			
+			
+			</div>
+			
 			<div id="tabs-4">
 				<!-- <form class="well"> -->
 				 <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
-	      <h6><strong>MC - Customize</strong></h6> 
+	      <h6><strong>MissConsult - Customize</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<!-- <tr>
     					<td width="100%" colspan="4"><strong>MCConsult Customize</strong></td>
@@ -408,7 +401,7 @@ function doAction(action,formID,sectionID){
     			</fieldset>
 			</form:form>
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_customize','3')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
+			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_customize','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			
 			</div>
 			

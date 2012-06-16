@@ -31,7 +31,8 @@ $(document).ready(function() {
 		},
 		onComplete : function(file, response){
 			//alert(response)
-			$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+response);
+			var obj = jQuery.parseJSON(response);
+			$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+obj.hotlink);
 			//$('#example2 .text').text('Uploaded ' + file);		
 			//alert(file);
 			//alert(response)
@@ -188,7 +189,7 @@ function doAction(action,formID,sectionID){
     						<form:option value="0">นาย</form:option>
     						<form:option value="1">นาง</form:option>
     						<form:option value="2">นางสาว</form:option>
-    						<form:option value="3">อื่นๆ</form:option>
+    						<form:option value="3">ระบุ 	&rarr;</form:option>
     					</form:select>
     					<!-- <select style="width: 50px" > 
     					<option value="0">นาย</option>
