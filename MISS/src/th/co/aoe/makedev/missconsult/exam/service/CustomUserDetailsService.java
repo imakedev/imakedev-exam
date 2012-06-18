@@ -3,16 +3,18 @@ package th.co.aoe.makedev.missconsult.exam.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import th.co.aoe.makedev.missconsult.exam.domain.MyUser;
+import th.co.aoe.makedev.missconsult.exam.domain.MyUserDetails;
 import th.co.aoe.makedev.missconsult.exam.repository.UserRepository;
 
 /**
@@ -34,20 +36,33 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			th.co.aoe.makedev.missconsult.exam.domain.User domainUser = userRepository.findByUsername(username);
+			//userRepository.
 			
 			boolean enabled = true;
 			boolean accountNonExpired = true;
 			boolean credentialsNonExpired = true;
 			boolean accountNonLocked = true;
-			
-			return new User(
-					domainUser.getUsername(), 
+		
+			/*return new User(
+					//domainUser.getUsername(), 
+					domainUser.getFirstName(),
+					domainUser.getPassword().toLowerCase(),
+					enabled,
+					accountNonExpired,
+					credentialsNonExpired,
+					accountNonLocked,
+					getAuthorities(domainUser.getRole().getRole()));*/
+			MyUserDetails user=new MyUserDetails(domainUser.getUsername(),  
 					domainUser.getPassword().toLowerCase(),
 					enabled,
 					accountNonExpired,
 					credentialsNonExpired,
 					accountNonLocked,
 					getAuthorities(domainUser.getRole().getRole()));
+			MyUser myUser=new MyUser(domainUser.getFirstName()+" "+domainUser.getLastName());
+			user.setMyUser(myUser);
+		return user;
+					
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

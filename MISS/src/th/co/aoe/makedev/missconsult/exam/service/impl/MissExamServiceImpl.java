@@ -1,157 +1,162 @@
 package th.co.aoe.makedev.missconsult.exam.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.List;
-
-import org.apache.commons.codec.binary.Hex;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
-import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
-import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
+import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissTest;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
- 
+
 public class MissExamServiceImpl extends PostCommon implements MissExamService {
-	// MISS_EXAM_GROUP
+
+	public MissCandidate findMissCandidateByName(String name) {
+		MissCandidate missCandidate = new MissCandidate();
+		missCandidate.setMcaUsername(name);
+		missCandidate
+				.setServiceName(ServiceConstant.MISS_CANDIDATE_FIND_BY_NAME);
+		VResultMessage resultMessage = postMessage(missCandidate, missCandidate
+				.getClass().getName(), "missCandidate", true);
+		return (MissCandidate) resultMessage.getResultListObj().get(0);
+	}
+
+	public int getMissExamInfo(MissCandidate missCandidate) {
+		missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_UPDATE);
+		VResultMessage resultMessage = postMessage(missCandidate, missCandidate
+				.getClass().getName(), "missCandidate", true);
+		missCandidate = (MissCandidate) resultMessage.getResultListObj().get(0);
+		return missCandidate.getUpdateRecord().intValue();
+	}
+
 	@Override
-	public Long saveMissExamGroup(MissExamGroup missExamGroup) {
+	public int updateMissCandidate(MissCandidate missCandidate) {
+		// TODO Auto-generated method stub
+		missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_UPDATE);
+		VResultMessage resultMessage = postMessage(missCandidate, missCandidate
+				.getClass().getName(), "missCandidate", true);
+		missCandidate = (MissCandidate) resultMessage.getResultListObj().get(0);
+		return missCandidate.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissExam getMissExamInfo(MissExam missExam) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int updateMissExamGroup(MissExamGroup missExamGroup) {
+	public int saveOrUpdateMissTest(MissTest missTest) {
 		// TODO Auto-generated method stub
-		return 0;
+		missTest.setServiceName(ServiceConstant.MISS_TEST_SAVE);
+		VResultMessage resultMessage = postMessage(missTest, missTest
+				.getClass().getName(), "missTest", true);
+		missTest = (MissTest) resultMessage.getResultListObj().get(0);
+		return missTest.getUpdateRecord().intValue();
 	}
 
 	@Override
-	public int deleteMissExamGroup(MissExamGroup missExamGroup) {
+	public List<MissTest> findMissTest(MissTest missTest) {
 		// TODO Auto-generated method stub
-		return 0;
+		missTest.setServiceName(ServiceConstant.MISS_TEST_FIND_ANSWERED);
+		VResultMessage resultMessage = postMessage(missTest, missTest
+				.getClass().getName(), "missTest", true);
+		List<MissTest> missTests=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missTests=resultMessage.getResultListObj();
+		} 
+		return missTests;
 	}
 
 	@Override
-	public MissExamGroup findMissExamGroupById(Long megId) {
+	public int saveOrUpdateMissTestResult(MissTestResult missTestResult) {
 		// TODO Auto-generated method stub
-		MissExamGroup missExamGroup = new MissExamGroup();
-		missExamGroup.setMegId(megId);
-		missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_FIND_BY_ID);
-		VResultMessage resultMessage = postMessage(missExamGroup,missExamGroup.getClass().getName(),"missExamGroup",true);
-		return (MissExamGroup)resultMessage.getResultListObj().get(0); 
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_SAVE);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
+	}
+
+	public MissAccount findMissAccountById(Long megId) {
+		MissAccount missAccount = new MissAccount();
+		missAccount.setMaId(megId);
+		missAccount.setServiceName("findMissAccountById");
+		VResultMessage resultMessage = postMessage(missAccount, missAccount
+				.getClass().getName(), "missAccount", true);
+		return (MissAccount) resultMessage.getResultListObj().get(0);
+	}
+
+	public MissCandidate findMissCandidateById(Long megId) {
+		MissCandidate missCandidate = new MissCandidate();
+		missCandidate.setMcaId(megId);
+		missCandidate.setServiceName("findMissCandidateById");
+		VResultMessage resultMessage = postMessage(missCandidate, missCandidate
+				.getClass().getName(), "missCandidate", true);
+		return (MissCandidate) resultMessage.getResultListObj().get(0);
 	}
 
 	@Override
-	public List searchMissExamGroup(MissExamGroup missExamGroup, Pagging pagging) {
+	public MissContact findMissContactById(Long long1) {
 		// TODO Auto-generated method stub
+		MissContact missContact = new MissContact();
+		missContact.setMcontactId(long1);
+		missContact.setServiceName(ServiceConstant.MISS_CONTACT_FIND_BY_ID);
+		VResultMessage resultMessage = postMessage(missContact, missContact
+				.getClass().getName(), "missContact", true);
+		return (MissContact) resultMessage.getResultListObj().get(0);
+	}
+
+	@Override
+	public MissManual findMissManualById(Long long1) {
+		// TODO Auto-generated method stub
+		MissManual missManual = new MissManual();
+		missManual.setMmId(long1);
+		missManual.setServiceName(ServiceConstant.MISS_MANUAL_FIND_BY_ID);
+		VResultMessage resultMessage = postMessage(missManual, missManual
+				.getClass().getName(), "missManual", true);
+		if (resultMessage != null && resultMessage.getResultListObj() != null
+				&& resultMessage.getResultListObj().size() > 0)
+			return (MissManual) resultMessage.getResultListObj().get(0);
 		return null;
 	}
-//	private static ResourceBundle bundle;
-	/*static{
-		  //bundle =  ResourceBundle.getBundle( "org/restlet/example/book/restlet/ch8/mailApplication" );
-		//bundle =  ResourceBundle.getBundle( "sendmail" );				
-	}*/
-    // BPS_GROUP
-/*	public int saveBpsGroup(BpsGroup bpsGroup) {
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_SAVE);
-		VResultMessage resultMessage=postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
-		return bpsGroup.getUpdateRecord();
+
+	public MissAttach findMissAttachById(String matModule, Long matRef,
+			String hotlink) {
+		MissAttach missAttach = new MissAttach();
+		missAttach.setMatModule(matModule);
+		missAttach.setMatHotlink(hotlink);
+		missAttach.setMatRef(matRef);
+		missAttach.setServiceName("findMissAttachById");
+		VResultMessage resultMessage = postMessage(missAttach, missAttach
+				.getClass().getName(), "missAttach", true);
+		return (MissAttach) resultMessage.getResultListObj().get(0);
 	}
 
-	public int updateBpsGroup(BpsGroup bpsGroup) {
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_UPDATE);
-		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
-		return bpsGroup.getUpdateRecord();
+	@Override
+	public MissSeriesAttach findMissSeriesAttachSearch(String matModule,
+			Long matRef1, Long matRef2, String hotlink) {
+		// TODO Auto-generated method stub
+		MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
+		missSeriesAttach.setMsatModule(matModule);
+		missSeriesAttach.setMsatHotlink(hotlink);
+		missSeriesAttach.setMsatRef1(matRef1);
+		missSeriesAttach.setMsatRef2(matRef2);
+		missSeriesAttach
+				.setServiceName(ServiceConstant.MISS_SERIES_ATTACH_SEARCH);
+		VResultMessage resultMessage = postMessage(missSeriesAttach,
+				missSeriesAttach.getClass().getName(), "missSeriesAttach", true);
+		if (resultMessage != null && resultMessage.getResultListObj() != null
+				&& resultMessage.getResultListObj().size() > 0)
+			return (MissSeriesAttach) resultMessage.getResultListObj().get(0);
+		else
+			return null;
 	}
 
-	public int deleteBpsGroup(String key) {
-		BpsGroup bpsGroup = new BpsGroup();
-		bpsGroup.setBpgId(Long.parseLong(key));
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_DELETE);
-		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
-		return bpsGroup.getUpdateRecord();
-	}
-
-	public BpsGroup findBpsGroupById(String bpgId) {
-		BpsGroup bpsGroup = new BpsGroup();
-		bpsGroup.setBpgId(new Long(bpgId));
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_FIND_BY_ID);
-		VResultMessage resultMessage = postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-		return (BpsGroup)resultMessage.getResultListObj().get(0);
-
-	}
-
-	public VResultMessage searchBpsGroup(BpsGroup bpsGroup) {
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_SEARCH);
-		return postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-
-	}
-	public int checkDuplicateGroup(String groupName) {
-		BpsGroup bpsGroup = new BpsGroup();
-		bpsGroup.setBpgGroupName(groupName);
-		bpsGroup.setServiceName(ServiceConstant.BPS_GROUP_CHECK_DUPLICATE);
-		VResultMessage resultMessage =postMessage(bpsGroup,bpsGroup.getClass().getName(),"bpsGroups/",true);
-		bpsGroup = (BpsGroup)resultMessage.getResultListObj().get(0);
-		return bpsGroup.getUpdateRecord();
-	}*/
-	public static void main(String[] args) {
-		/*MissExamServiceImpl impl =new MissExamServiceImpl();
-		MissExamGroup missExamGroup=impl.findMissExamGroupById(new Long(1));
-		System.out.println(missExamGroup);*/
-		StandardPasswordEncoder encode =new StandardPasswordEncoder();
-		System.out.println(encode.encode("koala"));
-		System.out.println(encode.matches(encode.encode("koala"), "4efe081594ce25ee4efd9f7067f7f678a347bccf2de201f3adf2a3eb544850b465b4e51cdc3fcdde"));
-		String sessionid="aoe";
-        
-		byte[] defaultBytes = sessionid.getBytes();
-		try{
-			MessageDigest algorithm = MessageDigest.getInstance("MD5");
-			algorithm.reset();
-			algorithm.update(defaultBytes);
-			byte messageDigest[] = algorithm.digest();
-		            
-			StringBuffer hexString = new StringBuffer();
-			for (int i=0;i<messageDigest.length;i++) {
-				hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-			}
-			String foo = messageDigest.toString();
-			System.out.println("sessionid "+sessionid+" md5 version is "+hexString.toString());
-			sessionid=hexString+"";
-		}catch(NoSuchAlgorithmException nsae){
-		            nsae.printStackTrace();
-		}
-	//	Security.addProvider(new BouncyCastleProvider());
-
-		String data = "55";
-
-		MessageDigest mda=null;
-		try {
-			mda = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte [] digesta = mda.digest(data.getBytes());
-
-		MessageDigest mdb=null;
-		try {
-			mdb = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte [] digestb = mdb.digest(data.getBytes());
-
-		System.out.println(MessageDigest.isEqual(digesta, digestb));
-
-		System.out.println(Hex.encodeHex(digesta));
-
-	}
-   
 }
