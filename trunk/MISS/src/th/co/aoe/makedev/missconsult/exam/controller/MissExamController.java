@@ -1,18 +1,30 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.exam.form.MissExamForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissChoice;
+import th.co.aoe.makedev.missconsult.xstream.MissTest;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
 @Controller
-@SessionAttributes( { "missExamForm" })
+@SessionAttributes( { "missExamForm" ,"systemDate"})
 public class MissExamController {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
 	@Autowired
@@ -39,26 +51,178 @@ public class MissExamController {
 	}*/
 	@RequestMapping(value="/exam/info", method = RequestMethod.GET)
     public String getExamInfo(Model model) {
-		logger.debug("testtttttttttt"+missExamService);
-		model.addAttribute("aoe", "chatchai");
-		
-		System.out.println("aoee==>"+missExamService);
+	//	logger.debug(model.asMap().get("missExamForm"));
+		/*MissExamForm missExamForm = null;
+		 if(model.containsAttribute("missExamForm"))
+			 missExamForm = (MissExamForm)model.asMap().get("missExamForm");
+        else
+       	 missExamForm = new MissExamForm();*/
+		MissExamForm missExamForm =  (MissExamForm)model.asMap().get("missExamForm");
+		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
+        return "exam/examInfo";
+    }
+	@RequestMapping(value="/exam/info", method = RequestMethod.POST) 
+    public String postExamInfo(HttpServletRequest request, @ModelAttribute(value="missExamForm") MissExamForm missExamForm, BindingResult result, Model model){
+		logger.debug("get path="+missExamForm.getMissCandidate().getMcaPictureFileName());
+		missExamForm.getMissCandidate().setSection("1");
+		missExamService.updateMissCandidate(missExamForm.getMissCandidate());
+		//examIndex
+		missExamForm.setExamIndex(0);
+		missExamForm.setQuestionIndex(0);
+		model.addAttribute("missExamForm", missExamForm);
+		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
+		logger.debug(model.asMap().get("missExamForm"));
         return "exam/examInfo";
     }
 	@RequestMapping(value="/exam", method = RequestMethod.GET)
-    public String getExam(Model model) {
-		logger.debug("testtttttttttt"+missExamService);
-		model.addAttribute("aoe", "chatchai");
-		System.out.println("aoee==>"+missExamService);
-        return "exam/exam";
+    public String getExam(HttpServletRequest request,Model model) {
+		logger.debug(" request examIndex="+request.getParameter("examIndex"));
+		logger.debug(" request questionIndex="+request.getParameter("questionIndex"));
+		MissExamForm missExamForm = null;
+		 if(model.containsAttribute("missExamForm"))
+			 missExamForm = (MissExamForm)model.asMap().get("missExamForm");
+       else{
+      	 missExamForm = new MissExamForm();
+      	 return "redirect:/";
+       }
+		 // not yet check null
+		 model.addAttribute("missQuestion", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()));
+		 model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().size());
+		 //model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().size());
+		/*// Ok
+		MyUserDetails user=(MyUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//SecurityContextHolder.getContext().getAuthentication().stAuthentication(user);
+		MyUser myUser=user.getMyUser();
+		myUser.setFullName("xx");
+		user.setMyUser(myUser);
+		// Not Ok
+		//SecurityContextHolder.getContext().setAuthentication(SecurityContextHolder.getContext().getAuthentication());
+*/        return "exam/exam";
+    }
+	@RequestMapping(value="/exam/template", method = RequestMethod.GET)
+    public String getExamTemplate(HttpServletRequest request,Model model) {
+		logger.debug("into get Template");
+		int examIndex=request.getParameter("examIndex")!=null?Integer.parseInt(request.getParameter("examIndex")):0;
+		int questionIndex=request.getParameter("questionIndex")!=null?Integer.parseInt(request.getParameter("questionIndex")):0;
+		logger.debug(" request examIndex="+examIndex);
+		logger.debug(" request questionIndex="+questionIndex);
+		MissExamForm missExamForm = null;
+		 if(model.containsAttribute("missExamForm"))
+			 missExamForm = (MissExamForm)model.asMap().get("missExamForm");
+       else
+      	 missExamForm = new MissExamForm();
+		 missExamForm.setExamIndex(examIndex);
+		 missExamForm.setQuestionIndex(questionIndex);
+		 MissTest checkTest= new MissTest();
+			checkTest.setMissExam(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
+			checkTest.setMissQuestion(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()));
+			checkTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
+			checkTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+			List<MissTest> checkTests=missExamService.findMissTest(checkTest);
+			List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+			logger.debug(" checkTests is "+checkTests);
+			logger.debug(" missChoices is "+missChoices);
+			if(missChoices!=null && missChoices.size()>0)
+			for (MissChoice missChoice : missChoices) {
+				logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
+				if(checkTests!=null && checkTests.size()>0)
+				for (MissTest missTest : checkTests) {
+					logger.debug(" missTest "+missTest.getMissChoice().getMcId());
+					missChoice.setChoiceSelect(null);
+					if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
+						logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
+						missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+					}
+				}
+			}
+		 model.addAttribute("missQuestion", missExamForm.getMissCandidate().getMissSery().getMissExams().get(examIndex).getMissQuestions().get(questionIndex));
+		 model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(examIndex).getMissQuestions().size());
+        return "exam/template/exam";
+    }
+	@RequestMapping(value="/exam/template", method = RequestMethod.POST)
+	public String postExamTemplate(HttpServletRequest request, @ModelAttribute(value="missExamForm") MissExamForm missExamForm, BindingResult result, Model model){
+		logger.debug("into Post Template");
+		/*int examIndex=request.getParameter("examIndex")!=null?Integer.parseInt(request.getParameter("examIndex")):0;
+		int questionIndex=request.getParameter("questionIndex")!=null?Integer.parseInt(request.getParameter("questionIndex")):0;
+		*/
+		String mode=missExamForm.getMode();
+		logger.debug("mode="+mode);
+		int questionIndex=missExamForm.getQuestionIndex();
+		if(mode.equals("prev")){
+			missExamForm.setQuestionIndex(questionIndex-1);
+		}else if(mode.equals("next")){
+			missExamForm.setQuestionIndex(questionIndex+1);
+		}
+		String[] mcScores=request.getParameterValues("mcScore");
+		if(mcScores!=null && mcScores.length>0){
+			List<MissTest> missTests = new ArrayList(mcScores.length);
+			MissTest selectTest= new MissTest();
+			for (int i = 0; i < mcScores.length; i++) {
+				MissTest missTest=new MissTest();
+				MissChoice choice=new MissChoice();
+				choice.setMcId(Long.parseLong(mcScores[i]));
+				missTest.setMissExam(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
+				missTest.setMissQuestion(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(questionIndex));
+				missTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
+				missTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+				missTest.setMissChoice(choice);
+				missTests.add(missTest);
+			}
+			selectTest.setMissTests(missTests);
+			missExamService.saveOrUpdateMissTest(selectTest);
+		
+		}
+	if(mode!=null && !mode.equals("finish")){
+		MissTest checkTest= new MissTest();
+		checkTest.setMissExam(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
+		checkTest.setMissQuestion(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()));
+		checkTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
+		checkTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<MissTest> checkTests=missExamService.findMissTest(checkTest);
+		List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+		logger.debug(" checkTests is "+checkTests);
+		logger.debug(" missChoices is "+missChoices);
+		if(missChoices!=null && missChoices.size()>0)
+		for (MissChoice missChoice : missChoices) {
+			logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
+			if(checkTests!=null && checkTests.size()>0)
+			for (MissTest missTest : checkTests) {
+				logger.debug(" missTest "+missTest.getMissChoice().getMcId());
+				missChoice.setChoiceSelect(null);
+				if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
+					logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
+					missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+				}
+			}
+		}
+		
+		logger.debug("mcScores="+mcScores);
+		logger.debug(" request examIndex="+missExamForm.getExamIndex());
+		logger.debug(" request questionIndex="+missExamForm.getQuestionIndex());
+	
+		 model.addAttribute("missQuestion", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()));
+		 model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().size());
+		 model.addAttribute("missExamForm",missExamForm);
+        return "exam/template/exam";
+	 }else{
+		 MissTestResult missTestResult = new MissTestResult();
+		 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
+		 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+		 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+		 missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+		 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
+		 missExamService.saveOrUpdateMissTestResult(missTestResult);
+		 return "exam/examMessage";
+	 }
     }
 	@RequestMapping(value="/exam", method = RequestMethod.POST)
     public String postExam(Model model) {
 		logger.debug("testtttttttttt"+missExamService);
 		model.addAttribute("aoe", "chatchai");
 		System.out.println("aoee==>"+missExamService);
+	
         return "exam/exam";
-    }
+	}
 	@RequestMapping(value="/exam/message", method = RequestMethod.GET)
     public String getExamMessage(Model model) {
 		logger.debug("testtttttttttt"+missExamService);
