@@ -77,6 +77,7 @@ public class MissSeriesAttachResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missSeriesAttachService.searchMissSeriesAttach(bpsTerm,page);
+							logger.debug("MISS_SERIES_ATTACH_SEARCH ==>"+result);
 							if (result != null && result.size() == 2) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach>) result
 										.get(0);

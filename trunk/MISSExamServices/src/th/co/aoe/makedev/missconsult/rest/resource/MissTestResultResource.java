@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
@@ -14,6 +17,8 @@ import org.restlet.resource.ResourceException;
 import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -23,6 +28,9 @@ public class MissTestResultResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissTestResultService missTestResultService;
 	private com.thoughtworks.xstream.XStream xstream;
+	private static 	final String[] ignore_id=new String[]{"missCandidate"};
+	private static 	final String[] ignore_id_candidate=new String[]{"missAccount","missSery"}; 
+	 
 	 
 	public MissTestResultResource() {
 		super();
@@ -54,8 +62,12 @@ public class MissTestResultResource extends BaseResource {
 				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissTestResult) ntcCalendarObj;
 				if (xbpsTerm != null) {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult();
-					BeanUtils.copyProperties(xbpsTerm,bpsTerm); 
-					
+					BeanUtils.copyProperties(xbpsTerm,bpsTerm,ignore_id); 
+					if(xbpsTerm.getMissCandidate()!=null){
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate();
+						BeanUtils.copyProperties(xbpsTerm.getMissCandidate(),missCandidate,ignore_id_candidate); 
+						bpsTerm.setMissCandidate(missCandidate);
+					}
 					if (xbpsTerm.getServiceName() != null
 							&& !xbpsTerm.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
@@ -77,8 +89,8 @@ public class MissTestResultResource extends BaseResource {
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missTestResultService.saveMissTestResult(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							int updateRecord=(missTestResultService.saveOrUpdateMissTestResult(xbpsTerm.getUserid(),bpsTerm)).intValue();
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
@@ -194,8 +206,14 @@ public class MissTestResultResource extends BaseResource {
 				ntcCalendars.size());
 		for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult missTestResult : ntcCalendars) {
 			th.co.aoe.makedev.missconsult.xstream.MissTestResult xmissTestResult =new th.co.aoe.makedev.missconsult.xstream.MissTestResult ();
-			BeanUtils.copyProperties(missTestResult, xmissTestResult);
-			xmissTestResult.setPagging(null);
+			BeanUtils.copyProperties(missTestResult, xmissTestResult,ignore_id);
+			xmissTestResult.setPagging(null); 
+			if(missTestResult.getMissCandidate()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
+				BeanUtils.copyProperties(missTestResult.getMissCandidate(),xmissCandidate,ignore_id_candidate); 
+				xmissCandidate.setPagging(null);
+				xmissTestResult.setMissCandidate(xmissCandidate);
+			}
 			xntcCalendars.add(xmissTestResult);
 		}
 		return xntcCalendars;

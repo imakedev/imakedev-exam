@@ -40,7 +40,9 @@ public class ServiceConstant {
 	public static final String MISS_CANDIDATE_DELETE = "deleteMissCandidate";
 	public static final String MISS_CANDIDATE_SEARCH = "searchMissCandidate";
 	public static final String MISS_CANDIDATE_FIND_BY_ID = "findMissCandidateById";
-	public static final String MISS_CANDIDATE_UPDATE_PHOTO = "updatePhotoMissCandidate"; 
+	public static final String MISS_CANDIDATE_UPDATE_PHOTO = "updatePhotoMissCandidate";
+	
+	public static final String MISS_CANDIDATE_FIND_BY_NAME = "findMissCandidateByName"; 
 	
 	// MISS_CHOICE
 	public static final String MISS_CHOICE_SAVE = "saveMissChoice";
@@ -131,7 +133,8 @@ public class ServiceConstant {
 	public static final String MISS_TEST_UPDATE = "updateMissTest";
 	public static final String MISS_TEST_DELETE = "deleteMissTest";
 	public static final String MISS_TEST_SEARCH = "searchMissTest";
-	public static final String MISS_TEST_FIND_BY_ID = "findMissTestById"; 
+	public static final String MISS_TEST_FIND_BY_ID = "findMissTestById";
+	public static final String MISS_TEST_FIND_ANSWERED = "findMissTestAnswered"; 
 	
 	// MISS_TEST_RESULT
 	public static final String MISS_TEST_RESULT_SAVE = "saveMissTestResult";

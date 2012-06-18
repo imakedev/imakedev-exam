@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -68,13 +70,13 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 
 	private int getSize(Session session, MissTestResult instance) throws Exception{
 		try {
-			 
-		/*	Long megId = instance.getMegId();
-			String megName = instance.getMegName();
+			/* 
+			Long megId = instance.getMegId();
+			String megName = instance.getMegName();*/
 			 
 			StringBuffer sb =new StringBuffer(" select count(missTestResult) from MissTestResult missTestResult ");
 			
-			boolean iscriteria = false;
+			/*boolean iscriteria = false;
 			if(megId !=null && megId > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				 sb.append(iscriteria?(" and missTestResult.megId="+megId+""):(" where missTestResult.megId="+megId+""));
@@ -84,10 +86,10 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
-			}
+			}*/
 			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); */
-			return 0;
+				 return ((Long)query.uniqueResult()).intValue();
+			//return 0;
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
 			throw re;
@@ -104,11 +106,11 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			try {
 				/*Long megId = instance.getMegId();
 				String megName = instance.getMegName();
-			
+			*/
 			
 				StringBuffer sb =new StringBuffer(" select missTestResult from MissTestResult missTestResult ");
 				
-				boolean iscriteria = false;
+				/*boolean iscriteria = false;
 				if(megId !=null && megId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					 sb.append(iscriteria?(" and missTestResult.megId="+megId+""):(" where missTestResult.megId="+megId+""));
@@ -117,8 +119,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				if(megName !=null && megName.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
-				}
+					 iscriteria = true;
+				}*/ 
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missTestResult."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
@@ -132,7 +134,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				 
 				 List l = query.list();   
 				 transList.add(l); 
-			 	 transList.add(size); */
+			 	 transList.add(size); 
 				return transList;
 			} catch (Exception re) {
 				//re.printStackTrace();
@@ -158,6 +160,71 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	public int processMissTestResult() throws DataAccessException {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public Long saveOrUpdateMissTestResult(String userid,
+			MissTestResult missTestResult) throws DataAccessException {
+		// TODO Auto-generated method stub
+
+		MissCandidate missCandidate = null;
+		Long returnId  = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
+		query.setParameter("mcaUsername", userid);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){		
+			missCandidate=(MissCandidate)obj;
+			logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
+			missTestResult.setMissCandidate(missCandidate);
+			query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.missCandidate.mcaId=:mcaId and " +
+					" missTestResult.meId=:meId and "+
+					" missTestResult.msId=:msId  ");
+			query.setParameter("mcaId", missCandidate.getMcaId());
+			query.setParameter("meId", missTestResult.getMeId());
+			query.setParameter("msId", missTestResult.getMsId());
+			
+			/*
+			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());*/
+			List list=query.list();
+			if(list!=null && list.size()>0){//update 
+			
+				logger.debug("size="+list.size());
+				logger.debug("MCA_ID="+missTestResult.getMissCandidate().getMcaId());
+				logger.debug("ME_ID="+missTestResult.getMeId());
+				logger.debug("MS_ID="+missTestResult.getMsId());
+				//session.update(missTestResultUpdate);
+				query=session.createQuery("update MissTestResult missTestResult " +
+						" set missTestResult.mtrResultCode =:mtrResultCode ," +
+						" missTestResult.mtrTestDate =:mtrTestDate " +
+						" where missTestResult.missCandidate.mcaId=:mcaId and " +
+						" missTestResult.meId=:meId and " +
+						" missTestResult.msId=:msId ");
+				
+				query.setParameter("mcaId", missCandidate.getMcaId()); 
+				query.setParameter("meId", missTestResult.getMeId());
+				query.setParameter("msId", missTestResult.getMsId());  
+				query.setParameter("mtrResultCode", missTestResult.getMtrResultCode()); 
+				query.setParameter("mtrTestDate", new Date());
+				returnId = Long.parseLong((query.executeUpdate())+"");
+			}else{ //save
+				try{
+					obj = session.save(missTestResult);
+				
+					if(obj!=null){
+						//returnId =(th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK) obj;
+						returnId=1l;
+					}
+				} finally {
+						if (session != null) {
+							session = null;
+						} 
+				}
+			}
+    
+		}
+		// TODO Auto-generated method stub
+		return returnId;
+	
 	}
 	 
 

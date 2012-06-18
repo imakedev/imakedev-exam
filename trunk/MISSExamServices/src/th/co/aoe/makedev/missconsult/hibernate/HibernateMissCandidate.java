@@ -5,11 +5,15 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissTemplate;
 import th.co.aoe.makedev.missconsult.managers.MissCandidateService;
+//import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
@@ -227,6 +239,7 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaGender =:mcaGender ,  " +					
 					" missCandidate.mcaBirthDate =:mcaBirthDate ,  " +
 					" missCandidate.mcaTitle =:mcaTitle ,  " + 
+					" missCandidate.mcaPostion =:mcaPostion ,  " + 
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
 					" missCandidate.mcaTitleType =:mcaTitleType    " +
@@ -239,6 +252,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaGender", transientInstance.getMcaGender());
 			query.setParameter("mcaBirthDate", transientInstance.getMcaBirthDate());
 			query.setParameter("mcaTitle", transientInstance.getMcaTitle());
+			query.setParameter("mcaPostion", transientInstance.getMcaPostion());
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
@@ -270,6 +284,70 @@ int result = query.executeUpdate();*/
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+	}
+	@Override
+	public MissCandidate findMissCandidateByName(String name)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:name");
+		query.setParameter("name", name);
+		logger.debug("xx="+name);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missCandidate=(MissCandidate)obj;
+		}
+	  return missCandidate;
+	}
+	@Override
+	public List<th.co.aoe.makedev.missconsult.xstream.MissExam> findMissExambySery(Long msId)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		String[] idIgnore_exam=new String[]{"missExamGroup","missExamType"};
+		String[] idIgnore_question=new String[]{"missExam","missTemplate"};
+		String[] idIgnore_choice=new String[]{"missQuestion"};
+		 
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId=:msId order by missSeriesMap.msmOrder ");
+		query.setParameter("msId", msId);
+		List<MissSeriesMap> missSeriesMaps=query.list();
+		List<th.co.aoe.makedev.missconsult.xstream.MissExam> xmissExams =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissExam>(missSeriesMaps.size());
+		for (MissSeriesMap missSeriesMap : missSeriesMaps) {
+			query=session.createQuery(" select missExam from MissExam missExam where missExam.meId=:meId order by missExam.meId ");
+			query.setParameter("meId", missSeriesMap.getId().getMeId());
+			List<MissExam> missExams=query.list();
+			for (MissExam missExam : missExams) {
+				th.co.aoe.makedev.missconsult.xstream.MissExam xmissExam=new th.co.aoe.makedev.missconsult.xstream.MissExam();
+				BeanUtils.copyProperties(missExam, xmissExam, idIgnore_exam);
+				xmissExam.setPagging(null);
+				
+				query=session.createQuery(" select missQuestion from MissQuestion missQuestion where missQuestion.missExam.meId=:meId order by missQuestion.mqId ");
+				query.setParameter("meId", missExam.getMeId());
+				List<MissQuestion> questions = query.list();
+				List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xmissQuestions =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>(questions.size());
+				for (MissQuestion missQuestion : questions) {
+					th.co.aoe.makedev.missconsult.xstream.MissQuestion xmissQuestion=new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
+					BeanUtils.copyProperties(missQuestion, xmissQuestion, idIgnore_question);
+					xmissQuestion.setPagging(null);
+					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.mcId ");
+					query.setParameter("mqId", missQuestion.getMqId());
+					List<MissChoice> choices = query.list();
+					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoices =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choices.size());
+					for (MissChoice missChoice : choices) {
+						th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice=new th.co.aoe.makedev.missconsult.xstream.MissChoice();
+						BeanUtils.copyProperties(missChoice, xmissChoice, idIgnore_choice);
+						xmissChoice.setPagging(null);
+						xmissChoices.add(xmissChoice);
+					}
+					xmissQuestion.setMissChoices(xmissChoices);
+					xmissQuestions.add(xmissQuestion);
+				}
+				xmissExam.setMissQuestions(xmissQuestions);
+				xmissExams.add(xmissExam);
+			}
+		}
+		return xmissExams;
 	}
 	 
 

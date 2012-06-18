@@ -71,8 +71,8 @@ public class MissManualResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.MISS_MANUAL_FIND_BY_ID)){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissManual ntcCalendarReturn = missManualService.findMissManualById(bpsTerm.getMmId());
 						logger.debug(" object return ="+ntcCalendarReturn);
+						VResultMessage vresultMessage = new VResultMessage();
 							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissManual> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissManual>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissManual xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissManual();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
@@ -85,10 +85,8 @@ public class MissManualResource extends BaseResource {
 								}
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-								 
-								
 							}
+							return getRepresentation(entity, vresultMessage, xstream);
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_MANUAL_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
