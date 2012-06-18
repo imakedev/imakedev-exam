@@ -2,59 +2,35 @@ package th.co.aoe.makedev.missconsult.exam.service;
 
 import java.util.List;
 
- 
-import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
-import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
-
-
-/*import th.co.vlink.xstream.BpsAttachFile;
-import th.co.vlink.xstream.BpsGroup;
-import th.co.vlink.xstream.BpsTerm;
-import th.co.vlink.xstream.BpsTermLog;
-import th.co.vlink.xstream.BpsTermVersion;
-import th.co.vlink.xstream.common.VResultMessage;*/
+import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissTest;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
 public interface MissExamService {
-	// MISS_EXAM_GROUP
-	public Long saveMissExamGroup(MissExamGroup missExamGroup) ;
-	public int updateMissExamGroup(MissExamGroup missExamGroup)  ; 
-	public int deleteMissExamGroup(MissExamGroup missExamGroup)  ;	
-	public MissExamGroup findMissExamGroupById(Long megId)  ; 
-	public  List searchMissExamGroup(MissExamGroup missExamGroup,	Pagging pagging)  ;
+	public abstract MissCandidate findMissCandidateByName(String name);
+	public abstract int updateMissCandidate(MissCandidate missCandidate);
+	public abstract MissExam getMissExamInfo(MissExam missExam);
 	
-/*	public int saveBpsGroup(BpsGroup bpsGroup);
-	public int updateBpsGroup(BpsGroup bpsGroup);
-	public int deleteBpsGroup(String key);	
-	public BpsGroup findBpsGroupById(String key);
-	public VResultMessage searchBpsGroup(BpsGroup bpsGroup);
-	public int checkDuplicateGroup(String groupName);*/
-
-	/*// BPS_TERM
-	public int saveBpsTerm(BpsTerm bpsTerm);
-	public int updateBpsTerm(BpsTerm bpsTerm);
-	public int updateBpsTermVersion(BpsTerm bpsTerm);
-	public int deleteBpsTerm(String key);
-	public BpsTerm findBpsTermById(String bpgId);
-	public VResultMessage searchBpsTerm(BpsTerm bpsTerm);
-
+	//for save MissTest
+	public abstract int saveOrUpdateMissTest(MissTest missTest);
 	
-	// BPS_TERM_LOG
-	public int deleteBpsTermLog(String key);
-	public BpsTermLog findBpsTermLogById(String bpgId);
-	public VResultMessage searchBpsTermLog(BpsTermLog bpsTermLog);
-	public int updateBpsTermLogStatus(Long bptlId,String status);
+	//for check answer
+	public abstract List<MissTest> findMissTest(MissTest missTest);
 	
+	public abstract int saveOrUpdateMissTestResult(MissTestResult missTestResult);
 	
-	// BPS_TERM_VERSION
-	public VResultMessage searchBpsTermVersion(BpsTermVersion bpsTermVersion) ;
-	public BpsTermVersion findBpsTermVersionById(String bpgId) ;
-	// BPS_FILE
-	public int saveBpsAttachFile(BpsAttachFile bpsAttachFile);
-	public int deleteBpsAttachFile(String key) ;
-	public BpsAttachFile findBpsAttachFileById(String bpgId);
-	public VResultMessage searchBpsAttachFile(BpsAttachFile bpsAttachFile) ;
-	public int updateBpsAttachFile(Long bptlId,BpsTerm bpsTerm);
-	public int sendToMail(String form, String to,String subjectMail,String term,String Category,String source,
-			String definition,String detail,String additional);
-	public List getAllUsers(String uid);*/
+	// File
+	 public abstract MissAccount findMissAccountById(Long long1);
+	 
+	 public abstract MissCandidate findMissCandidateById(Long long1);
+	 public abstract MissContact findMissContactById(Long long1);
+	 public abstract MissManual findMissManualById(Long long1);
+	 public abstract MissAttach findMissAttachById(String matModule,Long matRef,String hotlink);
+	 public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
 }

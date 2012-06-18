@@ -2,6 +2,9 @@ package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
 
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissSery;
+
 /*import th.co.vlink.xstream.BpsGroup;
 import th.co.vlink.xstream.BpsTerm;*/
 
@@ -10,107 +13,46 @@ public class MissExamForm extends CommonForm implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String mode;
-	private String command;
-	private String bpgGroupName;
-	private String bptTerm;
-	/*private BpsGroup bpsGroup;
-	private BpsTerm bpsTerm;*/
-	private String bpgId;
-	private String searchBy;
-	private Long bptId;
-	 
-	private String indexChar;
-	private String orderColumn;
-	private String orderBy;
-	//private String searchMode;//  
 	
-	private Integer version;
+	private MissCandidate missCandidate;
+	private int examIndex;
+	private int questionIndex;
+	private MissSery missSery;
+	private String mcaBirthDate;
+	
+	public int getQuestionIndex() {
+		return questionIndex;
+	}
+	public void setQuestionIndex(int questionIndex) {
+		this.questionIndex = questionIndex;
+	}
+	public String getMcaBirthDate() {
+		return mcaBirthDate;
+	}
+	public void setMcaBirthDate(String mcaBirthDate) {
+		this.mcaBirthDate = mcaBirthDate;
+	}
 	public MissExamForm(){
-		/*bpsGroup =new BpsGroup();
-		bpsTerm =new BpsTerm();*/
+		missCandidate=new MissCandidate();
+		missSery=new MissSery();
 	}
-	public String getMode() {
-		return mode;
+	public MissCandidate getMissCandidate() {
+		return missCandidate;
 	}
-
-	public void setMode(String mode) {
-		this.mode = mode;
+	public void setMissCandidate(MissCandidate missCandidate) {
+		this.missCandidate = missCandidate;
 	}
-
-	/*public BpsGroup getBpsGroup() {
-		return bpsGroup;
+	public MissSery getMissSery() {
+		return missSery;
 	}
-
-	public void setBpsGroup(BpsGroup bpsGroup) {
-		this.bpsGroup = bpsGroup;
-	}*/
-	public String getCommand() {
-		return command;
+	public void setMissSery(MissSery missSery) {
+		this.missSery = missSery;
 	}
-	public void setCommand(String command) {
-		this.command = command;
+	public int getExamIndex() {
+		return examIndex;
 	}
-	/*public BpsTerm getBpsTerm() {
-		return bpsTerm;
+	public void setExamIndex(int examIndex) {
+		this.examIndex = examIndex;
 	}
-	public void setBpsTerm(BpsTerm bpsTerm) {
-		this.bpsTerm = bpsTerm;
-	}*/
-	public String getBpgId() {
-		return bpgId;
-	}
-	public void setBpgId(String bpgId) {
-		this.bpgId = bpgId;
-	}
-	public String getSearchBy() {
-		return searchBy;
-	}
-	public void setSearchBy(String searchBy) {
-		this.searchBy = searchBy;
-	}
-	public String getBpgGroupName() {
-		return bpgGroupName;
-	}
-	public void setBpgGroupName(String bpgGroupName) {
-		this.bpgGroupName = bpgGroupName;
-	}
-	public String getBptTerm() {
-		return bptTerm;
-	}
-	public void setBptTerm(String bptTerm) {
-		this.bptTerm = bptTerm;
-	}
-	public Integer getVersion() {
-		return version;
-	}
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	public String getIndexChar() {
-		return indexChar;
-	}
-	public void setIndexChar(String indexChar) {
-		this.indexChar = indexChar;
-	}
-	public String getOrderColumn() {
-		return orderColumn;
-	}
-	public void setOrderColumn(String orderColumn) {
-		this.orderColumn = orderColumn;
-	}
-	public String getOrderBy() {
-		return orderBy;
-	}
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-	}
-	public Long getBptId() {
-		return bptId;
-	}
-	public void setBptId(Long bptId) {
-		this.bptId = bptId;
-	}
-	
 
 }
