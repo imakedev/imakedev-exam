@@ -40,6 +40,7 @@ $(document).ready(function() {
 		onComplete : function(file, response){
 			var obj = jQuery.parseJSON(response); //obj.hotlink
 			//alert(response);
+			//alert(obj.hotlink)
 			/* response=response.replace("<pre>","");
 			response=response.replace("</pre>","");
 			  var obj = jQuery.parseJSON(response);
