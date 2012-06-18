@@ -246,7 +246,8 @@ public class MissExamServiceImpl extends PostCommon
         missEvaluationTemplate.setServiceName("saveMissEvaluationTemplate");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         missEvaluationTemplate = (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
-        return missEvaluationTemplate.getMetId();
+       // return missEvaluationTemplate.getMetId();
+        return 0l;
     }
 
     public int updateMissEvaluationTemplate(MissEvaluationTemplate missEvaluationTemplate)
@@ -268,7 +269,7 @@ public class MissExamServiceImpl extends PostCommon
     public MissEvaluationTemplate findMissEvaluationTemplateById(Long megId)
     {
         MissEvaluationTemplate missEvaluationTemplate = new MissEvaluationTemplate();
-        missEvaluationTemplate.setMetId(megId);
+       // missEvaluationTemplate.setMetId(megId);
         missEvaluationTemplate.setServiceName("findMissEvaluationTemplateById");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         return (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
@@ -672,7 +673,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public VResultMessage searchMissTestResult(MissTestResult missTestResult)
     {
-        missTestResult.setServiceName("searchMissTestResult");
+        missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_SEARCH);
         return postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
     }
 
@@ -845,7 +846,9 @@ public class MissExamServiceImpl extends PostCommon
 	        missManual.setMmId(long1);
 	        missManual.setServiceName(ServiceConstant.MISS_MANUAL_FIND_BY_ID);
 	        VResultMessage resultMessage = postMessage(missManual, missManual.getClass().getName(), "missManual", true);
-	        return (MissManual)resultMessage.getResultListObj().get(0);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (MissManual)resultMessage.getResultListObj().get(0);
+	        return null;
 	}
 
 	@Override
@@ -1165,7 +1168,10 @@ public class MissExamServiceImpl extends PostCommon
 	        missSeriesAttach.setMsatRef2(matRef2);
 	        missSeriesAttach.setServiceName(ServiceConstant.MISS_SERIES_ATTACH_SEARCH);
 	        VResultMessage resultMessage = postMessage(missSeriesAttach, missSeriesAttach.getClass().getName(), "missSeriesAttach", true);
-	        return (MissSeriesAttach)resultMessage.getResultListObj().get(0);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (MissSeriesAttach)resultMessage.getResultListObj().get(0);
+	        else
+	        	return null;
 	}
 
 }

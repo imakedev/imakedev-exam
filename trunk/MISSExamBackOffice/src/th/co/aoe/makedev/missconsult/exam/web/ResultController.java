@@ -11,11 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import th.co.aoe.makedev.missconsult.exam.form.CandidateForm;
+import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
+import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/result"})
+@SessionAttributes(value={"resultForm"})
 public class ResultController
 {
 
@@ -27,11 +33,16 @@ public class ResultController
     }
 
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String getToDoList(Model model)
+    public String init(Model model)
     {
-        logger.debug((new StringBuilder("testtttttttttt")).append(missExamService).toString());
-        model.addAttribute("aoe", "chatchai");
-        System.out.println("aoee");
+    	  model.addAttribute("missSeries", missExamService.listMissSery());
+    	  ResultForm resultForm = new ResultForm();
+    	  resultForm.getMissTestResult().getPagging().setPageSize(3);
+          VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
+          model.addAttribute("missTestResults", vresultMessage.getResultListObj());
+          resultForm.getPaging().setPageSize(3);
+          resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+          model.addAttribute("resultForm", resultForm);
         return "exam/template/testResultSearch";
     }
 
