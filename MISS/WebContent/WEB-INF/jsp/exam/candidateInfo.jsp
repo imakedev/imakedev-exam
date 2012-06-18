@@ -1,10 +1,12 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <html>
 <head>
 <title></title>  
 <c:url var="url" value="/" />
 <c:url value="/logout" var="logoutUrl"/>
+<c:url value="/exam/info" var="examInfoUrl"/>
 <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />  
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
@@ -81,134 +83,10 @@ $(document).ready(function() {
   //format: 'YOWDHMS', description: ''});
  // format: 'HMS', description: ''});
 	  format: 'hms', description: ''});
-  
-  //alert("new path="+_path)
-  $.jstree._themes = "/MISS/resources/js/themes/";
- //$('select#bpgGroupId').selectmenu({style:'dropdown'});
-	$("#demo1").jstree({ 
-		"json_data" : {
-			"data" : [
-				{ 
-					"data" : {title:"Home",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
-					"metadata" : { id : "child_23" ,"link":"template/todolist"},
-					"attr" : { "id" : "home_node" }, 
-				},
-				{ 
-					"attr" : { "id" : "account_node" }, 
-					"data" : { 
-						"title" : "บัญชีผู้ใช้", 
-						"attr" : { "href" : "#" } 
-					},
-					"metadata" : { id : "root_aoee2"},
-					"children" : [
-						{ attributes: { id : "pjson_2" }, data: { title : "MissConsult", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
-						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
-						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
-					          ] 
-					
-				},
-				/* { 
-					"attr" : { "id" : "report_node" }, 
-					"data" : { 
-						"title" : "Result Report", 
-						"attr" : { "href" : "www.google.com" } 
-					},
-					"children" : [
-						{ attributes: { id : "pjson_5" }, data: { title : "EPT",  icon : "<c:url value='/resources/js/_demo/file.png'/>"} },
-						{ attributes: { id : "pjson_6" }, data: {title:"EPT Plus",attributes:{ "href" : "www.google.com" },  icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : 25 } },
-						{ attributes: { id : "pjson_7" }, data: {title: "..." , icon : "<c:url value='/resources/js/_demo/file.png'/>"} },
-						{ attributes: { id : "pjson_8" }, data: {title: "Search Report" , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_288","link":"result/search" },"attr" : { "id" : "tree_288" }    }
-						] 
-					
-				} */
-				{ 
-					"data" : {title:"Search Report",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
-					"metadata" : { id : "child_288" ,"link":"result/search"},
-					"attr" : { "id" : "tree_288" }, 
-				},
-				{ 
-					"attr" : { "id" : "management_node" }, 
-					"data" : { 
-						"title" : "จัดการแบบสอบถาม", 
-						"attr" : { "href" : "www.google.com" } 
-					},
-					"children" : [
-						{ attributes: { id : "pjson_5" }, data: { title : "Series",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_25","link":"series/search" } },
-						{ attributes: { id : "pjson_6" }, data: {title:"Test",attributes:{ "href" : "www.google.com" }, icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_26" ,"link":"test/search"} }
-					          ] 
-					
-				},
-				{ 
-					"attr" : { "id" : "etc_node" }, 
-					"data" : { 
-						"title" : "etc.", 
-						"attr" : { "href" : "www.google.com" } 
-					},
-					"children" : [
-						{ attributes: { id : "pjson_5" }, data: { title : "Download",  icon : "<c:url value='/resources/js/_demo/file.png'/>" } }
-						
-					          ] 					
-				}
-			]
-		},
-		"plugins" : [ "themes", "json_data", "ui" ],
-		"core" : {
-			// this makes the node with ID node_4 selected onload
-				"initially_open" : [ "home_node","account_node","report_node","management_node","etc_node" ]
-			}
-	}).bind("select_node.jstree", function (e, data) {
-		//alert(data.rslt.obj.data("id"));
-		var id=data.rslt.obj.data("id");
-		var link=data.rslt.obj.data("link");
-		//alert(link)
-		if(link !=undefined && link!="undefined" && link.indexOf("undefined")==-1){
-			//alert("load link="+link);
-		
-			loadDynamicPage(link);
-		}	
- 	/* 	alert(data.rslt.obj.data("id"));
-		alert("e="+e);
-		alert("data="+data);
-		alert("href="+data.rslt.obj.data("href")); */
-		});
-	//var button = $('#button1'), interval;
-	//alert(button)
-	/*
-	new AjaxUpload('button2', {
-        action: 'upload',
-		data : {
-			'key1' : "This data won't",
-			'key2' : "be send because",
-			'key3' : "we will overwrite it"
-		},
-		onSubmit : function(file , ext){
-            // Allow only images. You should add security check on the server-side.
-			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-				alert("xxx");
-				this.setData({
-					'key': 'This string will be send with the file',
-					'test':'chatchai'
-				});					
-				$('#example2 .text').text('Uploading ' + file);	
-			} else {					
-				// extension is not allowed
-				$('#example2 .text').text('Error: only images are allowed');
-				// cancel upload
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){
-			$('#example2 .text').text('Uploaded ' + file);		
-			alert(file);
-			//alert(response)
-			response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			alert(obj)
-		}		
-	});
-	*/
 });
+function doStart(){
+	document.forms["missExamForm"].submit();
+}
 function loadDynamicPage(pageId){
 	//	var id="1";
 		//$.get('ajax/search', function(data) {
@@ -273,7 +151,7 @@ function appendContent(data){
         TH | EN        
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
-            <a href="${logoutUrl}">Logout</a>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
             </div>
            </div>
            </div>
@@ -289,7 +167,8 @@ function appendContent(data){
 	      <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
-          <form class="well" style="border:2px solid #DDD">
+        <!--   <form class="well" style="border:2px solid #DDD"> -->
+         <form:form  id="missExamForm" name="missExamForm" modelAttribute="missExamForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="${examInfoUrl}">
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Infomation</strong></td>
@@ -297,60 +176,61 @@ function appendContent(data){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">First Name:</td>
-	    					 <td align="left" width="24%"> <input type="text" name="registerNo" />
+	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaFirstName"/>
 	    					 </td>
 	    					<td align="left" width="10%">Last Name:</td>
-	    					<td align="left" width="24%"><input type="text" name="registerNo" /></td>
+	    					<td align="left" width="24%"><form:input path="missCandidate.mcaLastName"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Position:</td>
-	    					 <td align="left" width="24%">  <input type="text" name="registerNo" />
+	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPostion"/>
 	    					 </td>
 	    					<td align="left" width="10%">Department:</td>
-	    					<td align="left" width="24%"><input type="text" name="registerNo"  /></td>
+	    					<td align="left" width="24%"><form:input path="missCandidate.mcaDepartment"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Email:</td>
-	    					 <td align="left" width="24%">  <input type="text" id="Email"/>
+	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaEmail"/>  
 	    					 </td>
 	    					<td align="left" width="10%">Phone:</td>
-	    					<td align="left" width="24%"><input type="text" id="Phone"   /></td>
+	    					<td align="left" width="24%"><form:input path="missCandidate.mcaPhone"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Birth date:</td>
-	    					 <td align="left" width="24%">  <input type="text" id="datepicker_from" style="width:75px"/>
+	    					 <td align="left" width="24%"> <form:input path="mcaBirthDate" cssStyle="width:75px"/>
 	    					 </td>
 	    					<td align="left" width="10%">Gender:</td>
-	    					<td align="left" width="24%"><input type="radio" name="sex"/>Female&nbsp;&nbsp;&nbsp;<input type="radio" name="sex">Male </td>
+	    					<td align="left" width="24%">
+	    					<form:radiobutton path="missCandidate.mcaGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaGender" value="1"/>Male
+	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					</table> 
-	    					</form>
+	    					</form:form>
 	     <div align="center">			
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px;width: 20%">
         	<thead>
           		<tr> 
-            		<th width="10%"><div class="th_class">Test</div></th>  
+            		<th width="10%"><div class="th_class">${missExamForm.missCandidate.missSery.msSeriesName}</div></th>  
           		</tr>
         	</thead>
         	<tbody>
-          	<tr> 
-            	<td><div align="center">Test1</div></td> 
-          	</tr>
-          	<tr> 
-            	<td><div align="center">Test2</div></td> 
-          	</tr>
+        		 <c:forEach items="${missExamForm.missCandidate.missSery.missExams}" var="missExam" varStatus="loop"> 
+         		 	<tr> 
+            			<td><div align="center">${missExam.meName}</div></td> 
+          			</tr>
+          		 </c:forEach>
         	</tbody>
       </table>
       </div>
        <div align="center">	
-       <a class="btn btn-primary" ><span style="color: white;font-weight: bold;">Start&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
+       <a class="btn btn-primary" onclick="doStart()" ><span style="color: white;font-weight: bold;">Next&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
        </div>
 </fieldset> 
 	    </div>
