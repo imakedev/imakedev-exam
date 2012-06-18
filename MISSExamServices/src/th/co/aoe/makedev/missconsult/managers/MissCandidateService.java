@@ -14,6 +14,9 @@ public interface MissCandidateService {
 		public int updateMissCandidatePhoto(MissCandidate transientInstance,String section) throws DataAccessException ;
 		public int deleteMissCandidate(MissCandidate persistentInstance) throws DataAccessException ;	
 		public MissCandidate findMissCandidateById(Long mcaId)throws DataAccessException  ;
+		public MissCandidate findMissCandidateByName(String name)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissCandidate(MissCandidate persistentInstance,	Pagging pagging)throws DataAccessException  ;
+		
+		public List<th.co.aoe.makedev.missconsult.xstream.MissExam> findMissExambySery(Long msId)throws DataAccessException  ;
 }

@@ -3,10 +3,12 @@ package th.co.aoe.makedev.missconsult.xstream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 
 /**
@@ -67,6 +69,9 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String section; 
 	private String mcaIds;
 	private String amount;
+	
+	@XStreamImplicit(itemFieldName="missSeriesMap")
+	private List<MissSeriesMap> missSeriesMap;
 			
     public MissCandidate() {
     }
@@ -270,6 +275,14 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setMcaTitleType(String mcaTitleType) {
 		this.mcaTitleType = mcaTitleType;
+	}
+
+	public List<MissSeriesMap> getMissSeriesMap() {
+		return missSeriesMap;
+	}
+
+	public void setMissSeriesMap(List<MissSeriesMap> missSeriesMap) {
+		this.missSeriesMap = missSeriesMap;
 	}
 
 	

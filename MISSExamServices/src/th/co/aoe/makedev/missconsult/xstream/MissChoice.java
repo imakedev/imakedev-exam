@@ -30,6 +30,9 @@ public class MissChoice extends VServiceXML implements Serializable {
 	@XStreamAlias("missQuestion")
 	private MissQuestion missQuestion;
 	
+	//ext
+	private String choiceSelect;
+	private String valueSelect;
 	/*@XStreamImplicit
 	@XStreamAlias("missChoices")
 	private List<MissChoice> missChoices;*/
@@ -91,6 +94,22 @@ public class MissChoice extends VServiceXML implements Serializable {
 
 	public void setMcIds(String[] mcIds) {
 		this.mcIds = mcIds;
+	}
+
+	public String getChoiceSelect() {
+		return choiceSelect;
+	}
+
+	public void setChoiceSelect(String choiceSelect) {
+		this.choiceSelect = choiceSelect;
+	}
+
+	public String getValueSelect() {
+		return valueSelect;
+	}
+
+	public void setValueSelect(String valueSelect) {
+		this.valueSelect = valueSelect;
 	}
 
 	/*public List<MissChoice> getMissChoices() {

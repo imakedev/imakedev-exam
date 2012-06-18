@@ -1,10 +1,12 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 
 /**
@@ -41,6 +43,9 @@ public class MissExam extends VServiceXML implements Serializable {
 	private String choiceCountEmpty;
 	
 	private String totalQuestion;
+	
+	@XStreamImplicit(itemFieldName="missQuestions")
+	private List<MissQuestion> missQuestions;
 	
 	
 
@@ -158,6 +163,16 @@ public class MissExam extends VServiceXML implements Serializable {
 	public void setTotalQuestion(String totalQuestion) {
 		this.totalQuestion = totalQuestion;
 	}
+
+	public List<MissQuestion> getMissQuestions() {
+		return missQuestions;
+	}
+
+	public void setMissQuestions(List<MissQuestion> missQuestions) {
+		this.missQuestions = missQuestions;
+	}
+
+	
 	
 	/*public Set<MissQuestion> getMissQuestions() {
 		return this.missQuestions;

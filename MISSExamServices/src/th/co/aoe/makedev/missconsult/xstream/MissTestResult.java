@@ -35,6 +35,9 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	@XStreamAlias("missCandidate")
 	private MissCandidate missCandidate;
+	
+	//ext
+	private String userid;
 
     public MissTestResult() {
     }
@@ -89,6 +92,14 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	public String getMtrStatus() {
 		return this.mtrStatus;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 
 	public void setMtrStatus(String mtrStatus) {

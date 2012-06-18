@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTest;
 import th.co.aoe.makedev.missconsult.managers.MissTestService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -154,6 +155,102 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+	}
+	@Override
+	public Long saveOrUpdateMissTest(String userid, MissTest missTest)
+			throws DataAccessException {
+		MissCandidate missCandidate = null;
+		Long returnId  = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
+		query.setParameter("mcaUsername", userid);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){		
+			missCandidate=(MissCandidate)obj;
+			logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
+			missTest.getId().setMissCandidate(missCandidate);
+			query=session.createQuery(" select missTest from MissTest missTest where missTest.id.missCandidate.mcaId=:mcaId and " +
+			//		" missTest.id.missChoice.mcId=:mcId and "+
+					" missTest.id.missExam.meId=:meId and "+
+					" missTest.id.missQuestion.mqId=:mqId and "+
+					" missTest.id.missSery.msId=:msId  ");
+			query.setParameter("mcaId", missCandidate.getMcaId());
+		//	query.setParameter("mcId", missTest.getId().getMissChoice().getMcId());
+			query.setParameter("meId", missTest.getId().getMissExam().getMeId());
+			query.setParameter("mqId", missTest.getId().getMissQuestion().getMqId()); 
+			query.setParameter("msId", missTest.getId().getMissSery().getMsId());  
+			List list=query.list();
+			if(list!=null && list.size()>0){//update 
+				/*int update=update(session, missTest);*/
+			/*	MissTest missTestUpdate=(MissTest)list.get(0);
+				MissChoice choice=new MissChoice();
+				choice.setMcId(missTest.getId().getMissChoice().getMcId());
+				missTestUpdate.getId().setMissChoice(choice);*/
+				logger.debug("size="+list.size());
+				logger.debug("MCA_ID="+missTest.getId().getMissCandidate().getMcaId());
+				logger.debug("MC_ID="+missTest.getId().getMissChoice().getMcId());
+				logger.debug("ME_ID="+missTest.getId().getMissExam().getMeId());
+				logger.debug("MQ_ID="+missTest.getId().getMissCandidate().getMcaId());
+				logger.debug("MS_ID="+missTest.getId().getMissSery().getMsId());
+				//session.update(missTestUpdate);
+				query=session.createQuery("update MissTest missTest " +
+						" set missTest.id.missChoice.mcId =:mcId " +
+						" where missTest.id.missCandidate.mcaId=:mcaId and " +
+						" missTest.id.missExam.meId=:meId and " +
+						" missTest.id.missQuestion.mqId=:mqId and " +
+						" missTest.id.missSery.msId=:msId ");
+				query.setParameter("mcId", missTest.getId().getMissChoice().getMcId());
+				
+				query.setParameter("mcaId", missCandidate.getMcaId()); 
+				query.setParameter("meId", missTest.getId().getMissExam().getMeId());
+				query.setParameter("mqId", missTest.getId().getMissQuestion().getMqId()); 
+				query.setParameter("msId", missTest.getId().getMissSery().getMsId());  
+				returnId = Long.parseLong((query.executeUpdate())+"");
+			}else{ //save
+				try{
+					obj = session.save(missTest);
+				
+					if(obj!=null){
+						//returnId =(th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK) obj;
+						returnId=1l;
+					}
+				} finally {
+						if (session != null) {
+							session = null;
+						} 
+				}
+			}
+    
+		}
+		// TODO Auto-generated method stub
+		return returnId;
+	}
+	@Override
+	public List findMissTestAnswer(String userid,MissTest missTest)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
+		query.setParameter("mcaUsername", userid);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){		
+			missCandidate=(MissCandidate)obj;
+			logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
+			missTest.getId().setMissCandidate(missCandidate);
+			query=session.createQuery(" select missTest from MissTest missTest where missTest.id.missCandidate.mcaId=:mcaId and " +
+			//		" missTest.id.missChoice.mcId=:mcId and "+
+					" missTest.id.missExam.meId=:meId and "+
+					" missTest.id.missQuestion.mqId=:mqId and "+
+					" missTest.id.missSery.msId=:msId  ");
+			query.setParameter("mcaId", missCandidate.getMcaId());
+		//	query.setParameter("mcId", missTest.getId().getMissChoice().getMcId());
+			query.setParameter("meId", missTest.getId().getMissExam().getMeId());
+			query.setParameter("mqId", missTest.getId().getMissQuestion().getMqId()); 
+			query.setParameter("msId", missTest.getId().getMissSery().getMsId());  
+			return query.list();
+		}
+		return null;
 	}
 	 
 

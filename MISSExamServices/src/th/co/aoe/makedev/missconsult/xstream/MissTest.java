@@ -1,10 +1,12 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 
 /**
@@ -38,6 +40,13 @@ public class MissTest extends VServiceXML implements Serializable {
 	@XStreamAlias("missSery")
 	private MissSery missSery;
 
+	//ext 
+	private String userid;
+	
+
+	@XStreamImplicit(itemFieldName="missTests")
+	private List<MissTest> missTests;
+	
     public MissTest() {
     }
 
@@ -111,6 +120,22 @@ public class MissTest extends VServiceXML implements Serializable {
 
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
+	}
+
+	public List<MissTest> getMissTests() {
+		return missTests;
+	}
+
+	public void setMissTests(List<MissTest> missTests) {
+		this.missTests = missTests;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 	
 }
