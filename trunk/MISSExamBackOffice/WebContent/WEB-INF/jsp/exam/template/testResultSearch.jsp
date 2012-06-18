@@ -3,7 +3,14 @@
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
-          <form class="well" style="border:2px solid #DDD">
+         <!--  <form class="well" style="border:2px solid #DDD"> -->
+             <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+             <form:hidden path="mode"/>
+            
+            <form:hidden path="mtrIdArray" id="mtrIdArray"/>
+            <form:hidden path="paging.pageNo" id="pageNo"/>
+            <form:hidden path="paging.pageSize" id="pageSize"/> 
+            <form:hidden path="pageCount" id="pageCount"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Test Result Search</strong></td>
@@ -12,15 +19,13 @@
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Series<font color="red">*</font>:</td>
 	    					 <td align="left" width="17%">    					
-	    					 <select id="mcaSeries">
+	    					<!--  <select id="mcaSeries">
 	    					      <option value="-1">-- Select Series --</option>
 	    					      
-	    					      <%--
-	    					      <c:forEach items="${missSeries}" var="missSery" varStatus="loop"> 
-	    					 			 <option value="<c:out value="${missSery.msId}"></c:out>"><c:out value="${missSery.msSeriesName}"></c:out></option>
-	    					 	 </c:forEach>
-	    					 	  --%>
-	    					    </select>	
+	    					    </select>	 -->
+	    					     <form:select path="mcaSeries">
+	    					      <form:options itemValue="msId" itemLabel="msSeriesName" items="${missSeries}"/>
+	    					    </form:select>		
 	    					 </td>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
@@ -68,7 +73,7 @@
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					</table> 
-	    					</form>
+	    					</form:form>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="60%">
@@ -94,7 +99,7 @@
             		<th width="10%"><div class="th_class">Username</div></th> 
             		<th width="15%"><div class="th_class">First Name</div></th>
             		<th width="10%"><div class="th_class">Last Name</div></th> 
-            		<th width="10%"><div class="th_class">Title</div></th>
+            		<th width="10%"><div class="th_class">Position</div></th>
             		<th width="10%"><div class="th_class">Department</div></th> 
             		<th width="5%"><div class="th_class">Fa</div></th>
             		<th width="5%"><div class="th_class">Im</div></th> 
@@ -106,22 +111,28 @@
           		</tr>
         	</thead>
         	<tbody>
+        	 <c:forEach items="${missTestResults}" var="missTestResult" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" /></td>
-            	<td><a onclick="loadDynamicPage('result/viewAnswer/1')">M000000</a></td>
-            	<td>Mr A</td>
-            	<td>Last</td>
-            	<td>A</td>
-            	<td>Department A</td>
-            	<td>11</td>
-            	<td>23</td>            	
-            	<td>14</td> 
-            	<td>12</td>
-            	<td>D/M/Y h:m</td>
-            	<td><a onclick="loadDynamicPage('result/report/')">IPAI</a></td>
-            	<td><a onclick="loadDynamicPage('result/response/1')">Pending</a></td>
+            	<td>
+            <!-- 	<a onclick="loadDynamicPage('result/viewAnswer/1')">
+            	M000000</a> -->
+            	<a>${missTestResult.missCandidate.mcaUsername}</a>
+            	</td>
+            	<td>${missTestResult.missCandidate.mcaFirstName}</td>
+            	<td>${missTestResult.missCandidate.mcaLastName}</td>
+            	<td>${missTestResult.missCandidate.mcaPostion}</td>
+            	<td>${missTestResult.missCandidate.mcaDepartment}</td>
+            	<td>?</td>
+            	<td>?</td>            	
+            	<td>?</td> 
+            	<td>?</td>
+            	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td>
+            	<td><a onclick="loadDynamicPage('result/report/')">?</a></td>
+            	<td><a onclick="loadDynamicPage('result/response/1')">?</a></td>
           	</tr>
-         	<tr>
+          	</c:forEach>
+         	<!-- <tr>
             	<td><input type="checkbox" /></td>
             	<td><a onclick="loadDynamicPage('result/viewAnswer/1')">M000000</a></td>
             	<td>Mr A</td>
@@ -150,7 +161,7 @@
             	<td>D/M/Y h:m</td>
             	<td><a onclick="loadDynamicPage('result/report/1')">IPAI</a></td>
             	<td><a onclick="loadDynamicPage('result/response/1')">Complete</a></td>
-          	</tr>
+          	</tr> -->
         	</tbody>
       </table>
       
