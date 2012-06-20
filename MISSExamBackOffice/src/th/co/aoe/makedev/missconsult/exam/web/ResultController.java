@@ -5,16 +5,21 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.CandidateForm;
 import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
+import th.co.aoe.makedev.missconsult.exam.form.SeriesForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -45,7 +50,57 @@ public class ResultController
           model.addAttribute("resultForm", resultForm);
         return "exam/template/testResultSearch";
     }
+    @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doSearch(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
+    {
+      /*  String mode = resultForm.getMode();
+        String missExam_selectboxes[] = request.getParameterValues("missExam_selectbox");
+        resultForm.getMissSery().setMsSeriesName(resultForm.getMsSeriesName());
+        resultForm.getMissSery().setMsUnitCost(resultForm.getMsUnitCost());
+        if(mode != null && mode.equals("deleteItems"))
+        {
+        	resultForm.getMissSery().setMsIds(resultForm.getMsIdArray());
+            missExamService.deleteMissSery(resultForm.getMissSery(), "deleteMissSeryItems");
+            resultForm.getPaging().setPageNo(1);
+        } else
+        if(mode != null && mode.equals("delete")){
+            missExamService.deleteMissSery(resultForm.getMissSery(), "deleteMissSery");
+            resultForm.getPaging().setPageNo(1);
+        }else
+        if(mode != null && mode.equals("doBack"))
+        {
+            if(model.containsAttribute("resultForm"))
+            	resultForm = (SeriesForm)model.asMap().get("resultForm");
+            else
+            	resultForm = new SeriesForm();
+            missExam_selectboxes = resultForm.getMissExam_selectbox();
+        }
+        model.addAttribute("missExams", missExamService.listMissExam());
+        resultForm.setMissExam_selectbox(missExam_selectboxes);
+        resultForm.getMissSery().setMeIds(missExam_selectboxes);
+        resultForm.getPaging().setPageSize(3);
+        logger.debug((new StringBuilder("xxxx=resultForm.getMissSery().getPagging()=")).append(resultForm.getMissSery().getPagging()).toString());
+        logger.debug((new StringBuilder("xxxx=resultForm.getPaging()=")).append(resultForm.getPaging()).toString());
+        resultForm.getMissTestResult().setPagging(resultForm.getPaging());
+        VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
+        String meIdArray = "";
+        if(missExam_selectboxes != null && missExam_selectboxes.length > 0)
+        {
+            int meId_size = missExam_selectboxes.length;
+            String meIds[] = missExam_selectboxes;
+            for(int i = 0; i < meId_size; i++)
+                if(i != meId_size - 1)
+                    meIdArray = (new StringBuilder(String.valueOf(meIdArray))).append(meIds[i]).append(",").toString();
+                else
+                    meIdArray = (new StringBuilder(String.valueOf(meIdArray))).append(meIds[i]).toString();
 
+        }
+        resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+        model.addAttribute("meIdArray", meIdArray);
+        model.addAttribute("missSeries", vresultMessage.getResultListObj());
+        model.addAttribute("resultForm", resultForm);*/
+        return "exam/template/seriesSearch";
+    }
     @RequestMapping(value={"/viewAnswer/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getToDoList(@PathVariable String mtrId, Model model)
     {
