@@ -1,6 +1,9 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +27,11 @@ import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
 @Controller
-@SessionAttributes( { "missExamForm" ,"systemDate"})
+@SessionAttributes( { "missExamForm" ,"systemDate","timelimit"})
 public class MissExamController {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
+    private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+    
 	@Autowired
 	private MissExamService missExamService;
 //	private static ResourceBundle bundle;
@@ -51,6 +56,7 @@ public class MissExamController {
 	}*/
 	@RequestMapping(value="/exam/info", method = RequestMethod.GET)
     public String getExamInfo(Model model) {
+		logger.debug("into getExamInfo");
 	//	logger.debug(model.asMap().get("missExamForm"));
 		/*MissExamForm missExamForm = null;
 		 if(model.containsAttribute("missExamForm"))
@@ -58,6 +64,9 @@ public class MissExamController {
         else
        	 missExamForm = new MissExamForm();*/
 		MissExamForm missExamForm =  (MissExamForm)model.asMap().get("missExamForm");
+		/*missExamForm.setExamIndex(0);
+		missExamForm.setQuestionIndex(0);*/
+		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
         return "exam/examInfo";
     }
@@ -65,10 +74,20 @@ public class MissExamController {
     public String postExamInfo(HttpServletRequest request, @ModelAttribute(value="missExamForm") MissExamForm missExamForm, BindingResult result, Model model){
 		logger.debug("get path="+missExamForm.getMissCandidate().getMcaPictureFileName());
 		missExamForm.getMissCandidate().setSection("1");
-		missExamService.updateMissCandidate(missExamForm.getMissCandidate());
+	
 		//examIndex
-		missExamForm.setExamIndex(0);
-		missExamForm.setQuestionIndex(0);
+	/*	missExamForm.setExamIndex(0);
+		missExamForm.setQuestionIndex(0);*/
+		 if(missExamForm.getMcaBirthDate() != null && missExamForm.getMcaBirthDate().trim().length() > 0)
+	            try
+	            {
+	            	missExamForm.getMissCandidate().setMcaBirthDate(format1.parse(missExamForm.getMcaBirthDate()));
+	            }
+	            catch(ParseException e)
+	            {
+	                e.printStackTrace();
+	            }
+		missExamService.updateMissCandidate(missExamForm.getMissCandidate());
 		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
 		logger.debug(model.asMap().get("missExamForm"));
@@ -79,8 +98,20 @@ public class MissExamController {
 		logger.debug(" request examIndex="+request.getParameter("examIndex"));
 		logger.debug(" request questionIndex="+request.getParameter("questionIndex"));
 		MissExamForm missExamForm = null;
-		 if(model.containsAttribute("missExamForm"))
+		 if(model.containsAttribute("missExamForm")){
 			 missExamForm = (MissExamForm)model.asMap().get("missExamForm");
+			 MissTestResult missTestResult = new MissTestResult();
+			 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
+			 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+			 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+			 missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+			 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
+			 missTestResult.setMtrStartTime(timeStampEndTime);
+			 missTestResult.setMtrTestDate(new Date());
+			 missTestResult.setMtrStatus("0"); // 0=start test,1=test finish,2 =send response
+			 int timelimit=missExamService.startMissTestResult(missTestResult);
+			 model.addAttribute("timelimit", timelimit);
+		 }
        else{
       	 missExamForm = new MissExamForm();
       	 return "redirect:/";
@@ -122,6 +153,7 @@ public class MissExamController {
 			List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
 			logger.debug(" checkTests is "+checkTests);
 			logger.debug(" missChoices is "+missChoices);
+			String answered="";
 			if(missChoices!=null && missChoices.size()>0)
 			for (MissChoice missChoice : missChoices) {
 				logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
@@ -132,9 +164,19 @@ public class MissExamController {
 					if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
 						logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
 						missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+						//answered="1";
 					}
 				}
 			}
+			checkTest.setMissQuestion(null);
+			List<MissTest> answeredList=missExamService.findMissTest(checkTest);
+			if(answeredList!=null && answeredList.size()>0)
+				for (MissTest missTest : answeredList){
+					answered=answered+missTest.getMissQuestion().getMqId()+",";
+				} 
+		  if(answered.length()>0)
+			  answered=answered.substring(0,answered.length()-1);
+		 model.addAttribute("answered", answered);
 		 model.addAttribute("missQuestion", missExamForm.getMissCandidate().getMissSery().getMissExams().get(examIndex).getMissQuestions().get(questionIndex));
 		 model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(examIndex).getMissQuestions().size());
         return "exam/template/exam";
@@ -152,7 +194,12 @@ public class MissExamController {
 			missExamForm.setQuestionIndex(questionIndex-1);
 		}else if(mode.equals("next")){
 			missExamForm.setQuestionIndex(questionIndex+1);
+		}else if(mode.equals("goToPage")){
+			//missExamForm.setQuestionIndex(questionIndex+1);
+			questionIndex=missExamForm.getOldQuestionIndex();
 		}
+		
+		//logger.debug("==================================== questionIndex="+questionIndex);
 		String[] mcScores=request.getParameterValues("mcScore");
 		if(mcScores!=null && mcScores.length>0){
 			List<MissTest> missTests = new ArrayList(mcScores.length);
@@ -182,6 +229,7 @@ public class MissExamController {
 		List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
 		logger.debug(" checkTests is "+checkTests);
 		logger.debug(" missChoices is "+missChoices);
+		String answered="";
 		if(missChoices!=null && missChoices.size()>0)
 		for (MissChoice missChoice : missChoices) {
 			logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
@@ -192,10 +240,18 @@ public class MissExamController {
 				if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
 					logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
 					missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+					//answered="1";
 				}
 			}
 		}
-		
+		checkTest.setMissQuestion(null);
+		List<MissTest> answeredList=missExamService.findMissTest(checkTest);
+		if(answeredList!=null && answeredList.size()>0)
+			for (MissTest missTest : answeredList){
+				answered=answered+missTest.getMissQuestion().getMqId()+",";
+			} 
+	  if(answered.length()>0)
+		  answered=answered.substring(0,answered.length()-1);
 		logger.debug("mcScores="+mcScores);
 		logger.debug(" request examIndex="+missExamForm.getExamIndex());
 		logger.debug(" request questionIndex="+missExamForm.getQuestionIndex());
@@ -203,6 +259,7 @@ public class MissExamController {
 		 model.addAttribute("missQuestion", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()));
 		 model.addAttribute("questionTotal", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().size());
 		 model.addAttribute("missExamForm",missExamForm);
+		 model.addAttribute("answered", answered);
         return "exam/template/exam";
 	 }else{
 		 MissTestResult missTestResult = new MissTestResult();
@@ -210,9 +267,20 @@ public class MissExamController {
 		 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
 		 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
 		 missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+		 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
+		 missTestResult.setMtrEndTime(timeStampEndTime);
 		 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
 		 missExamService.saveOrUpdateMissTestResult(missTestResult);
-		 return "exam/examMessage";
+		 //0 
+		 if(missExamForm.getExamIndex()<(missExamForm.getMissCandidate().getMissSery().getMissExams().size()-1)){
+			 logger.debug("before "+missExamForm.getExamIndex());
+			 missExamForm.setExamIndex(missExamForm.getExamIndex()+1);
+			 missExamForm.setQuestionIndex(0);
+			 logger.debug("affter "+missExamForm.getExamIndex());
+			 model.addAttribute("missExamForm",missExamForm);
+			 return "redirect:/exam/info";
+		 }else 
+			 return "exam/examMessage";
 	 }
     }
 	@RequestMapping(value="/exam", method = RequestMethod.POST)
