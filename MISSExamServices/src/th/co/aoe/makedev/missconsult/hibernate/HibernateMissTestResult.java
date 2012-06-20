@@ -11,7 +11,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.joda.time.Period;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -316,6 +315,38 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		return timelimit;
 	
 	}
-	 
-
+	@Override
+	public int checkMissTestResult(String userid,
+			MissTestResult missTestResult) throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = null;
+		int tested=0; // 0=not yet test finish, 1=  test finish
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
+		query.setParameter("mcaUsername", userid);
+		Object obj=query.uniqueResult(); 
+	
+			 if(obj!=null){	
+				 missCandidate=(MissCandidate)obj;
+					query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.missCandidate.mcaId=:mcaId and " +
+							" missTestResult.msId=:msId  ");
+					query.setParameter("mcaId", missCandidate.getMcaId());
+					query.setParameter("msId", missCandidate.getMissSery().getMsId());
+					 
+					@SuppressWarnings("unchecked")
+					List<MissTestResult> list=(List<MissTestResult>)query.list();
+					if(list!=null && list.size()>0){// check all exam tested  
+						for (MissTestResult result : list) {
+							if(result.getMtrEndTime()==null){
+								tested=0;
+								break;
+							}
+							tested=1;
+						}
+					}
+			 }
+		logger.debug("tested="+tested);
+		// TODO Auto-generated method stub
+		return tested;
+	}
 }
