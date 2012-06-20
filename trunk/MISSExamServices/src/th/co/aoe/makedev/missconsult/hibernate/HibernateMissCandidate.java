@@ -213,6 +213,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query=null;
+		logger.debug(" section==>"+transientInstance.getMcaFirstName());
 		//int result = query.executeUpdate();
 		/*Query query = session.createQuery("update Stock set stockName = :stockName" +
 				" where stockCode = :stockCode");

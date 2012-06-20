@@ -9,6 +9,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -193,18 +197,32 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				logger.debug("ME_ID="+missTestResult.getMeId());
 				logger.debug("MS_ID="+missTestResult.getMsId());
 				//session.update(missTestResultUpdate);
+				String startTimesql="";
+						if(missTestResult.getMtrStartTime()!=null)
+							startTimesql=" missTestResult.mtrStartTime =:mtrStartTime , ";
+				String endTimesql="";
+						if(missTestResult.getMtrEndTime()!=null)
+							endTimesql=", missTestResult.mtrEndTime =:mtrEndTime  ";
 				query=session.createQuery("update MissTestResult missTestResult " +
 						" set missTestResult.mtrResultCode =:mtrResultCode ," +
-						" missTestResult.mtrTestDate =:mtrTestDate " +
+						startTimesql+
+					//	" missTestResult.mtrTestDate =:mtrTestDate ," +
+						" missTestResult.mtrStatus =:mtrStatus " +
+						endTimesql+
 						" where missTestResult.missCandidate.mcaId=:mcaId and " +
 						" missTestResult.meId=:meId and " +
 						" missTestResult.msId=:msId ");
 				
 				query.setParameter("mcaId", missCandidate.getMcaId()); 
 				query.setParameter("meId", missTestResult.getMeId());
-				query.setParameter("msId", missTestResult.getMsId());  
+				query.setParameter("msId", missTestResult.getMsId());
+				query.setParameter("mtrStatus", missTestResult.getMtrStatus());  
+				if(startTimesql.length()>0)
+					query.setParameter("mtrStartTime", missTestResult.getMtrStartTime());
+				if(endTimesql.length()>0)
+					query.setParameter("mtrEndTime", missTestResult.getMtrEndTime());  
 				query.setParameter("mtrResultCode", missTestResult.getMtrResultCode()); 
-				query.setParameter("mtrTestDate", new Date());
+				//query.setParameter("mtrTestDate", missTestResult.getMtrTestDate());
 				returnId = Long.parseLong((query.executeUpdate())+"");
 			}else{ //save
 				try{
@@ -224,6 +242,78 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		}
 		// TODO Auto-generated method stub
 		return returnId;
+	
+	}
+	@Override
+	public int startMissTestResult(String userid,
+			MissTestResult missTestResult) throws DataAccessException {
+		// TODO Auto-generated method stub
+
+		MissCandidate missCandidate = null;
+		MissExam missExam = null;
+		Long returnId  = null;
+		int timelimit=0;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
+		query.setParameter("mcaUsername", userid);
+		Object obj=query.uniqueResult(); 
+	
+
+		// period of 1 year and 7 days
+		
+		if(obj!=null){		
+			missCandidate=(MissCandidate)obj;
+			 query=session.createQuery(" select missExam from MissExam missExam where missExam.meId=:meId");
+			 query.setParameter("meId", missTestResult.getMeId());
+			 Object obj2=query.uniqueResult();
+			 if(obj2!=null){	
+				 missExam=(MissExam)obj2;
+				 timelimit= missExam.getMeTimeLimit().intValue();
+				 timelimit=timelimit*60; //standardSeconds
+				 missTestResult.setMissCandidate(missCandidate);
+					query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.missCandidate.mcaId=:mcaId and " +
+							" missTestResult.meId=:meId and "+
+							" missTestResult.msId=:msId  ");
+					query.setParameter("mcaId", missCandidate.getMcaId());
+					query.setParameter("meId", missTestResult.getMeId());
+					query.setParameter("msId", missTestResult.getMsId());
+					 
+					List list=query.list();
+					if(list!=null && list.size()>0){//update 
+						MissTestResult testResult=(MissTestResult)list.get(0);
+						Long time=testResult.getMtrStartTime().getTime();
+						java.sql.Timestamp now = new java.sql.Timestamp(new Date().getTime());
+						//Long time=testResult.getMtrStartTime().getTime();
+						DateTime start = new DateTime(time);
+						DateTime end = new DateTime(now.getTime());
+						logger.debug(" ================== old time"+timelimit);
+						//start=start.minusMinutes(timelimit);
+						Interval interval = new Interval(start, end);
+						logger.debug(" ================== interval time"+interval.toDuration().getStandardMinutes());
+						timelimit=timelimit-(int)interval.toDuration().getStandardSeconds();
+						
+					}else{ //save
+						try{
+							obj = session.save(missTestResult);
+						
+							if(obj!=null){
+								//returnId =(th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK) obj;
+								returnId=1l;
+							}
+						} finally {
+								if (session != null) {
+									session = null;
+								} 
+						}
+						
+					}
+			 }
+			
+    
+		}
+		logger.debug("timelimit="+timelimit);
+		// TODO Auto-generated method stub
+		return timelimit;
 	
 	}
 	 
