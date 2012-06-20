@@ -18,9 +18,11 @@
 
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
-
+ 
 <link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
-<link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" /> 
+<%--
+<link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" />  
+--%>
 
 <style>
 .ui-widget { font-family: Trebuchet MS, Tahoma, Verdana,
@@ -69,7 +71,7 @@ $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
-  
+ 
   _path="${url}";
   //alert(_path)
   //alert(_path.split(";jsessionid=").length)
@@ -77,6 +79,12 @@ $(document).ready(function() {
 	  _path=_path.split(";jsessionid=")[0];
 	  //alert(_path.split(";jsessionid=").length);
   }
+  $("#mcaBirthDate" ).datepicker({
+		showOn: "button",
+		buttonImage: _path+"resources/images/calendar.gif",
+		buttonImageOnly: true,
+		dateFormat:"dd/mm/yy" 
+	});
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
@@ -85,7 +93,12 @@ $(document).ready(function() {
 	  format: 'hms', description: ''});
 });
 function doStart(){
-	document.forms["missExamForm"].submit();
+	//document.forms["missExamForm"].submit();
+//	$("#a_start").click(); 
+//alert("x");
+	$.post("exam/info",$("#missExamForm").serialize(), function(data) {
+	   window.location.href='${examInfoUrl}';
+	});
 }
 function loadDynamicPage(pageId){
 	//	var id="1";
@@ -168,7 +181,7 @@ function appendContent(data){
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
         <!--   <form class="well" style="border:2px solid #DDD"> -->
-         <form:form  id="missExamForm" name="missExamForm" modelAttribute="missExamForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="${examInfoUrl}">
+         <form:form  id="missExamForm" name="missExamForm" modelAttribute="missExamForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Infomation</strong></td>
@@ -176,7 +189,14 @@ function appendContent(data){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">First Name:</td>
-	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaFirstName"/>
+	    					 <td align="left" width="24%">
+	    					 <form:select path="missCandidate.mcaTitleType" cssStyle="width:70px;background:#FFFFFF">
+    						<form:option value="0">นาย</form:option>
+    						<form:option value="1">นาง</form:option>
+    						<form:option value="2">นางสาว</form:option>
+    						<form:option value="3">ระบุ 	&rarr;</form:option>
+    					</form:select>
+    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px"/>
 	    					 </td>
 	    					<td align="left" width="10%">Last Name:</td>
 	    					<td align="left" width="24%"><form:input path="missCandidate.mcaLastName"/></td>
@@ -211,7 +231,7 @@ function appendContent(data){
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
-	    					</table> 
+	    					</table>  
 	    					</form:form>
 	     <div align="center">			
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px;width: 20%">
@@ -231,6 +251,7 @@ function appendContent(data){
       </div>
        <div align="center">	
        <a class="btn btn-primary" onclick="doStart()" ><span style="color: white;font-weight: bold;">Next&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
+       <!-- <input type="submit" value="AA"> -->
        </div>
 </fieldset> 
 	    </div>

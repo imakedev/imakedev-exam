@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <c:url value="/exam/template" var="finishUrl"/>
 <script type="text/javascript">
-$(document).ready(function() {
-	
+$(document).ready(function() { 
+	markQuestion($("#answered").val()); 
 });
 function goToDynamicPage(pageId,formID,navi){
 	/* if(navi=='prev'){
@@ -27,7 +27,9 @@ function goToDynamicPage(pageId,formID,navi){
           <div> 
           <form:hidden path="examIndex" id="examIndex"/>
           <form:hidden path="questionIndex" id="questionIndex"/>
+           <form:hidden path="oldQuestionIndex" id="oldQuestionIndex"/>
           <form:hidden path="mode" id="mode"/>
+          <input type="hidden"  id="answered" name="answered" value="${answered}">
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Question No. ${missExamForm.questionIndex+1}</strong></td>
