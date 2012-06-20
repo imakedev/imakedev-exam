@@ -17,6 +17,7 @@ public class MissExamForm extends CommonForm implements Serializable{
 	private MissCandidate missCandidate;
 	private int examIndex;
 	private int questionIndex;
+	private int oldQuestionIndex;
 	private MissSery missSery;
 	private String mcaBirthDate;
 	
@@ -53,6 +54,12 @@ public class MissExamForm extends CommonForm implements Serializable{
 	}
 	public void setExamIndex(int examIndex) {
 		this.examIndex = examIndex;
+	}
+	public int getOldQuestionIndex() {
+		return oldQuestionIndex;
+	}
+	public void setOldQuestionIndex(int oldQuestionIndex) {
+		this.oldQuestionIndex = oldQuestionIndex;
 	}
 
 }
