@@ -25,6 +25,8 @@ public interface MissExamService {
 	
 	public abstract int saveOrUpdateMissTestResult(MissTestResult missTestResult);
 	public abstract int startMissTestResult(MissTestResult missTestResult);
+	public abstract int checkMissTestResult(MissTestResult missTestResult);	
+	
 	
 	
 	// File
