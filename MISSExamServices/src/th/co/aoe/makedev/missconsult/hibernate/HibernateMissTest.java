@@ -234,19 +234,25 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 		Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
 		query.setParameter("mcaUsername", userid);
 		Object obj=query.uniqueResult(); 	 
+		String queryMq="";
+		boolean whereMq=false;
+		if(missTest.getId().getMissQuestion()!=null && missTest.getId().getMissQuestion().getMqId()!=null)
+		{
+			queryMq=" missTest.id.missQuestion.mqId=:mqId and";
+			whereMq=true;
+		}
 		if(obj!=null){		
 			missCandidate=(MissCandidate)obj;
 			logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
 			missTest.getId().setMissCandidate(missCandidate);
 			query=session.createQuery(" select missTest from MissTest missTest where missTest.id.missCandidate.mcaId=:mcaId and " +
-			//		" missTest.id.missChoice.mcId=:mcId and "+
 					" missTest.id.missExam.meId=:meId and "+
-					" missTest.id.missQuestion.mqId=:mqId and "+
+					queryMq+
 					" missTest.id.missSery.msId=:msId  ");
 			query.setParameter("mcaId", missCandidate.getMcaId());
-		//	query.setParameter("mcId", missTest.getId().getMissChoice().getMcId());
 			query.setParameter("meId", missTest.getId().getMissExam().getMeId());
-			query.setParameter("mqId", missTest.getId().getMissQuestion().getMqId()); 
+			if(whereMq)
+				query.setParameter("mqId", missTest.getId().getMissQuestion().getMqId()); 
 			query.setParameter("msId", missTest.getId().getMissSery().getMsId());  
 			return query.list();
 		}
