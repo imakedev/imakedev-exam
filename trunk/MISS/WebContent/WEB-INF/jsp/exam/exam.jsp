@@ -82,14 +82,44 @@ $(document).ready(function() {
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
-  //format: 'YOWDHMS', description: ''});
- // format: 'HMS', description: ''});
 	  format: 'hms', description: ''});
-	   var page="exam/template?examIndex="+${missExamForm.examIndex}+"&questionIndex="+${missExamForm.questionIndex};
-	  // alert(page)
-	  loadDynamicPage(page);
-  
-});
+  var timelimit=(parseInt('${timelimit}'))+"";
+	 // var endTime =new Date(parseInt(timelimit[2]), parseInt(timelimit[1]),  parseInt(timelimit[0]),timelimit[3],parseInt(timelimit[4])+4,parseInt(timelimit[5]),0);
+	 			// new Date(year        , month                 ,  day                   ,hours       ,minutes                  ,seconds,              milliseconds)
+		  $('#examCountdown').countdown({until:+timelimit, compact: true,
+		  format: 'dHMS', description: '',onExpiry: watchCountdown});
+ if(parseInt('${timelimit}')<=0){
+	 $( "#dialog-timeOut" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+					 
+				}
+			},
+			close: function(event, ui) {  window.location.href="<c:url value='/logout'/>"; }
+		});
+ }else{
+		   var page="exam/template?examIndex="+${missExamForm.examIndex}+"&questionIndex="+${missExamForm.questionIndex};
+		  // alert(page)
+		  loadDynamicPage(page);
+ }  
+}); ; 
+ 
+function watchCountdown(periods) { 
+	$( "#dialog-timeOut" ).dialog({
+		/* height: 140, */
+		modal: true,
+		buttons: {
+			"Ok": function() { 
+				$( this ).dialog( "close" );
+				 
+			}
+		},
+		close: function(event, ui) {  window.location.href="<c:url value='/logout'/>"; }
+	});
+}
 function loadDynamicPage(pageId){
 //	alert(pageId)
 			$.ajax({
@@ -103,12 +133,32 @@ function loadDynamicPage(pageId){
 					  }
 				});
 }
+function goToQuestion(question_number){
+	// var page="exam/template?examIndex="+${missExamForm.examIndex}+"&questionIndex="+question_number;
+	  // alert(page)
+	 // alert($("#missExamForm"))
+	  //loadDynamicPage(page);
+	  $("#mode").val("goToPage");
+	  $("#oldQuestionIndex").val($("#questionIndex").val());
+	  $("#questionIndex").val(question_number);
+	  // alert()
+	 // alert(question_number);
+	  postDynamicPage("exam/template","missExamForm");
+}
 function postDynamicPage(pageId,formID){
 	$.post(pageId,$("#"+formID).serialize(), function(data) {
 		appendContentWithId(data,"_exam_content");
 	});
 }
-
+function markQuestion(answereds){
+	//var answereds=$("#answered").val();
+	if(answereds.length>0){
+		var answered_array=answereds.split(",");
+		for(var i=0;i<answered_array.length;i++){
+			document.getElementById("question_number_checkbox_"+answered_array[i]).checked=true;
+		}
+	}
+}
 function appendContentWithId(data,contentId){
 //	alert(data)
 //	alert(data.indexOf("j_username")!=-1);
@@ -137,6 +187,9 @@ function appendContent(data){
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
+ <div id="dialog-timeOut" title="TimeOut" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	TimeOut
+</div>
  <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
  <div class="container-fluid">
     <div class="row-fluid">
@@ -178,14 +231,28 @@ function appendContent(data){
     	    	
     	      	${loop.index+1} ,${len(missExamForm.missCandidate.missSery.missExams[0].missQuestions)} 
     	    </c:forEach>
+    	    <c:set var="endLoop" value="${offset + maxPageItems}"/>  
+<c:if test="${fn:length(searchResults) < endLoop}">  
+  <c:set var="endLoop" value="${fn:length(searchResults)"/>  
+</c:if> 
     	    --%>
-    	   <div align="right"> Time Left hh:mm:ss</div>
-    	   <strong>Question</strong>
+    	   <div align="right">Time Left <span id="examCountdown"></span></div><br/>
+    	   <strong>${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName}</strong>
     	   <div>
     	   <table width="100%" border="0" style="font-size: 12px"> 
+    	    <c:forEach items="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].missQuestions}" var="missQuestions" varStatus="loop"> 
+    	    	 <c:if test="${loop.index%4==0}">
+    	    		<tr>
+    	    	</c:if>
+    	    	<td><input id="question_number_checkbox_${missQuestions.mqId}" type="checkbox" disabled="disabled"><span style="cursor: pointer;" onclick="goToQuestion('${loop.index}')">${loop.index+1}</span></td>
+    	    	<c:if test="${loop.index%4==3}">
+    	    		</tr>
+    	    	</c:if>  
+    	    	
+    	      <%-- 	${loop.index+1} ,${len(missExamForm.missCandidate.missSery.missExams[${missExamForm.examIndex}].missQuestions)}  --%>
+    	    </c:forEach>
     	   
-    	   
-    	    <tr>
+    	  <!--   <tr>
 				<td><input type="checkbox"><span style="cursor: pointer;">1</span></td>    	      
 				<td><input type="checkbox"><span style="cursor: pointer;">2</span></td>
 				<td><input type="checkbox"><span style="cursor: pointer;">3</span></td>
@@ -196,7 +263,7 @@ function appendContent(data){
 				<td><input type="checkbox"><span style="cursor: pointer;">6</span></td>
 				<td></td>
 				<td></td>
-    	    </tr>
+    	    </tr> -->
     	   <!--   <tr>
 				<td><input type="checkbox" disabled="disabled" checked="checked"><span style="cursor: pointer;">9</span></td>    	      
 				<td><input type="checkbox"><span style="cursor: pointer;">10</span></td>

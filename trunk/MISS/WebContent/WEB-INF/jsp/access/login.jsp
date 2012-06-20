@@ -6,6 +6,9 @@
 <title>Miss Consult</title>
 <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
+<script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.21.custom.min.js'/>"></script>
+<link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
 <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/style.css'/>" />
 <style type="text/css">
 .content_box_top { 
@@ -15,13 +18,32 @@
 <script type="text/javascript">
 function goHome(){
 	window.location.href="<c:url value='/todolist'/>";
-	
 }
-
+$(document).ready(function() {
+	if($("#_message").val().length>0){ 
+		//$("#_message_show").html($("#_message").val())
+		$( "#dialog-Message" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+					 
+				}
+			}
+		   //,
+			//close: function(event, ui) {  window.location.href="<c:url value='/logout'/>"; }
+		});
+	}
+});
 </script>
 </head>
 
 <body>
+<c:url value="/j_spring_security_check" var="security_check"/>
+ <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	<span id="_message_show">${message}</span>
+</div>
 <div id="wrapper">
 <div align="left" style="padding-top:5px;"><a href="#" title="Miss Consult"><img src="<c:url value='/resources/images/logowebmc.png'/>"  border="0"/></a></div>
 <div align="right" class="language" style="padding-top:10px; padding-right:10px;"><a href="#">TH</a> | <a href="#">EN</a></div>
@@ -32,7 +54,8 @@ function goHome(){
                    
         <div  style="padding-bottom:10px;">                       
            <div id="stylized" class="loginform">
-            <form id="form" name="form" method="post" action='j_spring_security_check'>
+            <form id="form" name="form" method="post" action='${security_check}'>
+            <input type="hidden" id="_message" value="${message}"/>
             <h1>Login form</h1>
             <p>Only MissConsult members</p>
             

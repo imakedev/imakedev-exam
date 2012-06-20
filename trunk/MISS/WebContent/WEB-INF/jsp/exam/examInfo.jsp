@@ -84,6 +84,15 @@ $(document).ready(function() {
  // format: 'HMS', description: ''});
 	  format: 'hms', description: ''});
 });
+function checkAgree(){
+	if(document.getElementById("agree_element").checked){
+		$("#goStart").attr("href","${examUrl}");
+		$("#goStart").removeClass("disabled"); 
+	}else{
+		$("#goStart").removeAttr("href");
+		$("#goStart").addClass("disabled"); 
+	}
+}
 function loadDynamicPage(pageId){
 	//	var id="1";
 		//$.get('ajax/search', function(data) {
@@ -178,14 +187,14 @@ function appendContent(data){
 	    					 <td align="left" width="100%">&nbsp;${missExam.meInstruction}</td> 
 	    					</tr> 
 	    					<tr>
-	    					 <td align="left" width="100%">&nbsp;<input type="checkbox">&nbsp; Agree</td> 
+	    					 <td align="left" width="100%">&nbsp;<input type="checkbox" id="agree_element" onclick="checkAgree()">&nbsp; Agree</td> 
 	    					</tr>
 	    					</table> 
 	    					</form>
 	     <div align="center">			
       </div>
        <div align="center">	
-       <a class="btn btn-primary" href="${examUrl}" ><span style="color: white;font-weight: bold;">Start&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
+       <a id="goStart" class="btn btn-primary disabled"   ><span style="color: white;font-weight: bold;">Start&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
        </div>
 </fieldset> 
 	    </div>
