@@ -191,7 +191,7 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissCandidate missCandidate = new MissCandidate();
         missCandidate.setMcaId(megId);
-        missCandidate.setServiceName("findMissCandidateById");
+        missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_FIND_BY_ID);
         VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
         return (MissCandidate)resultMessage.getResultListObj().get(0);
     }

@@ -183,6 +183,7 @@ public class CandidateController
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         candidateForm.getMissCandidate().setSection(section);
+        model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("candidateForm", candidateForm);
         return "exam/template/candidateAccount";
     }
