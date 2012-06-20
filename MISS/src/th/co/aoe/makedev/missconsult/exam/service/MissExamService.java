@@ -24,6 +24,8 @@ public interface MissExamService {
 	public abstract List<MissTest> findMissTest(MissTest missTest);
 	
 	public abstract int saveOrUpdateMissTestResult(MissTestResult missTestResult);
+	public abstract int startMissTestResult(MissTestResult missTestResult);
+	
 	
 	// File
 	 public abstract MissAccount findMissAccountById(Long long1);
