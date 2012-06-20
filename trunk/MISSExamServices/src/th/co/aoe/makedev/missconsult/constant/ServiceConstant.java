@@ -143,7 +143,8 @@ public class ServiceConstant {
 	public static final String MISS_TEST_RESULT_SEARCH = "searchMissTestResult";
 	public static final String MISS_TEST_RESULT_FIND_BY_ID = "findMissTestResultById";
 	public static final String MISS_TEST_RESULT_PROCESS = "processMissTestResult"; 
-	public static final String MISS_TEST_RESULT_START = "startMissTestResult"; 
+	public static final String MISS_TEST_RESULT_START = "startMissTestResult";
+	public static final String MISS_TEST_RESULT_CHECK = "checkMissTestResult"; 
 	
 	// MISS_TODO
 	public static final String MISS_TODO_SAVE = "saveMissTodo";

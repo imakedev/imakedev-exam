@@ -17,5 +17,7 @@ public interface MissTestResultService {
 		public int processMissTestResult()throws DataAccessException  ; 
 		public Long saveOrUpdateMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
 		public int startMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
+		public int checkMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
+		
 		
 }
