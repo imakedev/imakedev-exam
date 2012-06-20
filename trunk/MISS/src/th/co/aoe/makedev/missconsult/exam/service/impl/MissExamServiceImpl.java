@@ -73,7 +73,7 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		} 
 		return missTests;
 	}
-
+	
 	@Override
 	public int saveOrUpdateMissTestResult(MissTestResult missTestResult) {
 		// TODO Auto-generated method stub
@@ -157,6 +157,16 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 			return (MissSeriesAttach) resultMessage.getResultListObj().get(0);
 		else
 			return null;
+	}
+
+	@Override
+	public int startMissTestResult(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub 
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_START);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
 	}
 
 }
