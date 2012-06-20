@@ -185,7 +185,7 @@ function doAction(action,formID,sectionID){
     				<tr valign="top">
     					<td width="25%">First-Lastname:</td>
     					<td width="50%" colspan="2">
-    					<form:select path="missCandidate.mcaTitleType" cssStyle="width:70px">
+    					<form:select path="missCandidate.mcaTitleType" cssStyle="width:70px;">
     						<form:option value="0">นาย</form:option>
     						<form:option value="1">นาง</form:option>
     						<form:option value="2">นางสาว</form:option>
@@ -198,7 +198,7 @@ function doAction(action,formID,sectionID){
     					<option  value="3">อื่นๆ</option>
     					</select> -->
     					<!-- <input type="text" style="width: 120px" /> -->
-    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px"/>
+    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px;bgcolor:#FFFFFF"/>
     					&nbsp;
     					<!-- <input type="text" style="width: 120px" /> -->
     					<form:input path="missCandidate.mcaLastName" cssStyle="width:120px"/>

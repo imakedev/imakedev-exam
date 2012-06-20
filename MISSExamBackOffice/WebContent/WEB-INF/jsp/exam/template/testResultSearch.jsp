@@ -1,5 +1,68 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+<<script type="text/javascript">
+$(document).ready(function() {
+	renderPageSelect();
+	$("#testFrom" ).datepicker({
+		showOn: "button",
+		buttonImage: _path+"resources/images/calendar.gif",
+		buttonImageOnly: true,
+		dateFormat:"dd/mm/yy" 
+	});
+	$("#testTo" ).datepicker({
+		showOn: "button",
+		buttonImage: _path+"resources/images/calendar.gif",
+		buttonImageOnly: true,
+		dateFormat:"dd/mm/yy" 
+	});
+});
+function goPrev(){
+	if($("#pageNo").val()!='1'){
+		var prev=parseInt($("#pageNo").val())-1;
+		$("#pageNo").val(prev);
+		doAction('search','0');
+	}
+}
+function goNext(){
+	var next=parseInt($("#pageNo").val());
+	if(next<parseInt($("#pageCount").val())){
+		next=next+1;
+		$("#pageNo").val(next);
+		doAction('search','0');
+	}
+} 
+function goToPage(){ 
+	$("#pageNo").val(document.getElementById("resultPageSelect").value);
+	doAction('search','0');
+}
+function renderPageSelect(){
+	var pageStr="<select name=\"resultPageSelect\" id=\"resultPageSelect\" onchange=\"goToPage()\" style=\"width: 50px\">";
+//	var pageCount=parseInt($("#pageCount").val());
+	var pageCount=$("#pageCount").val();
+	for(var i=1;i<=pageCount;i++){
+		pageStr=pageStr+"<option value=\""+i+"\">"+i+"</option>";
+	}
+	pageStr=pageStr+"</select>"; 
+	$("#pageElement").html(pageStr);
+	document.getElementById("resultPageSelect").value=$("#pageNo").val();
+}
+function doAction(mode,id){
+	$("#mode").val(mode);
+	if(mode=='deleteItems'){
+		$("#mtrIdArray").val(id);
+	}else if(mode!='search'){
+		$("#mtrId").val(id);
+	}else {
+		$("#mtrId").val("0");
+	}
+	$.post("result/search",$("#resultForm").serialize(), function(data) {
+		  // alert(data);
+		    appendContent(data);
+		  // alert($("#_content").html());
+		});
+}
+
+</script>
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
@@ -11,6 +74,7 @@
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/>
+          
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Test Result Search</strong></td>
@@ -31,7 +95,7 @@
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Username:</td>
 	    					 <td align="left" width="17%">    					
-	    					<input type="text">	
+	    					<form:input path="mcaUsername"/>
 	    					 </td>
 	    					<td align="left" width="17%">&nbsp;</td>
 	    					<td align="left" width="17%">&nbsp;</td>
@@ -40,35 +104,35 @@
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">First Name:</td>
-	    					 <td align="left" width="17%"> <input type="text" name="registerNo" />
+	    					 <td align="left" width="17%"> <form:input path="mcaFirstName" />
 	    					 </td>
 	    					<td align="left" width="17%">Last Name:</td>
-	    					<td align="left" width="17%"><input type="text" name="registerNo" /></td>
+	    					<td align="left" width="17%"><form:input path="mcaLastName" /></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Position:</td>
-	    					 <td align="left" width="17%">  <input type="text" name="registerNo" />
+	    					 <td align="left" width="17%"> <form:input path="mcaPostion" />
 	    					 </td>
 	    					<td align="left" width="17%">Department:</td>
-	    					<td align="left" width="17%"><input type="text" name="registerNo"  /></td>
+	    					<td align="left" width="17%"><form:input path="mcaDepartment"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Test From:</td>
-	    					 <td align="left" width="17%">  <input type="text" id="datepicker_from" style="width:75px"/>
+	    					 <td align="left" width="17%">  <form:input path="testFrom" cssStyle="width:75px"/>
 	    					 </td>
 	    					<td align="left" width="17%">Test To:</td>
-	    					<td align="left" width="17%"><input type="text" id="datepicker_to" style="width:75px"  /></td>
+	    					<td align="left" width="17%"><form:input path="testTo" cssStyle="width:75px"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Company Name:</td>
-	    					 <td align="left" colspan="3" width="51%">    					
-	    						<input type="text" name="registerNo"   style="width: 100%"/>
+	    					 <td align="left" colspan="3" width="51%"> 
+	    					 <form:input path="mcaCompanyName" cssStyle="width:100%"/>   					
 	    					 </td> 
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
@@ -78,18 +142,13 @@
 	    					<tr>
 	    					<td align="left" width="60%">
 	    					
-	    					<a class="btn btn-success"><i class="icon-pencil icon-white"></i>&nbsp;Do Paper Test</a>&nbsp;
-	    					<a class="btn btn-info"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;Export</a>&nbsp;
-	    					<a class="btn btn-info"><i class="icon-list-alt icon-white"></i>&nbsp;Summary</a>&nbsp;
-	    					<a class="btn btn-danger"><i class="icon-eject icon-white"></i>&nbsp;Ignore</a></td>
+	    					<a class="btn btn-success disabled"><i class="icon-pencil icon-white"></i>&nbsp;Do Paper Test</a>&nbsp;
+	    					<a class="btn btn-info disabled"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;Export</a>&nbsp;
+	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;Summary</a>&nbsp;
+	    					<a class="btn btn-danger disabled"><i class="icon-eject icon-white"></i>&nbsp;Ignore</a></td>
 	    					<td align="right" width="40%">
-	    					
-	    					<a href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId" style="width: 50px"> 
-											 <option value="0">1</option>
-											 <option value="20">20</option>
-											 <option value="300">300</option>
-												
-	    					</select>&nbsp;|&nbsp;<a href="#">Next</a>&nbsp;<a  onclick="callAjax()" class="btn btn-primary"><i class="icon-search icon-white"></i>&nbsp;Seach</a></td>
+	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a><
+	    					</td>
 	    					</tr>
 	    					</table> 
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
