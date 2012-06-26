@@ -152,6 +152,7 @@ public class MissController
     //	if(meId!=null && !meId.equals("0")){
     		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
     //	}
+    		model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
     		model.addAttribute("display", "display: none");
       //  model.addAttribute("missContacts", missContacts);
     		contactForm.setMissContact(missContact);
@@ -172,6 +173,7 @@ public class MissController
         missContact.setMcontactRef(Long.parseLong(maId));
         contactForm.setMissContact(missContact);
         contactForm.setMode("new");
+        model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
         model.addAttribute("display", "display: none");
         return "exam/template/contactManagementSection";
     }
@@ -198,7 +200,7 @@ public class MissController
                 id = contactForm.getMissContact().getMcontactId();
                 message = "Update success !";
             }
-        
+    	model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(contactForm.getMaId())));
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         model.addAttribute("contactForm", contactForm);

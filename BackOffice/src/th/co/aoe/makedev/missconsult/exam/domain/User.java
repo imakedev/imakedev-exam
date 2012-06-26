@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.domain:
 //            Role
 
-@Entity(name="user_contact")
+@Entity(name="user")
 public class User
 {
 

@@ -36,6 +36,9 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.RoleContact;
+import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -1173,5 +1176,186 @@ public class MissExamServiceImpl extends PostCommon
 	        else
 	        	return null;
 	}
+  
+	
+	@Override
+	public Long saveRoleContact(RoleContact roleContact) {
+		// TODO Auto-generated method stub
+		roleContact.setServiceName(ServiceConstant.ROLE_CONTACT_SAVE);
+	    VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+	    roleContact = (RoleContact)resultMessage.getResultListObj().get(0);
+	    return roleContact.getRcId();
+	}
+
+	@Override
+	public int updateRoleContact(RoleContact roleContact) {
+		// TODO Auto-generated method stub
+		roleContact.setServiceName(ServiceConstant.ROLE_CONTACT_UPDATE);
+        VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+        roleContact = (RoleContact)resultMessage.getResultListObj().get(0);
+        return roleContact.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteRoleContact(RoleContact roleContact, String service) {
+		// TODO Auto-generated method stub
+		roleContact.setServiceName(service);
+        VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+        roleContact = (RoleContact)resultMessage.getResultListObj().get(0);
+        return roleContact.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public RoleContact findRoleContactById(Long rcId) {
+		// TODO Auto-generated method stub
+		RoleContact roleContact = new RoleContact();
+		roleContact.setRcId(rcId);
+		roleContact.setServiceName(ServiceConstant.ROLE_CONTACT_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (RoleContact)resultMessage.getResultListObj().get(0);
+	        return null;
+	}
+
+	@Override
+	public VResultMessage searchRoleContact(RoleContact roleContact) {
+		// TODO Auto-generated method stub
+		roleContact.setServiceName(ServiceConstant.ROLE_CONTACT_SEARCH);
+        return postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+	}
+
+	@Override
+	public Long saveRoleMapping(RoleMapping roleMapping) {
+		// TODO Auto-generated method stub
+		roleMapping.setServiceName(ServiceConstant.ROLE_MAPPING_SAVE);
+	    VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+	    roleMapping = (RoleMapping)resultMessage.getResultListObj().get(0);
+	    return roleMapping.getRcId();
+	}
+
+	@Override
+	public int updateRoleMapping(RoleMapping roleMapping) {
+		// TODO Auto-generated method stub
+		roleMapping.setServiceName(ServiceConstant.ROLE_MAPPING_UPDATE);
+        VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+        roleMapping = (RoleMapping)resultMessage.getResultListObj().get(0);
+        return roleMapping.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteRoleMapping(RoleMapping roleMapping, String service) {
+		// TODO Auto-generated method stub
+		roleMapping.setServiceName(service);
+        VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+        roleMapping = (RoleMapping)resultMessage.getResultListObj().get(0);
+        return roleMapping.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public RoleMapping findRoleMappingById(Long rcId) {
+		// TODO Auto-generated method stub
+		RoleMapping roleMapping = new RoleMapping();
+		roleMapping.setRcId(rcId);
+		roleMapping.setServiceName(ServiceConstant.ROLE_MAPPING_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (RoleMapping)resultMessage.getResultListObj().get(0);
+	        return null;
+	}
+
+	@Override
+	public VResultMessage searchRoleMapping(RoleMapping roleMapping) {
+		// TODO Auto-generated method stub
+		roleMapping.setServiceName(ServiceConstant.ROLE_MAPPING_SEARCH);
+        return postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+	}
+
+
+	@Override
+	public Long saveRoleType(RoleType roleType) {
+		// TODO Auto-generated method stub
+		roleType.setServiceName(ServiceConstant.ROLE_TYPE_SAVE);
+	    VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	    roleType = (RoleType)resultMessage.getResultListObj().get(0);
+	    return roleType.getRtId();
+	}
+
+	@Override
+	public int updateRoleType(RoleType roleType) {
+		// TODO Auto-generated method stub
+		roleType.setServiceName(ServiceConstant.ROLE_TYPE_UPDATE);
+        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+        roleType = (RoleType)resultMessage.getResultListObj().get(0);
+        return roleType.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteRoleType(RoleType roleType, String service) {
+		// TODO Auto-generated method stub
+		roleType.setServiceName(service);
+        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+        roleType = (RoleType)resultMessage.getResultListObj().get(0);
+        return roleType.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public RoleType findRoleTypeById(Long rtId) {
+		// TODO Auto-generated method stub
+		RoleType roleType = new RoleType();
+		roleType.setRtId(rtId);
+		roleType.setServiceName(ServiceConstant.ROLE_TYPE_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (RoleType)resultMessage.getResultListObj().get(0);
+	        return null;
+	}
+
+	@Override
+	public VResultMessage searchRoleType(RoleType roleType) {
+		// TODO Auto-generated method stub
+		roleType.setServiceName(ServiceConstant.ROLE_TYPE_SEARCH);
+        return postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	}
+
+	@Override
+	public List listRoleTypeByRcId(Long rcId) {
+		// TODO Auto-generated method stub
+		 RoleType roleType = new RoleType();
+		 roleType.setRcId(rcId);
+		 roleType.setServiceName(ServiceConstant.ROLE_TYPE_LIST_BY_RC_ID);
+	        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	       return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List listRoleContactBymaId(Long maId) {
+		// TODO Auto-generated method stub
+		 RoleContact roleContact = new RoleContact();
+		 roleContact.setMaId(maId);
+		 roleContact.setServiceName(ServiceConstant.ROLE_CONTACT_LIST_BY_MA_ID);
+	        VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
+	       return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List listRoleMappingByrcId(Long rcId) {
+		// TODO Auto-generated method stub
+		 RoleMapping roleMapping = new RoleMapping();
+			 roleMapping.setRcId(rcId);
+			 roleMapping.setServiceName(ServiceConstant.ROLE_MAPPING_LIST_BY_RC_ID);
+		        VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
+		       return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List listRoleTypes(Long maId) {
+		// TODO Auto-generated method stub
+		 RoleType roleType = new RoleType();
+		 roleType.setMaId(maId);
+		 roleType.setServiceName(ServiceConstant.ROLE_TYPE_LIST);
+	        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	       return resultMessage.getResultListObj();
+	}
+
 
 }
