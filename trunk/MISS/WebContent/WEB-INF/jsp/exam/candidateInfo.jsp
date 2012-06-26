@@ -205,7 +205,7 @@ function appendContent(data){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Position:</td>
-	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPostion"/>
+	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPosition"/>
 	    					 </td>
 	    					<td align="left" width="10%">Department:</td>
 	    					<td align="left" width="24%"><form:input path="missCandidate.mcaDepartment"/></td>
