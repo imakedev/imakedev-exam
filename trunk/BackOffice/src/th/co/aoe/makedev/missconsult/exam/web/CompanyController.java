@@ -44,6 +44,7 @@ public class CompanyController
         logger.debug("########################### @Autowired CompanyController #######################");
         this.missExamService = missExamService;
     }*/
+	// 0=admin,1=miss,2=company
     private String account_type="2";
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model)
@@ -137,6 +138,15 @@ public class CompanyController
        missAccount.setMaAvailableUnit(totalUnit - usedUnit);
         companyForm.setMissAccount(missAccount);
         model.addAttribute("companyForm", companyForm);
+       // model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.valueOf(Long.parseLong(maId))));
+       // missExamService.listRoleMappingByrcId(rcId)
+      //  List<RoleType> roleTypes= missExamService.listRoleTypes();
+        /*if(roleTypes!=null && roleTypes.size()>0){
+        	for (RoleType roleType : roleTypes) {
+        		 
+			}
+        }*/
+       // model.addAttribute("roleTypes", roleTypes);
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
@@ -220,6 +230,7 @@ public class CompanyController
             } else
             if(mode.equals("edit"))
             {
+            	
                 missExamService.updateMissAccount(companyForm.getMissAccount());
                 id = companyForm.getMissAccount().getMaId();
                 message = "Update success !";
@@ -237,7 +248,7 @@ public class CompanyController
     @ResponseBody
     public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
     {
-        System.out.println((new StringBuilder(" xxxxxxxx ")).append(request.getParameter("amount")).toString());
+        //System.out.println((new StringBuilder(" xxxxxxxx ")).append(request.getParameter("amount")).toString());
         MissCandidate missCandidate = new MissCandidate();
         MissSery missSery = new MissSery();
         MissAccount missAccount = new MissAccount();
@@ -319,7 +330,8 @@ public class CompanyController
          MissContact missContact=null;
     //	if(meId!=null && !meId.equals("0")){
     		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
-    //	}
+    //	} 
+    		model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
     		model.addAttribute("display", "display: none");
       //  model.addAttribute("missContacts", missContacts);
     		contactForm.setMissContact(missContact);
@@ -340,6 +352,7 @@ public class CompanyController
         missContact.setMcontactRef(Long.parseLong(maId));
         contactForm.setMissContact(missContact);
         contactForm.setMode("new");
+        model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
         model.addAttribute("display", "display: none");
         return "exam/template/contactManagementSection";
     }
@@ -366,7 +379,7 @@ public class CompanyController
                 id = contactForm.getMissContact().getMcontactId();
                 message = "Update success !";
             }
-        
+        model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(contactForm.getMaId())));
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         model.addAttribute("contactForm", contactForm);

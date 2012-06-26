@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.domain:
 //            User
 
-@Entity(name="role_contact")
+@Entity(name="role")
 public class Role
 implements Serializable {
 	private static final long serialVersionUID = 1L;

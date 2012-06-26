@@ -27,6 +27,9 @@ import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.RoleContact;
+import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public interface MissExamService
@@ -244,4 +247,44 @@ public interface MissExamService
     public abstract int deleteMissSeriesAttach(MissSeriesAttach missSeriesAttach);
 
     public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
+    
+    //Add
+   /* Service.java
+    RService.java
+    RService.java*/
+   public abstract Long saveRoleContact(RoleContact roleContact);
+    
+    public abstract int updateRoleContact(RoleContact roleContact);
+
+    public abstract int deleteRoleContact(RoleContact roleContact,String service);
+
+    public abstract RoleContact findRoleContactById(Long rcId);
+
+    public abstract VResultMessage searchRoleContact(RoleContact roleContact);
+    public abstract List listRoleContactBymaId(Long maId);
+    
+ public abstract Long saveRoleMapping(RoleMapping roleMapping);
+    
+    public abstract int updateRoleMapping(RoleMapping roleMapping);
+
+    public abstract int deleteRoleMapping(RoleMapping roleMapping,String service);
+
+    public abstract RoleMapping findRoleMappingById(Long rcId);
+
+    public abstract VResultMessage searchRoleMapping(RoleMapping roleContact);
+	public abstract List listRoleMappingByrcId(Long rcId);
+    
+ public abstract Long saveRoleType(RoleType roleType);
+    
+    public abstract int updateRoleType(RoleType roleType);
+
+    public abstract int deleteRoleType(RoleType roleType,String service);
+
+    public abstract RoleType findRoleTypeById(Long rcId);
+
+    public abstract VResultMessage searchRoleType(RoleType roleContact);
+    public abstract List listRoleTypeByRcId(Long rcId);
+    public abstract List listRoleTypes(Long maId) ;	
+    
+    
 }

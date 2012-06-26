@@ -281,7 +281,10 @@ public class UploadController {
 				        "attachment; filename=\"\u0e01เทสfชาติชาย.jpg\"");*/
 			/*	response.addHeader("content-disposition",
 				        "inline; filename="+filenameStr.trim());*/
-				
+			File file = new File(ndPathFileGen);
+
+			boolean fileExists = file.exists();
+			if(fileExists){
 				InputStream in = null;
 			      OutputStream out=null;
 				try {
@@ -292,7 +295,8 @@ public class UploadController {
 				} 
 			      InputStream stream  = null;
 			      try {   
-			    		  stream = new FileInputStream(ndPathFileGen);
+			    		  stream = new FileInputStream(file);
+			    		 
 					         in = new BufferedInputStream(stream);
 			         while (true) {
 			            int data = in.read();
@@ -330,7 +334,8 @@ public class UploadController {
 							e.printStackTrace();
 						}
 			         }
-			      }
+				 }
+			    }
     }
     private void createDirectoryIfNeeded(String directoryName)
   	 {

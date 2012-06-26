@@ -20,6 +20,10 @@ public class AccessController {
 		
 		//model.addAttribute("message", message);
 	//	model.addAttribute("message", "เทสสส");
+		//SecurityExpressionRoot.		
+		/*SecurityContextHolder.getContext().getAuthentication().
+		SecurityExpressionRoot x = SecurityExpressionRoot(SecurityContextHolder.getContext().getAuthentication());*/
+		//x.hasAnyRole(arg0)
 		return "access/login";
 	}
 	

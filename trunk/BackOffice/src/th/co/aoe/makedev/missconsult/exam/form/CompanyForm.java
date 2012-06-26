@@ -6,6 +6,7 @@
 package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
+
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.form:
@@ -138,6 +139,22 @@ public class CompanyForm extends CommonForm
 		this.refill = refill;
 	}
 
+	public Long getRcId() {
+		return rcId;
+	}
+
+	public void setRcId(Long rcId) {
+		this.rcId = rcId;
+	}
+
+	public String getRcActionId() {
+		return rcActionId;
+	}
+
+	public void setRcActionId(String rcActionId) {
+		this.rcActionId = rcActionId;
+	}
+
 	private static final long serialVersionUID = 1L;
     private MissAccount missAccount;
     private String maContactBirthDate;
@@ -152,4 +169,6 @@ public class CompanyForm extends CommonForm
     private String maIdArray;
     
     private String refill;
+    private Long rcId;
+    private String rcActionId;
 }
