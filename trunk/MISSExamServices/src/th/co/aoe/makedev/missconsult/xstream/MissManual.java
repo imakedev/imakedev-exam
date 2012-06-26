@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -29,6 +30,7 @@ public class MissManual extends VServiceXML implements Serializable {
 	//ext 
 		private String section; 
 		private String mmIds;
+		private List<MissSery> missSeries; 
     public MissManual() {
     }
 
@@ -87,6 +89,14 @@ public class MissManual extends VServiceXML implements Serializable {
 
 	public void setMmIds(String mmIds) {
 		this.mmIds = mmIds;
+	}
+
+	public List<MissSery> getMissSeries() {
+		return missSeries;
+	}
+
+	public void setMissSeries(List<MissSery> missSeries) {
+		this.missSeries = missSeries;
 	}
 
 

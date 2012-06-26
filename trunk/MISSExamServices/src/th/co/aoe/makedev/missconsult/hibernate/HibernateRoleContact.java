@@ -1,6 +1,5 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,22 +8,19 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissManual;
-import th.co.aoe.makedev.missconsult.managers.MissManualService;
+import th.co.aoe.makedev.missconsult.hibernate.bean.RoleContact;
+import th.co.aoe.makedev.missconsult.managers.RoleContactService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
-@Repository
-@Transactional
-public class HibernateMissManual  extends HibernateCommon implements MissManualService {
+public class HibernateRoleContact  extends HibernateCommon implements RoleContactService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
-	private static final SecureRandom random = new SecureRandom();
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -33,22 +29,22 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissManual findMissManualById(Long mmId)
+	public RoleContact findRoleContactById(Long mmId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		MissManual missManual = null;
+		RoleContact roleContact = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-	//	Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
-		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.missSery.msId=:msId");
+	//	Query query=session.createQuery(" select roleContact from RoleContact roleContact where roleContact.mmId=:mmId");
+		Query query=session.createQuery(" select roleContact from RoleContact roleContact where roleContact.missSery.msId=:msId");
 		query.setParameter("msId", mmId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
-			missManual=(MissManual)obj;
+			roleContact=(RoleContact)obj;
 		}
-	  return missManual;
+	  return roleContact;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public Long saveMissManual(MissManual transientInstance)
+	public Long saveRoleContact(RoleContact transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
@@ -75,22 +71,23 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	
 	
 
-	private int getSize(Session session, MissManual instance) throws Exception{
+	private int getSize(Session session, RoleContact instance) throws Exception{
 		try {
-			Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
+			/*Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 		
 		
-			StringBuffer sb =new StringBuffer(" select count(missManual) from MissManual missManual ");
+			StringBuffer sb =new StringBuffer(" select count(roleContact) from RoleContact roleContact ");
 			
 			boolean iscriteria = false;
 			if(msId !=null && msId.intValue()!=0){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
+				 sb.append(iscriteria?(" and roleContact.missSery.msId="+msId.intValue()+""):(" where roleContact.missSery.msId="+msId.intValue()+""));
 				  iscriteria = true;
 			}
 			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); 
+				 return ((Long)query.uniqueResult()).intValue(); */
+			return 0;
 				 
 		 
 		} catch (HibernateException re) {
@@ -103,26 +100,26 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissManual(MissManual instance,Pagging pagging) throws DataAccessException {
+	 public List searchRoleContact(RoleContact instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			Session session = sessionAnnotationFactory.getCurrentSession();
+			/*Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
-				 
+		
 					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 				
-					StringBuffer sb =new StringBuffer(" select missManual from MissManual missManual ");
+					StringBuffer sb =new StringBuffer(" select roleContact from RoleContact roleContact ");
 					
 					boolean iscriteria = false;
 					if(msId !=null && msId.intValue()!=0){  
 						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
+						 sb.append(iscriteria?(" and roleContact.missSery.msId="+msId.intValue()+""):(" where roleContact.missSery.msId="+msId.intValue()+""));
 						  iscriteria = true;
 					}
 					
 					
 					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by missManual."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
+							sb.append( " order by roleContact."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 					}			
 					Query query =session.createQuery(sb.toString());
 					// set pagging.
@@ -140,31 +137,32 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 				//re.printStackTrace();
 				logger.error("find by property name failed", re);
 				 
-			}
+			}*/
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int updateMissManual(MissManual transientInstance,String section)
+	public int updateRoleContact(RoleContact transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		
-		MissManual missManual = null;
+		logger.error("transientInstance getRcName="+transientInstance.getRcName()+"," +
+				"transientInstance.getRcId()"+transientInstance.getRcId());
+		/*RoleContact roleContact = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		
-		Query query=session.createQuery(" select missManual from MissManual missManual " +
-				" where missManual.missSery.msId=:msId ");
+		Query query=session.createQuery(" select roleContact from RoleContact roleContact " +
+				" where roleContact.missSery.msId=:msId ");
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){
-			 missManual=(MissManual)list.get(0);
-			 missManual.setMmFileName(transientInstance.getMmFileName());
-			 missManual.setMmHotlink(transientInstance.getMmHotlink());
-			 missManual.setMmPath(transientInstance.getMmPath());
-			/* missManual.setMatRef(Long.parseLong(id));
-			 missManual.setMatModule(module);*/
+			 roleContact=(RoleContact)list.get(0);
+			 roleContact.setMmFileName(transientInstance.getMmFileName());
+			 roleContact.setMmHotlink(transientInstance.getMmHotlink());
+			 roleContact.setMmPath(transientInstance.getMmPath());
+			 roleContact.setMatRef(Long.parseLong(id));
+			 roleContact.setMatModule(module);
 		//	BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);					
-			return update(session, missManual);
+			return update(session, roleContact);
 		}else{
 			Long returnId  = null;
 			try{
@@ -179,16 +177,33 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 					} 
 			}
 			return returnId.intValue(); 
-		}
+		}*/
+		//return 0;
+		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int deleteMissManual(MissManual persistentInstance)
+	public int deleteRoleContact(RoleContact persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@Override
+	public List listRoleContactBymaId(Long maId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession(); 
+			Query query=session.createQuery(" select roleContact from RoleContact roleContact where roleContact.maId=:maId");
+			query.setParameter("maId", maId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleContact> list=query.list();
+			List<th.co.aoe.makedev.missconsult.xstream.RoleContact> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleContact>(list.size());
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleContact type : list) {
+				th.co.aoe.makedev.missconsult.xstream.RoleContact xrole=new th.co.aoe.makedev.missconsult.xstream.RoleContact();
+				BeanUtils.copyProperties(type, xrole);
+				xrole.setPagging(null);
+				roles.add(xrole);
+			}
+			return roles;
+	}
 	 
- 
 
 }

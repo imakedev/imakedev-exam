@@ -177,5 +177,35 @@ public class ServiceConstant {
 	public static final String MISS_MANUAL_SEARCH = "searchMissManual";
 	public static final String MISS_MANUAL_FIND_BY_ID = "findMissManualById"; 
 	public static final String MISS_MANUAL_ITEMS_DELETE ="deleteMissManualItems";
+	
+	
+	// role_contact
+		public static final String ROLE_CONTACT_SAVE = "saveRoleContact";
+		public static final String ROLE_CONTACT_UPDATE = "updateRoleContact";
+		public static final String ROLE_CONTACT_DELETE = "deleteRoleContact";
+		public static final String ROLE_CONTACT_SEARCH = "searchRoleContact";
+		public static final String ROLE_CONTACT_FIND_BY_ID = "findRoleContactById"; 
+		public static final String ROLE_CONTACT_ITEMS_DELETE ="deleteRoleContactItems";
+		public static final String ROLE_CONTACT_LIST_BY_MA_ID ="listRoleContactByMaId";
+		
+		
+		// role_mapping
+		public static final String ROLE_MAPPING_SAVE = "saveRoleMapping";
+		public static final String ROLE_MAPPING_UPDATE = "updateRoleMapping";
+		public static final String ROLE_MAPPING_DELETE = "deleteRoleMapping";
+		public static final String ROLE_MAPPING_SEARCH = "searchRoleMapping";
+		public static final String ROLE_MAPPING_FIND_BY_ID = "findRoleMappingById"; 
+		public static final String ROLE_MAPPING_ITEMS_DELETE ="deleteRoleMappingItems";
+		public static final String ROLE_MAPPING_LIST_BY_RC_ID ="listRoleMappingByRcId";
+		
+		// role_type
+		public static final String ROLE_TYPE_SAVE = "saveRoleType";
+		public static final String ROLE_TYPE_UPDATE = "updateRoleType";
+		public static final String ROLE_TYPE_DELETE = "deleteRoleType";
+		public static final String ROLE_TYPE_SEARCH = "searchRoleType";
+		public static final String ROLE_TYPE_FIND_BY_ID = "findRoleTypeById"; 
+		public static final String ROLE_TYPE_ITEMS_DELETE ="deleteRoleTypeItems";
+		public static final String ROLE_TYPE_LIST_BY_RC_ID ="listRoleTypeByRcId";
+		public static final String ROLE_TYPE_LIST ="listRoleTypes";
 
 }

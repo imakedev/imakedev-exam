@@ -84,8 +84,22 @@ public class MissContact implements Serializable {
 
 	@Column(name="MCONTACT_TYPE")
 	private String mcontactType;
+	
+	@Column(name="MCONTACT_ISADMIN")
+	private String mcontactIsAdmin;
+	
+	@Column(name="rc_id")
+	private Long rcId;
+	
+    public Long getRcId() {
+		return rcId;
+	}
 
-    public MissContact() {
+	public void setRcId(Long rcId) {
+		this.rcId = rcId;
+	}
+
+	public MissContact() {
     }
 
 	public Long getMcontactId() {
@@ -244,6 +258,14 @@ public class MissContact implements Serializable {
 
 	public String getMcontactPassword() {
 		return mcontactPassword;
+	}
+
+	public String getMcontactIsAdmin() {
+		return mcontactIsAdmin;
+	}
+
+	public void setMcontactIsAdmin(String mcontactIsAdmin) {
+		this.mcontactIsAdmin = mcontactIsAdmin;
 	}
 
 	public void setMcontactPassword(String mcontactPassword) {

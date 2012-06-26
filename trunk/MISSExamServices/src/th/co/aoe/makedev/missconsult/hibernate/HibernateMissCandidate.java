@@ -1,13 +1,13 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -23,13 +23,10 @@ import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissTemplate;
+import th.co.aoe.makedev.missconsult.hibernate.bean.User;
 import th.co.aoe.makedev.missconsult.managers.MissCandidateService;
-//import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
@@ -80,6 +77,21 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 						" where missCandidate.mcaId ="+returnId);
 				query.setParameter("mcaUsername", "MCA0000"+returnId);
 				query.executeUpdate();
+				//password=transientInstance.getMcontactPassword();
+				MessageDigest mda=null;
+				try {
+					mda = MessageDigest.getInstance("SHA-256");
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				byte [] digesta = mda.digest(password.getBytes());
+
+				password=new String(Hex.encodeHex(digesta));
+				User user=new User();
+				user.setUsername("MCA0000"+returnId);
+				user.setPassword(password);
+				session.save(user);
 			}
 		} finally {
 				if (session != null) {
@@ -229,7 +241,26 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaUsername", transientInstance.getMcaUsername());
 			query.setParameter("mcaPassword", transientInstance.getMcaPassword());
 			query.setParameter("msId", transientInstance.getMissSery().getMsId());
-			return query.executeUpdate();
+			query.executeUpdate();
+			
+			 query=session.createQuery("update User user " +
+					" set user.password =:password " +
+					" where user.username =:username");
+			query.setParameter("username",transientInstance.getMcaUsername());
+			String password = transientInstance.getMcaPassword();
+
+			MessageDigest mda=null;
+			try {
+				mda = MessageDigest.getInstance("SHA-256");
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			byte [] digesta = mda.digest(password.getBytes());
+
+			password=new String(Hex.encodeHex(digesta));
+			query.setParameter("password", password);
+			return query.executeUpdate(); 
 		}else if(section.equals("1")){
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaType =:mcaType ,  " +
@@ -240,7 +271,7 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaGender =:mcaGender ,  " +					
 					" missCandidate.mcaBirthDate =:mcaBirthDate ,  " +
 					" missCandidate.mcaTitle =:mcaTitle ,  " + 
-					" missCandidate.mcaPostion =:mcaPostion ,  " + 
+					" missCandidate.mcaPosition =:mcaPosition ,  " + 
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
 					" missCandidate.mcaTitleType =:mcaTitleType    " +
@@ -253,7 +284,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaGender", transientInstance.getMcaGender());
 			query.setParameter("mcaBirthDate", transientInstance.getMcaBirthDate());
 			query.setParameter("mcaTitle", transientInstance.getMcaTitle());
-			query.setParameter("mcaPostion", transientInstance.getMcaPostion());
+			query.setParameter("mcaPosition", transientInstance.getMcaPosition());
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
@@ -284,7 +315,35 @@ int result = query.executeUpdate();*/
 	public int deleteMissCandidate(MissCandidate persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		String username="";
+		int canUpdate = 0;
+		try{
+			Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId=:mcaId");
+			query.setParameter("mcaId", persistentInstance.getMcaId());
+			Object obj=query.uniqueResult();
+			if(obj!=null){
+				MissCandidate missCandidate=(MissCandidate)obj;
+				username=missCandidate.getMcaUsername();
+				session.delete(missCandidate);
+			}
+			
+	
+		
+	   if(username!=null && username.length()>0){
+		   query=session.createQuery("delete User user where user.username =:username");
+		   query.setParameter("username",username);
+			int result = query.executeUpdate();
+	   }
+		
+		canUpdate =1;
+		}finally {
+			if (session != null) {
+				session = null;
+			} 
+		}
+		return canUpdate;
+		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Override
 	public MissCandidate findMissCandidateByName(String name)

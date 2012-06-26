@@ -144,6 +144,7 @@ public class MissCandidateResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mcaId=0l;
+							//logger.debug("getAmount  getAmount============================>"+xbpsTerm.getAmount());
 							if(xbpsTerm.getAmount()!=null && xbpsTerm.getAmount().length()>0){
 								int size= Integer.parseInt(xbpsTerm.getAmount());
 								for(int i=0;i<size;i++){

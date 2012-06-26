@@ -1,9 +1,12 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissContact;
+import th.co.aoe.makedev.missconsult.hibernate.bean.UserContact;
 import th.co.aoe.makedev.missconsult.managers.MissContactService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
@@ -69,6 +73,22 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 				query.setParameter("mcaUsername", "MCA0000"+returnId);
 				query.executeUpdate();*/
 			}
+			String password=transientInstance.getMcontactPassword();
+			MessageDigest mda=null;
+			try {
+				mda = MessageDigest.getInstance("SHA-256");
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			byte [] digesta = mda.digest(password.getBytes());
+
+			password=new String(Hex.encodeHex(digesta));
+			UserContact userContact=new UserContact();
+			userContact.setUsername(transientInstance.getMcontactUsername());
+			userContact.setMcontactUsername(transientInstance.getMcontactUsername());
+			userContact.setPassword(password);
+			session.save(userContact);
 		} finally {
 				if (session != null) {
 					session = null;
@@ -199,7 +219,37 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int updateMissContact(MissContact transientInstance,String section)
 			throws DataAccessException {
-		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		int canUpdate = 0;
+			try{
+				session.update(transientInstance);
+				Query query=session.createQuery("update UserContact userContact " +
+						" set userContact.password =:password " +
+						" where userContact.username =:username");
+				query.setParameter("username",transientInstance.getMcontactUsername());
+				String password = transientInstance.getMcontactPassword();
+
+				MessageDigest mda=null;
+				try {
+					mda = MessageDigest.getInstance("SHA-256");
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				byte [] digesta = mda.digest(password.getBytes());
+
+				password=new String(Hex.encodeHex(digesta));
+				query.setParameter("password", password);
+				query.executeUpdate();
+				canUpdate =1;
+				}catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					if (session != null) {
+						session = null;
+					} 
+				}
+				return canUpdate;
 		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}
 	
@@ -225,7 +275,35 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 	public int deleteMissContact(MissContact persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		String username="";
+		int canUpdate = 0;
+		try{
+			Query query=session.createQuery(" select missContact from MissContact missContact where missContact.mcontactId=:mcontactId");
+			query.setParameter("mcontactId", persistentInstance.getMcontactId());
+			Object obj=query.uniqueResult();
+			if(obj!=null){
+				MissContact missContact=(MissContact)obj;
+				username=missContact.getMcontactUsername();
+				session.delete(missContact);
+			}
+			
+		
+		
+	   if(username!=null && username.length()>0){
+		   query=session.createQuery("delete UserContact user where user.username =:username");
+		   query.setParameter("username",username);
+			int result = query.executeUpdate();
+	   }
+		
+		canUpdate =1;
+		}finally {
+			if (session != null) {
+				session = null;
+			} 
+		}
+		return canUpdate;
+		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Override
 	public List listContacts(Long long1, String mcontactType)
