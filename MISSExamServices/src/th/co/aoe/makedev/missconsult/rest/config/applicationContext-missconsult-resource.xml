@@ -145,4 +145,24 @@
 		<property name="missSeriesAttachService" ref="missSeriesAttachService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
+	
+	<!-- Add -->
+	<bean id="roleTypeResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.RoleTypeResource"
+		scope="prototype"> 
+		<property name="roleTypeService" ref="roleTypeService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="roleContactResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.RoleContactResource"
+		scope="prototype"> 
+		<property name="roleContactService" ref="roleContactService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="roleMappingResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.RoleMappingResource"
+		scope="prototype"> 
+		<property name="roleMappingService" ref="roleMappingService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
 </beans>

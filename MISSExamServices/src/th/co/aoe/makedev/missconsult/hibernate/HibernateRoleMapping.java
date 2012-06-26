@@ -1,6 +1,5 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +9,18 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissManual;
-import th.co.aoe.makedev.missconsult.managers.MissManualService;
+import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping;
+import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMappingPK;
+import th.co.aoe.makedev.missconsult.managers.RoleMappingService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
-@Repository
-@Transactional
-public class HibernateMissManual  extends HibernateCommon implements MissManualService {
+public class HibernateRoleMapping  extends HibernateCommon implements RoleMappingService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
-	private static final SecureRandom random = new SecureRandom();
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -33,22 +29,22 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissManual findMissManualById(Long mmId)
+	public RoleMapping findRoleMappingById(Long mmId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		MissManual missManual = null;
+		RoleMapping roleMapping = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-	//	Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
-		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.missSery.msId=:msId");
+	//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
+		Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.missSery.msId=:msId");
 		query.setParameter("msId", mmId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
-			missManual=(MissManual)obj;
+			roleMapping=(RoleMapping)obj;
 		}
-	  return missManual;
+	  return roleMapping;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public Long saveMissManual(MissManual transientInstance)
+	public Long saveRoleMapping(RoleMapping transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
@@ -75,22 +71,23 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	
 	
 
-	private int getSize(Session session, MissManual instance) throws Exception{
+	private int getSize(Session session, RoleMapping instance) throws Exception{
 		try {
-			Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
+			/*Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 		
 		
-			StringBuffer sb =new StringBuffer(" select count(missManual) from MissManual missManual ");
+			StringBuffer sb =new StringBuffer(" select count(roleMapping) from RoleMapping roleMapping ");
 			
 			boolean iscriteria = false;
 			if(msId !=null && msId.intValue()!=0){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
+				 sb.append(iscriteria?(" and roleMapping.missSery.msId="+msId.intValue()+""):(" where roleMapping.missSery.msId="+msId.intValue()+""));
 				  iscriteria = true;
 			}
 			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); 
+				 return ((Long)query.uniqueResult()).intValue(); */
+			return 0;
 				 
 		 
 		} catch (HibernateException re) {
@@ -103,26 +100,26 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissManual(MissManual instance,Pagging pagging) throws DataAccessException {
+	 public List searchRoleMapping(RoleMapping instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			Session session = sessionAnnotationFactory.getCurrentSession();
+			/*Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
 				 
 					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 				
-					StringBuffer sb =new StringBuffer(" select missManual from MissManual missManual ");
+					StringBuffer sb =new StringBuffer(" select roleMapping from RoleMapping roleMapping ");
 					
 					boolean iscriteria = false;
 					if(msId !=null && msId.intValue()!=0){  
 						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
+						 sb.append(iscriteria?(" and roleMapping.missSery.msId="+msId.intValue()+""):(" where roleMapping.missSery.msId="+msId.intValue()+""));
 						  iscriteria = true;
 					}
 					
 					
 					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by missManual."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
+							sb.append( " order by roleMapping."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 					}			
 					Query query =session.createQuery(sb.toString());
 					// set pagging.
@@ -140,31 +137,31 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 				//re.printStackTrace();
 				logger.error("find by property name failed", re);
 				 
-			}
+			}*/
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int updateMissManual(MissManual transientInstance,String section)
+	public int updateRoleMapping(RoleMapping transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		
-		MissManual missManual = null;
+		/*RoleMapping roleMapping = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		
-		Query query=session.createQuery(" select missManual from MissManual missManual " +
-				" where missManual.missSery.msId=:msId ");
+		Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping " +
+				" where roleMapping.missSery.msId=:msId ");
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){
-			 missManual=(MissManual)list.get(0);
-			 missManual.setMmFileName(transientInstance.getMmFileName());
-			 missManual.setMmHotlink(transientInstance.getMmHotlink());
-			 missManual.setMmPath(transientInstance.getMmPath());
-			/* missManual.setMatRef(Long.parseLong(id));
-			 missManual.setMatModule(module);*/
+			 roleMapping=(RoleMapping)list.get(0);
+			 roleMapping.setMmFileName(transientInstance.getMmFileName());
+			 roleMapping.setMmHotlink(transientInstance.getMmHotlink());
+			 roleMapping.setMmPath(transientInstance.getMmPath());
+			 roleMapping.setMatRef(Long.parseLong(id));
+			 roleMapping.setMatModule(module);
 		//	BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);					
-			return update(session, missManual);
+			return update(session, roleMapping);
 		}else{
 			Long returnId  = null;
 			try{
@@ -179,16 +176,54 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 					} 
 			}
 			return returnId.intValue(); 
-		}
+		}*/
+		return 0;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int deleteMissManual(MissManual persistentInstance)
+	public int deleteRoleMapping(RoleMapping persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@Override
+	public List listRoleMappingByrcId(Long rcId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+			Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.id.rcId=:rcId");
+			query.setParameter("rcId", rcId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping> list=query.list();
+			List<th.co.aoe.makedev.missconsult.xstream.RoleMapping> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleMapping>(list.size());
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping type : list) {
+				th.co.aoe.makedev.missconsult.xstream.RoleMapping xrole=new th.co.aoe.makedev.missconsult.xstream.RoleMapping();
+				th.co.aoe.makedev.missconsult.hibernate.bean.RoleMappingPK pk= type.getId();
+				xrole.setRcId(pk.getRcId());
+				xrole.setRtId(pk.getRtId());
+				xrole.setPagging(null);
+				roles.add(xrole);
+			}
+			return roles;
+	}
+	@Override
+	public int updateRoleMapping(Long rcId, String[] rtIds)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
+		Query query=session.createQuery("delete RoleMapping roleMapping where roleMapping.id.rcId ="+rcId.intValue());
+		int result = query.executeUpdate();
+		if(rtIds!=null && rtIds.length>0)
+		for (String rtid : rtIds) {
+			RoleMapping mapping =new RoleMapping();
+			RoleMappingPK pk =new RoleMappingPK();
+			pk.setRcId(rcId);
+			pk.setRtId(Long.parseLong(rtid));
+			mapping.setId(pk);
+			session.save(mapping); 
+		}
+		//int canUpdate = 0;
+		return result;
+	}
 	 
- 
 
 }

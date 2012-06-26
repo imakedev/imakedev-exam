@@ -118,6 +118,15 @@
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationCode</value>
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationMessage</value>
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationTemplate</value>
+ 			 
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.RoleContact</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.RoleType</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.UserContact</value> 			
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.User</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.Role</value>
+ 			 
+ 			 
 			</list>
    		</property>
    		<!-- 
@@ -271,6 +280,17 @@
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	<bean id="missSeriesAttachService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeriesAttach">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	
+	<!-- Add -->
+	<bean id="roleTypeService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleType">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+		<bean id="roleContactService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleContact">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+		<bean id="roleMappingService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleMapping">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	

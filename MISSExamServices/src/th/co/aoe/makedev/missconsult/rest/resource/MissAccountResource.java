@@ -83,7 +83,7 @@ public class MissAccountResource extends BaseResource {
 							Long maId=missAccountService.saveMissAccount(bpsTerm);
 							int updateRecord=maId.intValue();
 							xbpsTerm.setMaId(maId);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_UPDATE)){
 							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
@@ -110,7 +110,7 @@ public class MissAccountResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_DELETE)){
 							int updateRecord=missAccountService.deleteMissAccount(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_ITEMS_DELETE)){
 							/*int updateRecord=missAccountService.deleteMissAccount(bpsTerm);
@@ -124,7 +124,7 @@ public class MissAccountResource extends BaseResource {
 								item.setMaId(Long.parseLong(maIds[i]));
 								updateRecord=missAccountService.deleteMissAccount(item);
 							}
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 

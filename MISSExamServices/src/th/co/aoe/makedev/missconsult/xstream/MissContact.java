@@ -52,6 +52,16 @@ public class MissContact  extends VServiceXML implements Serializable {
 	private String mcontactTitle;
 
 	private String mcontactType;
+	private String mcontactIsAdmin;
+	private Long rcId;
+
+	public Long getRcId() {
+		return rcId;
+	}
+
+	public void setRcId(Long rcId) {
+		this.rcId = rcId;
+	}
 
 	//ext 
 	private String section; 
@@ -238,6 +248,14 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	public void setMcontactType(String mcontactType) {
 		this.mcontactType = mcontactType;
+	}
+
+	public String getMcontactIsAdmin() {
+		return mcontactIsAdmin;
+	}
+
+	public void setMcontactIsAdmin(String mcontactIsAdmin) {
+		this.mcontactIsAdmin = mcontactIsAdmin;
 	}
 
 }

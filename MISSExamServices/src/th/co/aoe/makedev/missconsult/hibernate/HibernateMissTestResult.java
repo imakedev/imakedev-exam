@@ -1,8 +1,10 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -26,8 +28,15 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
 public class HibernateMissTestResult  extends HibernateCommon implements MissTestResultService {
-
+	private static String schema="";
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	//private static final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static ResourceBundle bundle;
+	static{
+		bundle =  ResourceBundle.getBundle( "jdbc" );	
+		schema=bundle.getString("schema");
+	}
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -73,25 +82,86 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 
 	private int getSize(Session session, MissTestResult instance) throws Exception{
 		try {
-			/* 
-			Long megId = instance.getMegId();
-			String megName = instance.getMegName();*/
-			 
-			StringBuffer sb =new StringBuffer(" select count(missTestResult) from MissTestResult missTestResult ");
+			Long msId=instance.getMsId();
+			MissCandidate missCandidate=instance.getMissCandidate();
+			String mcaUsername=missCandidate.getMcaUsername();
+			String mcaFirstName=missCandidate.getMcaFirstName();
+			String mcaLastName=missCandidate.getMcaLastName();
+			String mcaPosition=missCandidate.getMcaPosition();
+			String mcaDepartMent=missCandidate.getMcaDepartment();
+			String mtrStartTime="";
+					if(instance.getMtrStartTime()!=null){
+						mtrStartTime=format.format(instance.getMtrStartTime());
+					}
+			String mtrEndTime="";
+					if(instance.getMtrEndTime()!=null){
+						mtrEndTime=format.format(instance.getMtrEndTime());
+					}
+		
 			
-			/*boolean iscriteria = false;
-			if(megId !=null && megId > 0){  
+			String maName=missCandidate.getMissAccount().getMaName();
+			 
+					 
+			//StringBuffer sb =new StringBuffer(" select count(missTestResult) from MissTestResult missTestResult ");
+		
+			StringBuffer sb =new StringBuffer("select count(*) from ( select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE," +
+					" result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS," +
+					" result.MTR_RESULT_CODE,candidate.MCA_USERNAME,candidate.MCA_FIRST_NAME,candidate.MCA_LAST_NAME, " +
+					" candidate.MCA_POSITION ,candidate.MCA_DEPARTMENT ,account.MA_NAME from " +
+					" "+schema+".MISS_TEST_RESULT  as result left join " +
+					" "+schema+".MISS_CANDIDATE candidate on result.MCA_ID=candidate.MCA_ID " +
+					" left join "+schema+".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID" +
+					"  ");
+			
+			boolean iscriteria = false;
+			if(msId !=null && msId > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missTestResult.megId="+megId+""):(" where missTestResult.megId="+megId+""));
+				 sb.append(iscriteria?(" and result.MS_ID="+msId+""):(" where result.MS_ID="+msId+""));
 				  iscriteria = true;
 			}
-			if(megName !=null && megName.trim().length() > 0){  
+			if(mcaUsername !=null && mcaUsername.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}*/
-			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue();
+				sb.append(iscriteria?(" and LOWER(candidate.MCA_USERNAME) like '%"+mcaUsername.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_USERNAME) like '%"+mcaUsername.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(mcaFirstName !=null && mcaFirstName.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and LOWER(candidate.MCA_FIRST_NAME) like '%"+mcaFirstName.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_FIRST_NAME) like '%"+mcaFirstName.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(mcaLastName !=null && mcaLastName.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and LOWER(candidate.MCA_LAST_NAME) like '%"+mcaLastName.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_LAST_NAME) like '%"+mcaLastName.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(mcaPosition !=null && mcaPosition.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and LOWER(candidate.MCA_POSITION) like '%"+mcaPosition.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_POSITION) like '%"+mcaPosition.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(mcaDepartMent !=null && mcaDepartMent.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and LOWER(candidate.MCA_DEPARTMENT) like '%"+mcaDepartMent.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_DEPARTMENT) like '%"+mcaDepartMent.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(maName !=null && maName.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and LOWER(account.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"):(" where LOWER(account.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"));
+				 iscriteria = true;
+			}
+			if(mtrStartTime.length()>0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and result.MTR_START_TIME > '"+mtrStartTime.trim()+"'"):(" where result.MTR_START_TIME > '"+mtrStartTime.trim()+"'"));
+				 iscriteria = true;
+			}
+			if(mtrEndTime.length()>0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and result.MTR_END_TIME < '"+mtrEndTime.trim()+"'"):(" where result.MTR_END_TIME < '"+mtrEndTime.trim()+"'"));
+				 iscriteria = true;
+			}
+			sb.append("  ) as x ");
+			Query query =session.createSQLQuery(sb.toString());
+				 return ((java.math.BigInteger)query.uniqueResult()).intValue();
 			//return 0;
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
@@ -110,33 +180,125 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				/*Long megId = instance.getMegId();
 				String megName = instance.getMegName();
 			*/
+				Long msId=instance.getMsId();
+				MissCandidate missCandidate=instance.getMissCandidate();
+				String mcaUsername=missCandidate.getMcaUsername();
+				String mcaFirstName=missCandidate.getMcaFirstName();
+				String mcaLastName=missCandidate.getMcaLastName();
+				String mcaPosition=missCandidate.getMcaPosition();
+				String mcaDepartMent=missCandidate.getMcaDepartment();
+				String mtrStartTime="";
+						if(instance.getMtrStartTime()!=null){
+							mtrStartTime=format.format(instance.getMtrStartTime());
+						}
+				String mtrEndTime="";
+						if(instance.getMtrEndTime()!=null){
+							mtrEndTime=format.format(instance.getMtrEndTime());
+						}
 			
-				StringBuffer sb =new StringBuffer(" select missTestResult from MissTestResult missTestResult ");
 				
-				/*boolean iscriteria = false;
-				if(megId !=null && megId > 0){  
+				String maName=missCandidate.getMissAccount().getMaName();
+			
+				StringBuffer sb =new StringBuffer(" select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE," +
+						" result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS," +
+						" result.MTR_RESULT_CODE,candidate.MCA_USERNAME,candidate.MCA_FIRST_NAME,candidate.MCA_LAST_NAME, " +
+						" candidate.MCA_POSITION ,candidate.MCA_DEPARTMENT ,account.MA_NAME from " +
+						" "+schema+".MISS_TEST_RESULT  as result left join " +
+						" "+schema+".MISS_CANDIDATE candidate on result.MCA_ID=candidate.MCA_ID " +
+						" left join "+schema+".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID" +
+						"  ");
+				/*
+				 * where result.MCA_ID=21 and result.MTR_START_TIME > '2012-06-20'
+ and result.MTR_START_TIME < '2012-06-20 23:59:59'
+				 */ 
+				//SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+				boolean iscriteria = false;
+				if(msId !=null && msId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missTestResult.megId="+megId+""):(" where missTestResult.megId="+megId+""));
+					 sb.append(iscriteria?(" and result.MS_ID="+msId+""):(" where result.MS_ID="+msId+""));
 					  iscriteria = true;
 				}
-				if(megName !=null && megName.trim().length() > 0){  
+				if(mcaUsername !=null && mcaUsername.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTestResult.megName) like '%"+megName.trim().toLowerCase()+"%'"));
+					sb.append(iscriteria?(" and LOWER(candidate.MCA_USERNAME) like '%"+mcaUsername.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_USERNAME) like '%"+mcaUsername.trim().toLowerCase()+"%'"));
 					 iscriteria = true;
-				}*/ 
+				}
+				if(mcaFirstName !=null && mcaFirstName.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and LOWER(candidate.MCA_FIRST_NAME) like '%"+mcaFirstName.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_FIRST_NAME) like '%"+mcaFirstName.trim().toLowerCase()+"%'"));
+					 iscriteria = true;
+				}
+				if(mcaLastName !=null && mcaLastName.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and LOWER(candidate.MCA_LAST_NAME) like '%"+mcaLastName.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_LAST_NAME) like '%"+mcaLastName.trim().toLowerCase()+"%'"));
+					 iscriteria = true;
+				}
+				if(mcaPosition !=null && mcaPosition.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and LOWER(candidate.MCA_POSITION) like '%"+mcaPosition.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_POSITION) like '%"+mcaPosition.trim().toLowerCase()+"%'"));
+					 iscriteria = true;
+				}
+				if(mcaDepartMent !=null && mcaDepartMent.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and LOWER(candidate.MCA_DEPARTMENT) like '%"+mcaDepartMent.trim().toLowerCase()+"%'"):(" where LOWER(candidate.MCA_DEPARTMENT) like '%"+mcaDepartMent.trim().toLowerCase()+"%'"));
+					 iscriteria = true;
+				}
+				if(maName !=null && maName.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and LOWER(account.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"):(" where LOWER(account.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"));
+					 iscriteria = true;
+				}
+				if(mtrStartTime.length()>0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and result.MTR_START_TIME > '"+mtrStartTime.trim()+"'"):(" where result.MTR_START_TIME > '"+mtrStartTime.trim()+"'"));
+					 iscriteria = true;
+				}
+				if(mtrEndTime.length()>0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and result.MTR_END_TIME < '"+mtrEndTime.trim()+"'"):(" where result.MTR_END_TIME < '"+mtrEndTime.trim()+"'"));
+					 iscriteria = true;
+				}
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missTestResult."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
-				Query query =session.createQuery(sb.toString());
+				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session, instance)); 
 				 logger.info(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
-				 
-				 List l = query.list();   
-				 transList.add(l); 
+				 List result = query.list();
+					int size_result = result.size();
+					for (int j = 0; j < size_result; j++) {
+						Object[] obj = (Object[]) result.get(j);
+						th.co.aoe.makedev.missconsult.xstream.MissTestResult missTestResult = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
+						th.co.aoe.makedev.missconsult.xstream.MissCandidate candidate =new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
+						candidate.setMcaUsername(obj[9] != null ? obj[9] + "" : "");
+						candidate.setMcaFirstName(obj[10] != null ? obj[10] + "" : "");
+						candidate.setMcaLastName(obj[11] != null ? obj[11] + "" : "");
+						candidate.setMcaPosition(obj[12] != null ? obj[12] + "" : "");
+						candidate.setMcaDepartment(obj[13] != null ? obj[13] + "" : "");
+						missTestResult.setMtrTestDate(obj[4] != null ?(java.sql.Date)obj[4]:null);
+						candidate.setPagging(null);
+						missTestResult.setMissCandidate(candidate);
+						missTestResult.setPagging(null);
+						
+						List<String> axisValues = new ArrayList<String>(4);
+						axisValues.add("?");
+						axisValues.add("?");
+						axisValues.add("?");
+						axisValues.add("?");
+						missTestResult.setAxisValues(axisValues);
+						
+						/*missTestResult.setm
+						ownerresultDTO.setKpiOwnerKey(obj[0] != null ? new BigDecimal(
+								obj[0] + "") : null);
+						ownerresultDTO.setKpiOwnerName(obj[1] != null ? obj[1] + "" : "");*/
+						result.set(j, missTestResult);
+					}
+				// List l = query.list();   
+				 transList.add(result); 
 			 	 transList.add(size); 
 				return transList;
 			} catch (Exception re) {

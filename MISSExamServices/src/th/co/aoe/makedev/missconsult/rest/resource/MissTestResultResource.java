@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import org.apache.log4j.Logger;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
@@ -17,8 +14,6 @@ import org.restlet.resource.ResourceException;
 import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -66,6 +61,11 @@ public class MissTestResultResource extends BaseResource {
 					if(xbpsTerm.getMissCandidate()!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate();
 						BeanUtils.copyProperties(xbpsTerm.getMissCandidate(),missCandidate,ignore_id_candidate); 
+						if(xbpsTerm.getMissCandidate().getMissAccount()!=null){
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
+							BeanUtils.copyProperties(xbpsTerm.getMissCandidate().getMissAccount(),missAccount); 
+							missCandidate.setMissAccount(missAccount);
+						}
 						bpsTerm.setMissCandidate(missCandidate);
 					}
 					if (xbpsTerm.getServiceName() != null
@@ -120,18 +120,16 @@ public class MissTestResultResource extends BaseResource {
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,page);
 							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult>) result
+								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
 //								 
 								VResultMessage vresultMessage = new VResultMessage();
 
-								List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>();
+								//List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>();
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissTestResultObject(ntcCalendars);
-								}
+								 
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}

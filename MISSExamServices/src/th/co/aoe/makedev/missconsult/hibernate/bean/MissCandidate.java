@@ -93,8 +93,8 @@ public class MissCandidate implements Serializable {
 	private String mcaPictureHotlink;
   
 
-	@Column(name="MCA_POSTION")
-	private String mcaPostion;
+	@Column(name="MCA_POSITION")
+	private String mcaPosition;
 
 	@Column(name="MCA_TITLE_TYPE")
 	private String mcaTitleType;
@@ -272,12 +272,14 @@ public class MissCandidate implements Serializable {
 		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
 
-	public String getMcaPostion() {
-		return mcaPostion;
+	
+
+	public String getMcaPosition() {
+		return mcaPosition;
 	}
 
-	public void setMcaPostion(String mcaPostion) {
-		this.mcaPostion = mcaPostion;
+	public void setMcaPosition(String mcaPosition) {
+		this.mcaPosition = mcaPosition;
 	}
 
 	public String getMcaTitleType() {

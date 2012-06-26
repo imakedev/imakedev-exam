@@ -62,7 +62,7 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	@XStreamAlias("missSery")
 	private MissSery missSery;
 	private String mcaPictureHotlink;
-	private String mcaPostion;
+	private String mcaPosition;
 	private String mcaTitleType;
 	 
 	//ext 
@@ -261,14 +261,7 @@ public class MissCandidate extends VServiceXML implements Serializable {
 		this.mcaPictureHotlink = mcaPictureHotlink;
 	}
 
-	public String getMcaPostion() {
-		return mcaPostion;
-	}
-
-	public void setMcaPostion(String mcaPostion) {
-		this.mcaPostion = mcaPostion;
-	}
-
+	
 	public String getMcaTitleType() {
 		return mcaTitleType;
 	}
@@ -283,6 +276,14 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setMissSeriesMap(List<MissSeriesMap> missSeriesMap) {
 		this.missSeriesMap = missSeriesMap;
+	}
+
+	public String getMcaPosition() {
+		return mcaPosition;
+	}
+
+	public void setMcaPosition(String mcaPosition) {
+		this.mcaPosition = mcaPosition;
 	}
 
 	

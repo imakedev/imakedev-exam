@@ -3,6 +3,7 @@ package th.co.aoe.makedev.missconsult.xstream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -38,7 +39,10 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	//ext
 	private String userid;
-
+	private String mcaCompanyName;
+	private String mtrIds;
+	private List<String> axisValues;
+	
     public MissTestResult() {
     }
 
@@ -118,8 +122,34 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 		return this.missCandidate;
 	}
 
+	public String getMcaCompanyName() {
+		return mcaCompanyName;
+	}
+
+	public void setMcaCompanyName(String mcaCompanyName) {
+		this.mcaCompanyName = mcaCompanyName;
+	}
+
 	public void setMissCandidate(MissCandidate missCandidate) {
 		this.missCandidate = missCandidate;
 	}
+
+	public String getMtrIds() {
+		return mtrIds;
+	}
+
+	public void setMtrIds(String mtrIds) {
+		this.mtrIds = mtrIds;
+	}
+
+	public List<String> getAxisValues() {
+		return axisValues;
+	}
+
+	public void setAxisValues(List<String> axisValues) {
+		this.axisValues = axisValues;
+	}
+
+	 
 	
 }
