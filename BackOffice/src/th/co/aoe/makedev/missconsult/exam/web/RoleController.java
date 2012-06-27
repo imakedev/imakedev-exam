@@ -42,11 +42,11 @@ public class RoleController {
 			roleForm.setMode("edit");
 		}
 		String mode=roleForm.getMode();
-		logger.error(" ooooooooooooooooooooooo mode =>"+mode);
+		logger.debug(" ooooooooooooooooooooooo mode =>"+mode);
 		if(mode!=null ){
 			if(mode.equals("updateRoleMapping")){
 				String[] rtIdCheckbox=request.getParameterValues("rtIdCheckbox");
-				logger.error(" rtIdCheckbox length="+rtIdCheckbox);
+				logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 				RoleMapping roleMapping =new RoleMapping();
 				roleMapping.setRtIds(rtIdCheckbox);
@@ -82,8 +82,8 @@ public class RoleController {
 			}
 		}
 		// action 0=List Role,1=Add Role,2=Edit Role,3=Delete Role,
-		logger.error(" ooooooooooooooooooooooo getRcId =>"+roleForm.getRcId());
-		logger.error(" ooooooooooooooooooooooo getRcActionId=>"+roleForm.getRcActionId());
+		logger.debug(" ooooooooooooooooooooooo getRcId =>"+roleForm.getRcId());
+		logger.debug(" ooooooooooooooooooooooo getRcActionId=>"+roleForm.getRcActionId());
 		model.addAttribute("roleForm", roleForm);
 		model.addAttribute("roleContacts", missExamService
 				.listRoleContactBymaId(Long.valueOf(Long.parseLong(maId))));
@@ -94,12 +94,12 @@ public class RoleController {
 		}
 		List<RoleType> roleTypes = missExamService.listRoleTypes(Long.parseLong(maId));
 		if(roleTypes!=null && roleTypes.size()>0){
-			logger.error(" roleTypes =>"+roleTypes.size());
+			logger.debug(" roleTypes =>"+roleTypes.size());
 			for (RoleType roleType : roleTypes) {
 				if(roleMappings!=null && roleMappings.size()>0){
-					logger.error(" roleMappings =>"+roleMappings.size());
+					logger.debug(" roleMappings =>"+roleMappings.size());
 					 for (RoleMapping roleMapping : roleMappings) {
-						 logger.error("xxxxxxxxxx roleMapping.getRtId =>"+roleMapping.getRtId());
+						 logger.debug("xxxxxxxxxx roleMapping.getRtId =>"+roleMapping.getRtId());
 						if(roleMapping.getRtId().intValue()==roleType.getRtId().intValue()){
 							roleType.setSelected("1");
 							break;
@@ -123,8 +123,8 @@ public class RoleController {
 			roleForm = new RoleForm();
 		roleForm.setMode("edit");
 		// action 0=List Role,1=Add Role,2=Edit Role,3=Delete Role,
-		logger.error(" ooooooooooooooooooooooo 1=>"+roleForm.getRcId());
-		logger.error(" ooooooooooooooooooooooo 2=>"+roleForm.getRcActionId());
+		logger.debug(" ooooooooooooooooooooooo 1=>"+roleForm.getRcId());
+		logger.debug(" ooooooooooooooooooooooo 2=>"+roleForm.getRcActionId());
 		roleForm.setRcId(null);
 		roleForm.setRcActionId(null);
 		model.addAttribute("roleForm", roleForm);
@@ -138,12 +138,12 @@ public class RoleController {
 		}
 		List<RoleType> roleTypes = missExamService.listRoleTypes(Long.parseLong(maId));
 		if(roleTypes!=null && roleTypes.size()>0){
-			logger.error(" roleTypes =>"+roleTypes.size());
+			logger.debug(" roleTypes =>"+roleTypes.size());
 			for (RoleType roleType : roleTypes) {
 				if(roleMappings!=null && roleMappings.size()>0){
-					logger.error(" roleMappings =>"+roleMappings.size());
+					logger.debug(" roleMappings =>"+roleMappings.size());
 					 for (RoleMapping roleMapping : roleMappings) {
-						 logger.error("xxxxxxxxxx roleMapping.getRtId =>"+roleMapping.getRtId());
+						 logger.debug("xxxxxxxxxx roleMapping.getRtId =>"+roleMapping.getRtId());
 						if(roleMapping.getRtId().intValue()==roleType.getRtId().intValue()){
 							roleType.setSelected("1");
 							break;

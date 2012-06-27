@@ -52,7 +52,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 * a {@link UserDetails} object.
 	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		logger.error(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx into loadUserByUsername "+username);
+		logger.debug(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx into loadUserByUsername "+username);
 		try {
 		
 			 /*  CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -65,11 +65,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 		       List<th.co.aoe.makedev.missconsult.exam.domain.User> domainUsers= em.createQuery(query).getResultList();
 		       if(domainUsers!=null && domainUsers.size()>0)
 		    	   domainUser=domainUsers.get(0);*/
-	       // logger.error(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx affter uniqueResult "+domainUser);
+	       // logger.debug(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx affter uniqueResult "+domainUser);
 	     
 	        
 	        th.co.aoe.makedev.missconsult.exam.domain.UserContact domainUserContact = userRepository.findByUsername(username);
-			logger.error(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx affter loadUserByUsername "+domainUserContact);
+			logger.debug(" xxxxxxxxxxxxxxxxxxxxxxxxxxxx affter loadUserByUsername "+domainUserContact);
 			
 			boolean enabled = true;
 			boolean accountNonExpired = true;
@@ -88,7 +88,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			  boolean isAdmin=false;
 			  Long rcId=null;
 		if(domainUserContact!=null){
-			//logger.error("  getMcontactName "+domainUser.getMissContact().getMcontactName());
+			//logger.debug("  getMcontactName "+domainUser.getMissContact().getMcontactName());
 			EntityManager em = entityManagerFactory.createEntityManager();
 	       /* try {
 	              entityManager.createQuery("from TestEntity").getResultList();
@@ -108,7 +108,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		       List<th.co.aoe.makedev.missconsult.exam.domain.MissContact> domainContacts= em.createQuery(query).getResultList();
 		       if(domainContacts!=null && domainContacts.size()>0){
 		    	   domainContact=domainContacts.get(0);
-		    	   logger.error("  getMcontactName "+domainContact.getMcontactName());
+		    	   logger.debug("  getMcontactName "+domainContact.getMcontactName());
 		    	   if(domainContact.getMcontactIsAdmin()!=null && domainContact.getMcontactIsAdmin().equals("1"))
 		    		   isAdmin=true;
 		    	   rcId=domainContact.getRcId();
@@ -157,17 +157,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 		   }
          
                    
-//     	  logger.error("yyyyyyyyyyyyyyyyyyyyyyy "+roleContact.getRcId());
+//     	  logger.debug("yyyyyyyyyyyyyyyyyyyyyyy "+roleContact.getRcId());
      //      if(roleContact!=null && roleContact.getRcId()!=null ){
 		     if(rcId!=null){
         	  List<th.co.aoe.makedev.missconsult.xstream.RoleType> roles= missExamService.listRoleTypeByRcId(rcId);
-        	  logger.error("zzzzzzzzzzzzzzzzzzzzzzzzzzz "+roles);
+        	  logger.debug("zzzzzzzzzzzzzzzzzzzzzzzzzzz "+roles);
         	  if(roles!=null && roles.size()>0){
         		  for (th.co.aoe.makedev.missconsult.xstream.RoleType roleType : roles) {
         			  role.add(roleType);
 				}
         	  }
-        	  logger.error("xxxxxxxxxxxxxxxxxxxxxxx "+role.size());
+        	  logger.debug("xxxxxxxxxxxxxxxxxxxxxxx "+role.size());
         	   /*
         	   EntityManager em = entityManagerFactory.createEntityManager();
     	         try{
@@ -194,7 +194,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     	    		    		   roleMapping.getId().getRtId()));
     	    		       List<th.co.aoe.makedev.missconsult.exam.domain.RoleType> domainroletypes= em.createQuery(query2).getResultList();
     	    		       for (RoleType roleType2 : domainroletypes) {
-    	    		    	   logger.error(" xxxxxxxx ROLE="+roleType2.getRole());
+    	    		    	   logger.debug(" xxxxxxxx ROLE="+roleType2.getRole());
 						}
 					}
     		       }
