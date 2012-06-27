@@ -96,7 +96,7 @@ public class ResultController
     		resultForm.getMissTestResult().setMsId(Long.parseLong(resultForm.getMcaSeries()));
     	}
     	 
-    	if(resultForm.getTestFrom()!=null){
+    	if(resultForm.getTestFrom()!=null && resultForm.getTestFrom().trim().length()>0){
     	            try
     	            {
     	            	Timestamp fromTS1 = new Timestamp(format1.parse(resultForm.getTestFrom()+" 00:00:00").getTime()); 
@@ -107,7 +107,7 @@ public class ResultController
     	                e.printStackTrace();
     	            }
     	}
-    	if(resultForm.getTestTo()!=null){
+    	if(resultForm.getTestTo()!=null && resultForm.getTestTo().trim().length()>0){
     	            try
     	            {
     	            	Timestamp fromTS1 = new Timestamp(format1.parse(resultForm.getTestTo()+" 23:59:59").getTime()); 
