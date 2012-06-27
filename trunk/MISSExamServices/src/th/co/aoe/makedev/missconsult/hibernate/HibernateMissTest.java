@@ -127,7 +127,7 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 				Query query =session.createQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session, instance)); 
-				 logger.info(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
+				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());

@@ -217,7 +217,7 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 					th.co.aoe.makedev.missconsult.xstream.RoleType  xtype=new th.co.aoe.makedev.missconsult.xstream.RoleType();
 					BeanUtils.copyProperties(type, xtype);
 					xtype.setPagging(null);
-					logger.error(" xtype="+xtype.getRole());
+					logger.debug(" xtype="+xtype.getRole());
 					roles.add(xtype);
 				}
 			}
@@ -237,13 +237,13 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 			 th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=null;
 			 if(obj!=null){
 				 missAccount=(th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount)obj;
-				 logger.error("maType="+missAccount.getMaType());
+				 logger.debug("maType="+missAccount.getMaType());
 				 if(missAccount.getMaType()!=null && missAccount.getMaType().equals("1"))
 				 	exclude="";
 			 }
 			// if()
 		}
-		 logger.error("exclude="+exclude);
+		 logger.debug("exclude="+exclude);
 			  query=session.createQuery(" select roleType from RoleType roleType "+exclude);
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleType> list=query.list();
 			List<th.co.aoe.makedev.missconsult.xstream.RoleType> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleType>(list.size());
