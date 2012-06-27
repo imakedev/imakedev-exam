@@ -179,12 +179,13 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
 				" where missSeriesAttach.msatModule=:msatModule " +
 				" and missSeriesAttach.msatRef1=:msatRef1 " +
 				query_ref2+
-				" and missSeriesAttach.msatHotlink=:msatHotlink ");
+				//" and missSeriesAttach.msatHotlink=:msatHotlink "+
+				")");
 		query.setParameter("msatModule", transientInstance.getMsatModule());
 		query.setParameter("msatRef1", transientInstance.getMsatRef1());
 		if(query_ref2.length()>0)
 			query.setParameter("msatRef2", transientInstance.getMsatRef2());
-		query.setParameter("msatHotlink", transientInstance.getMsatHotlink());
+		//query.setParameter("msatHotlink", transientInstance.getMsatHotlink());
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){

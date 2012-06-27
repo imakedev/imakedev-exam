@@ -113,7 +113,7 @@ public class MissTestResultResource extends BaseResource {
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_PROCESS)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missTestResultService.processMissTestResult();
+							int updateRecord=missTestResultService.processMissTestResult(bpsTerm,xbpsTerm.getUserid(),xbpsTerm.getRootPath());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
@@ -123,7 +123,7 @@ public class MissTestResultResource extends BaseResource {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
-//								 
+								logger.debug("YYYYYYYYYYYYYYYYY "+xntcCalendars);
 								VResultMessage vresultMessage = new VResultMessage();
 
 								//List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>();

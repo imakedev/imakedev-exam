@@ -51,13 +51,25 @@ public class MissTestResult implements Serializable {
     @Temporal( TemporalType.DATE)
 	@Column(name="MTR_TEST_DATE")
 	private Date mtrTestDate;
+    
+	@Column(name="MTR_IGNORED")
+	private String mtrIgnored;
+    
 
 	//bi-directional many-to-one association to MissCandidate
     @ManyToOne
 	@JoinColumn(name="MCA_ID")
 	private MissCandidate missCandidate;
 
-    public MissTestResult() {
+    public String getMtrIgnored() {
+		return mtrIgnored;
+	}
+
+	public void setMtrIgnored(String mtrIgnored) {
+		this.mtrIgnored = mtrIgnored;
+	}
+
+	public MissTestResult() {
     }
 
 	public Long getMtrId() {

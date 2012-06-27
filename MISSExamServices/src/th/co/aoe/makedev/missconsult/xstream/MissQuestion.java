@@ -43,10 +43,19 @@ public class MissQuestion extends VServiceXML implements Serializable {
 
 	private String mqNameTh3;
 	private Long mqChoose=1l;
+	private Long mqNo;
     @XStreamAlias("missExam")
 	private MissExam missExam;
 
-    @XStreamAlias("missTemplate")
+    public Long getMqNo() {
+		return mqNo;
+	}
+
+	public void setMqNo(Long mqNo) {
+		this.mqNo = mqNo;
+	}
+
+	@XStreamAlias("missTemplate")
 	private MissTemplate missTemplate;
     
     

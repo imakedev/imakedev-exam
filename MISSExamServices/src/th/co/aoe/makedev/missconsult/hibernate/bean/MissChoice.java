@@ -37,7 +37,9 @@ public class MissChoice implements Serializable {
 
 	@Column(name="MC_SCORE")
 	private String mcScore;
-
+	
+	@Column(name="MC_NO")
+	private Long mcNo;
 	//bi-directional many-to-one association to MissQuestion
     @ManyToOne
 	@JoinColumn(name="MQ_ID")
@@ -96,6 +98,14 @@ public class MissChoice implements Serializable {
 
 	public void setMissQuestion(MissQuestion missQuestion) {
 		this.missQuestion = missQuestion;
+	}
+
+	public Long getMcNo() {
+		return mcNo;
+	}
+
+	public void setMcNo(Long mcNo) {
+		this.mcNo = mcNo;
 	}
 	
 /*	public Set<MissTest> getMissTests() {

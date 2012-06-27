@@ -36,18 +36,27 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	@XStreamAlias("missCandidate")
 	private MissCandidate missCandidate;
-	
+	private String mtrIgnored;
 	//ext
 	private String userid;
 	private String mcaCompanyName;
 	private String mtrIds;
 	private List<String> axisValues;
+	private String rootPath;
 	
     public MissTestResult() {
     }
 
 	public Long getMtrId() {
 		return this.mtrId;
+	}
+
+	public String getRootPath() {
+		return rootPath;
+	}
+
+	public void setRootPath(String rootPath) {
+		this.rootPath = rootPath;
 	}
 
 	public void setMtrId(Long mtrId) {
@@ -148,6 +157,14 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	public void setAxisValues(List<String> axisValues) {
 		this.axisValues = axisValues;
+	}
+
+	public String getMtrIgnored() {
+		return mtrIgnored;
+	}
+
+	public void setMtrIgnored(String mtrIgnored) {
+		this.mtrIgnored = mtrIgnored;
 	}
 
 	 
