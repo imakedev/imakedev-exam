@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.web.servletapi.*" %>
+
 <html>
 <head>
 <title></title>  
@@ -107,7 +109,13 @@ right padding is 5px
 bottom padding is 15px
 left padding is 20px */
 </style>
-
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY')" var="isManageCompany"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_CANDIDATE')" var="isManageCandidate"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_REPORT')" var="isManageSearchReport"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_SERIES')" var="isManageSeries"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_TEST')" var="isManageTest"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_DOWNLOAD')" var="isManageDownload"/>
 <script type="text/javascript">
 var _path="";
 $(document).ready(function() {
@@ -149,10 +157,16 @@ $(document).ready(function() {
 					},
 					"metadata" : { id : "root_aoee2"},
 					"children" : [
+					   <c:if test="${isManageMC}">
 						{ attributes: { id : "pjson_2" }, data: { title : "MissConsult", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
+					   </c:if>
+					   <c:if test="${isManageCompany}">
 						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
+					   </c:if>
+						<c:if test="${isManageCandidate}">
 						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
-					          ] 
+						</c:if>   
+						] 
 					
 				},
 				/* { 
@@ -169,11 +183,15 @@ $(document).ready(function() {
 						] 
 					
 				} */
+				<c:if test="${isManageSearchReport}">				
 				{ 
+					
 					"data" : {title:"Search Report",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
 					"metadata" : { id : "child_288" ,"link":"result/search"},
-					"attr" : { "id" : "tree_288" }, 
+					"attr" : { "id" : "tree_288" } 
+					
 				},
+				</c:if>
 				{ 
 					"attr" : { "id" : "management_node" }, 
 					"data" : { 
@@ -181,11 +199,17 @@ $(document).ready(function() {
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
-						{ attributes: { id : "pjson_5" }, data: { title : "Series",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_25","link":"series/search" } },
+					<c:if test="${isManageSeries}">	            
+						{ attributes: { id : "pjson_5" }, data: { title : "Series",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_25","link":"series/search" } }
+						,
+					</c:if>
+					<c:if test="${isManageTest}">	        
 						{ attributes: { id : "pjson_6" }, data: {title:"Test",attributes:{ "href" : "www.google.com" }, icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_26" ,"link":"test/search"} }
-					          ] 
+					 </c:if>    
+						] 
 					
-				},
+				}
+				,				
 				{ 
 					"attr" : { "id" : "etc_node" }, 
 					"data" : { 
@@ -193,8 +217,11 @@ $(document).ready(function() {
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
-						{ attributes: { id : "pjson_5" }, data: { title : "Download",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/search"} }
-						
+							<c:if test="${isManageTest}">	
+								{ 							
+									attributes: { id : "pjson_5" }, data: { title : "Download",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/search"} 
+								}
+							</c:if>
 					          ] 					
 				}
 			]
@@ -464,8 +491,7 @@ function appendContent(data){
 	    
 	 </div>
     </div>
-</div>
- 
+</div> 
    <script src="<c:url value='/resources/js/ajaxupload.js'/>"></script>
 
 
