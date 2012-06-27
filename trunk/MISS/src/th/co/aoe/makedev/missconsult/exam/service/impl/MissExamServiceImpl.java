@@ -179,4 +179,14 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		return missTestResult.getUpdateRecord().intValue();
 	}
 
+	@Override
+	public int processMissTestResult(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_PROCESS);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
+	}
+
 }
