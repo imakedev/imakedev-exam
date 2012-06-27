@@ -216,7 +216,6 @@ public abstract class BaseResource extends ServerResource {
 		 																			// Annotations)
 		xstream.autodetectAnnotations(true);
 		String xml = xstream.toXML(vresultMessage);
-		//logger.error(" xml="+xml);
 		Document document = null;
 		InputStream in = null;
 		try {
@@ -286,7 +285,6 @@ public abstract class BaseResource extends ServerResource {
 		 																			// Annotations)
 		xstream.autodetectAnnotations(true);
 		String xml = xstream.toXML(vresultMessage);
-		//logger.error(" xml="+xml);
 		Document document = null;
 		InputStream in = null;
 		try {
