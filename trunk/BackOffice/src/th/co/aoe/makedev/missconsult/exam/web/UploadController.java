@@ -199,10 +199,13 @@ public class UploadController {
 					 missSeriesAttach.setMsatFileName(s);
 					 missExamService.updateMissSeriesAttach(missSeriesAttach);
 				}else if(module.equals("evaluation")){
-					String[] ids=id.split("_");
+					//String[] ids=id.split("_");
 					 MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
-					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[0])); //msId
+					/* missSeriesAttach.setMsatRef1(Long.parseLong(ids[0])); //msId
 					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[1])); //meId
+*/					 
+					 missSeriesAttach.setMsatRef1(Long.parseLong(id)); //msId
+					 missSeriesAttach.setMsatRef2(Long.parseLong(request.getParameter("meId")));
 					 missSeriesAttach.setMsatModule(module);
 					 missSeriesAttach.setMsatHotlink(hotLink);
 					 missSeriesAttach.setMsatPath(pathFolder);
