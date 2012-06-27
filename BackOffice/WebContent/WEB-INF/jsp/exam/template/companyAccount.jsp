@@ -20,6 +20,7 @@ $(document).ready(function() {
 					  }
 				});
 			  $("#tabs-4").html("");
+			  $("#tabs-3_1").html("");
 			 }
 		   }else if(ui.index==3){
 				 // /exam/{meId}/questions
@@ -37,11 +38,32 @@ $(document).ready(function() {
 						  }
 					});
 				  $("#tabs-3").html("");
+				  $("#tabs-3_1").html("");
 				 }
 				
-			   }else{
+			   }else  if(ui.index==2){
+					 // /exam/{meId}/questions
+					// alert("test/exam/"+$("#_meId").val()+"/questions");
+					 if($("#_maId").val().length>0){
+					  $.ajax({
+						  type: "get",
+						  url: "role/"+$("#_maId").val(),
+						  cache: false
+						 // data: { name: "John", location: "Boston" }
+						}).done(function( data ) {
+							if(data!=null){
+								appendContentWithId(data,"tabs-3_1");
+								// $("#tabs-3").html(data);
+							  }
+						});
+					  $("#tabs-3").html("");
+					  $("#tabs-4").html("");
+					 }
+					
+				   }else{
 			   $("#tabs-3").html("");
 			   $("#tabs-4").html("");
+			   $("#tabs-3_1").html("");
 		   }
 		});
 	/* $("#maContactBirthDate" ).datepicker({
@@ -90,7 +112,7 @@ function doAction(action,formID,sectionID){
 		    appendContent(data);
 		});
   }
- 
+
 </script>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -273,64 +295,58 @@ function doAction(action,formID,sectionID){
     		
     			</div>
     			<div id="tabs-3_1">
-    		
-    			</div>
-    			
-			<div id="tabs-4">
-			<!-- <form class="well"> -->
-			<%-- <form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
-			  <fieldset style="font-family: sans-serif;">   
-	     <h6><strong>Company - Unit</strong></h6> 
-			   <div>
-			    <table border="0" width="100%" style="font-size: 12px">
-   		 			<tr valign="top">
-    					<td width="20%">&nbsp;</td>
-    					<td width="60%">Total Unit: ${companyForm.missAccount.maTotalUnit}</td>
-    					 <td width="20%">&nbsp;</td> 
-    				</tr>
-    				<tr valign="top">
-    					<td width="20%">&nbsp;</td>
-    					<td width="60%">Used Unit: ${companyForm.missAccount.maUsedUnit}</td>
-    					 <td width="20%">&nbsp;</td>
-    				</tr>
-    				<tr valign="top">
-    					<td width="20%">&nbsp;</td>
-    					<td width="60%">Available Unit: ${companyForm.missAccount.maAvailableUnit}</td>
-    					 <td width="20%">&nbsp;</td>
-    				</tr>
-    				<tr valign="top">
-    					<td width="20%">&nbsp;</td>
-    					<td width="60%">Re-fill <form:input path="refill"/><input type="button" value="Re-fill" onclick="doRefill()"></td>
-    					 <td width="20%">&nbsp;</td>
-    				</tr>
-    			</table>
-    			</div>
-    			 </fieldset>
-    			 </form:form>
-    			<div>
-    			 <table class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
+    		 <%--   <fieldset style="font-family: sans-serif;">   
+           <form:form  id="companyForm_role" name="companyForm_role" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+            <form:hidden path="mode"/>
+            <form:hidden path="missAccount.maId" id="maId"/>
+              <table border="0" width="100%" style="font-size: 13px">
+              				<tr>
+	    					 <td align="left" width="100%" colspan="6"><strong>Role Setting</strong></td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="center" width="100%" colspan="6">&nbsp;Role name : 
+	    					 <form:select path="rcId">
+	    					 	<form:option  value="0" label="-- Select --"></form:option>
+	    					 	 <form:options itemLabel="rcName" items="${roleContacts}" itemValue="rcId"/>
+	    					  </form:select>
+	    					  <form:select path="rcActionId" cssStyle="width:90px">
+	    					 	 <form:option  value="0" label="List Role"></form:option>
+	    					 	 <form:option  value="1" label="Add Role"></form:option>
+	    					 	 <form:option  value="2" label="Edit Role"></form:option>
+	    					 	 <form:option  value="3" label="Delete Role"></form:option> 
+	    					  </form:select>&nbsp;&nbsp;
+	    					  <a class="btn btn-primary"  onclick="doAction('action','companyForm_role','7')"><i class="icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Ok</span></a>
+	    					</td>
+	    					</tr>
+	    					</table> 
+	    					</form:form>
+	    					 
+		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="15%"><div class="th_class">Series</div></th> 
-            		<th width="60%"><div class="th_class">Group</div></th>
-            		<th width="5%"><div class="th_class">Unit</div></th> 
-            		<th width="10%"><div class="th_class">Available</div></th>
-            		<th width="10%"><div class="th_class">Order</div></th> 
+            		<th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
+            		<th width="30%"><div class="th_class">Role</div></th> 
+            		<th width="65%"><div class="th_class">Description</div></th>            		 
           		</tr>
         	</thead>
         	<tbody>
-        	 <c:forEach items="${companyForm.missAccount.missAccountSeriesMapList}" var="missAccountSeriesMap" varStatus="loop"> 
-        	 	<tr>
-            	<td>${missAccountSeriesMap.seryName}</td>
-            	<td>${missAccountSeriesMap.groupStr}</td>
-            	<td>${missAccountSeriesMap.seryUnit}</td>
-            	<td>${missAccountSeriesMap.masmAvailable}</td>
-            	<td><input type="text"></td> 
+        	 <c:forEach items="${roleTypes}" var="roleType" varStatus="loop"> 
+          	<tr>
+            	<td><input type="checkbox" name="rtIdCheckbox" value="${roleType.rtId}"/></td> 
+            	<td>&nbsp;${roleType.role}</td>
+            	<td>&nbsp;${roleType.roleDesc}</td>
           	</tr>
-        	 </c:forEach>
-    				</table>
-    				</div>
-			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_unit','7')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div> --%>
+          	</c:forEach>
+        </tbody>
+      </table>
+      
+</fieldset>
+<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_role','7')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div> 
+ --%>
+    			</div>
+    			
+			<div id="tabs-4">
+		
 			</div>
 			<div id="tabs-5">
 			<!-- <form class="well"> -->

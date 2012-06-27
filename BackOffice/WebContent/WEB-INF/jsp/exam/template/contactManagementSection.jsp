@@ -24,21 +24,27 @@ $(document).ready(function() {
 	new AjaxUpload('contact_upload', {
         action: 'upload/'+target+'/${contactForm.missContact.mcontactId}',
 		onSubmit : function(file , ext){
-            // Allow only images. You should add security check on the server-side.
-			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-				/* Setting data */
-				this.setData({
-					'key': 'This string will be send with the file',
-					'test':'chatchai'
-				});					
-			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
-			$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
-			} else {					
-				// extension is not allowed
-				alert('Error: only images are allowed') ;
-				// cancel upload
-				return false;				
-			}		
+			if('${contactForm.mode}' !='edit'){
+				alert(" Please Save before Upload Photo");
+				return false;
+			}else{
+				 // Allow only images. You should add security check on the server-side.
+				if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+					/* Setting data */
+					this.setData({
+						'key': 'This string will be send with the file',
+						'test':'chatchai'
+					});					
+				//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
+				$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+				} else {					
+					// extension is not allowed
+					alert('Error: only images are allowed') ;
+					// cancel upload
+					return false;				
+				}
+			}
+           		
 		},
 		onComplete : function(file, response){
 			//alert(response);
@@ -118,7 +124,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 			<!--  <form class="well"> -->
 			  <input type="hidden" value="${contactForm.missContact.mcontactRef}" id="maId"/>
 			  <input type="hidden" value="${contactForm.missContact.mcontactType}" id="mcontactType"/>
-			  
+			  <form:hidden path="mode"/>
 			  <form:hidden path="missContact.mcontactPictureFileName" id="mcontactPictureFileName" />
 			  <form:hidden path="missContact.mcontactPictureHotlink" id="mcontactPictureHotlink" />
 			  <form:hidden path="missContact.mcontactPicturePath" id="mcontactPicturePath" />
@@ -132,7 +138,12 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     				<tr valign="top">
     					<td width="25%">Username:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
+    					<c:if test="${contactForm.mode=='edit'}">    					
+    						<form:input path="missContact.mcontactUsername" id="mcontactUsername" readonly="true"/>
+    					</c:if>
+    					<c:if test="${contactForm.mode!='edit'}">    					
+    						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
+    					</c:if>
     					</td>
     					 <td width="25%"  align="right"  rowspan="8">
     					 <c:if test="${not empty contactForm.missContact.mcontactPictureHotlink}"> 
@@ -151,6 +162,16 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="50%" colspan="2">
     					<input type="password" value="${contactForm.missContact.mcontactPassword}" id="mcontactPassword" name="missContact.mcontactPassword">
     					<%-- <form:password path="missContact.mcontactPassword" id="mcontactPassword"/> --%>
+    					</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%">Role:</td>
+    					<td width="50%" colspan="2">
+    					<form:select path="missContact.rcId">
+    						 <form:option value="-1">-- Select Role --</form:option> 
+    						 <form:options items="${roleContacts}" itemLabel="rcName" itemValue="rcId"></form:options>
+	    					     
+    					</form:select>
     					</td>
     				</tr>
    		 			<tr valign="top">

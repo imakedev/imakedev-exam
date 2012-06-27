@@ -15,13 +15,34 @@ $(document).ready(function() {
 				 // data: { name: "John", location: "Boston" }
 				}).done(function( data ) {
 					if(data!=null){
-						appendContentWithId(data,"tabs-3")
+						appendContentWithId(data,"tabs-3");
 						// $("#tabs-3").html(data);
 					  }
 				});
+			  $("#tabs-3_1").html("");
 			 }
-		   }else{
+			
+		   } else  if(ui.index==2){
+				 // /exam/{meId}/questions
+				// alert("test/exam/"+$("#_meId").val()+"/questions");
+				 if($("#_maId").val().length>0){
+				  $.ajax({
+					  type: "get",
+					  url: "role/"+$("#_maId").val(),
+					  cache: false
+					 // data: { name: "John", location: "Boston" }
+					}).done(function( data ) {
+						if(data!=null){
+							appendContentWithId(data,"tabs-3_1");
+							// $("#tabs-3").html(data);
+						  }
+					});
+				  $("#tabs-3").html("");
+				 }
+				
+			   } else{
 			   $("#tabs-3").html("");
+			   $("#tabs-3_1").html("");
 		   }
 		});
 	$("#maContactBirthDate" ).datepicker({

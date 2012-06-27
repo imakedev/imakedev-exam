@@ -169,6 +169,7 @@ function doAction(mode,id){
             		<th width="5%"><div class="th_class">Ju</div></th>  -->
             		<th width="10%"><div class="th_class">Test Date</div></th> 
             		<th width="5%"><div class="th_class">Report</div></th>
+            		<th width="5%"><div class="th_class">Status</div></th>
             		<th width="5%"><div class="th_class">Response</div></th> 
           		</tr>
         	</thead>
@@ -191,8 +192,16 @@ function doAction(mode,id){
             	<td>?</td> 
             	<td>?</td> -->
             	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td>
-            	<td>&nbsp;<a onclick="loadDynamicPage('result/report/')">?</a></td>
-            	<td>&nbsp;<a onclick="loadDynamicPage('result/response/1')">?</a></td>
+            	<td>&nbsp;<a onclick="loadDynamicPage('result/report/')">${missTestResult.mtrResultCode}</a></td>            	
+            	<td>
+            	<c:if test="${missTestResult.mtrStatus=='0'}">Not finished</c:if>
+            	<c:if test="${missTestResult.mtrStatus=='1'}">Finished</c:if>
+            	<c:if test="${missTestResult.mtrStatus=='2'}">Responded</c:if>
+            	</td>
+            	<td>&nbsp;
+            	<c:if test="${(missTestResult.mtrStatus=='1' || missTestResult.mtrStatus=='2') &&  missTestResult.mtrIgnored!='1'}">            	
+            			<a onclick="loadDynamicPage('result/response/1')">Email</a>
+            	</c:if></td>
           	</tr>
           	</c:forEach>
         	</tbody>
