@@ -92,12 +92,20 @@ function doAction(action,formID,sectionID){
     					<td width="10%">&nbsp;</td>
     					<td width="10%" align="right">Series :</td>
     					<td width="55%">
-    					
+    					<c:if test="${candidateForm.missCandidate.mcaStatus=='1'}">
+    					<form:select path="missCandidate.missSery.msId" disabled="true">
+    						 <form:option value="-1">-- Select Series --</form:option>
+    						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
+	    					     
+    					</form:select>
+    					</c:if>
+    					<c:if test="${candidateForm.missCandidate.mcaStatus!='1'}">
     					<form:select path="missCandidate.missSery.msId">
     						 <form:option value="-1">-- Select Series --</form:option>
     						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
 	    					     
     					</form:select>
+    					</c:if>
     					<!-- <select name="bpsGroupId" id="bpgGroupId"> 
 											 <option value="0">Series1</option>
 											 <option value="2">Series2</option>

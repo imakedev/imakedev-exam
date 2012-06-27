@@ -6,8 +6,10 @@
 	}
 </style>
 <script type="text/javascript">
+var amount_G;
 $(document).ready(function() {
 	renderPageSelect();
+	amount_G=$("#amount");
 	var idArray=$("#meIdArray").val();
 //	 alert(idArray);
 	 if(idArray.length>0){
@@ -119,6 +121,7 @@ function doDeleteItems(){
 function doCreateCandidate(company_id){
 	//alert(company_id);
 	//alert($("#amount").val());
+	$("#amount").val(amount_G.val());
 	//alert($("#mssery_candidate").val());
 	//alert($("select[id=mssery_candidate] option:selected").val());
 	$("#mssery_candidate_hidden").val($("select[id=mssery_candidate] option:selected").val());
@@ -322,8 +325,8 @@ function doAction(mode,id){
             		<th width="10%"><div class="th_class">Phone</div></th> 
             		<th width="10%"><div class="th_class">Register No</div></th>
             		<th width="10%"><div class="th_class">Register Date</div></th> 
-            		<th width="5%"><div class="th_class">Unit</div></th>
-            		<th width="5%"><div class="th_class">Account</div></th> 
+            		<th width="5%"><div class="th_class">Total Unit</div></th>
+            		<th width="5%"><div class="th_class">Create Candidate</div></th> 
             		<th width="5%"><div class="th_class">Edit</div></th>
             		<th width="5%"><div class="th_class">Delete</div></th> 
           		</tr>
