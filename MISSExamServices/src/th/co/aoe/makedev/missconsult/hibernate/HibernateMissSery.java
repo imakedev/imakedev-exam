@@ -114,7 +114,7 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 						meIdStr=meIdStr+meIds[i]+")";
 					}
 				}
-			//	logger.error(" meIds = "+meIdStr);
+			//	logger.debug(" meIds = "+meIdStr);
 				 sb.append(iscriteria?(" and xx.ME_ID in "+meIdStr+""):(" where xx.ME_ID in "+meIdStr+""));
 				  iscriteria = true;
 			}
@@ -178,7 +178,7 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 						}
 					}
 					 
-					logger.error(" meIds = "+meIdStr);
+					logger.debug(" meIds = "+meIdStr);
 					// sb.append(iscriteria?(" and missMap.id.meId in "+meIdStr+""):(" where missMap.id.meId in "+meIdStr+""));
 					 sb.append(iscriteria?(" and xx.ME_ID in "+meIdStr+""):(" where xx.ME_ID in "+meIdStr+""));
 					  iscriteria = true;
@@ -202,7 +202,7 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size= String.valueOf(getSize(session, instance,meIds)); 
-				  logger.info("sizex="+size); 
+				  logger.debug("sizex="+size); 
 				
 				 //String size="0";
 				 logger.debug("pagging.getPageSize()="+pagging.getPageSize());

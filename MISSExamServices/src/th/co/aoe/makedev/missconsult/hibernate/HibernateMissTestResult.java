@@ -282,7 +282,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session, instance)); 
-				 logger.info(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
+				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
@@ -435,18 +435,18 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				
 	            HSSFSheet sheet = wb.getSheetAt(1);
 	          
-	            StringBuffer sb=new StringBuffer(" select count(*) from MISS_CONSULT_EXAM2.MISS_QUESTION QUESTION " +
+	            StringBuffer sb=new StringBuffer(" select count(*) from "+schema+".MISS_QUESTION QUESTION " +
 	            		" where QUESTION.ME_ID="+meId.intValue()+"");
 	            Query query=  session.createSQLQuery(sb.toString());
 	            int size=((java.math.BigInteger)query.uniqueResult()).intValue();
 	            sb.setLength(0);
-	            sb.append(" select QUESTION.MQ_NO,CHOICE.MC_NO from MISS_CONSULT_EXAM2.MISS_QUESTION QUESTION LEFT JOIN" +
-	            		" MISS_CONSULT_EXAM2.MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN" +
-	            		" MISS_CONSULT_EXAM2.MISS_CHOICE CHOICE ON TEST.MC_ID = CHOICE.MC_ID" +
+	            sb.append(" select QUESTION.MQ_NO,CHOICE.MC_NO from "+schema+".MISS_QUESTION QUESTION LEFT JOIN" +
+	            		" "+schema+".MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN" +
+	            		" "+schema+".MISS_CHOICE CHOICE ON TEST.MC_ID = CHOICE.MC_ID" +
 	            		" WHERE TEST.MCA_ID="+mcaId.intValue()+" AND TEST.MS_ID="+msId.intValue()+" AND TEST.ME_ID="+meId.intValue()+" ORDER BY QUESTION.MQ_ID" );
-	            /*select QUESTION.MQ_NO,CHOICE.MC_NO from MISS_CONSULT_EXAM2.MISS_QUESTION QUESTION LEFT JOIN
- MISS_CONSULT_EXAM2.MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN 
-MISS_CONSULT_EXAM2.MISS_CHOICE CHOICE ON TEST.MC_ID = CHOICE.MC_ID
+	            /*select QUESTION.MQ_NO,CHOICE.MC_NO from "+schema+".MISS_QUESTION QUESTION LEFT JOIN
+ "+schema+".MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN 
+"+schema+".MISS_CHOICE CHOICE ON TEST.MC_ID = CHOICE.MC_ID
  WHERE TEST.MCA_ID=22 AND TEST.MS_ID=9 AND TEST.ME_ID=14 ORDER BY QUESTION.MQ_ID  */
 	           query=  session.createSQLQuery(sb.toString());
 	        
@@ -616,10 +616,10 @@ MISS_CONSULT_EXAM2.MISS_CHOICE CHOICE ON TEST.MC_ID = CHOICE.MC_ID
 				logger.debug("ME_ID="+missTestResult.getMeId());
 				logger.debug("MS_ID="+missTestResult.getMsId());
 				// CHECK % OF ANSWER
-				/*SELECT * FROM MISS_CONSULT_EXAM2.MISS_TEST 
+				/*SELECT * FROM "+schema+".MISS_TEST 
 				where MS_ID=9 AND ME_ID=14 AND MCA_ID=22
 
-				SELECT COUNT(*) FROM MISS_CONSULT_EXAM2.MISS_QUESTION
+				SELECT COUNT(*) FROM "+schema+".MISS_QUESTION
 				WHERE ME_ID=14*/
 				query=session.createQuery("select count(*) from MissTest missTest where missTest.id.missCandidate.mcaId=:mcaId and " +
 					" missTest.id.missExam.meId=:meId and "+
