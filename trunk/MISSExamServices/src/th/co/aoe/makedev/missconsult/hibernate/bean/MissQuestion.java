@@ -66,9 +66,20 @@ public class MissQuestion implements Serializable {
 	@Column(name="MQ_CHOOSE")
 	private Long mqChoose; 
 
+	@Column(name="MQ_NO")
+	private Long mqNo;
+
 	/*//bi-directional many-to-one association to MissChoice
 	@OneToMany(mappedBy="missQuestion")
 	private Set<MissChoice> missChoices;*/
+
+	public Long getMqNo() {
+		return mqNo;
+	}
+
+	public void setMqNo(Long mqNo) {
+		this.mqNo = mqNo;
+	}
 
 	//bi-directional many-to-one association to MissExam
     @ManyToOne
