@@ -20,12 +20,15 @@ public interface MissExamService {
 	//for save MissTest
 	public abstract int saveOrUpdateMissTest(MissTest missTest);
 	
+	
+	
 	//for check answer
 	public abstract List<MissTest> findMissTest(MissTest missTest);
 	
 	public abstract int saveOrUpdateMissTestResult(MissTestResult missTestResult);
 	public abstract int startMissTestResult(MissTestResult missTestResult);
 	public abstract int checkMissTestResult(MissTestResult missTestResult);	
+	public abstract int processMissTestResult(MissTestResult missTestResult);
 	
 	
 	
