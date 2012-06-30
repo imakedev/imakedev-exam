@@ -12,6 +12,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -315,6 +316,33 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 		query.setParameter("mcontactRef", long1);
 		query.setParameter("mcontactType", mcontactType);
 		return query.list(); 
+	}
+	@Override
+	public th.co.aoe.makedev.missconsult.xstream.MissContact findMissContactByUsername(String username)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissContact missContact = null;
+		th.co.aoe.makedev.missconsult.xstream.MissContact xntcCalendarReturn=null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missContact from MissContact missContact where missContact.mcontactUsername=:mcontactUsername");
+		query.setParameter("mcontactUsername", username);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missContact=(MissContact)obj;
+			 xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissContact();
+			BeanUtils.copyProperties(missContact,xntcCalendarReturn);
+			 query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
+				query.setParameter("maId", missContact.getMcontactRef());
+				obj=query.uniqueResult(); 	
+				String isMC="0";
+				if(obj!=null){
+					th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=
+							(th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount)obj;
+					isMC=missAccount.getMaType();
+				}
+			xntcCalendarReturn.setIsMC(isMC);
+		}
+	  return xntcCalendarReturn;
 	}
 	 
 

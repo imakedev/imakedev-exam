@@ -126,7 +126,8 @@
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.User</value>
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.Role</value>
  			 
- 			 
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow</value> 
 			</list>
    		</property>
    		<!-- 

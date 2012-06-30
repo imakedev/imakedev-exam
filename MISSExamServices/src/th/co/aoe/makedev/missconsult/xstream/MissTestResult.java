@@ -34,6 +34,15 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	private Date mtrTestDate;
 	
+	private byte[] images;
+	public byte[] getImages() {
+		return images;
+	}
+
+	public void setImages(byte[] images) {
+		this.images = images;
+	}
+
 	@XStreamAlias("missCandidate")
 	private MissCandidate missCandidate;
 	private String mtrIgnored;

@@ -20,8 +20,47 @@ public class MissSeriesMap extends VServiceXML implements Serializable {
 	private Long msId;
 	
 	private Long msmOrder;
+	
+	// ext
+	private String msatFileName;
+	private String msatHotlink;
+	private String msatModule;
+	private String msatPath;
+	
 
-    public MissSeriesMap() {
+    public String getMsatFileName() {
+		return msatFileName;
+	}
+
+	public void setMsatFileName(String msatFileName) {
+		this.msatFileName = msatFileName;
+	}
+
+	public String getMsatHotlink() {
+		return msatHotlink;
+	}
+
+	public void setMsatHotlink(String msatHotlink) {
+		this.msatHotlink = msatHotlink;
+	}
+
+	public String getMsatModule() {
+		return msatModule;
+	}
+
+	public void setMsatModule(String msatModule) {
+		this.msatModule = msatModule;
+	}
+
+	public String getMsatPath() {
+		return msatPath;
+	}
+
+	public void setMsatPath(String msatPath) {
+		this.msatPath = msatPath;
+	}
+
+	public MissSeriesMap() {
     }
 
 	public Long getMeId() {

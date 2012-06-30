@@ -55,6 +55,17 @@ public class MissContact  extends VServiceXML implements Serializable {
 	private String mcontactIsAdmin;
 	private Long rcId;
 
+	//ext 
+	private String isMC;
+	
+	public String getIsMC() {
+		return isMC;
+	}
+
+	public void setIsMC(String isMC) {
+		this.isMC = isMC;
+	}
+
 	public Long getRcId() {
 		return rcId;
 	}
