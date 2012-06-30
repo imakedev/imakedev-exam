@@ -6,6 +6,7 @@
 package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
+
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.form:
@@ -100,7 +101,15 @@ public class CandidateForm extends CommonForm
         this.mcaBirthDate = mcaBirthDate;
     }
 
-    private static final long serialVersionUID = 1L;
+    public Long getMaId() {
+		return maId;
+	}
+
+	public void setMaId(Long maId) {
+		this.maId = maId;
+	}
+
+	private static final long serialVersionUID = 1L;
     private MissCandidate missCandidate;
     private String mcaBirthDate;
     private String mcaStatus;
@@ -108,5 +117,6 @@ public class CandidateForm extends CommonForm
     private String mcaUsername;
     private String mcaPassword;
     private String mcaCompanyName;
+    private Long maId;
     private String mcaIdArray;
 }

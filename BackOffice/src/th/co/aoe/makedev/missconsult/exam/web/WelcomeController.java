@@ -17,13 +17,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
+@SessionAttributes(value={"UserMissContact"})
 public class WelcomeController
 {
 
@@ -67,8 +70,10 @@ public class WelcomeController
         MissTodo missTodo = new MissTodo();
         missTodo.setPagging(page);
         VResultMessage vresult = missExamService.searchMissTodo(missTodo);
+        MissContact missContact= missExamService.findMissContactByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("todolists", vresult.getResultListObj());
         model.addAttribute("totals", vresult.getMaxRow());
+        model.addAttribute("UserMissContact", missContact);
         model.addAttribute("pageObj", page);
         model.addAttribute("systemDate", format1.format(new Date()));
         return "exam/common";

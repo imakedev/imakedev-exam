@@ -797,6 +797,16 @@ public class MissExamServiceImpl extends PostCommon
 	        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
 	        return (MissContact)resultMessage.getResultListObj().get(0);
 	}
+	@Override
+	public th.co.aoe.makedev.missconsult.xstream.MissContact findMissContactByUsername(String username) {
+		// TODO Auto-generated method stub
+		 MissContact missContact = new MissContact();
+	        missContact.setMcontactUsername(username);
+	        missContact.setServiceName(ServiceConstant.MISS_CONTACT_FIND_BY_USERNAME);
+	        VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	        return (MissContact)resultMessage.getResultListObj().get(0);
+	}
+	
 
 	@Override
 	public VResultMessage searchMissContact(MissContact missContact) {

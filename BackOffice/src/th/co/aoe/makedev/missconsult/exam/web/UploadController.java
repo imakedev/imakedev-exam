@@ -63,6 +63,7 @@ public class UploadController {
     	 String hotLink="";
     	 String s="";
     	 String pathFolder="";
+    	 String ndFilePath="";
        /* logger.debug("xxxxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("test"));
         Map m =request.getParameterMap();
         for (Iterator iterator = m.keySet().iterator(); iterator.hasNext();) {
@@ -97,23 +98,9 @@ public class UploadController {
 						  monthStr= dt1.getMonthOfYear()+"";
 						  yearStr= dt1.getYear()+"";
 						  monthStr = monthStr.length()>1?monthStr:"0"+monthStr;
-						  //String ndFilePath = "/usr/local/Work/TestDownload/"+yearStr+"_"+monthStr+"";
-						//  String ndFilePath = "/usr/local/Work/TestDownload/";//bundle.getString("richtextImgPath");//+yearStr+"_"+monthStr+"";
-						  //String pathFile = ""; 
-						  
-						 /* questionImgPath=/opt/attach/questionImg/
-						  candidateImgPath=/opt/attach/candidateImg/
-						  mcLogoPath=/opt/attach/mcLogo/
-						  companyLogoPath=/opt/attach/companyLogo/
-
-						  attachManualPath=/opt/attach/attachManual/*/
-						 /* if(module.equals("mc")){
-							  
-						  }else if(){
-							  
-						  }*/
+					
 						  pathFolder=yearStr+"_"+monthStr+"";
-						  String ndFilePath = bundle.getString(module+"Path")+pathFolder;
+						  ndFilePath = bundle.getString(module+"Path")+pathFolder;
 						  String path =ndFilePath;
 						  createDirectoryIfNeeded(path);
 						  String filename =s ;// multipart.getOriginalFilename();
@@ -210,6 +197,7 @@ public class UploadController {
 					 missSeriesAttach.setMsatHotlink(hotLink);
 					 missSeriesAttach.setMsatPath(pathFolder);
 					 missSeriesAttach.setMsatFileName(s);
+					 missSeriesAttach.setRootPath(ndFilePath);
 					 missExamService.updateMissSeriesAttach(missSeriesAttach);
 				}
 		}

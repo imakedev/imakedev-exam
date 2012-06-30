@@ -228,7 +228,8 @@ public interface MissExamService
     public abstract int deleteMissContact(MissContact missContact,String service);
 
     public abstract MissContact findMissContactById(Long long1);
-
+    public abstract MissContact findMissContactByUsername(String username);
+    
     public abstract VResultMessage searchMissContact(MissContact missContact);
     public abstract List listContacts(Long long1,String mcontactType);
     
