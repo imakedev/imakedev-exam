@@ -138,16 +138,38 @@ public class SeriesController
         List missSeriesMaps = vresultMessage.getResultListObj();
         StringBuffer sb = new StringBuffer();
         int index = 0;
+        /*private String msatFileName;
+		private String msatHotlink;
+		private String msatModule;
+		private String msatPath;*/
+      
         if(missSeriesMaps != null && missSeriesMaps.size() > 0)
         {
             int size = missSeriesMaps.size();
             for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
             {
+            String msatFileName="noFile";
+            String msatHotlink="noHotlink";
+            String msatModule="noModule";
+            String msatPath="noPath";
                 MissSeriesMap entry = (MissSeriesMap)iterator.next();
-                if(index != size - 1)
+               /* if(index != size - 1)
                     sb.append((new StringBuilder()).append(entry.getMeId()).append(",").toString());
                 else
-                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());
+                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());*/
+               if(entry.getMsatFileName()!=null && entry.getMsatFileName().length()>0)
+            	   msatFileName=entry.getMsatFileName();
+               if(entry.getMsatHotlink()!=null && entry.getMsatHotlink().length()>0)
+            	   msatHotlink=entry.getMsatHotlink();
+               if(entry.getMsatModule()!=null && entry.getMsatModule().length()>0)
+            	   msatModule=entry.getMsatModule();
+               if(entry.getMsatPath()!=null && entry.getMsatPath().length()>0)
+            	   msatPath=entry.getMsatPath();
+                // meid|filename|hotlink|module|path
+                if(index != size - 1)
+                    sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath+",");
+                else
+                    sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath);
                 index++;
             }
 
@@ -180,9 +202,9 @@ public class SeriesController
         String mode = seriesForm.getMode();
         String message = "";
         String missExam_mapping[] = request.getParameterValues("missExam_mapping");
-        logger.debug((new StringBuilder("missExam_mapping=")).append(missExam_mapping).toString());
+       // logger.debug((new StringBuilder("missExam_mapping=")).append(missExam_mapping).toString());
         String missSeriesMap = request.getParameter("missSeriesMap");
-        logger.debug((new StringBuilder("missSeriesMap=")).append(missSeriesMap).toString());
+        //logger.debug((new StringBuilder("missSeriesMap=")).append(missSeriesMap).toString());
         Map checkDuplicate = new HashMap();
         List list = new ArrayList();
         if(missSeriesMap != null && missSeriesMap.length() > 0)
@@ -199,24 +221,26 @@ public class SeriesController
             }
 
         }
-        StringBuffer sb = new StringBuffer();
+      //  StringBuffer sb = new StringBuffer();
         String meIds[] = (String[])list.toArray(new String[list.size()]);
         seriesForm.getMissSery().setMeIds(meIds);
-        int meIds_size = meIds.length;
-        for(int i = 0; i < meIds_size; i++)
+       // int meIds_size = meIds.length;
+       /* for(int i = 0; i < meIds_size; i++)
         {
-            logger.debug((new StringBuilder(" xxx ")).append(meIds[i]).toString());
+          //  logger.debug((new StringBuilder(" xxx ")).append(meIds[i]).toString());
+            
             if(i != meIds_size - 1)
-                sb.append((new StringBuilder(String.valueOf(meIds[i]))).append(",").toString());
+                sb.append(meIds[i]+",");
             else
-                sb.append((new StringBuilder(String.valueOf(meIds[i]))).toString());
-        }
+                sb.append(meIds[i]);
+        }*/
 
-        model.addAttribute("missSeriesMap", sb);
+      //  model.addAttribute("missSeriesMap", sb);
+        Long id =null;
         if(mode != null)
             if(mode.equals("new"))
             {
-                Long id = missExamService.saveMissSery(seriesForm.getMissSery());
+                id = missExamService.saveMissSery(seriesForm.getMissSery());
                 seriesForm.getMissSery().setMsId(id);
                 seriesForm.setMode("edit");
                 message = "Save success !";
@@ -224,8 +248,53 @@ public class SeriesController
             if(mode.equals("edit"))
             {
                 missExamService.updateMissSery(seriesForm.getMissSery());
+                id=seriesForm.getMissSery().getMsId();
                 message = "Update success !";
             }
+        
+        MissSeriesMap missSeriesMapObj = new MissSeriesMap();
+        missSeriesMapObj.setMsId(id);
+        VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMapObj);
+        List missSeriesMaps = vresultMessage.getResultListObj();
+        StringBuffer sb = new StringBuffer();
+        int index = 0;
+        /*private String msatFileName;
+		private String msatHotlink;
+		private String msatModule;
+		private String msatPath;*/
+      
+        if(missSeriesMaps != null && missSeriesMaps.size() > 0)
+        {
+            int size = missSeriesMaps.size();
+            for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
+            {
+            String msatFileName="noFile";
+            String msatHotlink="noHotlink";
+            String msatModule="noModule";
+            String msatPath="noPath";
+                MissSeriesMap entry = (MissSeriesMap)iterator.next();
+               /* if(index != size - 1)
+                    sb.append((new StringBuilder()).append(entry.getMeId()).append(",").toString());
+                else
+                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());*/
+               if(entry.getMsatFileName()!=null && entry.getMsatFileName().length()>0)
+            	   msatFileName=entry.getMsatFileName();
+               if(entry.getMsatHotlink()!=null && entry.getMsatHotlink().length()>0)
+            	   msatHotlink=entry.getMsatHotlink();
+               if(entry.getMsatModule()!=null && entry.getMsatModule().length()>0)
+            	   msatModule=entry.getMsatModule();
+               if(entry.getMsatPath()!=null && entry.getMsatPath().length()>0)
+            	   msatPath=entry.getMsatPath();
+                // meid|filename|hotlink|module|path
+                if(index != size - 1)
+                    sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath+",");
+                else
+                    sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath);
+                index++;
+            }
+
+        }
+        model.addAttribute("missSeriesMap", sb);
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         model.addAttribute("missExams", missExamService.listMissExam());

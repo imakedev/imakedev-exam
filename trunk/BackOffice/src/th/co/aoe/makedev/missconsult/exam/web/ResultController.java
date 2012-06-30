@@ -5,13 +5,27 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +43,7 @@ import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
@@ -70,15 +85,15 @@ public class ResultController
         	
         	resultForm.getMissTestResult().setMissCandidate(missCandidate);
          VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
-         model.addAttribute("missTestResults", vresultMessage.getResultListObj());
+         model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
           resultForm.getPaging().setPageSize(3);
           resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
-          List<String> axisHeaders=new ArrayList<String>(4);
+         /* List<String> axisHeaders=new ArrayList<String>(4);
           axisHeaders.add("Fa");
           axisHeaders.add("Im");
           axisHeaders.add("Pe");
-          axisHeaders.add("Ju"); 
-          model.addAttribute("axisHeaders", axisHeaders);
+          axisHeaders.add("Ju");*/ 
+          model.addAttribute("axisHeaders", vresultMessage.getResultListObj().get(1));
           model.addAttribute("resultForm", resultForm);
         return "exam/template/testResultSearch";
     }
@@ -155,14 +170,14 @@ public class ResultController
         VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
       
         resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
-        model.addAttribute("missTestResults", vresultMessage.getResultListObj());
+        model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
         model.addAttribute("missSeries", missExamService.listMissSery());
-        List<String> axisHeaders=new ArrayList<String>(4);
+       /* List<String> axisHeaders=new ArrayList<String>(4);
         axisHeaders.add("Fa");
         axisHeaders.add("Im");
         axisHeaders.add("Pe");
-        axisHeaders.add("Ju"); 
-        model.addAttribute("axisHeaders", axisHeaders);
+        axisHeaders.add("Ju"); */
+        model.addAttribute("axisHeaders", vresultMessage.getResultListObj().get(1));
         model.addAttribute("resultForm", resultForm);
         return "exam/template/testResultSearch";
     }
@@ -192,6 +207,167 @@ public class ResultController
     {
         return "exam/template/nopage";
     }
+    @RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public void testPDF(HttpServletRequest request, HttpServletResponse response){
+    	 MissTestResult report=new MissTestResult(); 
+			report.setMeId(1l); 
+			byte[] imageInByte=null;
+			BufferedImage originalImage = null;
+			ByteArrayOutputStream baos =null;
+			try{
+				originalImage=ImageIO.read(new File("/root/Desktop/lambo.jpg"));
+			 
+				baos= new ByteArrayOutputStream();
+				ImageIO.write( originalImage, "jpg", baos );
+				baos.flush();
+				imageInByte = baos.toByteArray();
+				baos.close(); 
+				}catch(IOException e){
+					e.printStackTrace();
+					//System.out.println(e.getMessage());
+				} 
+			String encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
+					.encodeBase64(imageInByte));
+			report.setServiceName(encodedImgStr);
+			 MissTestResult report2=new MissTestResult(); 
+				report2.setMeId(1l);
+			try{
+				originalImage=ImageIO.read(new File("/root/Desktop/lum.jpg"));
+			 
+				baos= new ByteArrayOutputStream();
+				ImageIO.write( originalImage, "jpg", baos );
+				baos.flush();
+				imageInByte = baos.toByteArray();
+				baos.close(); 
+				}catch(IOException e){
+					e.printStackTrace();
+					//System.out.println(e.getMessage());
+				} 
+			encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
+					.encodeBase64(imageInByte));
+			report2.setServiceName(encodedImgStr);
+			
+			
+		
+			logger.debug("encodedImgStr============>"+encodedImgStr);
+			List<MissTestResult> newList=new ArrayList<MissTestResult>();
+			newList.add(report);
+			newList.add(report2);
+		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList);  
+		 String  reportPath=  "/root/Desktop/report1.jasper";  
+		 JasperPrint jasperPrint=null;
+		try {
+			jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),beanCollectionDataSource);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	      String fileName="เทส.pdf";
+		 response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
+		/* response.setHeader("Content-Disposition", "inline; filename="
+					+ fileName);*/
+	       ServletOutputStream servletOutputStream=null;
+		try {
+			servletOutputStream = response.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	       try {
+			JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	      // FacesContext.getCurrentInstance().responseComplete(); 
+	       try {
+			servletOutputStream.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	       try {
+			servletOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	       
+	   
+    }
+    /**
+	 * Processes the download for Excel format
+	 */
+	public void downloadXLS(HttpServletResponse response) throws  ClassNotFoundException, JRException {
+
+		logger.debug("Downloading Excel report");
+	/*	
+		// Retrieve our data source
+		SalesDAO datasource = new SalesDAO();
+		JRDataSource ds = datasource.getDataSource();
+
+		// Create our report layout
+		// We delegate the reporting layout to a custom ReportLayout instance
+		// The ReportLayout is a wrapper class I made. Feel free to remove or modify it
+		ReportLayout layout = new ReportLayout();
+		DynamicReport dr = layout.buildReportLayout();
+
+		// params is used for passing extra parameters like when passing
+		// a custom datasource, such as Hibernate datasource
+		// In this application we won't utilize this parameter
+		HashMap params = new HashMap(); 
+		
+		// Compile our report layout
+		JasperReport jr = DynamicJasperHelper.generateJasperReport(dr,
+				new ClassicLayoutManager(), params);
+
+		// Creates the JasperPrint object
+		// It needs a JasperReport layout and a datasource
+		JasperPrint jp = JasperFillManager.fillReport(jr, params, ds);
+
+		// Create our output byte stream
+		// This is the stream where the data will be written
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		// Export to output stream
+		// The data will be exported to the ByteArrayOutputStream baos
+		// We delegate the exporting  to a custom Exporter instance
+		// The Exporter is a wrapper class I made. Feel free to remove or modify it
+		Exporter exporter = new Exporter();
+		exporter.export(jp, baos);
+
+		// Set our response properties
+		// Here you can declare a custom filename
+		String fileName = "SalesReport.xls";
+		response.setHeader("Content-Disposition", "inline; filename="
+				+ fileName);
+		// Make sure to set the correct content type
+		// Each format has its own content type
+		response.setContentType("application/vnd.ms-excel");
+		response.setContentLength(baos.size());
+
+		// Write to reponse stream
+		writeReportToResponseStream(response, baos);*/
+	}
+    /**
+	 * Writes the report to the output stream
+	 */
+	private void writeReportToResponseStream(HttpServletResponse response,
+			ByteArrayOutputStream baos) {
+		
+		logger.debug("Writing report to the stream");
+		try {
+			// Retrieve the output stream
+			ServletOutputStream outputStream = response.getOutputStream();
+			// Write to the output stream
+			baos.writeTo(outputStream);
+			// Flush the stream
+			outputStream.flush();
+
+		} catch (Exception e) {
+			logger.error("Unable to write report to the output stream");
+		}
+	}
 
     private static Logger logger = Logger.getRootLogger();
     @Autowired

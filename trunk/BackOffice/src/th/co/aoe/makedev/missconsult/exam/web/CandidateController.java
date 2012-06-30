@@ -35,12 +35,13 @@ import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/candidate"})
-@SessionAttributes(value={"candidateForm"})
+@SessionAttributes(value={"candidateForm","UserMissContact"})
 public class CandidateController
 {
 
@@ -57,6 +58,15 @@ public class CandidateController
         model.addAttribute("missSeries", missExamService.listMissSery());
         CandidateForm candidateForm = new CandidateForm();
         candidateForm.getMissCandidate().getPagging().setPageSize(3);
+        
+        if(model.containsAttribute("UserMissContact")){
+        	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+        	if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
+        		  MissAccount missAccount = new MissAccount(); 
+        		 missAccount.setMaId(missContact.getMcontactRef());
+        		 candidateForm.getMissCandidate().setMissAccount(missAccount);
+        	}
+        }
         VResultMessage vresultMessage = missExamService.searchMissCandidate(candidateForm.getMissCandidate());
         model.addAttribute("missCandidates", vresultMessage.getResultListObj());
         candidateForm.getPaging().setPageSize(3);
@@ -79,11 +89,23 @@ public class CandidateController
         }
         MissAccount missAccount = null;
         candidateForm.getMissCandidate().setMissSery(missSery);
+        missAccount = new MissAccount();
         if(candidateForm.getMcaCompanyName() != null && candidateForm.getMcaCompanyName().trim().length() > 0)
         {
-            missAccount = new MissAccount();
             missAccount.setMaName(candidateForm.getMcaCompanyName());
+           
         }
+        if(model.containsAttribute("UserMissContact")){
+        	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+        	if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
+        		 missAccount.setMaId(missContact.getMcontactRef());
+        	}
+        }
+      /*  if(candidateForm.getMaId() != null && candidateForm.getMaId().intValue()!=0)
+        {
+            missAccount.setMaId(candidateForm.getMaId());
+           
+        }*/
         candidateForm.getMissCandidate().setMissAccount(missAccount);
         candidateForm.getMissCandidate().setMcaUsername(candidateForm.getMcaUsername());
         candidateForm.getMissCandidate().setMcaPassword(candidateForm.getMcaPassword());
@@ -178,6 +200,7 @@ public class CandidateController
                 id = candidateForm.getMissCandidate().getMcaId();
                 message = "Update success !";
             }
+            	
         MissCandidate missCandidate = missExamService.findMissCandidateById(id);
         candidateForm.setMissCandidate(missCandidate);
         model.addAttribute("message", message);
