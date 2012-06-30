@@ -113,7 +113,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			String mcaUsername=instance.getMcaUsername();
 			String mcaPassword=instance.getMcaPassword();
 			String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
-		
+			Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 		
 			StringBuffer sb =new StringBuffer(" select count(missCandidate) from MissCandidate missCandidate ");
 			
@@ -143,6 +143,11 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				sb.append(iscriteria?(" and lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}
+			if(maId !=null && maId.intValue()!=0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and missCandidate.missAccount.maId="+maId.intValue()+""):(" where missCandidate.missAccount.maId="+maId.intValue()+""));
+				  iscriteria = true;
+			}
 			Query query =session.createQuery(sb.toString());
 				 return ((Long)query.uniqueResult()).intValue(); 
 		 
@@ -166,10 +171,10 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 						 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()+""):null;
 				String mcaUsername=instance.getMcaUsername();
 				String mcaPassword=instance.getMcaPassword();
+				 
 				String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
-			
+				Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 				StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
-				
 				boolean iscriteria = false;
 				if(mcaStatus !=null && !mcaStatus.equals("-1")){  
 					//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
@@ -194,6 +199,11 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				if(mcaCompanyName !=null && mcaCompanyName.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
+					  iscriteria = true;
+				}
+				if(maId !=null && maId.intValue()!=0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and missCandidate.missAccount.maId="+maId.intValue()+""):(" where missCandidate.missAccount.maId="+maId.intValue()+""));
 					  iscriteria = true;
 				}
 				
@@ -290,7 +300,21 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
 			
 			return query.executeUpdate();
-		}	
+		}else if(section.equals("2")){
+			 
+			query=session.createQuery("delete MissTest missTest " +
+					" where missTest.id.missCandidate.mcaId ="+transientInstance.getMcaId()+
+					" and  missTest.id.missSery.msId="+transientInstance.getMissSery().getMsId());
+			query.executeUpdate();
+			query=session.createQuery("delete MissTestResult missTestResult " +
+					" where missTestResult.missCandidate.mcaId ="+transientInstance.getMcaId()+
+					" and  missTestResult.msId="+transientInstance.getMissSery().getMsId());
+			query.executeUpdate();
+			query=session.createQuery("update MissCandidate missCandidate " +
+					" set missCandidate.mcaStatus ='2' " +
+					" where missCandidate.mcaId ="+transientInstance.getMcaId());
+			return query.executeUpdate();
+		}
 		return 0;
 		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
 	}

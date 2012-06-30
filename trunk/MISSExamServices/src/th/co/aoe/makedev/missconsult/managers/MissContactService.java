@@ -13,6 +13,7 @@ public interface MissContactService {
 	public int updateMissContactPhoto(MissContact transientInstance,String section) throws DataAccessException ;
 	public int deleteMissContact(MissContact persistentInstance) throws DataAccessException ;	
 	public MissContact findMissContactById(Long mcontactId)throws DataAccessException  ;
+	public th.co.aoe.makedev.missconsult.xstream.MissContact findMissContactByUsername(String username) throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
 	public  List searchMissContact(MissContact persistentInstance,	Pagging pagging)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")

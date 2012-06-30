@@ -28,6 +28,9 @@ public class MissSeriesAttach extends VServiceXML implements Serializable {
 	private Long msatRef1;
 
 	private Long msatRef2;
+	
+	//ext 
+	private String rootPath;
 
     public MissSeriesAttach() {
     }
@@ -86,6 +89,14 @@ public class MissSeriesAttach extends VServiceXML implements Serializable {
 
 	public void setMsatRef2(Long msatRef2) {
 		this.msatRef2 = msatRef2;
+	}
+
+	public String getRootPath() {
+		return rootPath;
+	}
+
+	public void setRootPath(String rootPath) {
+		this.rootPath = rootPath;
 	}
 
 }

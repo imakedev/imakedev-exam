@@ -106,7 +106,7 @@ public class HibernateMissSeriesMap  extends HibernateCommon implements MissSeri
 					 sb.append(iscriteria?(" and missSeriesMap.id.msId="+msId+""):(" where missSeriesMap.id.msId="+msId+""));
 					  iscriteria = true;
 				}
-				
+				//find misssery attach
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missSeriesMap."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
@@ -117,10 +117,43 @@ public class HibernateMissSeriesMap  extends HibernateCommon implements MissSeri
 				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-				 query.setMaxResults(pagging.getPageSize());
-				 
-				 List l = query.list();   
-				 transList.add(l); 
+				 query.setMaxResults(pagging.getPageSize()); 
+				 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> l = query.list();  
+				
+				 List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>(
+							l.size());
+					for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : l) {
+						 th.co.aoe.makedev.missconsult.xstream.MissSeriesMap xmissSeriesMap =new th.co.aoe.makedev.missconsult.xstream.MissSeriesMap ();
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMapPK pk =missSeriesMap.getId();
+						xmissSeriesMap.setMeId(pk.getMeId());
+						xmissSeriesMap.setMsId(pk.getMsId());
+						xmissSeriesMap.setMsmOrder(missSeriesMap.getMsmOrder()); 
+						//BeanUtils.copyProperties(missSeriesMap, xmissSeriesMap);
+						sb.setLength(0);
+						sb.append("select missSeriesAttach from MissSeriesAttach missSeriesAttach where missSeriesAttach.msatRef1=:msatRef1 " +
+								"and missSeriesAttach.msatRef2=:msatRef2 and missSeriesAttach.msatModule='evaluation' ");
+						query =session.createQuery(sb.toString());
+						query.setParameter("msatRef1", pk.getMsId());
+						query.setParameter("msatRef2", pk.getMeId());
+						List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach> missSeriesAttachs=query.list();
+						if(missSeriesAttachs!=null && missSeriesAttachs.size()>0){
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach missSeriesAttach=missSeriesAttachs.get(0);
+							xmissSeriesMap.setMsatHotlink(missSeriesAttach.getMsatHotlink());
+							xmissSeriesMap.setMsatFileName(missSeriesAttach.getMsatFileName());
+							xmissSeriesMap.setMsatModule(missSeriesAttach.getMsatModule());
+							xmissSeriesMap.setMsatPath(missSeriesAttach.getMsatPath());
+							// ext
+							/*private String msatFileName;
+							private String msatHotlink;
+							private String msatModule;
+							private String msatPath;*/
+							
+						}
+					
+						xmissSeriesMap.setPagging(null);
+						xntcCalendars.add(xmissSeriesMap);
+					}
+				 transList.add(xntcCalendars); 
 			 	 transList.add(size); 
 				return transList;
 			} catch (Exception re) {

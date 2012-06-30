@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -193,11 +194,12 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	 public List searchMissTestResult(MissTestResult instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
+			Long msId=instance.getMsId();
 			try {
 				/*Long megId = instance.getMegId();
 				String megName = instance.getMegName();
 			*/
-				Long msId=instance.getMsId();
+				//Long msId=instance.getMsId();
 				MissCandidate missCandidate=instance.getMissCandidate();
 				String mcaUsername=missCandidate.getMcaUsername();
 				String mcaFirstName=missCandidate.getMcaFirstName();
@@ -305,12 +307,26 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						missTestResult.setMissCandidate(candidate);
 						missTestResult.setPagging(null);
 						
-						List<String> axisValues = new ArrayList<String>(4);
-						axisValues.add("?");
-						axisValues.add("?");
-						axisValues.add("?");
-						axisValues.add("?");
-						missTestResult.setAxisValues(axisValues);
+						//get missTestShow
+						// query =session.createQuery("select ");
+
+						 int mcaId_query =obj[1] != null ? ((java.lang.Integer)(obj[1])).intValue() : 0;
+						 int msId_query=obj[2] != null ? ((java.lang.Integer)(obj[2])).intValue() : 0;
+						 int meId_query=obj[3] != null ? ((java.lang.Integer)(obj[3])).intValue() : 0;
+						 query=session.createQuery("select missTestShow from MissTestShow missTestShow " +
+						 		" where missTestShow.id.mtsType='2' and missTestShow.id.mcaId="+mcaId_query +
+						 		" and missTestShow.id.msId="+msId_query+
+						 		" and missTestShow.id.meId="+meId_query);
+						List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShowResult= query.list();						
+						if(missTestShowResult!=null && missTestShowResult.size()>0){
+							List<String> axisValues = new ArrayList<String>(missTestShowResult.size());
+							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShowResult) {
+								axisValues.add(missTestShow.getMtsValue());
+							}
+							missTestResult.setAxisValues(axisValues);
+						}
+						
+						
 						
 						/*missTestResult.setm
 						ownerresultDTO.setKpiOwnerKey(obj[0] != null ? new BigDecimal(
@@ -319,8 +335,32 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						result.set(j, missTestResult);
 					}
 				// List l = query.list();   
+					 query=session.createQuery("select issEvaluationConfig from MissEvaluationConfig issEvaluationConfig " +
+						 		" where issEvaluationConfig.id.mecType='2' "+
+						 		" and issEvaluationConfig.id.msId="+msId.intValue() +" " +
+						 		" and issEvaluationConfig.columnIsShow='1' order by issEvaluationConfig.mecOrder asc ");
+					 
+					List<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig> missEvaluationConfigs= 
+							query.list();
+					//java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig> xmissEvaluationConfig=null;
+					List<String> axisHeaders=null;
+					if(missEvaluationConfigs!=null && missEvaluationConfigs.size()>0){
+						//xmissEvaluationConfig=new java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>(missEvaluationConfigs.size());
+						axisHeaders=new  ArrayList<String>(missEvaluationConfigs.size());
+						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig missEvaluationConfig : missEvaluationConfigs) {
+							//th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig evaluationConfig =new th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig();
+							//evaluationConfig.setColumnCode(missEvaluationConfig.getId().getColumnCode());
+							//xmissEvaluationConfig.add(evaluationConfig);
+							axisHeaders.add(missEvaluationConfig.getId().getColumnCode());
+						}
+					}else{
+						//xmissEvaluationConfig=new java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>();
+						axisHeaders=new  ArrayList<String>(0);
+					}
+				
 				 transList.add(result); 
 			 	 transList.add(size); 
+			 	 transList.add(axisHeaders); 
 				return transList;
 			} catch (Exception re) {
 				//re.printStackTrace();
@@ -373,7 +413,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				missSeriesAttach.getMsatFileName();
 				 String filePath=rootPath+missSeriesAttach.getMsatPath();
 				  String pathOutPut= setAnswer(session,filePath,msId,meId,mcaId);
-				  String code=getCode(pathOutPut);
+				 
+				  String code=getCode(session,pathOutPut,mcaId,msId,meId);
 				  query=session.createQuery("update MissTestResult missTestResult " +
 							" set missTestResult.mtrResultCode =:mtrResultCode " +
 							 
@@ -525,7 +566,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	        }
 	        return outPut;
 	}
-	public String getCode(String filename){ 
+	public String getCode(Session session,String filename,Long mcaId,Long msId,Long meId){ 
     	FileInputStream fileIn = null;
         //FileOutputStream fileOut = null;
         String code =null;
@@ -564,6 +605,49 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
           row_code= sheet1.getRow(cr.getRow());
           cell_code  =row_code.getCell(cr.getCol());
           code=cell_code.getStringCellValue();
+          
+          NumberFormat    format  =    NumberFormat.getNumberInstance();
+          format.setGroupingUsed(false);
+          //get config
+          Sheet sheet1_0 = wb.getSheetAt(0);
+          Sheet sheet1_1 = wb.getSheetAt(1);
+          int endRow=sheet1_0.getPhysicalNumberOfRows();
+         // System.out.println("getPhysicalNumberOfRows="+endRow);
+          Row r=null;
+          List < th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=
+        		  new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow>();
+          for(int i=4;i<=endRow;i++){
+        	 r= sheet1_0.getRow(i);
+        	 if(r.getCell(2).getBooleanCellValue()){
+        		 th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow  missTestShow =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow();
+            	 th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK pk =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK();
+            	 pk.setMcaId(mcaId);
+            	 pk.setMsId(msId);
+            	 pk.setMeId(meId);
+            	
+             	
+             	  CellReference cr2 = new CellReference(r.getCell(1).getStringCellValue());
+             	  row_code= sheet1_1.getRow(cr2.getRow());
+                  cell_code  =row_code.getCell(cr2.getCol());
+                  
+                  pk.setMtsColumn(r.getCell(0).getStringCellValue());                 
+                  pk.setMtsType("2");
+                  missTestShow.setMtsValue(format.format(cell_code.getNumericCellValue()));
+                  missTestShow.setId(pk);
+                  missTestShows.add(missTestShow);
+        	 }
+          }
+          Query query=session.createQuery("delete MissTestShow missTestShow " + 
+					" where missTestShow.id.mcaId=:mcaId and " +
+					" missTestShow.id.meId=:meId and " +
+					" missTestShow.id.msId=:msId ");
+			query.setParameter("mcaId", mcaId); 
+			query.setParameter("meId", meId);
+			query.setParameter("msId", msId);
+			query.executeUpdate();
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShows) {
+				session.save(missTestShow);
+			}
         //  System.out.println(columnReference);
           
      /*     row_code= sheet1.getRow(2);

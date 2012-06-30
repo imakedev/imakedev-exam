@@ -98,18 +98,20 @@ public class MissSeriesMapResource extends BaseResource {
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missSeriesMapService.searchMissSeriesMap(bpsTerm,page);
 							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap>) result
+								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap>) result
+										.get(0);*/
+								List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
 //								 
 								VResultMessage vresultMessage = new VResultMessage();
 
-								List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>();
+								//List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>();
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
+								/*if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissSeriesMapObject(ntcCalendars);
-								}
+								}*/
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
@@ -137,99 +139,7 @@ public class MissSeriesMapResource extends BaseResource {
 		return null;
 	
 	}
-/*
-	@Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("into Post MissSeriesMapResource");
-		InputStream in = null;
-		try {
-			in = entity.getStream();
-			xstream.processAnnotations(th.co.aoe.makedev.missconsult.xstream.MissSeriesMap.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.aoe.makedev.missconsult.xstream.MissSeriesMap xbpsTerm = new th.co.aoe.makedev.missconsult.xstream.MissSeriesMap();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissSeriesMap) ntcCalendarObj;
-				if (xbpsTerm != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap();
-					BeanUtils.copyProperties(bpsTerm, xbpsTerm); 
-					
-					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
-						logger.debug(" BPS servicename = "
-								+ xbpsTerm.getServiceName());
-						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap ntcCalendarReturn = missSeriesMapService.findMissSeriesMapById(bpsTerm.getId());
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissSeriesMap xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissSeriesMap();
-								BeanUtils.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
-								
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
-								export(entity, vresultMessage, xstream);
-							}
-						} 
-						if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missSeriesMapService.saveMissSeriesMap(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missSeriesMapService.updateMissSeriesMap(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_DELETE)){
-							int updateRecord=missSeriesMapService.deleteMissSeriesMap(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missSeriesMapService.searchMissSeriesMap(bpsTerm,page);
-							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap>) result
-										.get(0);
-								String faqs_size = (String) result.get(1);
-//								 
-								VResultMessage vresultMessage = new VResultMessage();
 
-								List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>();
-								if (faqs_size != null && !faqs_size.equals(""))
-									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissSeriesMapObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-							}
-						}
-						
-					} else {
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			logger.debug(" into Finally Call");
-			try {
-				if (in != null)
-					in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	*/
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub

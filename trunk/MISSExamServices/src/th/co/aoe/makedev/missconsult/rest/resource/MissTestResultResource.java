@@ -119,7 +119,7 @@ public class MissTestResultResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,page);
-							if (result != null && result.size() == 2) {
+							if (result != null && result.size() == 3) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -130,7 +130,10 @@ public class MissTestResultResource extends BaseResource {
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
 								 
-								vresultMessage.setResultListObj(xntcCalendars);
+								List resultListObj=new ArrayList(2);
+								resultListObj.add(xntcCalendars);
+								resultListObj.add(result.get(2));
+								vresultMessage.setResultListObj(resultListObj);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						}

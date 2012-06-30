@@ -102,7 +102,22 @@ public class MissContactResource extends BaseResource {
 								
 							}
 						} 
-						if(serviceName.equals(ServiceConstant.MISS_CONTACT_SAVE)){
+						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_FIND_BY_USERNAME)){
+							th.co.aoe.makedev.missconsult.xstream.MissContact xntcCalendarReturn = missContactService.findMissContactByUsername(bpsTerm.getMcontactUsername());
+						logger.debug(" object return ="+xntcCalendarReturn);
+							if(xntcCalendarReturn!=null){
+								VResultMessage vresultMessage = new VResultMessage();
+								List<th.co.aoe.makedev.missconsult.xstream.MissContact> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissContact>(1);
+								//th.co.aoe.makedev.missconsult.xstream.MissContact xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissContact();
+								//BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
+								xntcCalendarReturn.setPagging(null);
+							
+								xntcCalendars.add(xntcCalendarReturn);
+								vresultMessage.setResultListObj(xntcCalendars);
+								return getRepresentation(entity, vresultMessage, xstream);
+							}
+						} 
+						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mcontactId=0l;
 						

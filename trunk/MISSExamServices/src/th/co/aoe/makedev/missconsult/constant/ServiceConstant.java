@@ -166,6 +166,8 @@ public class ServiceConstant {
 	public static final String MISS_CONTACT_DELETE = "deleteMissContact";
 	public static final String MISS_CONTACT_SEARCH = "searchMissContact";
 	public static final String MISS_CONTACT_FIND_BY_ID = "findMissContactById";
+	public static final String MISS_CONTACT_FIND_BY_USERNAME = "findMissContactByUsername";
+	
 	public static final String MISS_CONTACT_ITEMS_DELETE ="deleteMissAccountItems";
 	public static final String MISS_CONTACT_LIST = "listContacts";
 	public static final String MISS_CONTACT_UPDATE_PHOTO = "updatePhotoMissContact"; 
