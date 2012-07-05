@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class MissTest extends VServiceXML implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long mtestId;
+	//private Long mtestId;
 
 	private String mtestAns;
 
@@ -50,14 +50,14 @@ public class MissTest extends VServiceXML implements Serializable {
     public MissTest() {
     }
 
-	public Long getMtestId() {
+/*	public Long getMtestId() {
 		return this.mtestId;
 	}
 
 	public void setMtestId(Long mtestId) {
 		this.mtestId = mtestId;
 	}
-
+*/
 	public String getMtestAns() {
 		return this.mtestAns;
 	}

@@ -188,18 +188,21 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 				missTestUpdate.getId().setMissChoice(choice);*/
 				logger.debug("size="+list.size());
 				logger.debug("MCA_ID="+missTest.getId().getMissCandidate().getMcaId());
-				logger.debug("MC_ID="+missTest.getId().getMissChoice().getMcId());
+				logger.debug("MQ_ID="+missTest.getId().getMissQuestion().getMqId());
+				logger.debug("MC_NO="+missTest.getId().getMcNo());
 				logger.debug("ME_ID="+missTest.getId().getMissExam().getMeId());
-				logger.debug("MQ_ID="+missTest.getId().getMissCandidate().getMcaId());
+			//	logger.debug("MQ_ID="+missTest.getId().getMissCandidate().getMcaId());
 				logger.debug("MS_ID="+missTest.getId().getMissSery().getMsId());
 				//session.update(missTestUpdate);
 				query=session.createQuery("update MissTest missTest " +
-						" set missTest.id.missChoice.mcId =:mcId " +
+						" set missTest.id.missQuestion.mqId =:mqId_choice, " +
+						" missTest.id.mcNo =:mcNo_choice " +
 						" where missTest.id.missCandidate.mcaId=:mcaId and " +
 						" missTest.id.missExam.meId=:meId and " +
 						" missTest.id.missQuestion.mqId=:mqId and " +
 						" missTest.id.missSery.msId=:msId ");
-				query.setParameter("mcId", missTest.getId().getMissChoice().getMcId());
+				query.setParameter("mqId_choice", missTest.getId().getMissQuestion().getMqId());
+				query.setParameter("mcNo_choice", missTest.getId().getMcNo());
 				
 				query.setParameter("mcaId", missCandidate.getMcaId()); 
 				query.setParameter("meId", missTest.getId().getMissExam().getMeId());

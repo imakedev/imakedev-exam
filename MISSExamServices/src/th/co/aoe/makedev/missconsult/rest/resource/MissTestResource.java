@@ -61,12 +61,15 @@ public class MissTestResource extends BaseResource {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissTest bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTest();
 					BeanUtils.copyProperties(xbpsTerm,bpsTerm,ignore_id); 
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK pk =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK();
-					if(xbpsTerm.getMissChoice()!=null){
+					if(xbpsTerm.getMissChoice()!=null && xbpsTerm.getMissChoice().getMcNo()!=null){
+						pk.setMcNo(xbpsTerm.getMissChoice().getMcNo());
+					}
+					/*if(xbpsTerm.getMissChoice()!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice missChoice = new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
 						BeanUtils.copyProperties(xbpsTerm.getMissChoice(),missChoice,ignore_id_choice); 
-						pk.setMissChoice(missChoice);
+						//pk.setMissChoice(missChoice);
 						//bpsTerm.setMissChoice(missChoice);
-					}
+					}*/
 					if(xbpsTerm.getMissExam()!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissExam missExam = new th.co.aoe.makedev.missconsult.hibernate.bean.MissExam();
 						BeanUtils.copyProperties(xbpsTerm.getMissExam(),missExam,ignore_id_exam); 
@@ -110,10 +113,12 @@ public class MissTestResource extends BaseResource {
 						    			th.co.aoe.makedev.missconsult.hibernate.bean.MissTest missTest = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTest();
 										BeanUtils.copyProperties(xmissTest,missTest,ignore_id); 
 										th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK pk_inner =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK();
-										if(xmissTest.getMissChoice()!=null){
-											th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice missChoice = new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
-											BeanUtils.copyProperties(xmissTest.getMissChoice(),missChoice,ignore_id_choice); 
-											pk_inner.setMissChoice(missChoice);
+										if(xmissTest.getMissChoice()!=null && xmissTest.getMissChoice().getMcNo()!=null){
+											pk_inner.setMcNo(xmissTest.getMissChoice().getMcNo());
+										/*	th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice missChoice = new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
+											BeanUtils.copyProperties(xmissTest.getMissChoice(),missChoice,ignore_id_choice); */
+											/*
+											pk_inner.setMissChoice(missChoice);*/
 										}
 										if(xmissTest.getMissExam()!=null){
 											th.co.aoe.makedev.missconsult.hibernate.bean.MissExam missExam = new th.co.aoe.makedev.missconsult.hibernate.bean.MissExam();
@@ -261,12 +266,17 @@ public class MissTestResource extends BaseResource {
 			BeanUtils.copyProperties(missTest, xmissTest);
 			xmissTest.setPagging(null);
 			th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK pk_inner =missTest.getId();
-			if(pk_inner.getMissChoice()!=null){
+			if(pk_inner.getMcNo()!=null && pk_inner.getMissQuestion()!=null ){
 				th.co.aoe.makedev.missconsult.xstream.MissChoice missChoice = new th.co.aoe.makedev.missconsult.xstream.MissChoice();
-				BeanUtils.copyProperties(pk_inner.getMissChoice(),missChoice,ignore_id_choice); 
+				//BeanUtils.copyProperties(pk_inner.getMissChoice(),missChoice,ignore_id_choice); 
+				missChoice.setMcNo(pk_inner.getMcNo());
+				missChoice.setMqId(pk_inner.getMissQuestion().getMqId());
 				missChoice.setPagging(null);
 				xmissTest.setMissChoice(missChoice);
 			}
+			/*if(xmissTest.getMissChoice()!=null && xmissTest.getMissChoice().getMcNo()!=null){
+				pk_inner.setMcNo(xmissTest.getMissChoice().getMcNo());
+			}*/
 			if(pk_inner.getMissExam()!=null){
 				th.co.aoe.makedev.missconsult.xstream.MissExam missExam = new th.co.aoe.makedev.missconsult.xstream.MissExam();
 				BeanUtils.copyProperties(pk_inner.getMissExam(),missExam,ignore_id_exam); 

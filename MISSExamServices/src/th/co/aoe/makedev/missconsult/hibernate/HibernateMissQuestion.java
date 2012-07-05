@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
 import th.co.aoe.makedev.missconsult.managers.MissQuestionService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -60,7 +61,7 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 				BeanUtils.copyProperties(missQuestion.getMissTemplate(),missTemplate); 
 				xmissQuestion.setMissTemplate(missTemplate);
 			}
-			query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId");
+			query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.id.mcNo asc ");
 			query.setParameter("mqId", mqId);
 			@SuppressWarnings("unchecked")
 			List<MissChoice> missChoices= (List<MissChoice>) query.list();
@@ -68,6 +69,7 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 			for (MissChoice missChoice : missChoices) {
 				th.co.aoe.makedev.missconsult.xstream.MissChoice  xmissChoice= new th.co.aoe.makedev.missconsult.xstream.MissChoice();
 				BeanUtils.copyProperties(missChoice, xmissChoice,ignore_question_id);
+				xmissChoice.setMcNo(missChoice.getId().getMcNo());
 				xmissChoice.setPagging(null);
 				xmissChoices.add(xmissChoice);
 			}
@@ -193,6 +195,52 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue());
 		return query.list(); 	
+	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	@Override
+	public void setUpTestMissQuestion() throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
+		 List<MissQuestion> list =query.list();
+		 int i=1;
+		 for (MissQuestion missQuestion : list) {
+			 query=session.createQuery("update MissQuestion missQuestion " +
+						" set missQuestion.mqNameTh1 =:mqNameTh1 ," +
+						" missQuestion.mqChoose =1," +
+						" missQuestion.missTemplate.mtId =1 ," +
+						" missQuestion.mqNo =:mqNo " +
+						" where missQuestion.mqId=:mqId" );
+			 query.setParameter("mqNameTh1", i+"");
+			 query.setParameter("mqNo",Long.valueOf(i));
+			 query.setParameter("mqId", missQuestion.getMqId());
+			 query.executeUpdate();
+			i++;
+			StringBuffer sb=new StringBuffer();
+			for(int j =0;j<5;j++){
+				MissChoice choice =new MissChoice();
+				MissChoicePK pk =new MissChoicePK();
+				pk.setMcNo(Long.valueOf(j+1));
+				pk.setMqId(missQuestion.getMqId());
+				sb.setLength(0);
+				 if(j==0){
+					sb.append("ไม่เห็นด้วยอย่างยิ่ง");
+				}else if(j==1){
+					sb.append("ไม่เห็นด้วย");
+				}else if(j==2){
+					sb.append("ไม่มีความเห็น");
+				}else if(j==3){
+					sb.append("เห็นด้วย");
+				}else if(j==4){
+					sb.append("เห็นด้วยอย่างยิ่ง");
+				}
+				
+				choice.setMcName(sb.toString());
+				choice.setId(pk);
+				session.save(choice);
+			}
+		}
+			 
 	}
 	
 

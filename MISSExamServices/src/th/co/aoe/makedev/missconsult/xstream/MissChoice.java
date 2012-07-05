@@ -15,8 +15,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class MissChoice extends VServiceXML implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long mcId;
+	//private Long mcId;
 
+	private Long mqId;
+	private Long mcNo;
+	
 	private String mcLang;
 
 	private Long mcMultipleChoose;
@@ -29,7 +32,7 @@ public class MissChoice extends VServiceXML implements Serializable {
 
 	@XStreamAlias("missQuestion")
 	private MissQuestion missQuestion;
-	private Long mcNo;
+	
 	//ext
 	private String choiceSelect;
 	private String valueSelect;
@@ -40,16 +43,24 @@ public class MissChoice extends VServiceXML implements Serializable {
     public MissChoice() {
     }
 
-	public Long getMcId() {
+	/*public Long getMcId() {
 		return this.mcId;
 	}
 
 	public void setMcId(Long mcId) {
 		this.mcId = mcId;
-	}
+	}*/
 
 	public String getMcLang() {
 		return this.mcLang;
+	}
+
+	public Long getMqId() {
+		return mqId;
+	}
+
+	public void setMqId(Long mqId) {
+		this.mqId = mqId;
 	}
 
 	public void setMcLang(String mcLang) {

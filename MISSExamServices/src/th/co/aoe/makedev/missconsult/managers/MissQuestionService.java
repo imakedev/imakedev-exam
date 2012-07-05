@@ -18,5 +18,7 @@ public interface MissQuestionService {
 		public  List searchMissQuestion(MissQuestion persistentInstance,	Pagging pagging)throws DataAccessException  ;
 		public List listMissQuestions(Long meId) throws DataAccessException;
 		
+		public void setUpTestMissQuestion()throws DataAccessException;
+		
 		
 }

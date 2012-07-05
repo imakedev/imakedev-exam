@@ -57,7 +57,61 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	//ext 
 	private String isMC;
+	private String maCustomizeLogoPath;
+	private String maCustomizeLogoMCPath; // for default
 	
+	private String maCustomizeHeadColor;
+	private String maCustomizeColor;
+	private String maBackgroundColor;
+	private String maGrade;
+	public String getMaGrade() {
+		return maGrade;
+	}
+
+	public void setMaGrade(String maGrade) {
+		this.maGrade = maGrade;
+	}
+
+	public String getMaCustomizeLogoPath() {
+		return maCustomizeLogoPath;
+	}
+
+	public void setMaCustomizeLogoPath(String maCustomizeLogoPath) {
+		this.maCustomizeLogoPath = maCustomizeLogoPath;
+	}
+
+	public String getMaCustomizeLogoMCPath() {
+		return maCustomizeLogoMCPath;
+	}
+
+	public void setMaCustomizeLogoMCPath(String maCustomizeLogoMCPath) {
+		this.maCustomizeLogoMCPath = maCustomizeLogoMCPath;
+	}
+
+	public String getMaCustomizeHeadColor() {
+		return maCustomizeHeadColor;
+	}
+
+	public void setMaCustomizeHeadColor(String maCustomizeHeadColor) {
+		this.maCustomizeHeadColor = maCustomizeHeadColor;
+	}
+
+	public String getMaCustomizeColor() {
+		return maCustomizeColor;
+	}
+
+	public void setMaCustomizeColor(String maCustomizeColor) {
+		this.maCustomizeColor = maCustomizeColor;
+	}
+
+	public String getMaBackgroundColor() {
+		return maBackgroundColor;
+	}
+
+	public void setMaBackgroundColor(String maBackgroundColor) {
+		this.maBackgroundColor = maBackgroundColor;
+	}
+
 	public String getIsMC() {
 		return isMC;
 	}

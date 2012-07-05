@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK;
 import th.co.aoe.makedev.missconsult.managers.MissChoiceService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
@@ -53,7 +54,8 @@ public class HibernateMissChoice  extends HibernateCommon implements MissChoiceS
 			Object obj = session.save(transientInstance);
 		
 			if(obj!=null){
-				returnId =(Long) obj;
+				MissChoicePK pk = (MissChoicePK)obj;
+				returnId =pk.getMcNo();//(Long) obj;
 			}
 		} finally {
 				if (session != null) {
@@ -150,10 +152,16 @@ public class HibernateMissChoice  extends HibernateCommon implements MissChoiceS
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int deleteMissChoice(MissChoice persistentInstance)
+	public int deleteMissChoice(Long mqId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		
+		Query query=session.createQuery("delete MissChoice  missChoice where missChoice.id.mqId=:mqId  "); 
+	//	query.setParameter("mcNo", persistentInstance.getId().getMcNo());
+		query.setParameter("mqId",mqId);
+		return query.executeUpdate();
+		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	 
 

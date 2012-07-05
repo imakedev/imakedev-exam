@@ -52,6 +52,10 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Long returnId  = null;
 		try{
+			transientInstance.setMaGrade("1");
+			transientInstance.setMaCustomizeHeadColor("body.gif");
+			transientInstance.setMaCustomizeColor("smoothness");
+			transientInstance.setMaBackgroundColor("253,253,253");
 			Object obj = session.save(transientInstance);
 		
 			if(obj!=null){

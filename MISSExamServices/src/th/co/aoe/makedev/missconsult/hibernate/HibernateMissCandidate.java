@@ -414,13 +414,15 @@ int result = query.executeUpdate();*/
 					th.co.aoe.makedev.missconsult.xstream.MissQuestion xmissQuestion=new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
 					BeanUtils.copyProperties(missQuestion, xmissQuestion, idIgnore_question);
 					xmissQuestion.setPagging(null);
-					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.mcId ");
+					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.id.mcNo ");
 					query.setParameter("mqId", missQuestion.getMqId());
 					List<MissChoice> choices = query.list();
 					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoices =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choices.size());
 					for (MissChoice missChoice : choices) {
 						th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice=new th.co.aoe.makedev.missconsult.xstream.MissChoice();
 						BeanUtils.copyProperties(missChoice, xmissChoice, idIgnore_choice);
+						xmissChoice.setMqId(missChoice.getId().getMqId());
+						xmissChoice.setMcNo(missChoice.getId().getMcNo());
 						xmissChoice.setPagging(null);
 						xmissChoices.add(xmissChoice);
 					}

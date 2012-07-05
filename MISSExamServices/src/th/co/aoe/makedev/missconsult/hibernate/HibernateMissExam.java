@@ -2,6 +2,9 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.persistence.Column;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType;
@@ -27,7 +31,12 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
 public class HibernateMissExam  extends HibernateCommon implements MissExamService {
-
+	private static String schema="";
+	private static ResourceBundle bundle;
+	static{
+		bundle =  ResourceBundle.getBundle( "jdbc" );	
+		schema=bundle.getString("schema");
+	}
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
@@ -205,7 +214,11 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 							missQuestion.setMqId((Long)objQuestionId);
 							for (int j = 0; j < choiceCountEmpty; j++) {
 								 MissChoice missChoice=new MissChoice();
-								 missChoice.setMissQuestion(missQuestion);
+								 MissChoicePK pk =new MissChoicePK();
+								 pk.setMcNo(Long.valueOf(j+1));
+								 pk.setMqId(missQuestion.getMqId());
+								 missChoice.setId(pk);
+								// missChoice.setMissQuestion(missQuestion);
 								 session.save(missChoice);
 							}
 						}
@@ -272,11 +285,40 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 							missQuestionCopy.setMqId((Long)objQuestionCopy);
 							 sb =new StringBuffer(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId="+missQuestion.getMqId());
 							 query =session.createQuery(sb.toString());
-							 List<MissChoice> listChoice =query.list();   
+							 
+							 List<MissChoice> listChoice =query.list();  
+							 //logger.error("listChoice   =>"+listChoice);
 							 for (MissChoice missChoice : listChoice) {
 								 MissChoice missChoiceCopy=new MissChoice();
+								 MissChoicePK pk =new MissChoicePK();
+								 pk.setMcNo(missChoice.getId().getMcNo());
+								 pk.setMqId( missQuestionCopy.getMqId());
 								 BeanUtils.copyProperties(missChoice, missChoiceCopy, ignore_choice);
-								 missChoiceCopy.setMissQuestion(missQuestionCopy);
+								 //logger.error("listChoice   =>"+pk.toString()+","+pk.getMcNo()+","+pk.getMqId());
+								// BeanUtils.copyProperties(missChoice.getId(), pk);
+								 missChoiceCopy.setId(pk);
+								 //missChoiceCopy.setMissQuestion(missQuestionCopy);
+								 
+								/* query= session.createQuery("insert into MissChoice missChoice set missChoice.mcLang=:mcLang " +
+								 		" ,missChoice.mcMultipleChoose=:mcMultipleChoose ,missChoice.mcName=:mcName " +
+								 		",missChoice.mcScore=:mcScore, missChoice.id.mcNo=:mcNo , missChoice.id.mqId=:mqId");*/
+								/* query= session.createQuery("insert into MissChoice (mcLang ," +
+									 		" mcMultipleChoose,mcName " +
+									 		",mcScore,id.mcNo ,id.mqId) ?,?,?,?,?,?");*/
+								// INSERT INTO `MISS_CONSULT_EXAM2`.`MISS_CHOICE` (`MC_NAME`, `MC_LANG`, `MC_SCORE`, `MC_MULTIPLE_CHOOSE`, `MQ_ID`, `MC_NO`) VALUES ('C', 'lang', '1', 1, 34, 3);
+
+
+								/* query =session.createSQLQuery("INSERT INTO "+schema+".`MISS_CHOICE`" +
+								 		" (`MC_NAME`, `MC_LANG`,`MC_SCORE`,`MC_MULTIPLE_CHOOSE`, `MQ_ID`, `MC_NO`)" +
+								 		" VALUES (?, ?, ?, ?,?, ?);");
+								 
+								 query.setParameter(0, missChoice.getMcName());
+								 query.setParameter(1, missChoice.getMcLang());
+								 query.setParameter(2, missChoice.getMcScore());
+								 query.setParameter(3, missChoice.getMcMultipleChoose());
+								 query.setParameter(4,  missQuestionCopy.getMqId());
+								 query.setParameter(5,missChoice.getId().getMcNo());
+								 query.executeUpdate();*/
 								 session.save(missChoiceCopy);
 							 }
 						}

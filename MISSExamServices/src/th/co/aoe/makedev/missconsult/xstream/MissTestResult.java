@@ -34,6 +34,17 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	private Date mtrTestDate;
 	
+	//EXT
+	private String msatPath;
+	
+	public String getMsatPath() {
+		return msatPath;
+	}
+
+	public void setMsatPath(String msatPath) {
+		this.msatPath = msatPath;
+	}
+
 	private byte[] images;
 	public byte[] getImages() {
 		return images;

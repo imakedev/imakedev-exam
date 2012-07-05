@@ -33,7 +33,33 @@ public class MissTest implements Serializable {
 	@Column(name="MTEST_STATUS")
 	private String mtestStatus;
 
-	
+	/*@ManyToOne
+	@JoinColumn(name="MCA_ID")
+	private MissCandidate missCandidate;
+
+	//bi-directional many-to-one association to MissChoice
+	@ManyToOne
+	@JoinColumns({
+		@JoinColumn(name="MC_NO", referencedColumnName="MQ_ID"),
+		@JoinColumn(name="MQ_ID", referencedColumnName="MC_NO")
+	})
+	private MissChoice missChoice;
+
+	//bi-directional many-to-one association to MissExam
+	@ManyToOne
+	@JoinColumn(name="ME_ID")
+	private MissExam missExam;
+
+	//bi-directional many-to-one association to MissQuestion
+	@ManyToOne
+	@JoinColumn(name="MQ_ID")
+	private MissQuestion missQuestion;
+
+	//bi-directional many-to-one association to MissSery
+	@ManyToOne
+	@JoinColumn(name="MS_ID")
+	private MissSery missSery;*/
+
 
     public MissTest() {
     }

@@ -61,7 +61,7 @@ public class MissChoiceResource extends BaseResource {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_CHOICE_FIND_BY_ID)){
+						/*if(serviceName.equals(ServiceConstant.MISS_CHOICE_FIND_BY_ID)){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice ntcCalendarReturn = missChoiceService.findMissChoiceById(bpsTerm.getMcId());
 						logger.debug(" object return ="+ntcCalendarReturn);
 							if(ntcCalendarReturn!=null){
@@ -74,7 +74,7 @@ public class MissChoiceResource extends BaseResource {
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
-						} 
+						}*/ 
 						if(serviceName.equals(ServiceConstant.MISS_CHOICE_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missChoiceService.saveMissChoice(bpsTerm)).intValue();
@@ -86,8 +86,8 @@ public class MissChoiceResource extends BaseResource {
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CHOICE_DELETE)){
-							int updateRecord=missChoiceService.deleteMissChoice(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							/*int updateRecord=missChoiceService.deleteMissChoice(bpsTerm);
+							returnUpdateRecord(entity,xbpsTerm,updateRecord);*/
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CHOICE_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
@@ -133,97 +133,7 @@ public class MissChoiceResource extends BaseResource {
 	
 	}
 
-	@Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("into Post MissChoiceResource");
-		InputStream in = null;
-		try {
-			in = entity.getStream();
-			xstream.processAnnotations(th.co.aoe.makedev.missconsult.xstream.MissChoice.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.aoe.makedev.missconsult.xstream.MissChoice xbpsTerm = new th.co.aoe.makedev.missconsult.xstream.MissChoice();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissChoice) ntcCalendarObj;
-				if (xbpsTerm != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
-					BeanUtils.copyProperties(bpsTerm, xbpsTerm); 
-					
-					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
-						logger.debug(" BPS servicename = "
-								+ xbpsTerm.getServiceName());
-						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_CHOICE_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice ntcCalendarReturn = missChoiceService.findMissChoiceById(bpsTerm.getMcId());
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissChoice xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissChoice();
-								BeanUtils.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
-								
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
-								export(entity, vresultMessage, xstream);
-							}
-						} 
-						if(serviceName.equals(ServiceConstant.MISS_CHOICE_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missChoiceService.saveMissChoice(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_CHOICE_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missChoiceService.updateMissChoice(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_CHOICE_DELETE)){
-							int updateRecord=missChoiceService.deleteMissChoice(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_CHOICE_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missChoiceService.searchMissChoice(bpsTerm,page);
-							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice>) result
-										.get(0);
-								String faqs_size = (String) result.get(1);
-//								 
-								VResultMessage vresultMessage = new VResultMessage();
-
-								List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>();
-								if (faqs_size != null && !faqs_size.equals(""))
-									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissChoiceObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-							}
-						}
-						
-					} else {
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			logger.debug(" into Finally Call");
-			try {
-				if (in != null)
-					in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub

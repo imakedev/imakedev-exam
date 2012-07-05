@@ -124,30 +124,48 @@ public class MissQuestionResource extends BaseResource {
 							
 							List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= xbpsTerm.getMissChoicesAdd();
 							if(xmissChoices!=null && xmissChoices.size()>0){
+								
+								missChoiceService.deleteMissChoice(xbpsTerm.getMqId());
 								for (th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice : xmissChoices) {
 									th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice  missChoice= new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
 									BeanUtils.copyProperties(xmissChoice, missChoice,ignore_question_id);
 									missChoice.setMissQuestion(bpsTerm);
+									th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK pk = 
+											new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK();
+									pk.setMqId(bpsTerm.getMqId());
+									pk.setMcNo(xmissChoice.getMcNo());
+									missChoice.setId(pk);
 									missChoiceService.saveMissChoice(missChoice);
 								}
 							}
-							 xmissChoices= xbpsTerm.getMissChoicesUpdate();
+							/* xmissChoices= xbpsTerm.getMissChoicesUpdate();
 							if(xmissChoices!=null && xmissChoices.size()>0){
 								for (th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice : xmissChoices) {
 									th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice  missChoice= new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
 									BeanUtils.copyProperties(xmissChoice, missChoice,ignore_question_id);
 									missChoice.setMissQuestion(bpsTerm);
+									th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK pk = 
+											new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK();
+									pk.setMqId(bpsTerm.getMqId());
+									pk.setMcNo(xmissChoice.getMcNo());
+									missChoice.setId(pk);
 									missChoiceService.updateMissChoice(missChoice);
 								}
 							}
+							// mqId_mcNo
 							String[] mcIds=xbpsTerm.getMcIds();
 							if(mcIds!=null)
 							for (int i = 0; i <mcIds.length; i++) {
+								String[] ids=mcIds[i].split("_");
 								th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice item = new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
-								item.setMcId(Long.parseLong(mcIds[i]));
+								//item.setMcId(Long.parseLong(mcIds[i]));
+								th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK pk =new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK(); 
+								pk.setMqId(Long.parseLong(ids[0]));
+								pk.setMcNo(Long.parseLong(ids[1]));
+								item.setId(pk);
 								item.setMissQuestion(bpsTerm);
 								missChoiceService.deleteMissChoice(item);
-							}
+							}*/
 							int updateRecord=1;
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							//returnUpdateRecord(entity,xbpsTerm,updateRecord);
@@ -187,6 +205,11 @@ public class MissQuestionResource extends BaseResource {
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SETUP_TEST)){
+							missQuestionService.setUpTestMissQuestion();
+							return returnUpdateRecord(entity,xbpsTerm,1);
+							
+						}
 						
 					} else {
 					}
@@ -211,98 +234,6 @@ public class MissQuestionResource extends BaseResource {
 	
 	}
 
-	/*@Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("into Post MissQuestionResource");
-		InputStream in = null;
-		try {
-			in = entity.getStream();
-			xstream.processAnnotations(th.co.aoe.makedev.missconsult.xstream.MissQuestion.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.aoe.makedev.missconsult.xstream.MissQuestion xbpsTerm = new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissQuestion) ntcCalendarObj;
-				if (xbpsTerm != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion();
-					BeanUtils.copyProperties(bpsTerm, xbpsTerm); 
-					 
-				    
-					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
-						logger.debug(" BPS servicename = "
-								+ xbpsTerm.getServiceName());
-						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_QUESTION_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion ntcCalendarReturn = missQuestionService.findMissQuestionById(bpsTerm.getMqId());
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissQuestion xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
-								BeanUtils.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
-								
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
-								export(entity, vresultMessage, xstream);
-							}
-						} 
-						if(serviceName.equals(ServiceConstant.MISS_QUESTION_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missQuestionService.saveMissQuestion(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missQuestionService.updateMissQuestion(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_DELETE)){
-							int updateRecord=missQuestionService.deleteMissQuestion(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missQuestionService.searchMissQuestion(bpsTerm,page);
-							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion>) result
-										.get(0);
-								String faqs_size = (String) result.get(1);
-//								 
-								VResultMessage vresultMessage = new VResultMessage();
-
-								List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>();
-								if (faqs_size != null && !faqs_size.equals(""))
-									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissQuestionObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-							}
-						}
-						
-					} else {
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			logger.debug(" into Finally Call");
-			try {
-				if (in != null)
-					in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}*/
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub
