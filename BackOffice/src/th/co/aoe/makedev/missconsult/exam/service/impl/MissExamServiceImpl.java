@@ -5,17 +5,12 @@
 
 package th.co.aoe.makedev.missconsult.exam.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
-import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
@@ -210,7 +205,8 @@ public class MissExamServiceImpl extends PostCommon
         missChoice.setServiceName("saveMissChoice");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         missChoice = (MissChoice)resultMessage.getResultListObj().get(0);
-        return missChoice.getMcId();
+        return 1l;
+    //    return missChoice.getMcId();
     }
 
     public int updateMissChoice(MissChoice missChoice)
@@ -232,7 +228,7 @@ public class MissExamServiceImpl extends PostCommon
     public MissChoice findMissChoiceById(Long megId)
     {
         MissChoice missChoice = new MissChoice();
-        missChoice.setMcId(megId);
+       // missChoice.setMcId(megId);
         missChoice.setServiceName("findMissChoiceById");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         return (MissChoice)resultMessage.getResultListObj().get(0);
@@ -607,7 +603,8 @@ public class MissExamServiceImpl extends PostCommon
         missTest.setServiceName("saveMissTest");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         missTest = (MissTest)resultMessage.getResultListObj().get(0);
-        return missTest.getMtestId();
+        return 1l;
+        //  return missTest.getMtestId();
     }
 
     public int updateMissTest(MissTest missTest)
@@ -629,7 +626,7 @@ public class MissExamServiceImpl extends PostCommon
     public MissTest findMissTestById(Long megId)
     {
         MissTest missTest = new MissTest();
-        missTest.setMtestId(megId);
+       // missTest.setMtestId(megId);
         missTest.setServiceName("findMissTestById");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         return (MissTest)resultMessage.getResultListObj().get(0);
@@ -907,7 +904,8 @@ public class MissExamServiceImpl extends PostCommon
     public static void main(String args[])
     {
         MissExamServiceImpl main = new MissExamServiceImpl();
-        System.out.println(IMakeDevUtils.calculatePage(3, 7));
+        main.testMissQuestion();
+      /*  System.out.println(IMakeDevUtils.calculatePage(3, 7));
         DateTime dt = new DateTime();
         System.out.println(dt.getDayOfMonth());
         System.out.println(dt.dayOfMonth().getAsShortText(Locale.US));
@@ -925,7 +923,7 @@ public class MissExamServiceImpl extends PostCommon
         System.out.println(dt22.dayOfMonth().getAsShortText(Locale.US));
         System.out.println(dt22.monthOfYear().getAsShortText(Locale.CANADA));
         System.out.println(dt22.year().get());
-        System.out.println(format.format(dt22.toDate()));
+        System.out.println(format.format(dt22.toDate()));*/
     }
 
     private void testMissAccount()
@@ -1045,7 +1043,7 @@ public class MissExamServiceImpl extends PostCommon
 
     private void testMissQuestion()
     {
-        MissQuestion missQuestion = findMissQuestionById(new Long(1L));
+       /* MissQuestion missQuestion = findMissQuestionById(new Long(1L));
         System.out.println(missQuestion);
         //updateMissQuestion(missQuestion);
         MissQuestion missQuestionSave = new MissQuestion();
@@ -1054,7 +1052,12 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage vresult = searchMissQuestion(missQuestionSearch);
         System.out.println(vresult);
         MissQuestion missQuestionDelete = new MissQuestion();
-        deleteMissQuestion(missQuestionDelete);
+        deleteMissQuestion(missQuestionDelete);*/
+    	 MissQuestion missQuestion = new MissQuestion(); 
+         missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SETUP_TEST);
+         
+         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
+          
     }
 
     private void testMissSeriesMap()
