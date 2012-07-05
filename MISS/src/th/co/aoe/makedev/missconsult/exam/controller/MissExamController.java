@@ -24,6 +24,7 @@ import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.MissExamForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
+import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
@@ -160,14 +161,16 @@ public class MissExamController {
 			String answered="";
 			if(missChoices!=null && missChoices.size()>0)
 			for (MissChoice missChoice : missChoices) {
-				logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
+				logger.debug(" missChoice "+missChoice.getMcName()+", no="+missChoice.getMcNo());
 				if(checkTests!=null && checkTests.size()>0)
 				for (MissTest missTest : checkTests) {
-					logger.debug(" missTest "+missTest.getMissChoice().getMcId());
+					logger.debug(" missTest "+missTest.getMissChoice().getMcNo());
 					missChoice.setChoiceSelect(null);
-					if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
-						logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
-						missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+					//if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
+					if(missChoice.getMcNo().intValue()==missTest.getMissChoice().getMcNo().intValue()) {
+					//	logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
+						//missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+						missChoice.setChoiceSelect(missChoice.getMcNo().intValue()+"");
 						//answered="1";
 					}
 				}
@@ -211,9 +214,12 @@ public class MissExamController {
 			for (int i = 0; i < mcScores.length; i++) {
 				MissTest missTest=new MissTest();
 				MissChoice choice=new MissChoice();
-				choice.setMcId(Long.parseLong(mcScores[i]));
+				MissQuestion missQuestion=missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(questionIndex);
+				//choice.setMcId(Long.parseLong(mcScores[i]));
+				choice.setMqId(missQuestion.getMqId());
+				choice.setMcNo(Long.parseLong(mcScores[i]));
 				missTest.setMissExam(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
-				missTest.setMissQuestion(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(questionIndex));
+				missTest.setMissQuestion(missQuestion);
 				missTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
 				missTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
 				missTest.setMissChoice(choice);
@@ -236,14 +242,14 @@ public class MissExamController {
 		String answered="";
 		if(missChoices!=null && missChoices.size()>0)
 		for (MissChoice missChoice : missChoices) {
-			logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcId());
+			logger.debug(" missChoice "+missChoice.getMcName()+", id="+missChoice.getMcNo());
 			if(checkTests!=null && checkTests.size()>0)
 			for (MissTest missTest : checkTests) {
-				logger.debug(" missTest "+missTest.getMissChoice().getMcId());
+				logger.debug(" missTest "+missTest.getMissChoice().getMcNo());
 				missChoice.setChoiceSelect(null);
-				if(missChoice.getMcId().intValue()==missTest.getMissChoice().getMcId().intValue()) {
-					logger.debug(" choiceSelect is "+missChoice.getMcId().intValue());
-					missChoice.setChoiceSelect(missChoice.getMcId().intValue()+"");
+				if(missChoice.getMcNo().intValue()==missTest.getMissChoice().getMcNo().intValue()) {
+					logger.debug(" choiceSelect is "+missChoice.getMcNo().intValue());
+					missChoice.setChoiceSelect(missChoice.getMcNo().intValue()+"");
 					//answered="1";
 				}
 			}
