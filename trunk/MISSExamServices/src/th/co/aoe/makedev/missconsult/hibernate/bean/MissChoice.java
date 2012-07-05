@@ -3,6 +3,7 @@ package th.co.aoe.makedev.missconsult.hibernate.bean;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,10 +22,8 @@ import javax.persistence.Table;
 public class MissChoice implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="MC_ID")
-	private Long mcId;
+	@EmbeddedId
+	private MissChoicePK id;
 
 	@Column(name="MC_LANG")
 	private String mcLang;
@@ -38,11 +37,11 @@ public class MissChoice implements Serializable {
 	@Column(name="MC_SCORE")
 	private String mcScore;
 	
-	@Column(name="MC_NO")
-	private Long mcNo;
+	/*@Column(name="MC_NO")
+	private Long mcNo;*/
 	//bi-directional many-to-one association to MissQuestion
     @ManyToOne
-	@JoinColumn(name="MQ_ID")
+	@JoinColumn(name="MQ_ID",insertable=false,updatable=false)
 	private MissQuestion missQuestion;
 
 	//bi-directional many-to-one association to MissTest
@@ -52,16 +51,24 @@ public class MissChoice implements Serializable {
     public MissChoice() {
     }
 
-	public Long getMcId() {
+	/*public Long getMcId() {
 		return this.mcId;
 	}
 
 	public void setMcId(Long mcId) {
 		this.mcId = mcId;
-	}
+	}*/
 
 	public String getMcLang() {
 		return this.mcLang;
+	}
+
+	public MissChoicePK getId() {
+		return id;
+	}
+
+	public void setId(MissChoicePK id) {
+		this.id = id;
 	}
 
 	public void setMcLang(String mcLang) {
@@ -100,13 +107,13 @@ public class MissChoice implements Serializable {
 		this.missQuestion = missQuestion;
 	}
 
-	public Long getMcNo() {
+	/*public Long getMcNo() {
 		return mcNo;
 	}
 
 	public void setMcNo(Long mcNo) {
 		this.mcNo = mcNo;
-	}
+	}*/
 	
 /*	public Set<MissTest> getMissTests() {
 		return this.missTests;

@@ -67,7 +67,7 @@ public class MissSeriesAttachResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missSeriesAttachService.updateMissSeriesAttach(bpsTerm);
+							int updateRecord=missSeriesAttachService.updateMissSeriesAttach(bpsTerm,xbpsTerm.getRootPath());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_DELETE)){

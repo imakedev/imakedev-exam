@@ -22,9 +22,9 @@ public class MissTestPK implements Serializable {
 	private MissCandidate missCandidate;
 
 	//bi-directional many-to-one association to MissChoice
-    @ManyToOne
+   /* @ManyToOne
 	@JoinColumn(name="MC_ID")
-	private MissChoice missChoice;
+	private MissChoice missChoice;*/
 
 	//bi-directional many-to-one association to MissExam
     @ManyToOne
@@ -33,13 +33,27 @@ public class MissTestPK implements Serializable {
 
 	//bi-directional many-to-one association to MissQuestion
     @ManyToOne
-	@JoinColumn(name="MQ_ID")
+	@JoinColumn(name="MQ_ID",insertable=false,updatable=false)
 	private MissQuestion missQuestion;
 
+	@Column(name="MC_NO")
+	private Long mcNo;
+  /*  @ManyToOne
+   	@JoinColumn(name="MQ_ID")
+   	private MissQuestion missQuestion;*/
+
 	//bi-directional many-to-one association to MissSery
-    @ManyToOne
+   @ManyToOne
 	@JoinColumn(name="MS_ID")
 	private MissSery missSery;
+   /*  
+    @ManyToOne
+  		@JoinColumns({
+  			@JoinColumn(name="MC_NO",referencedColumnName="MC_NO"),
+  			@JoinColumn(name="MQ_ID",referencedColumnName="MQ_ID")
+  			})
+  		private MissChoice missChoice;*/
+
 
 	public MissCandidate getMissCandidate() {
 		return missCandidate;
@@ -49,16 +63,24 @@ public class MissTestPK implements Serializable {
 		this.missCandidate = missCandidate;
 	}
 
-	public MissChoice getMissChoice() {
+/*	public MissChoice getMissChoice() {
 		return missChoice;
 	}
 
 	public void setMissChoice(MissChoice missChoice) {
 		this.missChoice = missChoice;
-	}
+	}*/
 
 	public MissExam getMissExam() {
 		return missExam;
+	}
+
+	public Long getMcNo() {
+		return mcNo;
+	}
+
+	public void setMcNo(Long mcNo) {
+		this.mcNo = mcNo;
 	}
 
 	public void setMissExam(MissExam missExam) {
