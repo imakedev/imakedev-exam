@@ -336,10 +336,14 @@ public class TestController
     			size=missChoices.size();
 				for (MissChoice missChoice : missChoices) {
 					  //for(int i = 0; i < meId_size; i++)
-			                if(i != (size - 1))
+			               /* if(i != (size - 1))
 			                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).append(",").toString();
 			                else
-			                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();
+			                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();*/
+					 if(i != (size - 1))
+		                	mcIdArray = mcIdArray+missChoice.getMcNo().intValue()+",";
+		                else
+		                	mcIdArray = mcIdArray+missChoice.getMcNo().intValue()+"";
 				i++;
 				}
 				
@@ -420,28 +424,37 @@ public class TestController
 			}
         }
         logger.debug("  mcIdMap="+mcIdMap.size());
+        logger.debug("mcIdNewArrayStr======>"+mcIdNewArrayStr);
         List<MissChoice> updateChoices=new ArrayList<MissChoice>();
         List<MissChoice> addChoices=new ArrayList<MissChoice>();
         if(mcIdNewArrayStr!=null && mcIdNewArrayStr.length()>0){
+        	//1 A 0 B
+        	//0 B 1 A 0 C
         	String[] mcNewIds= mcIdNewArrayStr.split("12345i6789");
         	  logger.debug("  mcNewIds="+mcNewIds.length);
         	for(int i=0;i<mcNewIds.length;i++){
         		 logger.debug(" mcNewIds="+mcNewIds[i]);
         		String[] keyValue= mcNewIds[i].split("9876i54321");
         		  logger.debug("  key="+keyValue[0]+",value="+keyValue[1]); 
-        		if(mcIdMap.containsKey(keyValue[0])){
+        		/*if(mcIdMap.containsKey(keyValue[0])){
         			mcIdMap.remove(keyValue[0]);
         			MissChoice choice=new MissChoice();
-        			choice.setMcId(Long.parseLong(keyValue[0]));
+        			MissQuestion missQuestion=testForm.getMissQuestion();
+        			//choice.setMcId(Long.parseLong(keyValue[0]));
+        			choice.setMqId(missQuestion.getMqId());
+        			choice.setMcNo(Long.parseLong(keyValue[0]));
         			choice.setMcName(keyValue[1]);
-        			choice.setMissQuestion(testForm.getMissQuestion());
+        			choice.setMissQuestion(missQuestion);
         			updateChoices.add(choice);
-        		}else{
+        		}else{*/
         			MissChoice choice=new MissChoice();
+        			choice.setMqId(testForm.getMissQuestion().getMqId());
+        			//choice.setMcNo(Long.parseLong(keyValue[0]));
+        			choice.setMcNo(Long.valueOf(i+1));
         			choice.setMcName(keyValue[1]);
         			choice.setMissQuestion(testForm.getMissQuestion());
         			addChoices.add(choice);
-        		}
+        		//}
         	}
         }
        
@@ -468,10 +481,19 @@ public class TestController
 			  size=missChoices.size();
 			for (MissChoice missChoice : missChoices) {
 				  //for(int i = 0; i < meId_size; i++)
-		                if(i != (size - 1))
+		              /*  if(i != (size - 1))
 		                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).append(",").toString();
 		                else
-		                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();
+		                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();*/
+				 if(i != (size - 1))
+	                	mcIdArray = mcIdArray+missChoice.getMcNo().intValue()+",";
+	                else
+	                	mcIdArray = mcIdArray+missChoice.getMcNo().intValue()+"";
+				 
+				 /*  if(i != (size - 1))
+	                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).append(",").toString();
+	                else
+	                	mcIdArray = (new StringBuilder(String.valueOf(mcIdArray))).append(missChoice.getMcId().intValue()).toString();*/
 			i++;
 			}
 		}

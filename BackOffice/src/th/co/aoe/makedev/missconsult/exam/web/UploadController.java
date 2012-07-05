@@ -197,7 +197,7 @@ public class UploadController {
 					 missSeriesAttach.setMsatHotlink(hotLink);
 					 missSeriesAttach.setMsatPath(pathFolder);
 					 missSeriesAttach.setMsatFileName(s);
-					 missSeriesAttach.setRootPath(ndFilePath);
+					 missSeriesAttach.setRootPath(bundle.getString(module+"Path"));
 					 missExamService.updateMissSeriesAttach(missSeriesAttach);
 				}
 		}

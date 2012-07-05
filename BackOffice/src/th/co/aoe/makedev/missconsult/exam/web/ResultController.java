@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -35,6 +36,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
@@ -42,6 +44,7 @@ import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -60,6 +63,10 @@ public class ResultController
         this.missExamService = missExamService;
     }
 */
+	  private static ResourceBundle bundle;
+		static{
+			bundle =  ResourceBundle.getBundle( "config" );				
+		}
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model)
     {
@@ -207,8 +214,11 @@ public class ResultController
     {
         return "exam/template/nopage";
     }
+    // testPDF?mtrId=8&meId=14&msId=9&mcaId=22
     @RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public void testPDF(HttpServletRequest request, HttpServletResponse response){
+    public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
+    		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
+    	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
     	 MissTestResult report=new MissTestResult(); 
 			report.setMeId(1l); 
 			byte[] imageInByte=null;
@@ -254,7 +264,9 @@ public class ResultController
 			newList.add(report);
 			newList.add(report2);
 		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList);  
-		 String  reportPath=  "/root/Desktop/report1.jasper";  
+		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
+		 
+		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
 		try {
 			jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),beanCollectionDataSource);
