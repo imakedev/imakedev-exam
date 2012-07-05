@@ -87,7 +87,7 @@ public class ServiceConstant {
 	public static final String MISS_QUESTION_CHOICES_SAVE = "saveMissChoices"; 
 	public static final String MISS_QUESTION_CHOICES_UPDATE = "updateMissChoices"; 
 	public static final String MISS_QUESTION_CHOICES_DELETE = "deleteMissChoices"; 
-	
+	public static final String MISS_QUESTION_SETUP_TEST = "setUpTestMissQuestion";
 	
 	
 	// MISS_SERIES_MAP
