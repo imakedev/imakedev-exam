@@ -7,11 +7,20 @@ $(document).ready(function() {
    if(missSeriesMap.length>0){
 	   var missSeriesMapArray=missSeriesMap.split(",");
 	   //alert("size="+missSeriesMapArray.length);
+	    // meid|filename|hotlink|module|path
 	   for(var i=0;i<missSeriesMapArray.length;i++){
+		   var missSeriesMapArrayValues=missSeriesMapArray[i].split("|");
 		   var indexStr=(i+1)+"_";
-		   //document.getElementById(indexStr+"missExam_mapping").value=indexStr+missSeriesMapArray[i];
-		   document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArray[i];
-		   //$("#"+indexStr+"missExam_mapping").val(missSeriesMapArray[i]);
+		   //document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArray[i];
+		   document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArrayValues[0];
+		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
+		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
+		   if(missSeriesMapArrayValues[1]!='noFile'){
+		   var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+missSeriesMapArrayValues[0]+"/"+missSeriesMapArrayValues[2]+'")';
+			$('#eval_file_attached_'+(i+1)).attr('onclick',path_file);
+			$('#eval_file_attached_'+(i+1)).html(missSeriesMapArrayValues[1]);
+			$('#eval_file_attached_'+(i+1)).attr('style','cursor: pointer;');
+	     }
 	   }
    }
    new AjaxUpload('template_file', {
@@ -35,9 +44,9 @@ $(document).ready(function() {
 			//alert(file+","+response);
 			var obj = jQuery.parseJSON(response);
 			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
-			$('#template_file_attached').attr('onclick',path_file);
+			//$('#template_file_attached').attr('onclick',path_file);
 			$('#template_file_attached').html(file);
-			$('#template_file_attached').attr('style','cursor: pointer;');	
+			//$('#template_file_attached').attr('style','cursor: pointer;');	
 		}		
 	});
    new AjaxUpload('manual_file', {
@@ -229,7 +238,7 @@ function doAction(action,mode,id){
 		});
   }
  function setElementValue(obj_select,index){
-	 alert(obj_select.value+",index="+index);
+	 //alert(obj_select.value+",index="+index);
 	 var values=obj_select.value.split("_");
 	$("#eval_file_value_"+index).val(values[1]);
  }
@@ -275,7 +284,11 @@ function doAction(action,mode,id){
 	    					 <td align="left" width="17%">Template File:</td>
 	    					 <td align="left" width="51%" colspan="3">    					
 		    					<a class="btn" id="template_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
+		    					<%--
 		    					<span id="template_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/template/${seriesForm.missSery.msId}/${seriesForm.missSery.templateFileHotlink}')">
+	    				${seriesForm.missSery.templateFile}</span>
+	    				 		--%>
+	    				 		<span id="template_file_attached">
 	    				${seriesForm.missSery.templateFile}</span>
 	    					 </td>
 	    					<td align="left" width="15%">&nbsp;</td>

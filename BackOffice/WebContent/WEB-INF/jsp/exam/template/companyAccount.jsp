@@ -98,6 +98,7 @@ $(document).ready(function() {
 			$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
+	
 	 
 });
 function doAction(action,formID,sectionID){
@@ -365,33 +366,49 @@ function doAction(action,formID,sectionID){
     					</c:if>
     					<c:if test="${empty companyForm.missAccount.maCustomizeLogoHotlink}">
     						<img id="company_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>
-    					</c:if>
-    					<input  id="company_upload" type="button" value="Upload">(350px × 66px)</td>
+    					</c:if>    					
+    					<input  id="company_upload" type="button" value="Upload">(350px × 66px)
+    					</td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
+    				<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')">
     				<tr valign="top">
     					<td width="25%">Type:</td>
     					<td width="50%" colspan="2">
-    					<form:select path="missAccount.maGrade">
+    					<form:select path="missAccount.maGrade">    				
+    				    	<%-- <form:option value="0">-- Select Type --</form:option> --%>
     						<form:option value="1">Standard</form:option>
 							<form:option value="2">Premium</form:option>
     					</form:select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
+    				</sec:authorize>
+    				<sec:authorize access="!hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')">
+    				<tr valign="top">
+    					<td width="25%">Type:</td>
+    					<td width="50%" colspan="2">
+    					<form:select path="missAccount.maGrade" disabled="true">    				
+    				    	<%-- <form:option value="0">-- Select Type --</form:option> --%>
+    						<form:option value="1">Standard</form:option>
+							<form:option value="2">Premium</form:option>
+    					</form:select>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				</sec:authorize>
     				<tr valign="top">
     					<td width="25%">Theme Color:</td>
     					<td width="50%" colspan="2">
-    					<form:select path="missAccount.maCustomizeHeadColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="blue">Blue</form:option>
-							<form:option value="green">Green</form:option>
-							<form:option value="orange">Orange</form:option>
+    					<form:select path="missAccount.maCustomizeHeadColor">  
+    						<form:option value="body.gif">Gray</form:option>
+							<form:option value="body-b.gif">Blue</form:option>
+							<form:option value="body-g.gif">Green</form:option>
+							<form:option value="body-o.gif">Orange</form:option>
     					</form:select>
     					&nbsp;&nbsp;&nbsp;<form:select path="missAccount.maCustomizeColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="blue">Blue</form:option>
-							<form:option value="green">Green</form:option>
-							<form:option value="orange">Orange</form:option>
+    						<form:option value="smoothness">Gray</form:option>
+							<form:option value="redmond">Blue</form:option>
+							<form:option value="le-frog">Green</form:option>
+							<form:option value="ui-lightness">Orange</form:option>
     					</form:select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -400,8 +417,8 @@ function doAction(action,formID,sectionID){
     					<td width="50%" colspan="2">
     					<!-- <img src=""/> -->
     					<form:select path="missAccount.maBackgroundColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="white">White</form:option>
+    						<form:option value="240,240,240">Gray</form:option>
+							<form:option value="253,253,253">White</form:option>
     					</form:select></td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
