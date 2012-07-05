@@ -2,7 +2,14 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.web.servletapi.*" %>
-
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY')" var="isManageCompany"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_CANDIDATE')" var="isManageCandidate"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_REPORT')" var="isManageSearchReport"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_SERIES')" var="isManageSeries"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_TEST')" var="isManageTest"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_DOWNLOAD')" var="isManageDownload"/>
+<sec:authentication var="myUser" property="principal.myUser"/> 
 <html>
 <head>
 <title></title>  
@@ -19,10 +26,34 @@
         src="<c:url value='/dwr/util.js'/>"></script>	
        --%>
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
-<script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+
 
 <%-- --%>
-<script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.20.custom.min.js'/>"></script>
+<%-- <sec:authorize access="hasAnyRole('ROLE_MANAGE_MISSCONSULT')"> --%>
+<script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+<%-- <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.20.custom.min.js'/>"></script> 
+</sec:authorize> --%>
+<%-- <script src="<c:url value='/resources/bootstrap/Blue/js/bootstrap.min.js'/>" type="text/javascript"></script> --%>
+<%-- <sec:authorize access="hasAnyRole('ROLE_MANAGE_COMPANY')"> --%>
+
+<c:if test="${myUser.missContact.maCustomizeColor=='smoothness'}">
+	<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+</c:if>
+<c:if test="${myUser.missContact.maCustomizeColor=='redmond'}">
+	<script type="text/javascript" src="<c:url value='/resources/js/redmond/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+</c:if>
+<c:if test='${myUser.missContact.maCustomizeColor=="le-frog"}'>
+	<script type="text/javascript" src="<c:url value='/resources/js/le-frog/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+</c:if>
+<c:if test="${myUser.missContact.maCustomizeColor=='ui-lightness'}">
+	<script type="text/javascript" src="<c:url value='/resources/js/ui-lightness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+</c:if> 
+<c:if test="${myUser.missContact.maCustomizeColor!='smoothness' && myUser.missContact.maCustomizeColor!='redmond'
+ && myUser.missContact.maCustomizeColor!='le-frog' && myUser.missContact.maCustomizeColor!='ui-lightness'}">
+	<script type="text/javascript" src="<c:url value='/resources/js/ui-lightness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+	<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+</c:if> 
+<%-- </sec:authorize> --%>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
 
@@ -36,7 +67,59 @@
  <script type="text/javascript" src="<c:url value='/resources/ckeditorV2/ckeditor.js'/>"></script>
  
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
-<link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.20.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+<%-- <sec:authorize access="hasAnyRole('ROLE_MANAGE_MISSCONSULT')">
+
+<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.20.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+</sec:authorize>
+<sec:authorize access="hasAnyRole('ROLE_MANAGE_COMPANY')">
+<link href="<c:url value='/resources/bootstrap/Blue/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
+<style>
+.well{
+  background-color: #d8e7f3
+  }
+.prettyprint{
+  background-color: #d8e7f3
+  }
+</style> --%>
+<c:if test="${myUser.missContact.maCustomizeColor=='smoothness'}">
+	<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+</c:if>
+<c:if test="${myUser.missContact.maCustomizeColor=='redmond'}">
+	<link href="<c:url value='/resources/css/redmond/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+	<style>
+.well{
+  background-color: #d0e5f5;
+  }
+.prettyprint{
+  background-color: #d0e5f5;
+  }
+</style>
+</c:if>
+<c:if test='${myUser.missContact.maCustomizeColor=="le-frog"}'>
+	<link href="<c:url value='/resources/css/le-frog/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+	<style>
+.well{
+  background-color: #A5CE28;
+  }
+.prettyprint{
+  background-color: #A5CE28;
+  }
+</style>
+</c:if>
+<!--  #ffe45c -->
+<c:if test="${myUser.missContact.maCustomizeColor=='ui-lightness'}">
+	<link href="<c:url value='/resources/css/ui-lightness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
+	<style>
+.well{
+  background-color: #f2d563;
+  }
+.prettyprint{
+  background-color: #f2d563;
+  }
+</style>
+</c:if> 
+
+<%-- </sec:authorize> --%>
 <link  href="<c:url value='/resources/css/jquery.ui.selectmenu.css'/>" rel="stylesheet" type="text/css">
 
 <link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
@@ -109,13 +192,7 @@ right padding is 5px
 bottom padding is 15px
 left padding is 20px */
 </style>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY')" var="isManageCompany"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_CANDIDATE')" var="isManageCandidate"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_REPORT')" var="isManageSearchReport"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_SERIES')" var="isManageSeries"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_TEST')" var="isManageTest"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_DOWNLOAD')" var="isManageDownload"/>
+
 <script type="text/javascript">
 var _path="";
 $(document).ready(function() {
@@ -160,9 +237,12 @@ $(document).ready(function() {
 					   <c:if test="${isManageMC}">
 						{ attributes: { id : "pjson_2" }, data: { title : "MissConsult", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
 					   </c:if>
-					   <c:if test="${isManageCompany}">
+					   <c:if test="${isManageCompany && UserMissContact.isMC=='1'}">
 						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
 					   </c:if>
+					    <c:if test="${isManageCompany && UserMissContact.isMC=='0'}">
+						 { attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/item/${UserMissContact.mcontactRef}" } },
+						</c:if>
 						<c:if test="${isManageCandidate}">
 						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
 						</c:if>   
@@ -331,17 +411,48 @@ function appendContent(data){
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
- <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
+  
+ <%-- <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); "> --%>
+<%--  <sec:authorize access="hasAnyRole('ROLE_MANAGE_MISSCONSULT')">
+	<body style="background-color:rgb(240,240,240);background-image:url(<c:url value='/resources/images/body-y.gif'/>); ">
+</sec:authorize> --%>
+<!-- 253,253,253 --> 
+<c:if test="${myUser.missContact.maCustomizeHeadColor=='body.gif'}">
+	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body.gif'/>); "> 
+</c:if>
+<c:if test="${myUser.missContact.maCustomizeHeadColor=='body-b.gif'}">
+	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-b.gif'/>); "> 
+</c:if>
+<c:if test='${myUser.missContact.maCustomizeHeadColor=="body-g.gif"}'>
+	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-g.gif'/>); "> 
+</c:if>
+<c:if test="${myUser.missContact.maCustomizeHeadColor=='body-o.gif'}">
+	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-o.gif'/>); "> 
+</c:if> 
+  
  <div class="container-fluid">
-    <div class="row-fluid">
+    <div class="row-fluid" >
     	<div class="span12" align="center"> 
     	<div id="header2" align="left"  style="height: 66px">
     	<!--  width="200px" height="33px" -->
-    	<div align="left"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" width="200px" height="33px" />
-    	
-    	 </h1> </div> 
-    	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" />
+    	<div align="left"> 
+	 
+    	<c:if test="${myUser.missContact.maGrade=='2'}">
+    	<h1>
+    	<img width="230px" height="60px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
+    	<%-- <img src="<c:url value='/resources/images/logowebmc.png'/>" width="230px" height="60px" />  --%>	
+    	 </h1> 
+    	 </c:if>
+    	 </div> 
+    	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;">
+    	 <c:if test="${myUser.missContact.maGrade=='1'}">
+    	 <h1><img width="347px" height="66px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
     	</h1>
+    	</c:if>
+    	<c:if test="${myUser.missContact.maGrade=='2'}">
+    	 <h1><img   width="347px" height="66px" src="getfile/companyLogo/${myUser.missContact.mcontactRef}/${myUser.missContact.maCustomizeLogoPath}" />
+    	</h1>
+    	</c:if>
     	  </div> 
     	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
        <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown"></span><br/><br/>
@@ -367,7 +478,10 @@ function appendContent(data){
 		<!-- <form class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)"> -->
 		
 		<!-- <form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid rgba(0, 0, 0, 0.05)"> -->
+		<form class="well">
+		<!-- 
 		<form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid #DDD">
+		 -->
 	   <!--  <span id="demo1" style="font-family: sans-serif;font-size:13px: top;position:relative;top:-35px;right:5px;"></span> -->
 	   <h3><strong>Navigation</strong></h3>
 	    <span id="demo1" style="font-family: sans-serif;font-size:13px:"></span>
@@ -486,7 +600,6 @@ function appendContent(data){
 				<p>
 					Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan.
 				</p>
-                 
               </div>
 	    
 	 </div>
