@@ -133,6 +133,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 					//getAuthorities(domainUserContact.getRole()));
 					getAuthorities(getRolesMapping(rcId,isAdmin)));
 			MyUser myUser=new MyUser(domainUserContact.getFirstName()+" "+domainUserContact.getLastName());
+			th.co.aoe.makedev.missconsult.xstream.MissContact missContact= missExamService.findMissContactByUsername(domainUserContact.getUsername());
+			myUser.setMissContact(missContact);
 			user.setMyUser(myUser);
 		return user;
 		}else
