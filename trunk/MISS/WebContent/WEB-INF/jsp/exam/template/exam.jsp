@@ -55,10 +55,10 @@ function goToDynamicPage(pageId,formID,navi){
 	    					 <td align="left" width="100%">&nbsp;
 	    					 
 	    					     <c:if test="${not empty missChoice.choiceSelect}"> 
-	    					 		<input type="radio" name="mcScore" checked="checked" value="${missChoice.mcId}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
+	    					 		<input type="radio" name="mcScore" checked="checked" value="${missChoice.mcNo}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
 	    					 	 </c:if>
 	    					 	 <c:if test="${empty missChoice.choiceSelect}"> 
-	    					 	 	<input type="radio" name="mcScore" value="${missChoice.mcId}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
+	    					 	 	<input type="radio" name="mcScore" value="${missChoice.mcNo}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
 	    					 	 </c:if>
 	    					 
 	    					 </td> 
