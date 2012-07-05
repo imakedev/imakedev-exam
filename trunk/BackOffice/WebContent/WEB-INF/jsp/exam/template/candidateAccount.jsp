@@ -10,6 +10,8 @@ $(document).ready(function() {
 		dateFormat:"dd/mm/yy" 
 	});
 	var _candidate_section=$("#_candidate_section").val().length>0?parseInt($("#_candidate_section").val()):0;
+	if(_candidate_section==2)
+		_candidate_section=0;
 	$('#tabs').tabs('select', _candidate_section);
 	new AjaxUpload('candidate_upload', {
         action: 'upload/candidateImg/${candidateForm.missCandidate.mcaId}',
@@ -40,6 +42,10 @@ $(document).ready(function() {
 		}		
 	});
 });
+function doReactivate(action,formID,sectionID){
+	//$("#mode").val("reactivate");
+	doAction(action,formID,sectionID);
+}
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());
 	/* $("#maAddress").val(CKEDITOR.instances["maAddress"].getData());
@@ -66,6 +72,7 @@ function doAction(action,formID,sectionID){
 			<div id="tabs-1">
 			<!-- <form class="well"> -->
 			<form:form  id="candidateForm_account" name="candidateForm_account" modelAttribute="candidateForm" cssClass="well"  method="post" action="">
+			 <form:hidden path="mode"></form:hidden>
 			  <fieldset style="font-family: sans-serif;">   
 	      <h6><strong>Candidate - Account</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
@@ -129,7 +136,7 @@ function doAction(action,formID,sectionID){
 			<%--
 			<a class="btn btn-danger"><i class="icon-trash icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Delete</span></a>&nbsp;
 			 --%>
-			<a class="btn btn-info"><i class="icon-refresh icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Reactivate</span></a>&nbsp;</div>
+			<a class="btn btn-info"  onclick="doReactivate('action','candidateForm_account','2')"><i class="icon-refresh icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Reactivate</span></a>&nbsp;</div>
 			    </div>
 			<div id="tabs-2">
 			<!-- <form class="well"> -->

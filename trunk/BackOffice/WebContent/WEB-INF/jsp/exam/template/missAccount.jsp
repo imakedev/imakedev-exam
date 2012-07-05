@@ -340,16 +340,16 @@ function doAction(action,formID,sectionID){
     					<td width="25%">Theme Color:</td>
     					<td width="50%" colspan="2">
     					<form:select path="missAccount.maCustomizeHeadColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="blue">Blue</form:option>
-							<form:option value="green">Green</form:option>
-							<form:option value="orange">Orange</form:option>
+    						<form:option value="body.gif">Gray</form:option>
+							<form:option value="body-b.gif">Blue</form:option>
+							<form:option value="body-g.gif">Green</form:option>
+							<form:option value="body-o.gif">Orange</form:option>
     					</form:select>
     					&nbsp;&nbsp;&nbsp;<form:select path="missAccount.maCustomizeColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="blue">Blue</form:option>
-							<form:option value="green">Green</form:option>
-							<form:option value="orange">Orange</form:option>
+    					    <form:option value="smoothness">Gray</form:option>
+							<form:option value="redmond">Blue</form:option>
+							<form:option value="le-frog">Green</form:option>
+							<form:option value="ui-lightness">Orange</form:option>
     					</form:select>
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -358,8 +358,8 @@ function doAction(action,formID,sectionID){
     					<td width="50%" colspan="2">
     					<!-- <img src=""/> -->
     					<form:select path="missAccount.maBackgroundColor">
-    						<form:option value="gray">Gray</form:option>
-							<form:option value="white">White</form:option>
+    						<form:option value="240,240,240">Gray</form:option>
+							<form:option value="253,253,253">White</form:option>
     					</form:select></td>
     					 <td width="25%">&nbsp;</td>
     				</tr>

@@ -135,6 +135,10 @@ function confirmDelete(mode,id){
 		}
 	});
 }
+function doSearch(mode,id){
+	$("#pageNo").val("1");
+	doAction(mode,id);
+}
 function doAction(mode,id){
 	$("#mode").val(mode);
 	if(mode=='deleteItems'){
@@ -227,16 +231,19 @@ function doAction(mode,id){
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
+	    					<c:if test="${UserMissContact.isMC=='1'}">
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Company Name:</td>
 	    					 <td align="left" colspan="3" width="51%">    
-	    					 			
+	    					 		
 	    					  <form:input path="mcaCompanyName" cssStyle="width:100%"/>		
 	    						<!-- <input type="text" name="registerNo"  style="width: 100%"/> -->
 	    					 </td> 
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
+	    					</c:if>
+	    					
 	    				
 	    					</table> 
 	    					</form:form>
@@ -250,7 +257,7 @@ function doAction(mode,id){
 	    					
 	    					<td align="right" width="50%">
 	    					
-	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a></td>
+	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doSearch('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a></td>
 	    					</tr>
 	    					</table> 
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">

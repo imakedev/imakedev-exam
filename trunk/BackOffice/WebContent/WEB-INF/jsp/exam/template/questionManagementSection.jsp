@@ -74,6 +74,7 @@ function addRow(tableID) {
 	
     element1.type = "checkbox";
     element1.value = "choice_add_"+rowCount;
+    //element1.value = ""+rowCount;
     element1.name = "chk";
     cell1.appendChild(element1);
     //cell1.appendChild(rowCount + 1);
@@ -105,6 +106,7 @@ function deleteRow(tableID) {
            //alert(chkbox.name);
             rowCount--;
             i--;
+            indexRow--;
         }
 
     }
@@ -149,6 +151,8 @@ function doQuestionAction(action,mode,id){
 		 }
 		 //mcId1@$@value1$$*$$mcId2@$@value2
 	}
+	//alert(mcIdNewArray)
+	//return false;
 	$("#mcIdNewArray").val(mcIdNewArray);
 	//alert(mcIdNewArray)
 	$.post("test/action/exam/question",$("#testForm_questionList").serialize(), function(data) {
@@ -276,12 +280,15 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
         	</thead>
         	<tbody>
         	 <c:if test="${testForm.modeQuestion=='edit'}">
-        	 	<c:forEach items="${testForm.missQuestion.missChoices}" var="missChoice" varStatus="loop"> 
+        	     <c:if test="${not empty testForm.missQuestion.missChoices}"> 
+        	     	<c:forEach items="${testForm.missQuestion.missChoices}" var="missChoice" varStatus="loop"> 
 	    					<tr>
-	    					 		 <td><INPUT type="checkbox" name="chk" value="choice_edit_${missChoice.mcId}"/>${loop.index+1}</td>
-            						<td><input type="text" id="choice_edit_${missChoice.mcId}" value="${missChoice.mcName}"/></td> 
+	    					 		  <td><INPUT type="checkbox" name="chk" value="choice_edit_${missChoice.mcNo}"/>${loop.index+1}</td>
+            						<td><input type="text" id="choice_edit_${missChoice.mcNo}" value="${missChoice.mcName}"/></td>  
 	    	 				</tr>
-	    	 	</c:forEach>
+	    	 		</c:forEach>
+        	     </c:if>
+        	 	
 	    	</c:if>
 	    	<c:if test="${testForm.modeQuestion=='new'}">
 	    		<tr>

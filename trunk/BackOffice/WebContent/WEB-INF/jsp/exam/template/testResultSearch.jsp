@@ -62,6 +62,8 @@ function doAction(mode,id){
 		});
 }
 </script>
+
+
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
@@ -191,8 +193,14 @@ function doAction(mode,id){
             	<td>?</td>            	
             	<td>?</td> 
             	<td>?</td> -->
-            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td>
-            	<td>&nbsp;<a onclick="loadDynamicPage('result/report/')">${missTestResult.mtrResultCode}</a></td>            	
+            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td> 
+            	<c:url value="/result/testPDF" var="downloadUrl">
+            		<c:param name="mtrId" value="${missTestResult.mtrId}"></c:param>
+            		<c:param name="meId" value="${missTestResult.meId}"></c:param>
+            		<c:param name="msId" value="${missTestResult.msId}"></c:param>
+            		<c:param name="mcaId" value="${missTestResult.missCandidate.mcaId}"></c:param>
+            	</c:url>
+            	<td>&nbsp;<a href="${downloadUrl}">${missTestResult.mtrResultCode}</a></td>            	
             	<td>
             	<c:if test="${missTestResult.mtrStatus=='0'}">Not finished</c:if>
             	<c:if test="${missTestResult.mtrStatus=='1'}">Finished</c:if>
