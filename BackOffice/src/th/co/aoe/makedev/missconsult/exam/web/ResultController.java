@@ -5,9 +5,7 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -15,13 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -54,7 +53,8 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"resultForm"})
 public class ResultController
 {
-	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
 
   /*  @Autowired
     public ResultController(MissExamService missExamService)
@@ -221,7 +221,7 @@ public class ResultController
     	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
     	 MissTestResult report=new MissTestResult(); 
 			report.setMeId(1l); 
-			byte[] imageInByte=null;
+			/*byte[] imageInByte=null;
 			BufferedImage originalImage = null;
 			ByteArrayOutputStream baos =null;
 			try{
@@ -238,10 +238,12 @@ public class ResultController
 				} 
 			String encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
-			report.setServiceName(encodedImgStr);
+			report.setServiceName(encodedImgStr);*/
+			report.setMtrStatus("Lie Score:\n 45 Mark 90\n(Perface Score)");
+			report.setMtrResultCode("Line Score");
 			 MissTestResult report2=new MissTestResult(); 
-				report2.setMeId(1l);
-			try{
+				report2.setMeId(20l);
+			/*try{
 				originalImage=ImageIO.read(new File("/root/Desktop/lum.jpg"));
 			 
 				baos= new ByteArrayOutputStream();
@@ -255,26 +257,78 @@ public class ResultController
 				} 
 			encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
-			report2.setServiceName(encodedImgStr);
-			
+			report2.setServiceName(encodedImgStr);*/
+			report2.setMtrStatus("Honest Score:\n 85 Mark 108\n(Definietly Want)");
+			report2.setMtrResultCode("Honest Score");
 			
 		
-			logger.debug("encodedImgStr============>"+encodedImgStr);
+		//	logger.debug("encodedImgStr============>"+encodedImgStr);
 			List<MissTestResult> newList=new ArrayList<MissTestResult>();
 			newList.add(report);
 			newList.add(report2);
-		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList);  
+		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
+		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
 		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
 		 
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
+		 
+		 Map p =new HashMap();
+		 p.put("SubDataSource", beanCollectionDataSource);
+		 p.put("name",missTestResult.getMissCandidate().getMcaFirstName()+" "+missTestResult.getMissCandidate().getMcaLastName());
+		 p.put("position",missTestResult.getMissCandidate().getMcaPosition());
+		 String testDate="";
+		 
+		 p.put("tel",missTestResult.getMissCandidate().getMcaPhone());
+		
+		 if(missTestResult.getMtrTestDate() != null )
+			testDate=format2.format(missTestResult.getMtrTestDate());
+		 p.put("testDate",testDate);
+		  // set Lie Score , Honest Score
+		 p.put("lieScore", 45);
+		 p.put("honestScore", 85);
+		 //p.put("lieScore", missTestResult.get)
+	 
+		 /*DefaultPieDataset dataset = new DefaultPieDataset();
+			dataset.setValue("Java", new Double(43.2));
+			dataset.setValue("Visual Basic", new Double(10.0));
+			dataset.setValue("C/C++", new Double(17.5));
+			dataset.setValue("PHP", new Double(32.5));
+			dataset.setValue("Perl", new Double(1.0));
+
+			JFreeChart chart = 
+				ChartFactory.createPieChart3D(
+					"Pie Chart 3D Demo 1",
+					dataset,
+					true,
+					true,
+					false
+					);
+ 
+			PiePlot3D plot = (PiePlot3D) chart.getPlot();
+			plot.setStartAngle(290);
+			plot.setDirection(Rotation.CLOCKWISE);
+			plot.setForegroundAlpha(0.5f);
+			plot.setNoDataMessage("No data to display");
+			
+			 
+			 p.put("Chart", new JCommonDrawableRenderer(chart));*/
+			//p.put("Chart",new JFreeChartRenderer(chart));
 		try {
-			jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),beanCollectionDataSource);
+			//jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),new JREmptyDataSource());
+			//String defaultPDFFont = "Arial";
+
+			
+
+			jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
+			/*jasperPrint.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+			jasperPrint.setProperty("net.sf.jasperreports.default.font.name", defaultPDFFont);*/
+			 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-	      String fileName="เทส.pdf";
+	   //  String fileName="เทส.pdf";
 		 response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
 		/* response.setHeader("Content-Disposition", "inline; filename="
 					+ fileName);*/
