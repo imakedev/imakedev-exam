@@ -80,7 +80,17 @@ public class MissTestResultResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissTestResult xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
-								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
+								if(ntcCalendarReturn.getMissCandidate()!=null){
+									th.co.aoe.makedev.missconsult.xstream.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
+									BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate(),missCandidate,ignore_id_candidate); 
+									if(ntcCalendarReturn.getMissCandidate().getMissAccount()!=null){
+										th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate().getMissAccount(),missAccount); 
+										missCandidate.setMissAccount(missAccount);
+									}
+									xntcCalendarReturn.setMissCandidate(missCandidate);
+								}
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
