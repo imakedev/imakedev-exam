@@ -219,8 +219,9 @@ public class ResultController
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
     	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
+    	 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
     	 MissTestResult report=new MissTestResult(); 
-			report.setMeId(1l); 
+			report.setMeId(Long.valueOf(missTestResult.getLieScore())); 
 			/*byte[] imageInByte=null;
 			BufferedImage originalImage = null;
 			ByteArrayOutputStream baos =null;
@@ -239,10 +240,11 @@ public class ResultController
 			String encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
 			report.setServiceName(encodedImgStr);*/
-			report.setMtrStatus("Lie Score:\n 45 Mark 90\n(Perface Score)");
+			//report.setMtrStatus("Lie Score:\n 45 Mark 90\n(Perface Score)");
+			report.setMtrStatus("Lie Score:\n "+missTestResult.getLieScore());
 			report.setMtrResultCode("Line Score");
 			 MissTestResult report2=new MissTestResult(); 
-				report2.setMeId(20l);
+				report2.setMeId(Long.valueOf(missTestResult.getTotalScore()));
 			/*try{
 				originalImage=ImageIO.read(new File("/root/Desktop/lum.jpg"));
 			 
@@ -258,7 +260,8 @@ public class ResultController
 			encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
 			report2.setServiceName(encodedImgStr);*/
-			report2.setMtrStatus("Honest Score:\n 85 Mark 108\n(Definietly Want)");
+			//report2.setMtrStatus("Honest Score:\n 85 Mark 108\n(Definietly Want)");
+			report2.setMtrStatus("Honest Score:\n "+missTestResult.getTotalScore());
 			report2.setMtrResultCode("Honest Score");
 			
 		
@@ -267,7 +270,7 @@ public class ResultController
 			newList.add(report);
 			newList.add(report2);
 		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
-		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+		
 		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
 		 
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
@@ -285,8 +288,9 @@ public class ResultController
 			testDate=format2.format(missTestResult.getMtrTestDate());
 		 p.put("testDate",testDate);
 		  // set Lie Score , Honest Score
-		 p.put("lieScore", 45);
-		 p.put("honestScore", 85);
+		// missExamService.findMissTestById(long1)SeriesAttachSearch
+		 p.put("lieScore", missTestResult.getLieScore());
+		 p.put("honestScore", missTestResult.getTotalScore());
 		 //p.put("lieScore", missTestResult.get)
 	 
 		 /*DefaultPieDataset dataset = new DefaultPieDataset();
