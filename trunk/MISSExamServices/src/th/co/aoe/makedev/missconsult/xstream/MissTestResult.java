@@ -36,7 +36,25 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	//EXT
 	private String msatPath;
+	private int lieScore;
+	private int totalScore;
 	
+	public int getLieScore() {
+		return lieScore;
+	}
+
+	public void setLieScore(int lieScore) {
+		this.lieScore = lieScore;
+	}
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+
 	public String getMsatPath() {
 		return msatPath;
 	}

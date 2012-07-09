@@ -81,7 +81,11 @@ public class MissTestResultResource extends BaseResource {
 								List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissTestResult xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
+								Long mcaId=null;
+								Long msId=ntcCalendarReturn.getMsId();
+								Long meId=ntcCalendarReturn.getMeId();
 								if(ntcCalendarReturn.getMissCandidate()!=null){
+									mcaId=ntcCalendarReturn.getMissCandidate().getMcaId();
 									th.co.aoe.makedev.missconsult.xstream.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
 									BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate(),missCandidate,ignore_id_candidate); 
 									if(ntcCalendarReturn.getMissCandidate().getMissAccount()!=null){
@@ -91,6 +95,33 @@ public class MissTestResultResource extends BaseResource {
 									}
 									xntcCalendarReturn.setMissCandidate(missCandidate);
 								}
+							    int lieScore=0;
+							    int a_Score=0;
+							    int c_Score=0;
+							    int totalScore=0;
+								if(mcaId!=null && msId!=null && meId!=null){
+									List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=missTestResultService.findMissTestShow(mcaId, msId, meId);
+									if(missTestShows!=null && missTestShows.size()>0){
+										for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShows) {
+											String mtsValue="";
+											if(missTestShow.getMtsValue()!=null && missTestShow.getMtsValue().trim().length()>0){
+												mtsValue=missTestShow.getMtsValue();
+											}
+											if("A Score".equals(missTestShow.getId().getMtsColumn())){
+												a_Score=Integer.parseInt(mtsValue);
+											}else if("C Score".equals(missTestShow.getId().getMtsColumn())){
+												c_Score=Integer.parseInt(mtsValue);
+											}else if("Lie Score".equals(missTestShow.getId().getMtsColumn())){
+												lieScore=Integer.parseInt(mtsValue);
+											}
+											//missTestShow.getMtsValue();
+										}
+										totalScore=a_Score-c_Score;
+										xntcCalendarReturn.setTotalScore(totalScore);
+										xntcCalendarReturn.setLieScore(lieScore);
+									}
+								}
+								
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
@@ -178,26 +209,7 @@ public class MissTestResultResource extends BaseResource {
 		logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
 		logger.debug("into GET MissTestResultResource");
 		// Representation result = null;
-		/* th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult ntcCalendarReturn = missTestResultService.findMissTestResultById(new Long(1));
-		 logger.debug("ntcCalendarReturn="+ntcCalendarReturn.getMegName());
-	        VResultMessage vresultMessage = new VResultMessage();
-			List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(1);
-			th.co.aoe.makedev.missconsult.xstream.MissTestResult xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
-			BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);								
-			xntcCalendarReturn.setPagging(null);
-		 
-			xntcCalendars.add(xntcCalendarReturn);
-			vresultMessage.setResultListObj(xntcCalendars);
-			ntcCalendarReturn.setMegName("Aoe update");
-			int updateRecord=missTestResultService.updateMissTestResult(ntcCalendarReturn);*/
-			/* th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult  xntcCalendarReturn_save = new  th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult ();
-			xntcCalendarReturn_save.setMegName("save new");
-			logger.debug("xxx="+updateRecord);
-			missTestResultService.saveMissTestResult(xntcCalendarReturn_save);*/
-			//returnUpdateRecord(entity,xbpsTerm,updateRecord);
-			 /*th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult  xntcCalendarReturn_delete= new  th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult ();
-			 xntcCalendarReturn_delete.setMegId(new Long(3));
-			missTestResultService.deleteMissTestResult(xntcCalendarReturn_delete);*/
+		
 			//return getRepresentation(null, vresultMessage, xstream);
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult();

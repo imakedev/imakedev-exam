@@ -76,6 +76,16 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		}
 	  return missTestResult;
 	}
+	@Transactional(readOnly=true)
+	public List findMissTestShow( Long mcaId,Long msId,Long meId){
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missTestShow from MissTestShow missTestShow where missTestShow.id.mcaId=:mcaId" +
+				" and  missTestShow.id.msId=:msId and  missTestShow.id.meId=:meId and  missTestShow.id.mtsType='2' order by missTestShow.mtsOrder asc ");
+		query.setParameter("mcaId", mcaId);
+		query.setParameter("msId", msId);
+		query.setParameter("meId", meId);
+		return query.list(); 	
+	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public Long saveMissTestResult(MissTestResult transientInstance)
 			throws DataAccessException {
