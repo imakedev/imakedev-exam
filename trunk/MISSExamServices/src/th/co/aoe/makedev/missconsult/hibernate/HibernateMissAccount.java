@@ -226,7 +226,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 query.setParameter("stockName", "DIALOG1");
 query.setParameter("stockCode", "7277");
 int result = query.executeUpdate();*/
-		if(section.equals("0") || section.equals("4") ){
+		/*if(section.equals("0") || section.equals("4") ){
 			query=session.createQuery("update MissAccount missAccount " +
 					" set missAccount.maPassword =:maPassword," +
 					" missAccount.maUsername =:maUsername " +
@@ -234,7 +234,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maPassword", transientInstance.getMaPassword());
 			query.setParameter("maUsername", transientInstance.getMaUsername());
 			return query.executeUpdate();
-		}else if(section.equals("1") || section.equals("5")){
+		}else*/ if(section.equals("1") || section.equals("5")){
 			query=session.createQuery("update MissAccount missAccount " +
 					" set missAccount.maName =:maName ,  " +
 					" missAccount.maAddress =:maAddress ,  " +
