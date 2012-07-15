@@ -82,8 +82,8 @@ public class MissTestResultResource extends BaseResource {
 								th.co.aoe.makedev.missconsult.xstream.MissTestResult xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
 								Long mcaId=null;
-								Long msId=ntcCalendarReturn.getMsId();
-								Long meId=ntcCalendarReturn.getMeId();
+								/*Long msId=ntcCalendarReturn.getMsId();
+								Long meId=ntcCalendarReturn.getMeId();*/
 								if(ntcCalendarReturn.getMissCandidate()!=null){
 									mcaId=ntcCalendarReturn.getMissCandidate().getMcaId();
 									th.co.aoe.makedev.missconsult.xstream.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
@@ -95,7 +95,8 @@ public class MissTestResultResource extends BaseResource {
 									}
 									xntcCalendarReturn.setMissCandidate(missCandidate);
 								}
-							    int lieScore=0;
+								/*
+								int lieScore=0;
 							    int a_Score=0;
 							    int c_Score=0;
 							    int totalScore=0;
@@ -114,13 +115,12 @@ public class MissTestResultResource extends BaseResource {
 											}else if("Lie Score".equals(missTestShow.getId().getMtsColumn())){
 												lieScore=Integer.parseInt(mtsValue);
 											}
-											//missTestShow.getMtsValue();
 										}
 										totalScore=a_Score-c_Score;
 										xntcCalendarReturn.setTotalScore(totalScore);
 										xntcCalendarReturn.setLieScore(lieScore);
 									}
-								}
+								}*/
 								
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);

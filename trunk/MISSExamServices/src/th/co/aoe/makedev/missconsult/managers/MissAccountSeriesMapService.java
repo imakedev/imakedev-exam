@@ -10,7 +10,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
 
 public interface MissAccountSeriesMapService {
-		public Long saveMissAccountSeriesMap(MissAccountSeriesMap transientInstance) throws DataAccessException;
+		public Long saveMissAccountSeriesMap(MissAccountSeriesMap transientInstance,Long maId,Long msId ) throws DataAccessException;
 		public int updateMissAccountSeriesMap(MissAccountSeriesMap transientInstance) throws DataAccessException ;
 		public int deleteMissAccountSeriesMap(MissAccountSeriesMap persistentInstance) throws DataAccessException ;	
 		public MissAccountSeriesMap findMissAccountSeriesMapById(MissAccountSeriesMapPK id)throws DataAccessException  ;

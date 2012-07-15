@@ -196,12 +196,53 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue());
 		return query.list(); 	
 	}
+	@Override
+	public int getQuestionOrdered(Long meId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select count(missQuestion) from MissQuestion missQuestion where missQuestion.mqNo is null and" +
+				"  missQuestion.missExam.meId="+meId.intValue());
+		int count=((Long)query.uniqueResult()).intValue();
+		return  count;
+	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	@Override
+	public int setOrderItems(Long meId) throws DataAccessException {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		//Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
+		//SELECT * FROM MISS_QUESTION QUESTION WHERE QUESTION.MQ_NO IS NULL ORDER BY QUESTION.MQ_ID ASC 
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null " +
+				" and missQuestion.missExam.meId="+meId.intValue()+"  order by missQuestion.mqId asc ");
+		 List<MissQuestion> list =query.list();
+		 int i=1;
+		 for (MissQuestion missQuestion : list) {
+			 query=session.createQuery("update MissQuestion missQuestion " +
+						" set " +
+						//" missQuestion.mqNameTh1 =:mqNameTh1 ," +
+						//" missQuestion.mqChoose =1," +
+						//" missQuestion.missTemplate.mtId =1 ," +
+						" missQuestion.mqNo =:mqNo " +
+						" where missQuestion.mqId=:mqId" );
+			// query.setParameter("mqNameTh1", i+"");
+			 query.setParameter("mqNo",Long.valueOf(i));
+			 query.setParameter("mqId", missQuestion.getMqId());
+			 query.executeUpdate();
+			i++;
+		}
+   return i;
+	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	@Override
 	public void setUpTestMissQuestion() throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
+		//Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
+		//SELECT * FROM MISS_QUESTION QUESTION WHERE QUESTION.MQ_NO IS NULL ORDER BY QUESTION.MQ_ID ASC 
+	//	Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null  order by missQuestion.mqId asc ");
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=40  order by missQuestion.mqId asc ");
 		 List<MissQuestion> list =query.list();
 		 int i=1;
 		 for (MissQuestion missQuestion : list) {
@@ -217,13 +258,28 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 			 query.executeUpdate();
 			i++;
 			StringBuffer sb=new StringBuffer();
-			for(int j =0;j<5;j++){
+			for(int j =0;j<3;j++){
+				
 				MissChoice choice =new MissChoice();
 				MissChoicePK pk =new MissChoicePK();
 				pk.setMcNo(Long.valueOf(j+1));
 				pk.setMqId(missQuestion.getMqId());
 				sb.setLength(0);
+				
+				
+				
+				
+				
+
 				 if(j==0){
+						sb.append("ไม่เหมือนฉันเลย");
+					}else if(j==1){
+						sb.append("นานๆครั้ง ฉันก็เป็นแบบนี้");
+					}else if(j==2){
+						sb.append("เหมือนฉันเลย");
+					} 
+
+				/* if(j==0){
 					sb.append("ไม่เห็นด้วยอย่างยิ่ง");
 				}else if(j==1){
 					sb.append("ไม่เห็นด้วย");
@@ -233,15 +289,26 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 					sb.append("เห็นด้วย");
 				}else if(j==4){
 					sb.append("เห็นด้วยอย่างยิ่ง");
-				}
-				
+				}*/
+				/* query=session.createQuery("update MissChoice missChoice " +
+							" set missChoice.mcName =:mcName " +
+						
+							" where missChoice.id.mqId=:mqId " +
+							" and missChoice.id.mcNo=:mcNo " );
+				 query.setParameter("mcName",sb.toString());
+				 query.setParameter("mcNo",pk.getMcNo());
+				 query.setParameter("mqId", pk.getMqId());
+				 query.executeUpdate();
+				*/
 				choice.setMcName(sb.toString());
 				choice.setId(pk);
-				session.save(choice);
+				session.saveOrUpdate(choice);
 			}
 		}
 			 
 	}
+	
+	
 	
 
 }

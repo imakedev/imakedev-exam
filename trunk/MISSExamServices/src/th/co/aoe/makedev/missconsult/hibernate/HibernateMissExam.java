@@ -187,7 +187,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 	}
 	return 0;
 	}
-	public int createEmptyMissExam(MissExam transientInstance,int questionCountEmpty,int choiceCountEmpty)
+	public int createEmptyMissExam(MissExam transientInstance,int questionCountEmpty,int choiceCountEmpty,Long meTimeLimit)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		int updateCount=0;
@@ -200,6 +200,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 		missType.setMetId(1l);
 	
 			transientInstance.setMissExamType(missType);
+			transientInstance.setMeTimeLimit(meTimeLimit);
 			Long returnId  = null;
 			try{
 				Object objCopy = session.save(transientInstance);				
@@ -209,6 +210,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 					for (int i = 0; i < questionCountEmpty; i++) {
 						MissQuestion missQuestion=new MissQuestion();
 						missQuestion.setMissExam(transientInstance);
+						missQuestion.setMqNo(Long.valueOf(i+1));
 						Object objQuestionId = session.save(missQuestion);
 						if(objQuestionId!=null){
 							missQuestion.setMqId((Long)objQuestionId);

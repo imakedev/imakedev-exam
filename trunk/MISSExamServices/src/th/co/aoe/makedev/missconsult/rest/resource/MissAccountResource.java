@@ -69,9 +69,11 @@ public class MissAccountResource extends BaseResource {
 								th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
 								xntcCalendarReturn.setPagging(null);
-								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
+								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
+								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								//missAccountSeriesMapList.add(e)
-								xntcCalendarReturn.setMissAccountSeriesMapList(missAccountSeriesMapList);
+								//xntcCalendarReturn.setMissAccountSeriesMapList(missAccountSeriesMapList);
+								xntcCalendarReturn.setMissSeryList(missSeryList);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);

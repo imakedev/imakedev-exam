@@ -149,6 +149,9 @@ public class MissCandidateResource extends BaseResource {
 								int size= Integer.parseInt(xbpsTerm.getAmount());
 								for(int i=0;i<size;i++){
 									mcaId=missCandidateService.saveMissCandidate(bpsTerm);
+									if(mcaId.intValue()==-1){
+										break;
+									}
 								}
 							}else{
 								mcaId=(missCandidateService.saveMissCandidate(bpsTerm));

@@ -123,7 +123,7 @@ public class MissExamResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_CREATE_EMPTY)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missExamService.createEmptyMissExam(bpsTerm,Integer.parseInt(xbpsTerm.getQuestionCountEmpty()),Integer.parseInt(xbpsTerm.getChoiceCountEmpty()));
+							int updateRecord=missExamService.createEmptyMissExam(bpsTerm,Integer.parseInt(xbpsTerm.getQuestionCountEmpty()),Integer.parseInt(xbpsTerm.getChoiceCountEmpty()),xbpsTerm.getMeTimeLimit());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						

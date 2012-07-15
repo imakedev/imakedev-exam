@@ -22,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -433,6 +434,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				  String pathOutPut= setAnswer(session,filePath,msId,meId,mcaId);
 				 
 				  String code=getCode(session,pathOutPut,mcaId,msId,meId);
+				  logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx="+code);
 				  query=session.createQuery("update MissTestResult missTestResult " +
 							" set missTestResult.mtrResultCode =:mtrResultCode " +
 							 
@@ -540,7 +542,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	        	  int start=cr.getRow();
 		            int end=cr2.getRow();
 		            int column=cr.getCol();
-		            System.out.println("start="+start+",end="+end+",column="+column);
+		            //System.out.println("start="+start+",end="+end+",column="+column);
 		            /*System.out.println(cr.getRow()+","+cr.getCol()+","+cr.getSheetName());
 		            row_code= sheet.getRow(cr.getRow());
 		            cell_code  =row_code.getCell(cr.getCol());
@@ -562,7 +564,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	            	   //System.out.println(""+(format.format(cell_code.getNumericCellValue())));
 	            	  int question_no=(int)cell_question.getNumericCellValue();
 	            	 Object obj_value=   answerMap.get(question_no+"");
-	            	 logger.debug("obj_value xxxxxxxxxxxxxx == "+obj_value.toString());
+	            	// logger.debug("obj_value xxxxxxxxxxxxxx == "+obj_value);
 	            	 if(obj_value!=null){
 	            		 cell_answer.setCellValue(Integer.parseInt((String)obj_value));
 	            	 }else{
@@ -641,24 +643,50 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			}
           Sheet sheet1 = wb.getSheetAt(0);          // getConfig
           Row row_code= sheet1.getRow(1);
-          Cell cell_code  =row_code.getCell(0);
+          Cell cell_code=null;
+          	
+          if(row_code!=null){
+           cell_code  =row_code.getCell(0);
           String columnReference=cell_code.getStringCellValue();
-//         System.out.println(columnReference);
          sheet1 = wb.getSheetAt(1); //get Code
-      //   sheet1.s
           CellReference cr = new CellReference(columnReference);
-       //   System.out.println(cr.getRow()+","+cr.getCol()+","+cr.getSheetName());
           row_code= sheet1.getRow(cr.getRow());
           cell_code  =row_code.getCell(cr.getCol());
-          code=cell_code.getStringCellValue();
+          /*switch (cell.getCellType()) {
+          case Cell.CELL_TYPE_STRING:
+         	 value = cell.getStringCellValue();
+          	// System.out.println("		CELL_TYPE_STRING="+value);
+              break;
+          case Cell.CELL_TYPE_NUMERIC:
+          }*/
+          logger.debug("  CELL_TYPE_NUMERIC="+Cell.CELL_TYPE_NUMERIC);
+          logger.debug("  CELL_TYPE_STRING="+Cell.CELL_TYPE_STRING);
+          logger.debug("  CELL_TYPE_FORMULA="+Cell.CELL_TYPE_FORMULA);
           
+          logger.debug("  cell_code.getCellType()="+cell_code.getCellType());
+          if(cell_code.getCellType()==Cell.CELL_TYPE_NUMERIC){
+        	  code=cell_code.getNumericCellValue()+"";
+          }else if(cell_code.getCellType()==Cell.CELL_TYPE_STRING){
+        	  code=cell_code.getStringCellValue();
+          }else if(cell_code.getCellType()==Cell.CELL_TYPE_FORMULA){
+        	  FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+        	  int type=evaluator.evaluateInCell(cell_code).getCellType();
+        	  logger.debug("  type="+type);
+        	  if(type==Cell.CELL_TYPE_NUMERIC){
+            	  code=cell_code.getNumericCellValue()+"";
+              }else if(type==Cell.CELL_TYPE_STRING){
+            	  code=cell_code.getStringCellValue();
+              }
+        	//  code=cell_code.getNumericCellValue()+"";
+          }          
+         }
           NumberFormat    format  =    NumberFormat.getNumberInstance();
           format.setGroupingUsed(false);
           //get config
           Sheet sheet1_0 = wb.getSheetAt(0);
           Sheet sheet1_1 = wb.getSheetAt(1);
           int endRow=sheet1_0.getLastRowNum();
-          System.out.println("getPhysicalNumberOfRows="+endRow);
+         // System.out.println("getPhysicalNumberOfRows="+endRow);
           Row r=null;
           List < th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=
         		  new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow>();

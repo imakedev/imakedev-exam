@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMapPK;
 import th.co.aoe.makedev.missconsult.managers.MissAccountSeriesMapService;
@@ -44,11 +46,80 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 	  return missAccountSeriesMap;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public Long saveMissAccountSeriesMap(MissAccountSeriesMap transientInstance)
+	public Long saveMissAccountSeriesMap(MissAccountSeriesMap transientInstance,Long maId,Long msId )
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Long returnId  = null;
+		Long orderUnit=transientInstance.getMasmOrderUnit();
+		StringBuffer sb =new StringBuffer();
+		sb.setLength(0); 
+		sb.append("select missAccount from MissAccount missAccount  where missAccount.maId=:maId " );
+		Query query= session.createQuery(sb.toString());
+		query.setParameter("maId", maId);
+		Object obj = query.uniqueResult();
+		Long maTotalUnit=0l;
+		Long maUsedUnit=0l;
+		if(obj!=null){
+			MissAccount missAccount  = (MissAccount)obj;
+			maTotalUnit=(missAccount.getMaTotalUnit()!=null && missAccount.getMaTotalUnit().intValue()>0)?missAccount.getMaTotalUnit():0l;
+			maUsedUnit=(missAccount.getMaUsedUnit()!=null && missAccount.getMaUsedUnit().intValue()>0)?missAccount.getMaUsedUnit():0l;
+		}
+		int available=maTotalUnit.intValue()-maUsedUnit.intValue();
+		Long returnId=0l;
+		if(orderUnit<=available){
+		sb.setLength(0); 
+		sb.append(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap" +
+				" where missAccountSeriesMap.id.maId=:maId and missAccountSeriesMap.id.msId=:msId ");
+	
+		query =session.createQuery(sb.toString());
+		query.setParameter("maId", maId);
+		query.setParameter("msId", msId);
+		List list=   query.list();
+		if(list!=null && list.size()>0){
+			MissAccountSeriesMap missAccountSeriesMap = (MissAccountSeriesMap)list.get(0);
+			Long masmAvailable=0l;
+			if(missAccountSeriesMap.getMasmAvailable()!=null && missAccountSeriesMap.getMasmAvailable().length()>0){
+				 masmAvailable=Long.valueOf(missAccountSeriesMap.getMasmAvailable());				
+			}
+			sb.setLength(0); 
+			sb.append("update MissAccountSeriesMap missAccountSeriesMap set missAccountSeriesMap.masmAvailable =:masmAvailable where " +
+					" missAccountSeriesMap.id.maId=:maId and missAccountSeriesMap.id.msId=:msId " );
+			query= session.createQuery(sb.toString());
+			query.setParameter("masmAvailable", (orderUnit.intValue()+masmAvailable.intValue())+"");
+			query.setParameter("maId", maId);
+			query.setParameter("msId", msId);
+			query.executeUpdate();
+		}else{
+			MissAccountSeriesMap newSeries = new MissAccountSeriesMap();
+			MissAccountSeriesMapPK pk =new MissAccountSeriesMapPK();
+			pk.setMaId(maId);
+			pk.setMsId(msId);
+			newSeries.setId(pk);
+			newSeries.setMasmAvailable(transientInstance.getMasmOrderUnit().intValue()+"");
+			session.save(newSeries);
+		}
+		/*sb.setLength(0); 
+		sb.append("select missAccount from MissAccount missAccount  where missAccount.maId=:maId " );
+		query= session.createQuery(sb.toString());
+		query.setParameter("maId", maId);*/
+	//	Object obj = query.uniqueResult();
+		/*if(obj!=null){
+			MissAccount missAccount  = (MissAccount)obj;
+			Long usedUnit=0l;*/
+			/*if(missAccount.getMaUsedUnit()!=null && missAccount.getMaUsedUnit().intValue()!=0){
+				usedUnit=missAccount.getMaUsedUnit();
+			}*/
+			sb.setLength(0); 
+			sb.append("update MissAccount missAccount set missAccount.maUsedUnit =:maUsedUnit where missAccount.maId=:maId " );
+			query= session.createQuery(sb.toString());
+			query.setParameter("maUsedUnit", Long.valueOf((orderUnit.intValue()+maUsedUnit.intValue())+""));
+			query.setParameter("maId", maId);
+			query.executeUpdate();
+	//	}
+			returnId=1l;
+   	 }
+	return returnId;
+		/*Long returnId  = null;
 		try{
 			Object obj = session.save(transientInstance);
 		
@@ -60,7 +131,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 					session = null;
 				} 
 		}
-		return returnId; 
+		return returnId; */
 	}
 	
 	

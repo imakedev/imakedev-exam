@@ -107,6 +107,7 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private Timestamp maRegisterDate;
 	
 	private List<MissAccountSeriesMap> missAccountSeriesMapList;
+	private List<MissSery> missSeryList;
 /*	private String maContactPictureHotlink;*/
 //	private String maSex;
 
@@ -412,6 +413,14 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setRefill(Long refill) {
 		this.refill = refill;
+	}
+
+	public List<MissSery> getMissSeryList() {
+		return missSeryList;
+	}
+
+	public void setMissSeryList(List<MissSery> missSeryList) {
+		this.missSeryList = missSeryList;
 	}
 	
 }

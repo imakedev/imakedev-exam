@@ -17,7 +17,7 @@ public interface MissAccountService  {
 		public int updateMissAccountLogo(MissAccount transientInstance,String section) throws DataAccessException ;
 		public int deleteMissAccount(MissAccount persistentInstance) throws DataAccessException ;	
 		public MissAccount findMissAccountById(Long maId)throws DataAccessException  ;
-		public List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> listMissAccountSeriesMapByMaId(Long maId)throws DataAccessException  ;
+		public List<th.co.aoe.makedev.missconsult.xstream.MissSery> listMissAccountSeriesMapByMaId(Long maId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissAccount(MissAccount persistentInstance,	Pagging pagging)throws DataAccessException  ;
 }
