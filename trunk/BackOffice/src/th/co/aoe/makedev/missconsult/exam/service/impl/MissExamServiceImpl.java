@@ -131,7 +131,7 @@ public class MissExamServiceImpl extends PostCommon
         missAccountSeriesMap.setServiceName("saveMissAccountSeriesMap");
         VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
         missAccountSeriesMap = (MissAccountSeriesMap)resultMessage.getResultListObj().get(0);
-        return missAccountSeriesMap.getMaId();
+        return Long.valueOf(missAccountSeriesMap.getUpdateRecord());
     }
 
     public int updateMissAccountSeriesMap(MissAccountSeriesMap missAccountSeriesMap)
@@ -445,6 +445,31 @@ public class MissExamServiceImpl extends PostCommon
          return resultMessage.getResultListObj();
     }
 
+    public int getQuestionOrdered(Long meId)
+    {
+    	 MissExam missExam = new MissExam();
+    	 missExam.setMeId(meId);
+    	 
+    	 MissQuestion missQuestion =new MissQuestion();
+    	 missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_GET_ORDERED);
+         missQuestion.setMissExam(missExam);
+        VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
+        missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
+        return missQuestion.getUpdateRecord().intValue();
+    }
+    public int setOrderItems(Long meId)
+    {
+   	 MissExam missExam = new MissExam();
+   	 missExam.setMeId(meId);
+   	 
+   	 MissQuestion missQuestion =new MissQuestion();
+   	 missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SET_ORDERED_ITEMS);
+        missQuestion.setMissExam(missExam);
+       VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
+       missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
+       return missQuestion.getUpdateRecord().intValue();
+   }
+    
     public Long saveMissSeriesMap(MissSeriesMap missSeriesMap)
     {
         return null;
@@ -904,7 +929,11 @@ public class MissExamServiceImpl extends PostCommon
     public static void main(String args[])
     {
         MissExamServiceImpl main = new MissExamServiceImpl();
+        //main.testMissQuestion();
+     /*  MissAccount account=main.findMissAccountById(7l);
+       System.out.println(account.getMissAccountSeriesMapList());*/
         main.testMissQuestion();
+      //  MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
       /*  System.out.println(IMakeDevUtils.calculatePage(3, 7));
         DateTime dt = new DateTime();
         System.out.println(dt.getDayOfMonth());

@@ -27,10 +27,13 @@ import th.co.aoe.makedev.missconsult.exam.form.ContactForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value={"/company"})
@@ -150,6 +153,42 @@ public class CompanyController
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
+    @RequestMapping(value={"/item/unit/{maId}/{msId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET}) 
+    public String postItemUnit(HttpServletRequest request, @PathVariable String maId,
+    		@PathVariable String msId,@PathVariable String amount, Model model)
+    {
+    	 CompanyForm companyForm = null;
+         if(model.containsAttribute("companyForm"))
+             companyForm = (CompanyForm)model.asMap().get("companyForm");
+         else
+             companyForm = new CompanyForm();
+         companyForm.setMode("edit");
+    	
+    	MissAccountSeriesMap missAccountSeriesMap = new MissAccountSeriesMap();
+    	missAccountSeriesMap.setMsId(Long.valueOf(msId));
+    	missAccountSeriesMap.setMaId(Long.valueOf(maId));
+    	missAccountSeriesMap.setMasmOrderUnit(Long.valueOf(amount));
+      Long returnRecord=  missExamService.saveMissAccountSeriesMap(missAccountSeriesMap);
+      String message="Order success !";
+      if(returnRecord!=null && returnRecord.intValue()==0){
+    	  message="Can't Order ";
+      }
+        //missAccount = missExamService.refillMissAccount(missAccount);
+        MissAccount missAccount= missExamService.findMissAccountById(Long.valueOf(maId));
+      Long maTotalUnit=missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l;
+      Long maUsedUnit=missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
+      missAccount.setMaAvailableUnit(maTotalUnit-maUsedUnit);
+      //  missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
+        // return missAccount;
+       /* Gson gson=new Gson();
+		return gson.toJson(missAccount);*/
+      companyForm.setMissAccount(missAccount);
+      model.addAttribute("message",message);
+      model.addAttribute("display", "display: block");
+      model.addAttribute("companyForm", companyForm);
+    //  model.addAttribute("display", "display: none");
+      return "exam/template/unitListSection";
+    }
     @RequestMapping(value={"/item/unit/{maId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getItemUnit(@PathVariable String maId, Model model)
     {
@@ -160,6 +199,7 @@ public class CompanyController
             companyForm = new CompanyForm();
         companyForm.setMode("edit");
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
+      //  logger.debug("missAccount == > "+missAccount.getMissSeryList());
      /*   if(missAccount != null && missAccount.getMaContactBirthDate() != null)
             companyForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));*/
        Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
@@ -169,10 +209,11 @@ public class CompanyController
         model.addAttribute("companyForm", companyForm);
         model.addAttribute("display", "display: none");
         return "exam/template/unitListSection";
-    }
+    } 
     @RequestMapping(value={"/item/refile/{maId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     @ResponseBody
-    public MissAccount doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
+  //  public MissAccount doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
+    public String doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
     {
         MissAccount missAccount = new MissAccount();
         missAccount.setMaId(Long.valueOf(maId));
@@ -183,7 +224,9 @@ public class CompanyController
       Long maUsedUnit=missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
       missAccount.setMaAvailableUnit(maTotalUnit-maUsedUnit);
       //  missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
-        return missAccount;
+        // return missAccount;
+        Gson gson=new Gson();
+		return gson.toJson(missAccount);
     }
     @RequestMapping(value={"/new"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getNewForm(Model model)
@@ -217,7 +260,7 @@ public class CompanyController
             {
                 e.printStackTrace();
             }*/
-        logger.debug((new StringBuilder(" debugggggggggg getMaId=")).append(companyForm.getMissAccount().getMaId()).toString());
+       // logger.debug((new StringBuilder(" debugggggggggg getMaId=")).append(companyForm.getMissAccount().getMaId()).toString());
         if(mode != null)
             if(mode.equals("new"))
             {
@@ -246,7 +289,8 @@ public class CompanyController
 
     @RequestMapping(value={"/candidate/create"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     @ResponseBody
-    public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
+    public String doCreateCandidate(HttpServletRequest request, Model model)
+ //   public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
     {
         //System.out.println((new StringBuilder(" xxxxxxxx ")).append(request.getParameter("amount")).toString());
         MissCandidate missCandidate = new MissCandidate();
@@ -258,9 +302,11 @@ public class CompanyController
         missCandidate.setMissSery(missSery);
         missCandidate.setAmount(request.getParameter("amount"));
         Long updateRecord = missExamService.saveMissCandidate(missCandidate);
-        logger.debug((new StringBuilder(" updateRecord=")).append(updateRecord).toString());
+      //  logger.debug((new StringBuilder(" updateRecord=")).append(updateRecord).toString());
         missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
-        return missCandidate;
+        Gson gson=new Gson();
+		return gson.toJson(missCandidate);
+       // return missCandidate;
     }
 
     @RequestMapping(value={"/account/{maId}/contacts"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})

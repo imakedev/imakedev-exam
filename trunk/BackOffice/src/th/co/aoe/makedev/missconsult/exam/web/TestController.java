@@ -169,6 +169,9 @@ public class TestController
     	testForm.getMissExam().setMeName(meName);
     	testForm.getMissExam().setQuestionCountEmpty(questionCountEmpty);
     	testForm.getMissExam().setChoiceCountEmpty(choiceCountEmpty);
+    	
+    	// set time limit
+    	testForm.getMissExam().setMeTimeLimit(120l);
     	 missExamService.createEmptyMissExam(testForm.getMissExam());
     	testForm = new TestForm();
         testForm.getPaging().setPageSize(3);
@@ -232,7 +235,10 @@ public class TestController
         	  testForm = (TestForm)model.asMap().get("testForm");
           else
         	  testForm = new TestForm();
-          testForm.setMissExam(new MissExam());
+          
+          MissExam missExam=new MissExam();
+          missExam.setMeTimeLimit(120l);
+          testForm.setMissExam(missExam);
           testForm.setMode("new");
           model.addAttribute("missExamGroups", getGroup());
           model.addAttribute("display", "display: none");
@@ -265,7 +271,7 @@ public class TestController
     }*/
 
     @RequestMapping(value={"/exam/{meId}/questions"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public String uestionListAction(@PathVariable String meId, @ModelAttribute(value="testForm") TestForm testForm, Model model)
+    public String questionListAction(@PathVariable String meId, @ModelAttribute(value="testForm") TestForm testForm, Model model)
     {
     	
     	/* TestForm testForm = null;
@@ -273,7 +279,7 @@ public class TestController
          	testForm = (TestForm)model.asMap().get("testForm");
          else
          	testForm = new TestForm();*/
-        
+    	
          String mode = testForm.getMode();
          logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mode="+mode);
         /* if(mode != null && mode.equals("deleteItems"))
@@ -282,15 +288,23 @@ public class TestController
              missExamService.deleteMissQuestion(testForm.getMissExam(), "deleteMissExamItems");
              testForm.getPaging().setPageNo(1);
          } else*/
-         if(mode != null && mode.equals("delete")){
+         if(mode != null){ 
+          if(mode.equals("delete")){
              missExamService.deleteMissQuestion(testForm.getMissQuestion());//, "deleteMissExam");
              testForm.getPaging().setPageNo(1);
+         }else if(mode.equals("setOrderItems")){
+        	 missExamService.setOrderItems(Long.parseLong(meId));//setOrderItems
+        	 testForm.getPaging().setPageNo(1);
          }
+      }
     	List missQuestions=null;
+    	int countNotOrdered =0;
     	if(meId!=null && !meId.equals("0")){
     		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
+    		countNotOrdered =missExamService.getQuestionOrdered(Long.parseLong(meId));
     	}
     	 testForm.setMode("edit");
+    	 model.addAttribute("countNotOrdered", countNotOrdered);
         model.addAttribute("missQuestions", missQuestions);
         model.addAttribute("testForm", testForm);
         return "exam/template/questionListSection";
@@ -307,9 +321,12 @@ public class TestController
          testForm.setMode("edit");
         
     	List missQuestions=null;
+    	int countNotOrdered =0;
     	if(meId!=null && !meId.equals("0")){
     		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
+    		countNotOrdered =missExamService.getQuestionOrdered(Long.parseLong(meId));
     	} 
+    	 model.addAttribute("countNotOrdered", countNotOrdered);
         model.addAttribute("missQuestions", missQuestions);
         model.addAttribute("testForm", testForm);
         return "exam/template/questionListSection";
