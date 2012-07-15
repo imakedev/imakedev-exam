@@ -129,6 +129,8 @@ public interface MissExamService
     public abstract int updateMissQuestion(MissQuestion missquestion,String service);
 
     public abstract int deleteMissQuestion(MissQuestion missquestion);
+    public abstract int setOrderItems(Long meId);
+    
 
     public abstract MissQuestion findMissQuestionById(Long long1);
 
@@ -286,6 +288,8 @@ public interface MissExamService
     public abstract VResultMessage searchRoleType(RoleType roleContact);
     public abstract List listRoleTypeByRcId(Long rcId);
     public abstract List listRoleTypes(Long maId) ;	
+    
+    public abstract int getQuestionOrdered(Long meId);
     
     
 }

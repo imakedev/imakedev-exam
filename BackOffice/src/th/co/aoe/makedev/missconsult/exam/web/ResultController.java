@@ -7,25 +7,28 @@ package th.co.aoe.makedev.missconsult.exam.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,6 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
-import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
@@ -219,9 +221,12 @@ public class ResultController
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
     	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
-    	 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+    	Context ctx =null;
+		Connection con = null;
+    	try{
+    	/* MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
     	 MissTestResult report=new MissTestResult(); 
-			report.setMeId(Long.valueOf(missTestResult.getLieScore())); 
+			report.setMeId(Long.valueOf(missTestResult.getLieScore())); */
 			/*byte[] imageInByte=null;
 			BufferedImage originalImage = null;
 			ByteArrayOutputStream baos =null;
@@ -241,10 +246,10 @@ public class ResultController
 					.encodeBase64(imageInByte));
 			report.setServiceName(encodedImgStr);*/
 			//report.setMtrStatus("Lie Score:\n 45 Mark 90\n(Perface Score)");
-			report.setMtrStatus("Lie Score:\n "+missTestResult.getLieScore());
+			/*report.setMtrStatus("Lie Score:\n "+missTestResult.getLieScore());
 			report.setMtrResultCode("Line Score");
 			 MissTestResult report2=new MissTestResult(); 
-				report2.setMeId(Long.valueOf(missTestResult.getTotalScore()));
+				report2.setMeId(Long.valueOf(missTestResult.getTotalScore()));*/
 			/*try{
 				originalImage=ImageIO.read(new File("/root/Desktop/lum.jpg"));
 			 
@@ -261,15 +266,15 @@ public class ResultController
 					.encodeBase64(imageInByte));
 			report2.setServiceName(encodedImgStr);*/
 			//report2.setMtrStatus("Honest Score:\n 85 Mark 108\n(Definietly Want)");
-			report2.setMtrStatus("Honest Score:\n "+missTestResult.getTotalScore());
-			report2.setMtrResultCode("Honest Score");
+			/*report2.setMtrStatus("Honest Score:\n "+missTestResult.getTotalScore());
+			report2.setMtrResultCode("Honest Score");*/
 			
 		
 		//	logger.debug("encodedImgStr============>"+encodedImgStr);
-			List<MissTestResult> newList=new ArrayList<MissTestResult>();
+		/*	List<MissTestResult> newList=new ArrayList<MissTestResult>();
 			newList.add(report);
-			newList.add(report2);
-		 JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
+			newList.add(report2);*/
+		// JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
 		
 		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
 		 
@@ -277,7 +282,7 @@ public class ResultController
 		 JasperPrint jasperPrint=null;
 		 
 		 Map p =new HashMap();
-		 p.put("SubDataSource", beanCollectionDataSource);
+		/* p.put("SubDataSource", beanCollectionDataSource);
 		 p.put("name",missTestResult.getMissCandidate().getMcaFirstName()+" "+missTestResult.getMissCandidate().getMcaLastName());
 		 p.put("position",missTestResult.getMissCandidate().getMcaPosition());
 		 String testDate="";
@@ -287,10 +292,12 @@ public class ResultController
 		 if(missTestResult.getMtrTestDate() != null )
 			testDate=format2.format(missTestResult.getMtrTestDate());
 		 p.put("testDate",testDate);
+		 */
 		  // set Lie Score , Honest Score
 		// missExamService.findMissTestById(long1)SeriesAttachSearch
-		 p.put("lieScore", missTestResult.getLieScore());
-		 p.put("honestScore", missTestResult.getTotalScore());
+		/* p.put("lieScore", missTestResult.getLieScore());
+		 p.put("honestScore", missTestResult.getTotalScore());*/
+		 p.put("mtrId",mtrId);
 		 //p.put("lieScore", missTestResult.get)
 	 
 		 /*DefaultPieDataset dataset = new DefaultPieDataset();
@@ -318,13 +325,43 @@ public class ResultController
 			 
 			 p.put("Chart", new JCommonDrawableRenderer(chart));*/
 			//p.put("Chart",new JFreeChartRenderer(chart));
+		 
+			try {
+				ctx = new InitialContext();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+			DataSource ds = null;
+			try { 
+				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
+				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
+				//System.out.println("chatchai debug ds="+ds);
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}               
+			org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			//com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs = (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
+			
+		
+			try {
+				con = basicDs.getConnection();//("oracle", "password");//Connection();
+				//con = ds.getConnection();//("oracle", "password");//Connection();
+				 
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}           
+			 
 		try {
 			//jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),new JREmptyDataSource());
 			//String defaultPDFFont = "Arial";
 
 			
-
-			jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
+			
+			//jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
+			jasperPrint = JasperFillManager.fillReport(reportPath, p, con);
 			/*jasperPrint.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
 			jasperPrint.setProperty("net.sf.jasperreports.default.font.name", defaultPDFFont);*/
 			 
@@ -363,6 +400,27 @@ public class ResultController
 			e.printStackTrace();
 		}
 	       
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}finally{
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}
+			if (ctx != null) {
+				try {
+					ctx.close();
+				} catch (NamingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}	
+		}
 	   
     }
     /**

@@ -196,9 +196,14 @@ public class CandidateController
             } else
             if(mode.equals("edit"))
             {
-                missExamService.updateMissCandidate(candidateForm.getMissCandidate());
+            	int recordReturn=  missExamService.updateMissCandidate(candidateForm.getMissCandidate());
                 id = candidateForm.getMissCandidate().getMcaId();
-                message = "Update success !";
+                if(recordReturn!=-1){
+                	message = "Update success !";
+                }else{
+                	message = "Can't Update !";
+                }
+                
             }
             	
         MissCandidate missCandidate = missExamService.findMissCandidateById(id);
