@@ -127,8 +127,12 @@ function doCreateCandidate(company_id){
 	$("#mssery_candidate_hidden").val($("select[id=mssery_candidate] option:selected").val());
 	$("#company_candidate_hidden").val(company_id);	
 	$.get("company/candidate/create",$("#create_candidate_form").serialize(), function(data) {
-		   if(data.updateRecord!=0){
+		var obj = jQuery.parseJSON(data);
+		   if(obj.updateRecord!=0 && obj.updateRecord!=-1){
 			   $("#message_candidate_create").html("<strong>Add Candidate Success</strong>");
+			   $("#dialog-create-candidate-alert").css("display","block");
+		   }else{
+			   $("#message_candidate_create").html("<strong>Can't Create Candidate</strong>");
 			   $("#dialog-create-candidate-alert").css("display","block");
 		   }
 		 //  alert(data.updateRecord);

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function() { 
 //	$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
 //	$('#tabs').tabs('select', parseInt($("#_test_section").val()));
@@ -17,12 +17,36 @@ $(document).ready(function() {
 
 	}); */
 });
+function doOrder(msId){
+	 
+	var value=$("#_order_"+msId).val();
+		$.get("company/item/unit/${companyForm.missAccount.maId}/"+msId+"/"+value, function(data) {
+			// alert(data)
+			 	/* var obj = jQuery.parseJSON(data);
+				 $("#maTotalUnitElement").html(obj.maTotalUnit);
+				 $("#maUsedUnitElement").html(obj.maUsedUnit);
+				 $("#maAvailableUnitElement").html(obj.maAvailableUnit);
+				 $("#refill").val(""); */
+			if(data!=null){
+				appendContentWithId(data,"tabs-4");
+				// $("#tabs-3").html(data);
+			  }
+			 //  alert(data.updateRecord);
+			 /*   var myJSONText = JSON.stringify(data, replacer);
+			   alert(myJSONText)  */
+			   //  appendContent(data);
+			  // alert($("#_content").html());
+		});
+}
 function doRefill(){
 	 $.get("company/item/refile/${companyForm.missAccount.maId}/"+$("#refill").val(), function(data) {
-			 $("#maTotalUnitElement").html(data.maTotalUnit);
-			 $("#maUsedUnitElement").html(data.maUsedUnit);
-			 $("#maAvailableUnitElement").html(data.maAvailableUnit);
+		// alert(data)
+		 	var obj = jQuery.parseJSON(data);
+			 $("#maTotalUnitElement").html(obj.maTotalUnit);
+			 $("#maUsedUnitElement").html(obj.maUsedUnit);
+			 $("#maAvailableUnitElement").html(obj.maAvailableUnit);
 			 $("#refill").val("");
+				 
 		 //  alert(data.updateRecord);
 		 /*   var myJSONText = JSON.stringify(data, replacer);
 		   alert(myJSONText)  */
@@ -31,6 +55,10 @@ function doRefill(){
 	});
 }
 </script>
+ <div class="alert alert-success" style="${display}">
+    <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
+    <strong>${message}</strong> 
+  </div>
 <form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Unit</strong></h6> 
@@ -69,21 +97,23 @@ function doRefill(){
     			 <table class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="15%"><div class="th_class">Series</div></th> 
-            		<th width="60%"><div class="th_class">Group</div></th>
+            		<th width="20%"><div class="th_class">Series</div></th> 
+            		<th width="10%"><div class="th_class">Group</div></th>
+            		<th width="45%"><div class="th_class">Test</div></th>
             		<th width="5%"><div class="th_class">Unit</div></th> 
-            		<th width="10%"><div class="th_class">Available</div></th>
-            		<th width="10%"><div class="th_class">Order</div></th> 
+            		<th width="5%"><div class="th_class">Available</div></th>
+            		<th width="15%"><div class="th_class">Order</div></th> 
           		</tr>
         	</thead>
         	<tbody>
-        	 <c:forEach items="${companyForm.missAccount.missAccountSeriesMapList}" var="missAccountSeriesMap" varStatus="loop"> 
+        	 <c:forEach items="${companyForm.missAccount.missSeryList}" var="missAccountSeriesMap" varStatus="loop"> 
         	 	<tr>
-            	<td>${missAccountSeriesMap.seryName}</td>
-            	<td>${missAccountSeriesMap.groupStr}</td>
-            	<td>${missAccountSeriesMap.seryUnit}</td>
-            	<td>${missAccountSeriesMap.masmAvailable}</td>
-            	<td><input type="text"></td> 
+            	<td>&nbsp;${missAccountSeriesMap.msSeriesName}</td>
+            	<td>&nbsp;${missAccountSeriesMap.groupStr}</td>
+            	<td>&nbsp;${missAccountSeriesMap.testStr}</td>
+            	<td>&nbsp;${missAccountSeriesMap.msUnitCost}</td>
+            	<td>&nbsp;${missAccountSeriesMap.masmAvailable}</td>
+            	<td><div><input type="text" id="_order_${missAccountSeriesMap.msId}" style="width:40px">&nbsp;&nbsp;<a class="btn btn-primary" onclick="doOrder('${missAccountSeriesMap.msId}');"><span style="color: white;font-weight: bold;">Order</span></a></div></td> 
           	</tr>
         	 </c:forEach>
           	<!-- <tr>
@@ -111,4 +141,8 @@ function doRefill(){
     				</div>
 			
 			<!-- <div align="center"><input type="button" class="btn" value="Order"/></div> onclick="doAction('action','companyForm_unit','7')"-->
-			<div align="center"><a class="btn btn-primary" ><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a></div>
+			<div align="center">
+			<%--
+			<a class="btn btn-primary" ><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Order</span></a>
+			 --%>
+			</div>

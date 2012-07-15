@@ -75,7 +75,19 @@ function loadQuestion(_url){
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/> 
     		</form:form>	
-    		<div align="right"><a class="btn btn-primary"  onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;<span style="font-weight:bold;color:  white;">Add</span></a></div>	
+    		<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="left" width="60%">
+	    					<c:if test="${countNotOrdered != 0}">
+	    					 <a class="btn btn-danger" onclick="doQuestionAction('setOrderItems','0')"><i class="icon-refresh icon-white" ></i>&nbsp;<span style="font-weight:bold;color:  white;">Set Order No</span></a>
+	    					</c:if>	    					
+	    					</td>
+	    					<td align="right" width="40%">
+	    					<a class="btn btn-primary"  onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;<span style="font-weight:bold;color:  white;">Add</span></a>
+	    					</td>
+	    					</tr>
+	    					</table> 
+    		<div align="right"></div>	
     	 <table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
@@ -87,7 +99,8 @@ function loadQuestion(_url){
         	<tbody>
         	 <c:forEach items="${missQuestions}" var="missQuestion" varStatus="loop"> 
           	<tr>
-            	<td>${loop.index+1}</td>
+            	<%-- <td>${loop.index+1}</td> --%>
+            	 <td>${missQuestion.mqNo}</td> 
             	<td>Question ${loop.index+1}</td> 
             	<%--
             	${missQuestion.mqNameTh1}
