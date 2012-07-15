@@ -185,6 +185,17 @@ public class MissQuestionResource extends BaseResource {
 							vresultMessage.setResultListObj(xntcCalendars);
 							return getRepresentation(entity, vresultMessage, xstream);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_GET_ORDERED)){
+							
+							int updateRecord=missQuestionService.getQuestionOrdered(xbpsTerm.getMissExam().getMeId());
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SET_ORDERED_ITEMS)){
+							
+							int updateRecord=missQuestionService.setOrderItems(xbpsTerm.getMissExam().getMeId());
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missQuestionService.searchMissQuestion(bpsTerm,page);

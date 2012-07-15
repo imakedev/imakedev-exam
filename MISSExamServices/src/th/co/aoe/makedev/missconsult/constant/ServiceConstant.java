@@ -88,6 +88,8 @@ public class ServiceConstant {
 	public static final String MISS_QUESTION_CHOICES_UPDATE = "updateMissChoices"; 
 	public static final String MISS_QUESTION_CHOICES_DELETE = "deleteMissChoices"; 
 	public static final String MISS_QUESTION_SETUP_TEST = "setUpTestMissQuestion";
+	public static final String MISS_QUESTION_GET_ORDERED = "getOrderedQuestion";
+	public static final String MISS_QUESTION_SET_ORDERED_ITEMS = "setOrderedItemQuestion";
 	
 	
 	// MISS_SERIES_MAP

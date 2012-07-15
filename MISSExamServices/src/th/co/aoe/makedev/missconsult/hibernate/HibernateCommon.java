@@ -41,6 +41,11 @@ public class HibernateCommon {
 	private static Object[] NO_ARGS_OBJECT = new Object[0];
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int delete(Session session, Object persistentInstance) {
+		//Session session = this.sessionFactory.getCurrentSession();
+		/*SessionStatistics sessionStats = session.getStatistics();
+		sessionStats.*/
+		//Statistics stats = this.sessionFactory.getStatistics();
+
 		int canUpdate = 0;
 		try{
 		session.delete(persistentInstance);

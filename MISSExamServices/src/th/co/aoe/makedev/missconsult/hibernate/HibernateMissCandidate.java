@@ -20,11 +20,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.User;
 import th.co.aoe.makedev.missconsult.managers.MissCandidateService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -65,39 +67,71 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		//73gqqnghrkvfq202q6696gc35o
 		//String big=new String(130, random).toString(32);
 		//System.out.println(big);
-		try{
-			Object obj = session.save(transientInstance);
+		Query query=session.createQuery(" select missSery from MissSery missSery where missSery.msId=:msId " +
+				" "); 
+		query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		MissSery missSery = (MissSery)query.uniqueResult();
+		Long msUnitCost =(missSery.getMsUnitCost()!=null && missSery.getMsUnitCost().intValue()!=0)?missSery.getMsUnitCost():0l;
+		Long masmAvailable=0l;
+		query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId=:maId " +
+				" and missAccountSeriesMap.id.msId=:msId");
+		query.setParameter("maId", transientInstance.getMissAccount().getMaId());
+		query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		List<MissAccountSeriesMap> list=query.list();
+		if(list!=null && list.size()>0){
+			MissAccountSeriesMap missAccountSeriesMap = list.get(0);
+			masmAvailable=(missAccountSeriesMap.getMasmAvailable()!=null && missAccountSeriesMap.getMasmAvailable().length()>0)?Long.valueOf(missAccountSeriesMap.getMasmAvailable()):0l;
 		
-			if(obj!=null){
-				returnId =(Long) obj;
-				Query query=session.createQuery("update MissCandidate missCandidate " +
-						" set missCandidate.mcaUsername =:mcaUsername , " +
-						" missCandidate.mcaStatus ='2' ," +
-						" missCandidate.mcaPassword ='"+password+"' " +
-						" where missCandidate.mcaId ="+returnId);
-				query.setParameter("mcaUsername", "MCA0000"+returnId);
-				query.executeUpdate();
-				//password=transientInstance.getMcontactPassword();
-				MessageDigest mda=null;
-				try {
-					mda = MessageDigest.getInstance("SHA-256");
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				byte [] digesta = mda.digest(password.getBytes());
-
-				password=new String(Hex.encodeHex(digesta));
-				User user=new User();
-				user.setUsername("MCA0000"+returnId);
-				user.setPassword(password);
-				session.save(user);
-			}
-		} finally {
-				if (session != null) {
-					session = null;
-				} 
 		}
+			//change sery
+			if(masmAvailable.intValue()>=msUnitCost.intValue()){
+				try{
+					Object obj = session.save(transientInstance);
+				
+					if(obj!=null){
+						returnId =(Long) obj;
+						query=session.createQuery("update MissCandidate missCandidate " +
+								" set missCandidate.mcaUsername =:mcaUsername , " +
+								" missCandidate.mcaStatus ='2' ," +
+								" missCandidate.mcaPassword ='"+password+"' " +
+								" where missCandidate.mcaId ="+returnId);
+						query.setParameter("mcaUsername", "MCA0000"+returnId);
+						query.executeUpdate();
+						//password=transientInstance.getMcontactPassword();
+						MessageDigest mda=null;
+						try {
+							mda = MessageDigest.getInstance("SHA-256");
+						} catch (NoSuchAlgorithmException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						byte [] digesta = mda.digest(password.getBytes());
+
+						password=new String(Hex.encodeHex(digesta));
+						User user=new User();
+						user.setUsername("MCA0000"+returnId);
+						user.setPassword(password);
+						session.save(user);
+						
+						// update seryMap
+						query=session.createQuery(" update MissAccountSeriesMap missAccountSeriesMap " +
+								" set missAccountSeriesMap.masmAvailable =:masmAvailable " +
+								" where missAccountSeriesMap.id.maId=:maId " +
+								" and missAccountSeriesMap.id.msId=:msId");
+						query.setParameter("masmAvailable",(masmAvailable.intValue()-msUnitCost.intValue())+"");
+						query.setParameter("maId", transientInstance.getMissAccount().getMaId());
+						query.setParameter("msId", transientInstance.getMissSery().getMsId());
+						query.executeUpdate();
+					}
+				} finally {
+						if (session != null) {
+							session = null;
+						} 
+				}
+			}else{
+				returnId=-1l;
+			}
+		
 		return returnId; 
 		
 		
@@ -235,7 +269,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query=null;
-		logger.debug(" section==>"+transientInstance.getMcaFirstName());
+		//logger.debug(" section==>"+transientInstance.getMcaFirstName());
 		//int result = query.executeUpdate();
 		/*Query query = session.createQuery("update Stock set stockName = :stockName" +
 				" where stockCode = :stockCode");
@@ -243,14 +277,16 @@ query.setParameter("stockName", "DIALOG1");
 query.setParameter("stockCode", "7277");
 int result = query.executeUpdate();*/
 		if(section.equals("0") ){
+			int returnRecord=0;
+			
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaUsername =:mcaUsername," +
-					" missCandidate.mcaPassword =:mcaPassword ," +
-					" missCandidate.missSery.msId=:msId " +
+					" missCandidate.mcaPassword =:mcaPassword " +
+				//	" missCandidate.missSery.msId=:msId " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaUsername", transientInstance.getMcaUsername());
 			query.setParameter("mcaPassword", transientInstance.getMcaPassword());
-			query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		//	query.setParameter("msId", transientInstance.getMissSery().getMsId());
 			query.executeUpdate();
 			
 			 query=session.createQuery("update User user " +
@@ -270,7 +306,57 @@ int result = query.executeUpdate();*/
 
 			password=new String(Hex.encodeHex(digesta));
 			query.setParameter("password", password);
-			return query.executeUpdate(); 
+			returnRecord=query.executeUpdate();
+			
+			// check sery
+		if(transientInstance.getMissSery().getMsId()!=-1){
+		
+			query=session.createQuery(" select missSery from MissSery missSery where missSery.msId=:msId " +
+					" "); 
+			query.setParameter("msId", transientInstance.getMissSery().getMsId());
+			MissSery missSery = (MissSery)query.uniqueResult();
+			Long msUnitCost =(missSery.getMsUnitCost()!=null && missSery.getMsUnitCost().intValue()!=0)?missSery.getMsUnitCost():0l;
+			Long masmAvailable=0l;
+			query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId=:maId " +
+					" and missAccountSeriesMap.id.msId=:msId");
+			query.setParameter("maId", transientInstance.getMissAccount().getMaId());
+			query.setParameter("msId", transientInstance.getMissSery().getMsId());
+			List<MissAccountSeriesMap> list=query.list();
+			if(list!=null && list.size()>0){
+				MissAccountSeriesMap missAccountSeriesMap = list.get(0);
+				masmAvailable=(missAccountSeriesMap.getMasmAvailable()!=null && missAccountSeriesMap.getMasmAvailable().length()>0)?Long.valueOf(missAccountSeriesMap.getMasmAvailable()):0l;
+			
+			}
+			query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId=:mcaId " +
+					" "); 
+			query.setParameter("mcaId", transientInstance.getMcaId());
+			MissCandidate missCandidate = (MissCandidate)query.uniqueResult();
+			// check update sery
+			if(missCandidate.getMissSery()!=null && missCandidate.getMissSery().getMsId()!=null && missCandidate.getMissSery().getMsId().intValue()!=transientInstance.getMissSery().getMsId().intValue()){
+				//change sery
+				if(masmAvailable.intValue()>=msUnitCost.intValue()){
+					query=session.createQuery("update MissCandidate missCandidate " +
+							" set "+
+							" missCandidate.missSery.msId=:msId " +
+							" where missCandidate.mcaId ="+transientInstance.getMcaId());
+					query.setParameter("msId", transientInstance.getMissSery().getMsId());
+					query.executeUpdate();
+					
+					// update seryMap
+					query=session.createQuery(" update MissAccountSeriesMap missAccountSeriesMap " +
+							" set missAccountSeriesMap.masmAvailable =:masmAvailable " +
+							" where missAccountSeriesMap.id.maId=:maId " +
+							" and missAccountSeriesMap.id.msId=:msId");
+					query.setParameter("masmAvailable",(masmAvailable.intValue()-msUnitCost.intValue())+"");
+					query.setParameter("maId", transientInstance.getMissAccount().getMaId());
+					query.setParameter("msId", transientInstance.getMissSery().getMsId());
+					returnRecord=query.executeUpdate();
+				}else{
+					returnRecord=-1;
+				}
+			  }
+			}
+			return returnRecord; 
 		}else if(section.equals("1")){
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaType =:mcaType ,  " +

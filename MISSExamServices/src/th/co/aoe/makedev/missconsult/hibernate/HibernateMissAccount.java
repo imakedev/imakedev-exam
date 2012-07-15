@@ -2,7 +2,9 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.managers.MissAccountService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
@@ -343,19 +346,25 @@ int result = query.executeUpdate();*/
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Override
-	public List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> listMissAccountSeriesMapByMaId(Long maId)
+	public List<th.co.aoe.makedev.missconsult.xstream.MissSery> listMissAccountSeriesMapByMaId(Long maId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xmissAccountSeriesMapList=null;
+		List<th.co.aoe.makedev.missconsult.xstream.MissSery> xmissSeryList=null;
 		try { 
-			StringBuffer sb =new StringBuffer(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId="+maId);
+			StringBuffer sb =new StringBuffer();
+		
+			 sb.append(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId="+maId);
 			Query query=session.createQuery(sb.toString());
 			//query.setParameter("maId", maId);
+			Map  map= null;
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> missAccountSeriesMapList = query.list();
 			if(missAccountSeriesMapList!=null && missAccountSeriesMapList.size()>0){
+				map=new HashMap(missAccountSeriesMapList.size());
 				   xmissAccountSeriesMapList=new 
 						 ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missAccountSeriesMapList.size());
+				 
 				for (th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMapList) {
 					th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap xmissAccountSeriesMap =new 
 							th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
@@ -366,7 +375,7 @@ int result = query.executeUpdate();*/
 					xmissAccountSeriesMap.setMasmOrderUnit(missAccountSeriesMap.getMasmOrderUnit());
 					xmissAccountSeriesMap.setMasmStatus(missAccountSeriesMap.getMasmStatus());
 					
-					 query=session.createQuery("select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId="+missAccountSeriesMap.getId().getMsId().intValue());
+					/* query=session.createQuery("select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId="+missAccountSeriesMap.getId().getMsId().intValue());
 					 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> missSeriesMapList = query.list();
 					 query =session.createQuery("select missSery from MissSery missSery where missSery.msId="+missAccountSeriesMap.getId().getMsId().intValue());
 					 Object obj=query.uniqueResult();
@@ -383,11 +392,63 @@ int result = query.executeUpdate();*/
 							 groupStr.append(missExamList.get(0).getMissExamGroup().getMegName()+" ");
 						 }
 					}
-					 xmissAccountSeriesMap.setGroupStr(groupStr.toString());
+					 xmissAccountSeriesMap.setGroupStr(groupStr.toString());*/					 
 					 xmissAccountSeriesMapList.add(xmissAccountSeriesMap);
+					 map.put(maId+"_"+missAccountSeriesMap.getId().getMsId(), xmissAccountSeriesMap);
 				}
 			}
-			return xmissAccountSeriesMapList;
+			sb.setLength(0);
+			sb.append(" select missSery from MissSery missSery");
+			query=session.createQuery(sb.toString());
+			//query.setParameter("maId", maId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> missSerylist = query.list();
+			xmissSeryList=new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>(missSerylist.size());
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSery missSery : missSerylist) {
+				 th.co.aoe.makedev.missconsult.xstream.MissSery xmissSery =new th.co.aoe.makedev.missconsult.xstream.MissSery ();
+				 xmissSery.setMsId(missSery.getMsId());
+				 xmissSery.setMsSeriesName(missSery.getMsSeriesName());
+				 xmissSery.setMsUnitCost(missSery.getMsUnitCost());
+				    query =session.createQuery("select missExam from MissSeriesMap missMap, MissExam missExam " +
+					 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+missSery.getMsId());
+					List<MissExam> missExams= (List<MissExam>)query.list();
+					 String str="";
+						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissExam missExam : missExams) {
+							str=str+missExam.getMeName()+" ";
+						}
+				 xmissSery.setTestStr(str);
+				 if(map!=null){
+					 if(map.containsKey(maId+"_"+missSery.getMsId())){
+						 th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap value=(th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap)map.get(maId+"_"+missSery.getMsId());
+						 if(value.getMasmAvailable()!=null && value.getMasmAvailable().length()>0){
+							 xmissSery.setMasmAvailable(value.getMasmAvailable());	 
+						 }else{
+							 xmissSery.setMasmAvailable("0");	
+						 }
+					 }
+				 }
+				 query=session.createQuery("select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId="+missSery.getMsId().intValue());
+				 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> missSeriesMapList = query.list();
+				/* query =session.createQuery("select missSery from MissSery missSery where missSery.msId="+missSery.getMsId().intValue());
+				 Object obj=query.uniqueResult();
+				 if(obj!=null){
+					 th.co.aoe.makedev.missconsult.hibernate.bean.MissSery missSery =(th.co.aoe.makedev.missconsult.hibernate.bean.MissSery)obj;
+					 xmissAccountSeriesMap.setSeryName(missSery.getMsSeriesName());
+					 xmissAccountSeriesMap.setSeryUnit(missSery.getMsUnitCost().toString());
+				 }*/
+				 StringBuffer groupStr=new StringBuffer("");
+				 for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : missSeriesMapList) {
+					 query =session.createQuery("select missExam from MissExam missExam where missExam.meId="+missSeriesMap.getId().getMeId().intValue());
+					 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> missExamList = query.list();
+					 if(missExamList!=null && missExamList.size()>0){
+						 groupStr.append(missExamList.get(0).getMissExamGroup().getMegName()+" ");
+					 }
+				}
+				 xmissSery.setGroupStr(groupStr.toString());
+				 xmissSeryList.add(xmissSery);
+			}
+			//return xmissAccountSeriesMapList;
+			//System.out.println(xmissSeryList);
+			return xmissSeryList;
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

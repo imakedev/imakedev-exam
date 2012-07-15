@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
@@ -32,8 +33,60 @@ public class MissSery extends VServiceXML implements Serializable {
 	private String templateFile;
 	private String templateFileHotlink;
 	private List<MissExam> missExams;
+	
+	//for map
+	@XStreamAlias("masmExpire")
+	private Timestamp masmExpire;
 
-    public MissSery() {
+	private Long masmOrderUnit;
+
+	private String masmStatus;
+
+	private String masmAvailable;
+
+	private String groupStr;
+	
+    public String getGroupStr() {
+		return groupStr;
+	}
+
+	public void setGroupStr(String groupStr) {
+		this.groupStr = groupStr;
+	}
+
+	public Timestamp getMasmExpire() {
+		return masmExpire;
+	}
+
+	public void setMasmExpire(Timestamp masmExpire) {
+		this.masmExpire = masmExpire;
+	}
+
+	public Long getMasmOrderUnit() {
+		return masmOrderUnit;
+	}
+
+	public void setMasmOrderUnit(Long masmOrderUnit) {
+		this.masmOrderUnit = masmOrderUnit;
+	}
+
+	public String getMasmStatus() {
+		return masmStatus;
+	}
+
+	public void setMasmStatus(String masmStatus) {
+		this.masmStatus = masmStatus;
+	}
+
+	public String getMasmAvailable() {
+		return masmAvailable;
+	}
+
+	public void setMasmAvailable(String masmAvailable) {
+		this.masmAvailable = masmAvailable;
+	}
+
+	public MissSery() {
     }
 
 	public Long getMsId() {

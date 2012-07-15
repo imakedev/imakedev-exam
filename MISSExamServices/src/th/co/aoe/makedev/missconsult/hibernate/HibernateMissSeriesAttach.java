@@ -250,18 +250,14 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-          Sheet sheet1 = wb.getSheetAt(0);          // getConfig
-          Row row_code= sheet1.getRow(1);
-          Cell cell_code  =row_code.getCell(0);
-          String columnReference=cell_code.getStringCellValue();
-//         System.out.println(columnReference);
-         sheet1 = wb.getSheetAt(1); //get Code
-      //   sheet1.s
-          CellReference cr = new CellReference(columnReference);
-       //   System.out.println(cr.getRow()+","+cr.getCol()+","+cr.getSheetName());
-          row_code= sheet1.getRow(cr.getRow());
-          cell_code  =row_code.getCell(cr.getCol());
-        //  code=cell_code.getStringCellValue();
+        //  Sheet sheet1 = wb.getSheetAt(0);          // getConfig
+        //  Row row_code= sheet1.getRow(1);
+         // Cell cell_code  =row_code.getCell(0);
+        //  String columnReference=cell_code.getStringCellValue();
+		//	Sheet  sheet1 = wb.getSheetAt(1); //get Code
+         // CellReference cr = new CellReference(columnReference);
+       /*   row_code= sheet1.getRow(cr.getRow());
+          cell_code  =row_code.getCell(cr.getCol());*/
           
           NumberFormat    format  =    NumberFormat.getNumberInstance();
           format.setGroupingUsed(false);
