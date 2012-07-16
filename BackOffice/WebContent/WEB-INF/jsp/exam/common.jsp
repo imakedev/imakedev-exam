@@ -526,7 +526,7 @@ function appendContent(data){
 	    					<strong>To Do(Common):</strong></td>
 	    					<td align="right" width="80%">
 	    					
-	    					<a href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"  style="width: 55px;"> 
+	    					<a   href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"  style="width: 55px;"> 
 											 <option value="0">1</option>
 											 <option value="20">20</option>
 											 <option value="300">300</option>
