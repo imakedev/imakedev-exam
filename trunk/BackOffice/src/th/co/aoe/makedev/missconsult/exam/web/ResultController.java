@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +43,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
+import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
@@ -57,7 +60,8 @@ public class ResultController
 {
 	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
-
+	  private static final String MAIL_SERVER = "mail.missconsult.com";
+	  private static final String MAIL_PROTOCAL = "smtp";
   /*  @Autowired
     public ResultController(MissExamService missExamService)
     {
@@ -204,10 +208,56 @@ public class ResultController
     {
         return "exam/template/testResultReport";
     }
-
-    @RequestMapping(value={"/response/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String response()
+    @RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String sendmail(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
     {
+    	logger.debug("==========================resultForm="+resultForm);
+    	logger.debug("getMailAttachReport="+resultForm.getMailAttachReport());
+    	logger.debug("getMailbcc="+resultForm.getMailbcc());
+    	logger.debug("getMailcc="+resultForm.getMailcc());
+    	logger.debug("getMailDecision="+resultForm.getMailDecision());
+    	logger.debug("getMailMessage="+resultForm.getMailMessage());
+    	logger.debug("getMailReactive="+resultForm.getMailReactive());
+    	List recipientsToTeams = new ArrayList(1);
+    	recipientsToTeams.add("chatchai@lansingbs.com" );
+    	String subject="Test";
+    	StringBuffer mailMessageBody=new StringBuffer("");
+    	mailMessageBody.append("Chatchai Test");
+    	String personal_name= "MissConsult Exam";
+    	String personal_email="missconsultexam@missconsult.com";
+    	MailRunnable mailRunnableToTeam = new MailRunnable(
+				MAIL_PROTOCAL, MAIL_SERVER, personal_email
+						, "#missc$%", "1",
+				recipientsToTeams, subject,
+				mailMessageBody.toString(), "99",personal_name);
+		Thread mailThreadToTeam = new Thread(
+				mailRunnableToTeam);
+		mailThreadToTeam.start();
+    	 return "exam/template/testSendmail";
+    }
+    @RequestMapping(value={"/response/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String response(@PathVariable Long mtrId, Model model)
+    {
+    	MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+    	logger.debug("missTestResult=>"+missTestResult);
+    	/*List recipientsToTeams = new ArrayList(1);
+    	recipientsToTeams.add("chatchai@vlink.co.th" );
+    	String subject="Test";
+    	StringBuffer mailMessageBody=new StringBuffer("");
+    	mailMessageBody.append("Chatchai Test");
+    	String personal_name= "personal Chatchai";
+    	String personal_email="chatchai@vlink.co.th";
+    	MailRunnable mailRunnableToTeam = new MailRunnable(
+				MAIL_PROTOCAL, MAIL_SERVER, personal_email
+						, "015482543a6ee6acoder", "1",
+				recipientsToTeams, subject,
+				mailMessageBody.toString(), "99",personal_name);
+		Thread mailThreadToTeam = new Thread(
+				mailRunnableToTeam);
+		mailThreadToTeam.start();*/
+    	ResultForm resultForm=new ResultForm();
+    	resultForm.setMissTestResult(missTestResult);
+    	model.addAttribute("resultForm", resultForm);
         return "exam/template/testResponse";
     }
 
