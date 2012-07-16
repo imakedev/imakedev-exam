@@ -27,7 +27,20 @@ public class MissTestShow implements Serializable {
 	@Column(name="MTS_ORDER")
 	private Long mtsOrder;
 	
-    public MissTestShow() {
+	//0=not show
+	//1=show	
+	@Column(name="COLUMN_IS_SHOW")
+	private String columnIsShow;
+	
+    public String getColumnIsShow() {
+		return columnIsShow;
+	}
+
+	public void setColumnIsShow(String columnIsShow) {
+		this.columnIsShow = columnIsShow;
+	}
+
+	public MissTestShow() {
     }
 
 	public MissTestShowPK getId() {

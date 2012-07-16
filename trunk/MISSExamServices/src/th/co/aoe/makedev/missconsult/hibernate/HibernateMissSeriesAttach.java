@@ -272,7 +272,7 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
           for(int i=7;i<=endRow;i++){
         	 r= sheet1_0.getRow(i); 
         	 sb.setLength(0);
-        	 if(r.getCell(2).getBooleanCellValue()){  
+        	 if(r.getCell(2).getBooleanCellValue()){  // 1=true,0=false;
         		 sb.append("1");
         	 }else
         		 sb.append("0");

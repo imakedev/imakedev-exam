@@ -335,7 +335,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						 query=session.createQuery("select missTestShow from MissTestShow missTestShow " +
 						 		" where missTestShow.id.mtsType='2' and missTestShow.id.mcaId="+mcaId_query +
 						 		" and missTestShow.id.msId="+msId_query+
-						 		" and missTestShow.id.meId="+meId_query+" order by missTestShow.mtsOrder ");
+						 		" and missTestShow.id.meId="+meId_query+" and missTestShow.columnIsShow='1' order by missTestShow.mtsOrder ");
 						List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShowResult= query.list();						
 						if(missTestShowResult!=null && missTestShowResult.size()>0){
 							List<String> axisValues = new ArrayList<String>(missTestShowResult.size());
@@ -691,9 +691,15 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
           List < th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=
         		  new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow>();
           int index=1;
+          StringBuffer sb=new StringBuffer();
           for(int i=7;i<=endRow;i++){
         	 r= sheet1_0.getRow(i);
-        	 if(r.getCell(2).getBooleanCellValue()){
+        	 sb.setLength(0);
+        	 if(r.getCell(2).getBooleanCellValue()){  // 1=true,0=false;
+        		 sb.append("1");
+        	 }else
+        		 sb.append("0");
+        	 // if(r.getCell(2).getBooleanCellValue()){
         		 th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow  missTestShow =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow();
             	 th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK pk =new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK();
             	 pk.setMcaId(mcaId);
@@ -710,8 +716,10 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
                   missTestShow.setMtsValue(format.format(cell_code.getNumericCellValue()));
                   missTestShow.setId(pk);
                   missTestShow.setMtsOrder(Long.valueOf(index++));
+                  missTestShow.setColumnIsShow(sb.toString());
                   missTestShows.add(missTestShow);
-        	 }
+                  
+        	// }
           }
           Query query=session.createQuery("delete MissTestShow missTestShow " + 
 					" where missTestShow.id.mcaId=:mcaId and " +
