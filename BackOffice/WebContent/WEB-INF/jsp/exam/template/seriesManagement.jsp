@@ -86,7 +86,8 @@ $(document).ready(function() {
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
 					/* Setting data */
 					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1] 
+						'meId': document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1],
+						'msId': document.getElementById("msId").value
 					});					
 				} else {					
 					// extension is not allowed
@@ -98,6 +99,7 @@ $(document).ready(function() {
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1];
+				//alert(meId);
 				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_1').attr('onclick',path_file);
 				$('#eval_file_attached_1').html(file);
@@ -112,7 +114,8 @@ $(document).ready(function() {
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
 					/* Setting data */
 					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1] 
+						'meId': document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1] ,
+						'msId': document.getElementById("msId").value
 					});	 				
 				} else {					
 					// extension is not allowed
@@ -137,7 +140,8 @@ $(document).ready(function() {
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
 					/* Setting data */
 					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1] 
+						'meId': document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1] ,
+						'msId': document.getElementById("msId").value
 					});	 			
 				} else {					
 					// extension is not allowed
@@ -162,7 +166,8 @@ $(document).ready(function() {
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
 					/* Setting data */
 					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1] 
+						'meId': document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1] ,
+						'msId': document.getElementById("msId").value
 					});	 
 				} else {					
 					// extension is not allowed
@@ -187,7 +192,8 @@ $(document).ready(function() {
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
 					/* Setting data */
 					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1] 
+						'meId': document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1] ,
+						'msId': document.getElementById("msId").value
 					});	 
 				} else {					
 					// extension is not allowed
@@ -253,7 +259,8 @@ function doAction(action,mode,id){
           <!-- <form class="well"> -->
           <form:form  id="seriesForm" name="seriesForm" modelAttribute="seriesForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
             <form:hidden path="mode"/>
-            <form:hidden path="missSery.msId"/>
+          <form:hidden path="missSery.msId" id="msId"/> 
+            <%--  <form:input path="missSery.msId" id="msId"/> --%>
             <input type="hidden" id="missSeriesMap" name="missSeriesMap" value="${missSeriesMap}"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
