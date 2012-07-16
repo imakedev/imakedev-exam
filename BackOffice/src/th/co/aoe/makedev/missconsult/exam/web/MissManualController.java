@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import th.co.aoe.makedev.missconsult.exam.form.ManualForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
+import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/manual"})
-@SessionAttributes(value={"manualForm"})
+@SessionAttributes(value={"manualForm","UserMissContact"})
 public class MissManualController {
 	   private static Logger logger = Logger.getRootLogger();
 	   @Autowired
@@ -36,10 +38,18 @@ public class MissManualController {
 	    	  ManualForm manualForm = new ManualForm();
 	    	  manualForm.getMissManual().getPagging().setPageSize(100);
 	    	 
-	    	 
+	    	  if(model.containsAttribute("UserMissContact")){
+	          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+	          	if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
+	          		  MissAccount missAccount = new MissAccount(); 
+	          		 missAccount.setMaId(missContact.getMcontactRef());
+	          		// candidateForm.getMissCandidate().setMissAccount(missAccount);
+	          	}
+	          }
+	    	  
 	         VResultMessage vresultMessage = missExamService.searchMissManual(manualForm.getMissManual());
 	         model.addAttribute("missManuals", vresultMessage.getResultListObj());
-	         manualForm.getPaging().setPageSize(3);
+	         manualForm.getPaging().setPageSize(50);
 	         manualForm.setPageCount(IMakeDevUtils.calculatePage(manualForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
 	       
 	        model.addAttribute("manualForm", manualForm);

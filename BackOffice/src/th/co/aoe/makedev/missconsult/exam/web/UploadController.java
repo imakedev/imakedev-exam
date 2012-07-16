@@ -191,7 +191,8 @@ public class UploadController {
 					/* missSeriesAttach.setMsatRef1(Long.parseLong(ids[0])); //msId
 					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[1])); //meId
 */					 
-					 missSeriesAttach.setMsatRef1(Long.parseLong(id)); //msId
+					// missSeriesAttach.setMsatRef1(Long.parseLong(id)); //msId
+					 missSeriesAttach.setMsatRef1(Long.parseLong(request.getParameter("msId")));
 					 missSeriesAttach.setMsatRef2(Long.parseLong(request.getParameter("meId")));
 					 missSeriesAttach.setMsatModule(module);
 					 missSeriesAttach.setMsatHotlink(hotLink);

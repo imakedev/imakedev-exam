@@ -7,6 +7,7 @@ package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
 
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
 public class ResultForm extends CommonForm implements Serializable {
@@ -23,6 +24,63 @@ public class ResultForm extends CommonForm implements Serializable {
 	private String mcaCompanyName;
 	private String mtrIdArray;
 	
+	//for mail
+	private String mailcc;
+	private String mailbcc;
+	private String mailDecision;
+	private String mailMessage;
+	private String mailReactive;
+	private String mailAttachReport;
+	
+	public String getMailcc() {
+		return mailcc;
+	}
+
+	public void setMailcc(String mailcc) {
+		this.mailcc = mailcc;
+	}
+
+	public String getMailbcc() {
+		return mailbcc;
+	}
+
+	public void setMailbcc(String mailbcc) {
+		this.mailbcc = mailbcc;
+	}
+
+	public String getMailDecision() {
+		return mailDecision;
+	}
+
+	public void setMailDecision(String mailDecision) {
+		this.mailDecision = mailDecision;
+	}
+
+	public String getMailMessage() {
+		return mailMessage;
+	}
+
+	public void setMailMessage(String mailMessage) {
+		this.mailMessage = mailMessage;
+	}
+
+	public String getMailReactive() {
+		return mailReactive;
+	}
+
+	public void setMailReactive(String mailReactive) {
+		this.mailReactive = mailReactive;
+	}
+
+	public String getMailAttachReport() {
+		return mailAttachReport;
+	}
+
+	public void setMailAttachReport(String mailAttachReport) {
+		this.mailAttachReport = mailAttachReport;
+	}
+
+	private MissCandidate missCandidate;
 	public MissTestResult getMissTestResult() {
 		return missTestResult;
 	}
@@ -115,8 +173,17 @@ public class ResultForm extends CommonForm implements Serializable {
 
 
 
+	public MissCandidate getMissCandidate() {
+		return missCandidate;
+	}
+
+	public void setMissCandidate(MissCandidate missCandidate) {
+		this.missCandidate = missCandidate;
+	}
+
 	public ResultForm() {
 		missTestResult = new MissTestResult();
+		missCandidate =new MissCandidate();
 	}
 
 }
