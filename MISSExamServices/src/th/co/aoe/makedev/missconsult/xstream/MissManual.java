@@ -31,6 +31,7 @@ public class MissManual extends VServiceXML implements Serializable {
 		private String section; 
 		private String mmIds;
 		private List<MissSery> missSeries; 
+	//private Long mc
     public MissManual() {
     }
 

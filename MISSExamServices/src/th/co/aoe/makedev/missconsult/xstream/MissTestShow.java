@@ -28,6 +28,15 @@ public class MissTestShow  extends VServiceXML implements Serializable {
 
 	private String mtsValue;
 	private Long mtsOrder;
+	private String columnIsShow;
+
+	public String getColumnIsShow() {
+		return columnIsShow;
+	}
+
+	public void setColumnIsShow(String columnIsShow) {
+		this.columnIsShow = columnIsShow;
+	}
 
 	public Long getMtsOrder() {
 		return mtsOrder;
