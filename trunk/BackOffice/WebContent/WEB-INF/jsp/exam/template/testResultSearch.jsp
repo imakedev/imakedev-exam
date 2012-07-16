@@ -208,7 +208,7 @@ function doAction(mode,id){
             	</td>
             	<td>&nbsp;
             	<c:if test="${(missTestResult.mtrStatus=='1' || missTestResult.mtrStatus=='2') &&  missTestResult.mtrIgnored!='1'}">            	
-            			<a onclick="loadDynamicPage('result/response/1')">Email</a>
+            			<a onclick="loadDynamicPage('result/response/${missTestResult.mtrId}')">Email</a>
             	</c:if></td>
           	</tr>
           	</c:forEach>
