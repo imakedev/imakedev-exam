@@ -31,6 +31,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,8 +61,20 @@ public class ResultController
 {
 	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
-	  private static final String MAIL_SERVER = "mail.missconsult.com";
-	  private static final String MAIL_PROTOCAL = "smtp";
+	  private static String MAIL_SERVER = "";
+	  private static String MAIL_PROTOCAL = "";
+	  private static String MAIL_PORT="";
+	  private static String MAIL_USE_AUTHEN="";
+	  private static String MAIL_EMAIL="";
+	  private static String MAIL_PASSWORD="";
+	  private static String MAIL_PERSONAL_NAME="";
+	 /* mail.protocal=smtp
+			  mail.host=mail.missconsult.com
+			  #1=use,0=not use
+			  mail.useAuthen=1
+			  mail.email=missconsultexam@missconsult.com
+			  mail.password=#missc$%
+			  mail.personal_name=Missconsult Exam*/
   /*  @Autowired
     public ResultController(MissExamService missExamService)
     {
@@ -71,7 +84,14 @@ public class ResultController
 */
 	  private static ResourceBundle bundle;
 		static{
-			bundle =  ResourceBundle.getBundle( "config" );				
+			bundle =  ResourceBundle.getBundle( "config" );		
+			MAIL_SERVER=bundle.getString("mail.host");
+			MAIL_PROTOCAL=bundle.getString("mail.protocal");
+			MAIL_USE_AUTHEN=bundle.getString("mail.useAuthen");
+			MAIL_PORT=bundle.getString("mail.port");
+			MAIL_EMAIL=bundle.getString("mail.email");
+			MAIL_PASSWORD=bundle.getString("mail.password");
+			MAIL_PERSONAL_NAME=bundle.getString("mail.personal_name");
 		}
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model)
@@ -218,22 +238,123 @@ public class ResultController
     	logger.debug("getMailDecision="+resultForm.getMailDecision());
     	logger.debug("getMailMessage="+resultForm.getMailMessage());
     	logger.debug("getMailReactive="+resultForm.getMailReactive());
-    	List recipientsToTeams = new ArrayList(1);
-    	recipientsToTeams.add("chatchai@lansingbs.com" );
-    	String subject="Test";
-    	StringBuffer mailMessageBody=new StringBuffer("");
-    	mailMessageBody.append("Chatchai Test");
-    	String personal_name= "MissConsult Exam";
-    	String personal_email="missconsultexam@missconsult.com";
+    	List recipientsTo= new ArrayList(1);
+    	recipientsTo.add(resultForm.getMissTestResult().getMissCandidate().getMcaEmail());
+    	String subject="Test Response";
+    	List recipientsCC= null;
+    	if(resultForm.getMailcc()!=null && resultForm.getMailcc().trim().length()>0){
+    		String[] recipientStr=resultForm.getMailcc().trim().split(",");
+    		recipientsCC=new ArrayList(recipientStr.length);
+    		for (int i = 0; i < recipientStr.length; i++) {
+    			recipientsCC.add(recipientStr[i]);
+			} 
+    	}
+    	List recipientsBCC= null;
+    	if(resultForm.getMailbcc()!=null && resultForm.getMailbcc().trim().length()>0){
+    		String[] recipientStr=resultForm.getMailbcc().trim().split(",");
+    		recipientsBCC=new ArrayList(recipientStr.length);
+    		for (int i = 0; i < recipientStr.length; i++) {
+    			recipientsBCC.add(recipientStr[i]);
+			} 
+    	}
+    	byte [] fileSize=null;
+    	if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")){
+    		fileSize=getFileSize(resultForm.getMissTestResult().getMsId(),resultForm.getMissTestResult().getMtrId());
+    	}
+    //	StringBuffer mailMessageBody=new StringBuffer("");
+    //	mailMessageBody.append("Test Response"); 
     	MailRunnable mailRunnableToTeam = new MailRunnable(
-				MAIL_PROTOCAL, MAIL_SERVER, personal_email
-						, "#missc$%", "1",
-				recipientsToTeams, subject,
-				mailMessageBody.toString(), "99",personal_name);
+				MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+				recipientsTo, subject,
+				resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize);
 		Thread mailThreadToTeam = new Thread(
 				mailRunnableToTeam);
-		mailThreadToTeam.start();
+		mailThreadToTeam.start(); 
+		if(resultForm.getMailReactive()!=null && resultForm.getMailReactive().equals("1")){
+    		//cal reactivate
+			MissSery sery=new MissSery();
+			sery.setMsId(resultForm.getMissTestResult().getMsId());
+			resultForm.getMissTestResult().getMissCandidate().setSection("2");
+			resultForm.getMissTestResult().getMissCandidate().setMissSery(sery);
+			missExamService.updateMissCandidate(resultForm.getMissTestResult().getMissCandidate());
+    	}
+		missExamService.updateStatusMissTestResult(resultForm.getMissTestResult().getMtrId(), "mtrRespondedStatus", "1");
     	 return "exam/template/testSendmail";
+    }
+    private byte[] getFileSize(Long msId,Long mtrId){
+    	byte [] fileSize=null;
+    	Context ctx =null;
+		Connection con = null;
+    	try{
+    	
+		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
+		 
+		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
+		 JasperPrint jasperPrint=null;
+		 
+		 Map p =new HashMap();
+		 p.put("mtrId",mtrId);
+			try {
+				ctx = new InitialContext();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+			DataSource ds = null;
+			try { 
+				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
+				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
+				//System.out.println("chatchai debug ds="+ds);
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}               
+			org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			try {
+				con = basicDs.getConnection();//("oracle", "password");//Connection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}           
+		try {
+			jasperPrint = JasperFillManager.fillReport(reportPath, p, con);
+		 
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+       try {
+    	   fileSize=JasperExportManager.exportReportToPdf(jasperPrint);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	      // FacesContext.getCurrentInstance().responseComplete(); 
+	   
+	       
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}finally{
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}
+			if (ctx != null) {
+				try {
+					ctx.close();
+				} catch (NamingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}	
+		}
+    	return fileSize;
     }
     @RequestMapping(value={"/response/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String response(@PathVariable Long mtrId, Model model)

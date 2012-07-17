@@ -3,11 +3,15 @@ package th.co.aoe.makedev.missconsult.exam.mail;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -35,10 +39,15 @@ public class MailRunnable implements Runnable {
 	String  password=null;
 	String  useAuthen=null;
 	List recipients=null;
+	List recipients_cc=null;
+	List recipients_bcc=null;
+	byte[] fileSize=null;
 	String personal_name=null;
+	String port=null;
 	public MailRunnable(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
 			List recipients
-			,String subject,String messagebody,String sessionId,String personal_name) {
+			,String subject,String messagebody,String sessionId,String personal_name,String port,
+			List recipients_cc,List recipients_bcc,byte[] fileSize) {
 		this.subject = subject;
 		this.messagebody = messagebody;
 		this.sessionId = sessionId;
@@ -49,6 +58,10 @@ public class MailRunnable implements Runnable {
 		this. useAuthen=useAuthen_;
 		this.recipients=recipients;
 		this.personal_name=personal_name;
+		this.port=port;
+		this.recipients_cc=recipients_cc;
+		this.recipients_bcc=recipients_bcc;
+		this.fileSize=fileSize;
 	}
 	public void run() { 
 		File temp  = null;
@@ -64,10 +77,10 @@ public class MailRunnable implements Runnable {
 	    boolean isAuthen = false;
 			//props.put("mail.transport.protocol", protocal);//"smtp");
 	    props.put("protocol", protocal);//"smtp");
-		/*	if(protocal!=null && protocal.toLowerCase().equals("smtp"))
-				props.put("mail.smtp.starttls.enable","true");*/
+			if(protocal!=null && protocal.toLowerCase().equals("smtp"))
+				props.put("mail.smtp.starttls.enable","true");
 			props.put("mail.smtp.host", host);//"smtp.gmail.com");
-			props.put("mail.smtp.port","25");
+			props.put("mail.smtp.port",port);
 			
 			 
 			//props.put("mail.smtp.ssl.enable", "true");
@@ -118,7 +131,7 @@ public class MailRunnable implements Runnable {
 				sb.append("<HTML>\n");
 				sb.append("<HEAD>\n");
 				sb.append("<TITLE>\n");
-				sb.append(" PTTEP " + "\n");
+				sb.append(" MissConsult " + "\n");
 				sb.append("</TITLE>\n");
 				sb.append("</HEAD>\n");
 				sb.append("<BODY>\n");
@@ -132,7 +145,42 @@ public class MailRunnable implements Runnable {
 				
 				Multipart mp = new MimeMultipart();
 				mp.addBodyPart(mbp1);				 
-				
+				if(fileSize!=null && fileSize.length>0){
+					FileOutputStream fos = null;
+					
+					try {
+					//	byte []filesize = multipart.getBytes();
+						//if(filesize.length>0){
+						 MimeBodyPart mbp2 = new MimeBodyPart();
+						 temp = File.createTempFile(genToken(),".howto"); 
+						 temp.deleteOnExit();
+						 fos = new FileOutputStream(temp.getAbsolutePath());
+						
+						 fos.write(fileSize); 
+						 
+						 	mbp2.attachFile(temp);
+							mbp2.setFileName("Report.pdf");
+							mp.addBodyPart(mbp2);
+					//	}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}finally{
+						if(fos!=null)
+							try {
+								fos.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						 
+					} 
+				}
+				/*MimeBodyPart attachFilePart = new
+				 *  MimeBodyPart();
+				FileDataSource fds = new FileDataSource("");
+				attachFilePart.setDataHandler(new DataHandler(fds));
+				attachFilePart.setFileName(fds.getName())*/
 				/*if(multipartRequest!=null){							 
 				MultipartFile multipart = multipartRequest.getFile("file");
 					if(multipart!=null){
@@ -180,10 +228,33 @@ public class MailRunnable implements Runnable {
 				
 				
 		    	//for (int i = 0; i < recipients.length; i++) {
+				// System.out.println("recipients==>"+recipients.get(i));
+				  
 					addressTo[0] = new InternetAddress(((String)recipients.get(i)).trim(),false);
+				
 					msgArray[0] = new MimeMessage(session);
-						msgArray[0].setFrom(addressFrom); 
+					msgArray[0].setFrom(addressFrom); 
 					msgArray[0].setRecipient(Message.RecipientType.TO,addressTo[0]);
+					
+					//set CC
+					if(recipients_cc!=null && recipients_cc.size()>0){
+						InternetAddress[] addressCC = new InternetAddress[recipients_cc.size()];
+						for (int j = 0; j < recipients_cc.size(); j++) {
+							InternetAddress	address = new InternetAddress(((String)recipients_cc.get(j)).trim(),false);
+							addressCC[j]=address; 
+						}
+						msgArray[0].setRecipients(Message.RecipientType.CC,addressCC);
+					}
+					//set BCC
+					if(recipients_bcc!=null && recipients_bcc.size()>0){
+						InternetAddress[] addressBCC = new InternetAddress[recipients_bcc.size()];
+						for (int j = 0; j < recipients_bcc.size(); j++) {
+							InternetAddress	address= new InternetAddress(((String)recipients_bcc.get(j)).trim(),false);
+							addressBCC[j]=address;							
+						}
+						msgArray[0].setRecipients(Message.RecipientType.BCC,addressBCC);
+					}
+					
 					msgArray[0].setSentDate(date);
 					 try {
 						 msgArray[0].setSubject(subject,"UTF-8");
@@ -238,6 +309,9 @@ public class MailRunnable implements Runnable {
 						e.printStackTrace();
 					}
 					if(temp!=null){
+						/*logger.error(" delete file================= "+temp.getAbsolutePath());
+						logger.error(" recipients_cc.size()="+ recipients_cc.size());
+						logger.error(" recipients_bcc.size()="+ recipients_bcc.size());*/
 						if(temp.exists() && temp.isFile())
 							temp.delete();
 					}
@@ -246,4 +320,12 @@ public class MailRunnable implements Runnable {
 		//}
 	
 	}
+	 private String genToken(){
+	  		StringBuffer sb = new StringBuffer();
+	  	    for (int i = 36; i > 0; i -= 12) {
+	  	      int n = Math.min(12, Math.abs(i));
+	  	      sb.append(org.apache.commons.lang.StringUtils.leftPad(Long.toString(Math.round(Math.random() * Math.pow(36, n)), 36), n, '0'));
+	  	    }
+	  	    return sb.toString();
+	   }
 }

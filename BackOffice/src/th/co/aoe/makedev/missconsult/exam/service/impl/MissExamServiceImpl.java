@@ -1399,5 +1399,18 @@ public class MissExamServiceImpl extends PostCommon
 	       return resultMessage.getResultListObj();
 	}
 
+	@Override
+	public int updateStatusMissTestResult(Long mtrId, String column, String value) {
+		// TODO Auto-generated method stub
+		MissTestResult missTestResult =new MissTestResult();
+		missTestResult.setMtrId(mtrId);
+		missTestResult.setColumn(column);
+		missTestResult.setValue(value);
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS);
+        VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
+        missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
+        return missTestResult.getUpdateRecord().intValue();
+	}
+
 
 }
