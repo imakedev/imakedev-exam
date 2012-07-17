@@ -290,6 +290,6 @@ public interface MissExamService
     public abstract List listRoleTypes(Long maId) ;	
     
     public abstract int getQuestionOrdered(Long meId);
-    
+    public abstract int updateStatusMissTestResult(Long mtrId,String column,String value);
     
 }

@@ -16,7 +16,7 @@ public class Test {
 		List recipients =new ArrayList();
 		recipients.add("bangorns@pttep.com");
 		MailRunnable mailRunnable = new MailRunnable("smtp","SMTP-Relay.pttep.com","wpsadmin@pttep.com","password","0",
-				recipients,"Send Mail","+_+","99","");			
+				recipients,"Send Mail","+_+","99","","",null,null,null);			
 		Thread mailThread = new Thread(mailRunnable);
 		mailThread.start(); 
 	}
