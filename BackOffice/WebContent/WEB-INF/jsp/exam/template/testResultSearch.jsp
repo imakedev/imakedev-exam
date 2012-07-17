@@ -206,10 +206,23 @@ function doAction(mode,id){
             	<c:if test="${missTestResult.mtrStatus=='1'}">Finished</c:if>
             	<c:if test="${missTestResult.mtrStatus=='2'}">Responded</c:if>
             	</td>
-            	<td>&nbsp;
-            	<c:if test="${(missTestResult.mtrStatus=='1' || missTestResult.mtrStatus=='2') &&  missTestResult.mtrIgnored!='1'}">            	
+            	<td>
+            	<%-- <c:if test="${(missTestResult.mtrStatus=='1' || missTestResult.mtrStatus=='2') &&  missTestResult.mtrIgnored!='1'}">            	
             			<a onclick="loadDynamicPage('result/response/${missTestResult.mtrId}')">Email</a>
-            	</c:if></td>
+            	</c:if> --%>
+            	<c:if test="${missTestResult.mtrRespondedStatus=='1' && missTestResult.mtrStatus!='0'}">            	
+            			<a onclick="loadDynamicPage('result/response/${missTestResult.mtrId}')">Completed</a>
+            	</c:if>
+            	<c:if test="${missTestResult.mtrRespondedStatus=='0' && missTestResult.mtrStatus!='0'}">            	
+            			<a onclick="loadDynamicPage('result/response/${missTestResult.mtrId}')">Pending</a>
+            	</c:if>
+            	<c:if test="${missTestResult.mtrRespondedStatus=='2' && missTestResult.mtrStatus!='0'}">            	
+            			Ignored
+            	</c:if>
+            	<c:if test="${missTestResult.mtrStatus=='0'}">            	
+            			&nbsp;
+            	</c:if>
+            	</td>
           	</tr>
           	</c:forEach>
         	</tbody>

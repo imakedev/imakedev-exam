@@ -14,6 +14,21 @@ function doSendMail(){
 		  // alert($("#_content").html());
 		});
   }
+function _getMessage(id){
+	$.get("company/messaage/${resultForm.missTestResult.missCandidate.missAccount.maId}", function(data) {
+		   //alert(data);
+		 //  $("#_content").html(data);
+		 	var obj = jQuery.parseJSON(data);		 	
+		 	if(id=='0')
+		  		 CKEDITOR.instances["mailMessage"].setData(obj.maCustomizePassMessage);
+		 	else if(id=='1')
+		 		CKEDITOR.instances["mailMessage"].setData(obj.maCustomizeRejectMessage);
+		 	else if(id=='2')
+		 		CKEDITOR.instances["mailMessage"].setData(obj.maCustomizeRetestMessage);
+		});
+	
+	//
+}
   </script>
 	    <!--Body content-->
 	    <fieldset style="font-family: sans-serif;">  
@@ -50,9 +65,9 @@ function doSendMail(){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Decision:</td>
-	    					 <td align="left" colspan="4"><form:radiobutton path="mailDecision" value="0"/>Pass&nbsp;
-	    					 <form:radiobutton path="mailDecision" value="1"/>Reject&nbsp;
-	    					<form:radiobutton path="mailDecision" value="2"/>Retest&nbsp;				
+	    					 <td align="left" colspan="4"><form:radiobutton path="mailDecision" value="0" onclick="_getMessage('0')"/>Pass&nbsp;
+	    					 <form:radiobutton path="mailDecision" value="1" onclick="_getMessage('1')"/>Reject&nbsp;
+	    					<form:radiobutton path="mailDecision" value="2" onclick="_getMessage('2')"/>Retest&nbsp;				
 	    					 </td> 
 	    					</tr>
 	    					<tr>
