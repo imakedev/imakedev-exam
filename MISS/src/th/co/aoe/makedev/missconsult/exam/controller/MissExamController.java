@@ -114,6 +114,7 @@ public class MissExamController {
 			 missTestResult.setMtrStartTime(timeStampEndTime);
 			 missTestResult.setMtrTestDate(new Date());
 			 missTestResult.setMtrStatus("0"); // 0=start test(Not finished ) ,1=test finish(Finished),2 =send response(Responsed)
+			 missTestResult.setMtrRespondedStatus("0");
 			 int timelimit=missExamService.startMissTestResult(missTestResult);
 			 model.addAttribute("timelimit", timelimit);
 		 }
@@ -280,7 +281,7 @@ public class MissExamController {
 		 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
 		 missTestResult.setMtrEndTime(timeStampEndTime);
 		 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
-		 
+		 missTestResult.setMtrRespondedStatus("0");
 		 missTestResult.setRootPath(bundle.getString("evaluationPath"));
 		 missExamService.processMissTestResult(missTestResult);
 		
