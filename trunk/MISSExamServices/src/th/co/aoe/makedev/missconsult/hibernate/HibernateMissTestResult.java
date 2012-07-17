@@ -232,7 +232,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				StringBuffer sb =new StringBuffer(" select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE," +
 						" result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS," +
 						" result.MTR_RESULT_CODE,candidate.MCA_USERNAME,candidate.MCA_FIRST_NAME,candidate.MCA_LAST_NAME, " +
-						" candidate.MCA_POSITION ,candidate.MCA_DEPARTMENT ,account.MA_NAME  from " +
+						" candidate.MCA_POSITION ,candidate.MCA_DEPARTMENT ,account.MA_NAME ," +
+						" result.MTR_RESPONDED_STATUS from " +
 						" "+schema+".MISS_TEST_RESULT  as result left join " +
 						" "+schema+".MISS_CANDIDATE candidate on result.MCA_ID=candidate.MCA_ID " +
 						" left join "+schema+".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID" +
@@ -323,6 +324,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						missTestResult.setMtrTestDate(obj[4] != null ?(java.sql.Date)obj[4]:null);
 						missTestResult.setMtrResultCode(obj[8] != null ? obj[8] + "" : "");
 						missTestResult.setMtrStatus(obj[7] != null ? obj[7] + "" : "");
+						missTestResult.setMtrRespondedStatus(obj[15] != null ? obj[15] + "" : "");
 						//missTestResult.setMsatPath(obj[14] != null ? obj[14] + "" : "");
 						candidate.setPagging(null);
 						missTestResult.setMissCandidate(candidate);
@@ -979,5 +981,15 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		logger.debug("tested="+tested);
 		// TODO Auto-generated method stub
 		return tested;
+	}
+	@Override
+	public int updateStatus(Long mtrId,String column,String value) throws DataAccessException {
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query  query=session.createQuery("update MissTestResult missTestResult " +
+				" set missTestResult."+column+" =:"+column+" " +
+				" where missTestResult.mtrId=:mtrId  ");
+		query.setParameter("mtrId", mtrId); 
+		query.setParameter(column, value); 
+	return query.executeUpdate();
 	}
 }

@@ -156,7 +156,13 @@ public class MissTestResultResource extends BaseResource {
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.processMissTestResult(bpsTerm,xbpsTerm.getUserid(),xbpsTerm.getRootPath());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}	 
+						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missTestResultService.updateStatus(xbpsTerm.getMtrId(), xbpsTerm.getColumn(), xbpsTerm.getValue());
+						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,page);

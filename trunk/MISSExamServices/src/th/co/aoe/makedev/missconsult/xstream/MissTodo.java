@@ -22,6 +22,16 @@ public class MissTodo extends VServiceXML implements Serializable {
 	private String mtodoTask;
 
 	private String mtodoType;
+	
+	private Long mtodoRef;
+
+	public Long getMtodoRef() {
+		return mtodoRef;
+	}
+
+	public void setMtodoRef(Long mtodoRef) {
+		this.mtodoRef = mtodoRef;
+	}
 
 	@XStreamAlias("missAccount")
 	private MissAccount missAccount;

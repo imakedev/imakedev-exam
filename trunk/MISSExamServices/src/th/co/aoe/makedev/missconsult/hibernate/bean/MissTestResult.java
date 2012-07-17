@@ -47,6 +47,9 @@ public class MissTestResult implements Serializable {
 
 	@Column(name="MTR_STATUS")
 	private String mtrStatus;
+	
+	@Column(name="MTR_RESPONDED_STATUS")
+	private String mtrRespondedStatus; //  0=Pending ,1=Completed,2=Ignored 
 
     @Temporal( TemporalType.DATE)
 	@Column(name="MTR_TEST_DATE")
@@ -55,6 +58,14 @@ public class MissTestResult implements Serializable {
 	@Column(name="MTR_IGNORED")
 	private String mtrIgnored;
     
+
+	public String getMtrRespondedStatus() {
+		return mtrRespondedStatus;
+	}
+
+	public void setMtrRespondedStatus(String mtrRespondedStatus) {
+		this.mtrRespondedStatus = mtrRespondedStatus;
+	}
 
 	//bi-directional many-to-one association to MissCandidate
     @ManyToOne

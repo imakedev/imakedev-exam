@@ -147,6 +147,7 @@ public class ServiceConstant {
 	public static final String MISS_TEST_RESULT_PROCESS = "processMissTestResult"; 
 	public static final String MISS_TEST_RESULT_START = "startMissTestResult";
 	public static final String MISS_TEST_RESULT_CHECK = "checkMissTestResult"; 
+	public static final String MISS_TEST_RESULT_UPDATE_STATUS = "updateStatusMissTestResult"; 
 	
 	// MISS_TODO
 	public static final String MISS_TODO_SAVE = "saveMissTodo";
