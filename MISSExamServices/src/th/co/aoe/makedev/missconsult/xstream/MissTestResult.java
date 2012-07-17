@@ -31,6 +31,7 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private Timestamp mtrStartTime;
 
 	private String mtrStatus;
+	private String mtrRespondedStatus;
 
 	private Date mtrTestDate;
 	
@@ -38,7 +39,32 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private String msatPath;
 	private int lieScore;
 	private int totalScore;
-	
+	private String column;
+	private String value;
+	public String getColumn() {
+		return column;
+	}
+
+	public void setColumn(String column) {
+		this.column = column;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getMtrRespondedStatus() {
+		return mtrRespondedStatus;
+	}
+
+	public void setMtrRespondedStatus(String mtrRespondedStatus) {
+		this.mtrRespondedStatus = mtrRespondedStatus;
+	}
+
 	public int getLieScore() {
 		return lieScore;
 	}

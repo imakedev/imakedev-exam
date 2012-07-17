@@ -34,6 +34,17 @@ public class MissTodo implements Serializable {
 
 	@Column(name="MTODO_TYPE")
 	private String mtodoType;
+	
+	@Column(name="MTODO_REF")
+	private Long mtodoRef;
+	
+	public Long getMtodoRef() {
+		return mtodoRef;
+	}
+
+	public void setMtodoRef(Long mtodoRef) {
+		this.mtodoRef = mtodoRef;
+	}
 
 	//bi-directional many-to-one association to MissAccount
     @ManyToOne

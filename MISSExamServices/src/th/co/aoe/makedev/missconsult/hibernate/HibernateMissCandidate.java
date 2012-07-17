@@ -387,7 +387,7 @@ int result = query.executeUpdate();*/
 			
 			return query.executeUpdate();
 		}else if(section.equals("2")){
-			 
+			// System.out.println("xxxxxxxxxxxxxxxxxxx");
 			query=session.createQuery("delete MissTest missTest " +
 					" where missTest.id.missCandidate.mcaId ="+transientInstance.getMcaId()+
 					" and  missTest.id.missSery.msId="+transientInstance.getMissSery().getMsId());
