@@ -27,6 +27,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 
 @Controller
 @SessionAttributes( { "missExamForm" ,"systemDate","timelimit"})
@@ -285,7 +286,16 @@ public class MissExamController {
 		 missTestResult.setRootPath(bundle.getString("evaluationPath"));
 		 missExamService.processMissTestResult(missTestResult);
 		
-		 missExamService.saveOrUpdateMissTestResult(missTestResult);
+		 int ref=missExamService.saveOrUpdateMissTestResult(missTestResult);
+		 
+		 // save To do List
+		 MissTodo missTodo =new MissTodo();
+		 missTodo.setMissAccount(missExamForm.getMissCandidate().getMissAccount());
+		 missTodo.setMtodoRef(Long.valueOf(ref));
+		 missTodo.setMtodoType("1"); // 1 = send to approver
+		 
+		 missTodo.setMtodoTask(missExamForm.getMissCandidate().getMissSery().getMsSeriesName()+" ("+missExamForm.getMissCandidate().getMcaFirstName() +" "+missExamForm.getMissCandidate().getMcaLastName()+")"); // sery (username)
+		 missExamService.saveOrUpdateMissTodo(missTodo);
 		 //0 
 		 if(missExamForm.getExamIndex()<(missExamForm.getMissCandidate().getMissSery().getMissExams().size()-1)){
 			 logger.debug("before "+missExamForm.getExamIndex());

@@ -11,6 +11,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 
 public interface MissExamService {
 	public abstract MissCandidate findMissCandidateByName(String name);
@@ -30,7 +31,8 @@ public interface MissExamService {
 	public abstract int checkMissTestResult(MissTestResult missTestResult);	
 	public abstract int processMissTestResult(MissTestResult missTestResult);
 	
-	
+	// to do list
+	public abstract int saveOrUpdateMissTodo(MissTodo missTodo);
 	
 	// File
 	 public abstract MissAccount findMissAccountById(Long long1);

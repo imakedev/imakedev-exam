@@ -13,6 +13,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public class MissExamServiceImpl extends PostCommon implements MissExamService {
@@ -187,6 +188,16 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 				.getClass().getName(), "missTestResult", true);
 		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
 		return missTestResult.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int saveOrUpdateMissTodo(MissTodo missTodo) {
+		// TODO Auto-generated method stub
+		missTodo.setServiceName(ServiceConstant.MISS_TODO_SAVE);
+		VResultMessage resultMessage = postMessage(missTodo, missTodo
+				.getClass().getName(), "missTodo", true);
+		missTodo = (MissTodo) resultMessage.getResultListObj().get(0);
+		return missTodo.getUpdateRecord().intValue();
 	}
 
 }
