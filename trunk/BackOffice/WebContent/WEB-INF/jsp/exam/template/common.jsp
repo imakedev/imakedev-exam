@@ -156,43 +156,7 @@ function loadDynamicPage(pageId){
 <body>
  <div class="container-fluid">
     <div class="row-fluid">
-    	<div class="span12" align="center">
-    	<%--
-    	 <div class="alert alert-error">
-    <button class="close" data-dismiss="alert">×</button>
-    <strong>Warning!</strong> Best check yo self, you're not looking too good.
-    </div>
-    	    <div class="alert">
-    <button class="close" data-dismiss="alert">×</button>
-    <strong>Warning!</strong> Best check yo self, you're not looking too good.
-    </div>
-     <div class="alert alert-info">
-    <button class="close" data-dismiss="alert">×</button>
-    <strong>Heads up!</strong> Best check yo self, you're not looking too good.2
-    </div>
-     <div class="alert alert-success">
-    <button class="close" data-dismiss="alert">×</button>
-    <strong>Success!</strong> Best check yo self, you're not looking too good.2
-    </div>
-     
-       <form>
-       <select name="bpsGroupId" id="bpgGroupId"> 
-											 <option value="0">---Select Category--</option>
-												
-	    					</select>
-       </form>
-       --%>
-    	<!-- <fieldset class="collapsible">
-<legend>Can Collapse Me!</legend>
-  <h2>1914 translation by H. Rackham</h2>
-  <p>"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment...,"</p>
-</fieldset> -->
-<%--
- <div class="alert alert-info">
-    <button class="close" data-dismiss="alert">×</button>
-    <strong>Heads up!</strong> Best check yo self, you're not looking too good.2
-    </div>
-     --%>
+    	<div class="span12" align="center"> 
     	<table width="100%">
     	<tr>
     			  <td width="15%"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="149" height="71">
@@ -204,13 +168,8 @@ function loadDynamicPage(pageId){
                   <td width="10%"><div align="left"><pre>system time</pre></div></td>
                 </tr>
              </table>
-    	<fieldset>
-		<!-- <legend>ทดสอบ2</legend>  -->
-		<%--
-    	Test ${aoe} ทดสอบ
-<input type="button" onclick="callAjax()" value="aoe"/>
- --%>
-    	</fieldset></div>
+    	<fieldset>  
+      </fieldset></div>
     </div>
     	<div class="row-fluid"> 
 	    <div class="span2">
@@ -263,46 +222,12 @@ function loadDynamicPage(pageId){
             <td><div class="th_class"><a href="#">Send Email</a></div></td> 
           </tr>
         </tbody>
-      </table>
-      
-      </fieldset>
-      <%-- --%>
-<br/>
-	   <%--
-          <h2 class="demoHeaders">Tabs</h2> 
-		<fieldset>
-		<legend>Test</legend>
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-1">First</a></li>
-				<li><a href="#tabs-2">Second</a></li>
-				<li><a href="#tabs-3">Third</a></li>
-			</ul>
-			<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-			<div id="tabs-2">Phasellus mattis tincidunt nibh. Cras orci urna, blandit id, pretium vel, aliquet ornare, felis. Maecenas scelerisque sem non nisl. Fusce sed lorem in enim dictum bibendum.</div>
-			<div id="tabs-3">Nam dui erat, auctor a, dignissim quis, sollicitudin eu, felis. Pellentesque nisi urna, interdum eget, sagittis et, consequat vestibulum, lacus. Mauris porttitor ullamcorper augue.</div>
-		</div>
-		</fieldset>
-		    <div class="pagination">
-    <ul>
-    <li><a href="#">Prev</a></li>
-    <li class="active">
-    <a href="#">1</a>
-    </li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">Next</a></li>
-    </ul>
-    </div>
-    <ul class="dropdown-menu">
-    <li>aoe</li>
-    <li>aoe2</li> 
-    </ul>  --%>
+      </table> 
+      </fieldset> 
+<br/> 
 	    </div>
   <div class="span2">
-	    <!--Sidebar content-->
-	      
+	    <!--Sidebar content--> 
 	        <pre>
    <span style="font-family: sans-serif;">About Us: เกี่ยวกับเรา
 

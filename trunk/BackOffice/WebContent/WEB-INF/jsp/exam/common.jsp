@@ -195,11 +195,19 @@ left padding is 20px */
 
 <script type="text/javascript">
 var _path="";
+var mail_toG;
+var mail_subjectG;
+var mail_messageG;
+var mail_attachG; 
 $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
   
+	mail_toG= $( "#mail_to" );
+	mail_subjectG= $( "#mail_subject" );
+	mail_messageG= $( "#mail_message" );
+	mail_attachG= $( "#mail_attach" );
   _path="${url}";
   //alert(_path)
   //alert(_path.split(";jsessionid=").length)
@@ -405,7 +413,45 @@ function appendContent(data){
 	appendContentWithId(data,"_content");
 	
 }
-
+function doSendMailToApprove(mail_todo_idG,mail_todo_refG){
+	loadDynamicPage("getmailToApprove/"+mail_todo_idG+"/"+mail_todo_refG);
+	/* //alert(action)
+	var checked="1";
+	// alert(document.getElementById("mail_attach").checked);
+	if(!document.getElementById("mail_attach").checked)
+		checked="0";
+	   var data_to_server= { 
+			  mail_todo_id:mail_todo_idG,
+			  mail_todo_ref:mail_todo_refG,
+			  mail_to: mail_toG.val(),
+			  mail_subject: mail_subjectG.val(),
+			  mail_message:mail_messageG.val(),
+			  mail_attach:checked
+				};
+	$.post("sendmailToApprove",data_to_server, function(data) {
+		  //alert(data);
+		    appendContent(data);
+		  // alert($("#_content").html());
+		}); */
+  }
+function openMailDialog(todo_id,todo_ref){
+	$("#mail_todo_id").val(todo_id);
+	$("#mail_todo_ref").val(todo_ref);
+	$( "#dialog-modal" ).dialog({
+		/* height: 140, */
+		modal: true,
+		buttons: {
+			"Ok": function() { 
+				$( this ).dialog( "close" );  
+				doSendMailToApprove(todo_id,todo_ref); 
+				 
+			},
+			"Close": function() { 
+				$( this ).dialog( "close" );				 
+			}
+		}
+	});
+}
 </script>
 </head>
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
@@ -489,6 +535,21 @@ function appendContent(data){
 	   <!--  </pre> -->
 	    </div>
 	    <div class="span8" id="_content">
+	     <div id="dialog-modal" title="Send Email Form" style="display: none">
+	<!-- <p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p> -->
+	<form id="mailApproveForm" name="mailApproveForm"  method="post" action="">
+	<input type="hidden" id="mail_todo_id" name="mail_todo_id">
+	<input type="hidden" id="mail_todo_ref" name="mail_todo_ref">
+	<table>
+	<tr valign="top"><td width="20%">To</td><td width="80%"><input type="text" id="mail_to" name="mail_to"></td></tr>
+	<tr valign="top"><td width="20%">Subject</td><td width="80%"><input type="text" id="mail_subject" name="mail_subject" ></td></tr>
+	<tr valign="top"><td width="20%">Message</td><td width="80%"><textarea rows="4" cols="4" id="mail_message" name="mail_message"></textarea></td></tr>
+	<tr valign="top"><td align="left" colspan="2" width="100%"><input type="checkbox" value="1" id="mail_attach" name="mail_attach">Attach Report(PDF)</td></tr>
+	 
+	<tr valign="top"><td width="20%"></td><td width="80%"></td></tr>
+	</table>
+	</form>
+</div>
 	    <!--Body content-->
 	<!--  <div class="alert alert-info">
     <button class="close" data-dismiss="alert">×</button>
@@ -525,13 +586,14 @@ function appendContent(data){
 	    					
 	    					<strong>To Do(Common):</strong></td>
 	    					<td align="right" width="80%">
-	    					
+	    					<%--
 	    					<a   href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"  style="width: 55px;"> 
 											 <option value="0">1</option>
 											 <option value="20">20</option>
 											 <option value="300">300</option>
 												
 	    					</select>&nbsp;|&nbsp;<a href="#">Next</a>
+	    					 --%>
 	    					<input type="hidden" value="${totals}" id="totals"/>
 	    					<input type="hidden" value="${pageObj.pageNo}" id="pageNo"/>
 	    					<input type="hidden" value="${pageObj.pageSize}" id="pageSize"/>
@@ -548,8 +610,14 @@ function appendContent(data){
         <tbody>
          <c:forEach items="${todolists}" var="todolist" varStatus="loop">  
             <tr>
-             <td><div class="th_class"><c:out value="${todolist.mtodoTask}"/></div></td>
-            <td><div class="th_class"><a >Send Email</a></div></td> 
+             <td><div class="th_class"><c:out value="${todolist.mtodoTask}"/>
+              <c:if test="${todolist.mtodoResponse=='1'}">
+              &nbsp;<span style="color: green;">Completed</span>
+             </c:if>
+              <c:if test="${todolist.mtodoResponse!='1'}">
+               &nbsp;<span style="color: orange;">Pending</span>
+              </c:if></div></td>
+            <td><div class="th_class"><a onclick="doSendMailToApprove('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td> 
           </tr>
           </c:forEach>
         </tbody>
