@@ -153,6 +153,15 @@ public class CompanyController
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
+
+    @RequestMapping(value={"/messaage/{maId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    public String getMessage(@PathVariable String maId, Model model)
+    {
+        MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
+        Gson gson=new Gson();
+		return gson.toJson(missAccount);
+    }
     @RequestMapping(value={"/item/unit/{maId}/{msId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET}) 
     public String postItemUnit(HttpServletRequest request, @PathVariable String maId,
     		@PathVariable String msId,@PathVariable String amount, Model model)
@@ -265,7 +274,7 @@ public class CompanyController
             if(mode.equals("new"))
             {
                 companyForm.getMissAccount().setMaRegisterType("Company");
-                companyForm.getMissAccount().setMaTotalUnit(Long.valueOf(100L));
+                companyForm.getMissAccount().setMaTotalUnit(Long.valueOf(0L));
                 id = missExamService.saveMissAccount(companyForm.getMissAccount());
                 companyForm.getMissAccount().setMaId(id);
                 companyForm.setMode("edit");

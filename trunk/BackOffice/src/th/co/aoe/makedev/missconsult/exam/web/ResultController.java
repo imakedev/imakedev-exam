@@ -66,8 +66,9 @@ public class ResultController
 	  private static String MAIL_PORT="";
 	  private static String MAIL_USE_AUTHEN="";
 	  private static String MAIL_EMAIL="";
-	  private static String MAIL_PASSWORD="";
+	  private static String MAIL_PASSWORD=""; 
 	  private static String MAIL_PERSONAL_NAME="";
+	  private static String MAIL_TLS="";
 	 /* mail.protocal=smtp
 			  mail.host=mail.missconsult.com
 			  #1=use,0=not use
@@ -92,6 +93,7 @@ public class ResultController
 			MAIL_EMAIL=bundle.getString("mail.email");
 			MAIL_PASSWORD=bundle.getString("mail.password");
 			MAIL_PERSONAL_NAME=bundle.getString("mail.personal_name");
+			MAIL_TLS=bundle.getString("mail.TLS");
 		}
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model)
@@ -267,7 +269,7 @@ public class ResultController
 				MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
 						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
 				recipientsTo, subject,
-				resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize);
+				resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
 		Thread mailThreadToTeam = new Thread(
 				mailRunnableToTeam);
 		mailThreadToTeam.start(); 

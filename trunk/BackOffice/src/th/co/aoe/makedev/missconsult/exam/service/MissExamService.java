@@ -209,7 +209,7 @@ public interface MissExamService
     public abstract MissTodo findMissTodoById(Long long1);
 
     public abstract VResultMessage searchMissTodo(MissTodo misstodo);
-    
+  //  public abstract int updateMissTodoStatus(MissTodo misstodo);
     
     public abstract Long saveMissAttach(MissAttach missAttach);
     

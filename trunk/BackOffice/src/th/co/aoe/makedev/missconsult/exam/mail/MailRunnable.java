@@ -44,10 +44,11 @@ public class MailRunnable implements Runnable {
 	byte[] fileSize=null;
 	String personal_name=null;
 	String port=null;
+	String tls=null;
 	public MailRunnable(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
 			List recipients
 			,String subject,String messagebody,String sessionId,String personal_name,String port,
-			List recipients_cc,List recipients_bcc,byte[] fileSize) {
+			List recipients_cc,List recipients_bcc,byte[] fileSize,String tls) {
 		this.subject = subject;
 		this.messagebody = messagebody;
 		this.sessionId = sessionId;
@@ -62,6 +63,7 @@ public class MailRunnable implements Runnable {
 		this.recipients_cc=recipients_cc;
 		this.recipients_bcc=recipients_bcc;
 		this.fileSize=fileSize;
+		this.tls=tls;
 	}
 	public void run() { 
 		File temp  = null;
@@ -77,7 +79,7 @@ public class MailRunnable implements Runnable {
 	    boolean isAuthen = false;
 			//props.put("mail.transport.protocol", protocal);//"smtp");
 	    props.put("protocol", protocal);//"smtp");
-			if(protocal!=null && protocal.toLowerCase().equals("smtp"))
+			if(tls!=null && tls.toLowerCase().equals("1"))
 				props.put("mail.smtp.starttls.enable","true");
 			props.put("mail.smtp.host", host);//"smtp.gmail.com");
 			props.put("mail.smtp.port",port);
