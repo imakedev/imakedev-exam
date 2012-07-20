@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -122,7 +121,7 @@ public class MissManualResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_MANUAL_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missManualService.searchMissManual(bpsTerm,page);
+							List result = (List) missManualService.searchMissManual(bpsTerm,xbpsTerm.getMaId(),page);
 							if (result != null && result.size() == 2) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissManual> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissManual>) result
 										.get(0);
@@ -167,7 +166,7 @@ public class MissManualResource extends BaseResource {
 	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		// TODO Auto-generated method stub
+		/*// TODO Auto-generated method stub
 		logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
 		logger.debug("into GET MissManualResource");
 		Pagging page =new Pagging(); 
@@ -191,7 +190,8 @@ public class MissManualResource extends BaseResource {
 			}
 		}
 			vresultMessage.setResultListObj(xntcCalendars);
-			return getRepresentation(null, vresultMessage, xstream);
+			return getRepresentation(null, vresultMessage, xstream);*/
+		return null;
 	}
 	private List<th.co.aoe.makedev.missconsult.xstream.MissManual> getxMissManualObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissManual> ntcCalendars) {

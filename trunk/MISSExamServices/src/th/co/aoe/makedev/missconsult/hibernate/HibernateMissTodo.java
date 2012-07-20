@@ -49,19 +49,28 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 	public Long saveMissTodo(MissTodo transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		Session session=sessionAnnotationFactory.getCurrentSession();
 		Long returnId  = null;
-		try{
-			Object obj = session.save(transientInstance);
-		
-			if(obj!=null){
-				returnId =(Long) obj;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo where missTodo.missAccount.maId=:maId " +
+				" and missTodo.mtodoType=:mtodoType and mtodoRef=:mtodoRef");
+		Query query = session.createQuery(sb.toString());
+		query.setParameter("maId", transientInstance.getMissAccount().getMaId());
+		query.setParameter("mtodoType", transientInstance.getMtodoType());
+		query.setParameter("mtodoRef", transientInstance.getMtodoRef());
+		List list=query.list();
+		if(list.size()==0){
+			try{
+				Object obj = session.save(transientInstance);
+			
+				if(obj!=null){
+					returnId =(Long) obj;
+				}
+			} finally {
+					if (session != null) {
+						session = null;
+					} 
 			}
-		} finally {
-				if (session != null) {
-					session = null;
-				} 
-		}
+		} 
 		return returnId; 
 	}
 	
@@ -152,7 +161,14 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 	public int updateMissTodo(MissTodo transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery("update MissTodo missTodo " +
+				" set missTodo.mtodoResponse =:mtodoResponse " + 
+				" where missTodo.mtodoId=:mtodoId ");
+	query.setParameter("mtodoResponse",transientInstance.getMtodoResponse());
+	query.setParameter("mtodoId", transientInstance.getMtodoId());
+		return query.executeUpdate();
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})

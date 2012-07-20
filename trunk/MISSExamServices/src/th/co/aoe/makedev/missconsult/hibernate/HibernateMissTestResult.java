@@ -772,7 +772,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.missCandidate.mcaId=:mcaId and " +
 					" missTestResult.meId=:meId and "+
 					" missTestResult.msId=:msId  ");
-			query.setParameter("mcaId", missCandidate.getMcaId());
+			query.setParameter("mcaId",missCandidate.getMcaId());
 			query.setParameter("meId", missTestResult.getMeId());
 			query.setParameter("msId", missTestResult.getMsId());
 			
@@ -780,7 +780,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());*/
 			List list=query.list();
 			if(list!=null && list.size()>0){//update 
-			
+
+				MissTestResult result =(MissTestResult)list.get(0);
 				logger.debug("size="+list.size());
 				logger.debug("MCA_ID="+missTestResult.getMissCandidate().getMcaId());
 				logger.debug("ME_ID="+missTestResult.getMeId());
@@ -836,8 +837,9 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 					query.setParameter("mtrEndTime", missTestResult.getMtrEndTime());  
 				//query.setParameter("mtrResultCode", missTestResult.getMtrResultCode()); 
 				//query.setParameter("mtrTestDate", missTestResult.getMtrTestDate());
-				returnId = Long.parseLong((query.executeUpdate())+"");
-				
+				//returnId = Long.parseLong((query.executeUpdate())+"");
+				query.executeUpdate();
+				returnId =result.getMtrId();
 				// update status candidate
 				if(missTestResult.getMtrStatus()!=null && missTestResult.getMtrStatus().equals("2")){ // finish test
 					query=session.createQuery("update MissCandidate missCandidate " +
@@ -852,8 +854,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 					obj = session.save(missTestResult);
 				
 					if(obj!=null){
-						//returnId =(th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK) obj;
-						returnId=1l;
+						returnId =(Long) obj;
+						//returnId=1l;
 					}
 				} finally {
 						if (session != null) {
