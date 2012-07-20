@@ -17,9 +17,8 @@ $(document).ready(function() {
 
 	}); */
 });
-function doOrder(msId){
-	 
-	var value=$("#_order_"+msId).val();
+function doOrder(msId){ 
+	var value=parseInt($("#_order_"+msId).val())*parseInt($("#_unitCost_"+msId).val());
 		$.get("company/item/unit/${companyForm.missAccount.maId}/"+msId+"/"+value, function(data) {
 			// alert(data)
 			 	/* var obj = jQuery.parseJSON(data);
@@ -111,7 +110,9 @@ function doRefill(){
             	<td>&nbsp;${missAccountSeriesMap.msSeriesName}</td>
             	<td>&nbsp;${missAccountSeriesMap.groupStr}</td>
             	<td>&nbsp;${missAccountSeriesMap.testStr}</td>
-            	<td>&nbsp;${missAccountSeriesMap.msUnitCost}</td>
+            	<td>&nbsp;${missAccountSeriesMap.msUnitCost}
+            	<input type="hidden" id="_unitCost_${missAccountSeriesMap.msId}" value="${missAccountSeriesMap.msUnitCost}" />
+            	</td>
             	<td>&nbsp;${missAccountSeriesMap.masmAvailable}</td>
             	<td><div><input type="text" id="_order_${missAccountSeriesMap.msId}" style="width:40px">&nbsp;&nbsp;<a class="btn btn-primary" onclick="doOrder('${missAccountSeriesMap.msId}');"><span style="color: white;font-weight: bold;">Order</span></a></div></td> 
           	</tr>
