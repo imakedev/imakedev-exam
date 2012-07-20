@@ -41,9 +41,10 @@ public class MissManualController {
 	    	  if(model.containsAttribute("UserMissContact")){
 	          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
 	          	if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
-	          		  MissAccount missAccount = new MissAccount(); 
-	          		 missAccount.setMaId(missContact.getMcontactRef());
+	          		 /* MissAccount missAccount = new MissAccount(); 
+	          		 missAccount.setMaId(missContact.getMcontactRef());*/
 	          		// candidateForm.getMissCandidate().setMissAccount(missAccount);
+	          		manualForm.getMissManual().setMaId(missContact.getMcontactRef());
 	          	}
 	          }
 	    	  
