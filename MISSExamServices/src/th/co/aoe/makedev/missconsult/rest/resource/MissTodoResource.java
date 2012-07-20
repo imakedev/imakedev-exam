@@ -84,16 +84,16 @@ public class MissTodoResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.MISS_TODO_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missTodoService.saveMissTodo(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTodoService.updateMissTodo(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_DELETE)){
 							int updateRecord=missTodoService.deleteMissTodo(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
@@ -202,15 +202,22 @@ public class MissTodoResource extends BaseResource {
 		}
 		return xntcCalendars;
 	} 
-	private void returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissTodo xbpsTerm,int updateRecord){
+/*	private void returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissTodo xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissTodo> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTodo>(1);
 		xbpsTerm.setUpdateRecord(updateRecord);
 		xbpsTerms.add(xbpsTerm);
 		vresultMessage.setResultListObj(xbpsTerms);
 		export(entity, vresultMessage, xstream);
+	}*/
+	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissTodo xbpsTerm,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.aoe.makedev.missconsult.xstream.MissTodo> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTodo>(1);
+		xbpsTerm.setUpdateRecord(updateRecord);
+		xbpsTerms.add(xbpsTerm);
+		vresultMessage.setResultListObj(xbpsTerms);
+		return getRepresentation(entity, vresultMessage, xstream);
 	}
- 
 	public MissTodoService getMissTodoService() {
 		return missTodoService;
 	}

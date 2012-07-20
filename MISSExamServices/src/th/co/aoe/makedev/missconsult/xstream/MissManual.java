@@ -31,7 +31,7 @@ public class MissManual extends VServiceXML implements Serializable {
 		private String section; 
 		private String mmIds;
 		private List<MissSery> missSeries; 
-	//private Long mc
+	private Long maId;
     public MissManual() {
     }
 
@@ -98,6 +98,14 @@ public class MissManual extends VServiceXML implements Serializable {
 
 	public void setMissSeries(List<MissSery> missSeries) {
 		this.missSeries = missSeries;
+	}
+
+	public Long getMaId() {
+		return maId;
+	}
+
+	public void setMaId(Long maId) {
+		this.maId = maId;
 	}
 
 

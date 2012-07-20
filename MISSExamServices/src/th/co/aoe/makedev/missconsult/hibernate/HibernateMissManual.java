@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissManual;
 import th.co.aoe.makedev.missconsult.managers.MissManualService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -75,21 +76,42 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	
 	
 
-	private int getSize(Session session, MissManual instance) throws Exception{
+	private int getSize(Session session,Long maId, MissManual instance) throws Exception{
 		try {
 			Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 		
 		
 			StringBuffer sb =new StringBuffer(" select count(missManual) from MissManual missManual ");
-			
+			Query query =null;
+			String msIds="";
+			    if(maId!=null){
+			    	query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap" +
+			    			" where missAccountSeriesMap.id.maId=:maId ");
+			    	query.setParameter("maId", maId);
+			    	List<MissAccountSeriesMap>  missAccountSeriesMaps=query.list();
+			    	int size=missAccountSeriesMaps.size();
+			    	int index=0;
+			    	
+			    	for (MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMaps) {
+						if(index==size-1)
+							msIds=msIds+missAccountSeriesMap.getId().getMsId().intValue()+"";
+						else
+							msIds=msIds+missAccountSeriesMap.getId().getMsId().intValue()+",";
+						index++;
+					}
+			    }
 			boolean iscriteria = false;
 			if(msId !=null && msId.intValue()!=0){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
 				 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
 				  iscriteria = true;
 			}
-			Query query =session.createQuery(sb.toString());
+			if(msIds.length()>0){
+				sb.append(iscriteria?(" and missManual.missSery.msId in("+msIds+")"):(" where missManual.missSery.msId in ("+msIds+")"));
+				  iscriteria = true;
+			}
+			 query =session.createQuery(sb.toString());
 				 return ((Long)query.uniqueResult()).intValue(); 
 				 
 		 
@@ -103,11 +125,28 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissManual(MissManual instance,Pagging pagging) throws DataAccessException {
+	 public List searchMissManual(MissManual instance,Long maId,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
-				 
+				Query query =null;
+				String msIds="";
+				    if(maId!=null){
+				    	query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap" +
+				    			" where missAccountSeriesMap.id.maId=:maId ");
+				    	query.setParameter("maId", maId);
+				    	List<MissAccountSeriesMap>  missAccountSeriesMaps=query.list();
+				    	int size=missAccountSeriesMaps.size();
+				    	int index=0;
+				    	
+				    	for (MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMaps) {
+							if(index==size-1)
+								msIds=msIds+missAccountSeriesMap.getId().getMsId().intValue()+"";
+							else
+								msIds=msIds+missAccountSeriesMap.getId().getMsId().intValue()+",";
+							index++;
+						}
+				    }
 					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 				
@@ -119,14 +158,18 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 						 sb.append(iscriteria?(" and missManual.missSery.msId="+msId.intValue()+""):(" where missManual.missSery.msId="+msId.intValue()+""));
 						  iscriteria = true;
 					}
+					if(msIds.length()>0){
+						sb.append(iscriteria?(" and missManual.missSery.msId in("+msIds+")"):(" where missManual.missSery.msId in ("+msIds+")"));
+						  iscriteria = true;
+					}
 					
 					
 					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 							sb.append( " order by missManual."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 					}			
-					Query query =session.createQuery(sb.toString());
+					 query =session.createQuery(sb.toString());
 					// set pagging.
-					 String size = String.valueOf(getSize(session, instance)); 
+					 String size = String.valueOf(getSize(session,maId,instance)); 
 					 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 					 
 					 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
