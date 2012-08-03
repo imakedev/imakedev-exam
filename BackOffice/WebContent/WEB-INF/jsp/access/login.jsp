@@ -9,7 +9,7 @@
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script>
 <link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
-<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/style.css'/>" />
+<link  href="<c:url value='/resources/css/style.css'/>"  type="text/css" rel="stylesheet"/>
 <style type="text/css">
 .content_box_top { 
 	background: url(<c:url value='/resources/images/content_top.png'/>) no-repeat; 
@@ -46,7 +46,7 @@ $(document).ready(function() {
 </div>
 <div id="wrapper">
 <div align="left" style="padding-top:5px;"><a href="#" title="Miss Consult"><img src="<c:url value='/resources/images/logowebmc.png'/>"  border="0"/></a></div>
-<div align="right" class="language" style="padding-top:10px; padding-right:10px;"><a href="#">TH</a> | <a href="#">EN</a></div>
+<div align="right" class="language" style="padding-top:10px; padding-right:10px;"><a  style="cursor: pointer;" href="?language=th_TH">TH</a> | <a  style="cursor: pointer;" href="?language=en">EN</a></div>
  <div class="content_box_top"></div>
         <div class="content_box">
           <div style="border-bottom:1px dashed #999; padding-bottom:3px;"><h2>Welcome to MissConsult</h2></div>                   
@@ -63,13 +63,13 @@ $(document).ready(function() {
             <input type="text" name="j_username" id="name" />        
                         
             <label>Password
-            <span class="small">Min. size 6 chars</span>
+           <!--  <span class="small">Min. size 6 chars</span> -->
             </label>
             <input type="password" name="j_password" id="password" />
             <label>&nbsp;</label>
            <!--   <input name="submit" type="submit" value="Log-in"/> -->
               <button type="submit">Log-in</button>
-            <a href="#">Forget Password?</a>
+           <!--  <a href="#">Forget Password?</a> -->
             <div class="spacer"></div>
             
             </form>
