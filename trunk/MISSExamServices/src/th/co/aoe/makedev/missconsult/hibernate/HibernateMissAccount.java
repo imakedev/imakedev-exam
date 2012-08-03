@@ -237,7 +237,8 @@ int result = query.executeUpdate();*/
 			query.setParameter("maPassword", transientInstance.getMaPassword());
 			query.setParameter("maUsername", transientInstance.getMaUsername());
 			return query.executeUpdate();
-		}else*/ if(section.equals("1") || section.equals("5")){
+			
+		}else*/if(section.equals("1") || section.equals("5")){
 			query=session.createQuery("update MissAccount missAccount " +
 					" set missAccount.maName =:maName ,  " +
 					" missAccount.maAddress =:maAddress ,  " +
