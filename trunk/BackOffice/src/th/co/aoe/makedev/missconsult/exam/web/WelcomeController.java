@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -19,6 +20,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRException;
@@ -29,13 +31,18 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.LocaleEditor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
@@ -110,12 +117,32 @@ public class WelcomeController
     }
 
     @RequestMapping(value={"/"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String getNewForm(Model model)
+    public String getNewForm(HttpServletRequest request,HttpServletResponse response,  Model model)
     {
+   
+     	/*System.out.println(" locale="+locale.getDisplayLanguage());
+         LocaleContextHolder.setLocale(locale,true);*/
+    	
+    	String language=request.getParameter("language");
+    	if(language!=null && language.length()>0){
+    	 LocaleEditor localeEditor = new LocaleEditor();
+         localeEditor.setAsText(language);
+
+        /* Locale locale = StringUtils.parseLocaleString("th_TH"
+                 .toLowerCase());*/
+         // set the new locale
+         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+         localeResolver.setLocale(request, response,
+             (Locale) localeEditor.getValue());
+    	}
+    	System.out.println("into getNewForm "+LocaleContextHolder.getLocale().getDisplayLanguage());
+    	logger.error("into init local "+LocaleContextHolder.getLocale());
+    	//locale.getDisplayLanguage()
         int pageNo = 1;
         DateTime dt = new DateTime();
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
+       
         page.setPageSize(20);
         MissTodo missTodo = new MissTodo();
         MissContact missContact= missExamService.findMissContactByUsername(SecurityContextHolder.getContext().getAuthentication().getName());

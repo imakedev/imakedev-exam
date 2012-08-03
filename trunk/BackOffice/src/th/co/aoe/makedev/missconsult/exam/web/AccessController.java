@@ -1,11 +1,19 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -16,8 +24,19 @@ public class AccessController {
 	@Autowired
 	private MissExamService missExamService;
 	@RequestMapping("/login")
-	public String login(Model model, @RequestParam(required=false) String message) {
-		
+	public String login(HttpServletRequest request,HttpServletResponse response,Model model, @RequestParam(required=false) String message) {
+		String language=request.getParameter("language");
+    	if(language!=null && language.length()>0){
+    	 LocaleEditor localeEditor = new LocaleEditor();
+         localeEditor.setAsText(language);
+
+        /* Locale locale = StringUtils.parseLocaleString("th_TH"
+                 .toLowerCase());*/
+         // set the new locale
+         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+         localeResolver.setLocale(request, response,
+             (Locale) localeEditor.getValue());
+    	}
 		//model.addAttribute("message", message);
 	//	model.addAttribute("message", "เทสสส");
 		//SecurityExpressionRoot.		

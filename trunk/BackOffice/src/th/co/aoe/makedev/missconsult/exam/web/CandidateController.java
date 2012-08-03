@@ -44,6 +44,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"candidateForm","UserMissContact"})
 public class CandidateController
 {
+	private static int PAGE_SIZE=20;
 
    /* @Autowired
     public CandidateController(MissExamService missExamService)
@@ -57,7 +58,7 @@ public class CandidateController
     {
         model.addAttribute("missSeries", missExamService.listMissSery());
         CandidateForm candidateForm = new CandidateForm();
-        candidateForm.getMissCandidate().getPagging().setPageSize(3);
+        candidateForm.getMissCandidate().getPagging().setPageSize(PAGE_SIZE);
         
         if(model.containsAttribute("UserMissContact")){
         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
@@ -69,7 +70,7 @@ public class CandidateController
         }
         VResultMessage vresultMessage = missExamService.searchMissCandidate(candidateForm.getMissCandidate());
         model.addAttribute("missCandidates", vresultMessage.getResultListObj());
-        candidateForm.getPaging().setPageSize(3);
+        candidateForm.getPaging().setPageSize(PAGE_SIZE);
         candidateForm.setPageCount(IMakeDevUtils.calculatePage(candidateForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("candidateForm", candidateForm);
         return "exam/template/candidateSearch";
@@ -125,7 +126,7 @@ public class CandidateController
             else
                 candidateForm = new CandidateForm();
         model.addAttribute("missSeries", missExamService.listMissSery());
-        candidateForm.getPaging().setPageSize(3);
+        candidateForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=candidateForm.getMissCandidate().getPagging()=")).append(candidateForm.getMissCandidate().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=candidateForm.getPaging()=")).append(candidateForm.getPaging()).toString());
         candidateForm.getMissCandidate().setPagging(candidateForm.getPaging());
