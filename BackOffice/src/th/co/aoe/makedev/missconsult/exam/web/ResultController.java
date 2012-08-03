@@ -217,7 +217,7 @@ public class ResultController
         return "exam/template/testResultSearch";
     }
     @RequestMapping(value={"/viewAnswer/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String getToDoList(@PathVariable String mtrId, Model model)
+    public String viewAnswer(@PathVariable String mtrId, Model model)
     {
         logger.debug((new StringBuilder("testtttttttttt")).append(missExamService).toString());
         model.addAttribute("aoe", "chatchai");
@@ -363,32 +363,17 @@ public class ResultController
     {
     	MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
     	logger.debug("missTestResult=>"+missTestResult);
-    	/*List recipientsToTeams = new ArrayList(1);
-    	recipientsToTeams.add("chatchai@vlink.co.th" );
-    	String subject="Test";
-    	StringBuffer mailMessageBody=new StringBuffer("");
-    	mailMessageBody.append("Chatchai Test");
-    	String personal_name= "personal Chatchai";
-    	String personal_email="chatchai@vlink.co.th";
-    	MailRunnable mailRunnableToTeam = new MailRunnable(
-				MAIL_PROTOCAL, MAIL_SERVER, personal_email
-						, "015482543a6ee6acoder", "1",
-				recipientsToTeams, subject,
-				mailMessageBody.toString(), "99",personal_name);
-		Thread mailThreadToTeam = new Thread(
-				mailRunnableToTeam);
-		mailThreadToTeam.start();*/
     	ResultForm resultForm=new ResultForm();
     	resultForm.setMissTestResult(missTestResult);
     	model.addAttribute("resultForm", resultForm);
         return "exam/template/testResponse";
     }
 
-    @RequestMapping(value={"/summary/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String viewAnswer()
+ /*   @RequestMapping(value={"/summary/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String viewAnswer()d
     {
         return "exam/template/nopage";
-    }
+    }*/
     // testPDF?mtrId=8&meId=14&msId=9&mcaId=22
     @RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
