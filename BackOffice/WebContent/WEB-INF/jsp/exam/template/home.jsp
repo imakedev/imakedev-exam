@@ -108,7 +108,7 @@ function openDialog(todo_id,todo_ref){
 	    					<tr>
 	    					<td align="left" width="20%">
 	    					
-	    					<strong>To Do:</strong></td>
+	    					<strong><spring:message code="home_todo"/></strong></td>
 	    					<td align="right" width="80%">
 	    				<!-- 	<a  class="btn btn-primary" onclick="testAlert()"><i class="icon-search icon-white"></i>&nbsp;Seach</a> -->
 	    					<%--
@@ -128,8 +128,8 @@ function openDialog(todo_id,todo_ref){
 <table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         <thead>
           <tr>
-            <th width="80%"><div class="th_class">Task</div></th>
-            <th width="20%"><div class="th_class">Response</div></th> 
+            <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="20%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
           </tr>
         </thead>
         <tbody>

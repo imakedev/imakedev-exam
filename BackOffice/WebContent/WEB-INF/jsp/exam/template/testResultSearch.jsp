@@ -78,7 +78,7 @@ function doAction(mode,id){
           
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="100%" colspan="6"><strong>Test Result Search</strong></td>
+	    					 <td align="left" width="100%" colspan="6"><strong><spring:message code="page_testsearch_title"/></strong></td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
@@ -94,7 +94,7 @@ function doAction(mode,id){
 	    					 </td>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Username:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_username"/>:</td>
 	    					 <td align="left" width="17%">    					
 	    					<form:input path="mcaUsername"/>
 	    					 </td>
@@ -104,34 +104,34 @@ function doAction(mode,id){
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">First Name:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_firstname"/>:</td>
 	    					 <td align="left" width="17%"> <form:input path="mcaFirstName" />
 	    					 </td>
-	    					<td align="left" width="17%">Last Name:</td>
+	    					<td align="left" width="17%"><spring:message code="page_testsearch_lastname"/>:</td>
 	    					<td align="left" width="17%"><form:input path="mcaLastName" /></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Position:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_position"/>:</td>
 	    					 <td align="left" width="17%"> <form:input path="mcaPosition" />
 	    					 </td>
-	    					<td align="left" width="17%">Department:</td>
+	    					<td align="left" width="17%"><spring:message code="page_testsearch_department"/>:</td>
 	    					<td align="left" width="17%"><form:input path="mcaDepartment"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Test From:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_testfrom"/>:</td>
 	    					 <td align="left" width="17%">  <form:input path="testFrom" cssStyle="width:75px"/>
 	    					 </td>
-	    					<td align="left" width="17%">Test To:</td>
+	    					<td align="left" width="17%"><spring:message code="page_testsearch_testto"/>:</td>
 	    					<td align="left" width="17%"><form:input path="testTo" cssStyle="width:75px"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Company Name:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_companyname"/>:</td>
 	    					 <td align="left" colspan="3" width="51%"> 
 	    					 <form:input path="mcaCompanyName" cssStyle="width:100%"/>   					
 	    					 </td> 
@@ -143,10 +143,10 @@ function doAction(mode,id){
 	    					<tr>
 	    					<td align="left" width="60%">
 	    					
-	    					<a class="btn btn-success disabled"><i class="icon-pencil icon-white"></i>&nbsp;Do Paper Test</a>&nbsp;
-	    					<a class="btn btn-info disabled"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;Export</a>&nbsp;
-	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;Summary</a>&nbsp;
-	    					<a class="btn btn-danger disabled"><i class="icon-eject icon-white"></i>&nbsp;Ignore</a></td>
+	    					<a class="btn btn-success disabled"><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
+	    					<a class="btn btn-info disabled"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
+	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
+	    					<a class="btn btn-danger disabled"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a></td>
 	    					<td align="right" width="40%">
 	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a>
 	    					</td>
@@ -157,11 +157,11 @@ function doAction(mode,id){
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox"/></div></th>
-            		<th width="10%"><div class="th_class">Username</div></th> 
-            		<th width="15%"><div class="th_class">First Name</div></th>
-            		<th width="10%"><div class="th_class">Last Name</div></th> 
-            		<th width="10%"><div class="th_class">Position</div></th>
-            		<th width="10%"><div class="th_class">Department</div></th> 
+            		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_username"/></div></th> 
+            		<th width="15%"><div class="th_class"><spring:message code="page_testsearch_firstname"/></div></th>
+            		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_lastname"/></div></th> 
+            		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_position"/></div></th>
+            		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_department"/></div></th> 
             		<c:forEach items="${axisHeaders}" var="axisHeader" varStatus="loop">
             				<th width="5%"><div class="th_class">${axisHeader}</div></th>
             		</c:forEach>
@@ -169,10 +169,10 @@ function doAction(mode,id){
             		<th width="5%"><div class="th_class">Im</div></th> 
             		<th width="5%"><div class="th_class">Pe</div></th>
             		<th width="5%"><div class="th_class">Ju</div></th>  -->
-            		<th width="10%"><div class="th_class">Test Date</div></th> 
-            		<th width="5%"><div class="th_class">Report</div></th>
-            		<th width="5%"><div class="th_class">Status</div></th>
-            		<th width="5%"><div class="th_class">Response</div></th> 
+            		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_testdate"/></div></th> 
+            		<th width="5%"><div class="th_class"><spring:message code="page_testsearch_report"/></div></th>
+            		<th width="5%"><div class="th_class"><spring:message code="page_testsearch_status"/></div></th>
+            		<th width="5%"><div class="th_class"><spring:message code="page_testsearch_response"/></div></th> 
           		</tr>
         	</thead>
         	<tbody>
