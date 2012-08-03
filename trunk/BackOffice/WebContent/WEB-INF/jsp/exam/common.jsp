@@ -192,7 +192,9 @@ right padding is 5px
 bottom padding is 15px
 left padding is 20px */
 </style>
-
+<c:set var="aoeTest">
+  <spring:message code='navigation_home'/>
+</c:set>
 <script type="text/javascript">
 var _path="";
 var mail_toG;
@@ -230,29 +232,29 @@ $(document).ready(function() {
 		"json_data" : {
 			"data" : [
 				{ 
-					"data" : {title:"Home",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
+					"data" : {title:"<spring:message code='navigation_home'/>",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
 					"metadata" : { id : "child_23" ,"link":"template/todolist"},
 					"attr" : { "id" : "home_node" }, 
 				},
 				{ 
 					"attr" : { "id" : "account_node" }, 
 					"data" : { 
-						"title" : "บัญชีผู้ใช้", 
+						"title" : "<spring:message code='navigation_account'/>", 
 						"attr" : { "href" : "#" } 
 					},
 					"metadata" : { id : "root_aoee2"},
 					"children" : [
 					   <c:if test="${isManageMC}">
-						{ attributes: { id : "pjson_2" }, data: { title : "MissConsult", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
+						{ attributes: { id : "pjson_2" }, data: { title : "<spring:message code='navigation_account_mc'/>", icon : "<c:url value='/resources/js/_demo/file.png'/>" },"attr" : { "id" : "24"},"metadata" : { id : "child_24","link":"miss/account"} },
 					   </c:if>
 					   <c:if test="${isManageCompany && UserMissContact.isMC=='1'}">
-						{ attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
+						{ attributes: { id : "pjson_3" }, data: {title:"<spring:message code='navigation_account_company'/>",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/search" } },
 					   </c:if>
 					    <c:if test="${isManageCompany && UserMissContact.isMC=='0'}">
-						 { attributes: { id : "pjson_3" }, data: {title:"Company",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/item/${UserMissContact.mcontactRef}" } },
+						 { attributes: { id : "pjson_3" }, data: {title:"<spring:message code='navigation_account_company'/>",attributes:{ "href" : "www.google.com" } , icon : "<c:url value='/resources/js/_demo/file.png'/>"},"metadata" : { id : "child_25","link":"company/item/${UserMissContact.mcontactRef}" } },
 						</c:if>
 						<c:if test="${isManageCandidate}">
-						{ attributes: { id : "pjson_4" }, data: { title:"Candidate", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
+						{ attributes: { id : "pjson_4" }, data: { title:"<spring:message code='navigation_account_candidate'/>", icon : "<c:url value='/resources/js/_demo/file.png'/>"} ,"metadata" : { id : "child_26","link":"candidate/search" }}
 						</c:if>   
 						] 
 					
@@ -274,7 +276,7 @@ $(document).ready(function() {
 				<c:if test="${isManageSearchReport}">				
 				{ 
 					
-					"data" : {title:"Search Report",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
+					"data" : {title:"<spring:message code='navigation_search'/>",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
 					"metadata" : { id : "child_288" ,"link":"result/search"},
 					"attr" : { "id" : "tree_288" } 
 					
@@ -283,7 +285,7 @@ $(document).ready(function() {
 				{ 
 					"attr" : { "id" : "management_node" }, 
 					"data" : { 
-						"title" : "จัดการแบบสอบถาม", 
+						"title" : "<spring:message code='navigation_test_management'/>", 
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
@@ -301,7 +303,7 @@ $(document).ready(function() {
 				{ 
 					"attr" : { "id" : "etc_node" }, 
 					"data" : { 
-						"title" : "etc.", 
+						"title" : "<spring:message code='navigation_etc'/>", 
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
@@ -500,12 +502,16 @@ function openMailDialog(todo_id,todo_ref){
     	</h1>
     	</c:if>
     	  </div> 
-    	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
-       <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown"></span><br/><br/>
-        TH | EN        
+    	<!-- <div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;"> -->
+    	<div align="right" style="position: absolute; z-index:0; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
+       <strong><spring:message code="home_system_time"/>:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown"></span><br/><br/>
+      <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> 
+           <%-- Current Locale : ${pageContext.response.locale} --%>
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
            <%=SecurityContextHolder.getContext().getAuthentication().getName()%> <a href="${logoutUrl}">Logout</a>
+          
+          <!--  <a  style="cursor: pointer;" href="?language=th_TH">TH</a> | <a  style="cursor: pointer;" href="?language=en">EN</a> -->
             </div>
            </div>
           
@@ -584,7 +590,7 @@ function openMailDialog(todo_id,todo_ref){
 	    					<tr>
 	    					<td align="left" width="20%">
 	    					
-	    					<strong>To Do(Common):</strong></td>
+	    					<strong><spring:message code="home_todo"/></strong></td>
 	    					<td align="right" width="80%">
 	    					<%--
 	    					<a   href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"  style="width: 55px;"> 
@@ -603,8 +609,8 @@ function openMailDialog(todo_id,todo_ref){
 			<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         <thead>
           <tr>
-            <th width="80%"><div class="th_class">Task</div></th>
-            <th width="20%"><div class="th_class">Response</div></th> 
+            <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="20%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
           </tr>
         </thead>
         <tbody>
@@ -664,7 +670,7 @@ function openMailDialog(todo_id,todo_ref){
 	    <!--Sidebar content--> 
             <div class="post_section">
 				<h3>
-				<img src="<c:url value='/resources/images/h2bg.gif'/>"  border="0" align="absmiddle"/>&nbsp;Description / Instruction / Remark </h3>
+				<img src="<c:url value='/resources/images/h2bg.gif'/>"  border="0" align="absmiddle"/>&nbsp; <spring:message code="home_description"/></h3>
 				<p>
 					Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan.
 				</p>
