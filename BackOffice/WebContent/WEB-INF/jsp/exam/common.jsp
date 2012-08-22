@@ -35,7 +35,7 @@
 </sec:authorize> --%>
 <%-- <script src="<c:url value='/resources/bootstrap/Blue/js/bootstrap.min.js'/>" type="text/javascript"></script> --%>
 <%-- <sec:authorize access="hasAnyRole('ROLE_MANAGE_COMPANY')"> --%>
-
+<%-- 
 <c:if test="${myUser.missContact.maCustomizeColor=='smoothness'}">
 	<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
 </c:if>
@@ -53,6 +53,8 @@
 	<script type="text/javascript" src="<c:url value='/resources/js/ui-lightness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
 	<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
 </c:if> 
+--%>
+<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
 <%-- </sec:authorize> --%>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
@@ -81,6 +83,8 @@
   background-color: #d8e7f3
   }
 </style> --%>
+<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" />
+<%--
 <c:if test="${myUser.missContact.maCustomizeColor=='smoothness'}">
 	<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
 </c:if>
@@ -106,6 +110,7 @@
   }
 </style>
 </c:if>
+ 
 <!--  #ffe45c -->
 <c:if test="${myUser.missContact.maCustomizeColor=='ui-lightness'}">
 	<link href="<c:url value='/resources/css/ui-lightness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
@@ -118,7 +123,7 @@
   }
 </style>
 </c:if> 
-
+--%>
 <%-- </sec:authorize> --%>
 <link  href="<c:url value='/resources/css/jquery.ui.selectmenu.css'/>" rel="stylesheet" type="text/css">
 
@@ -175,8 +180,9 @@ a{cursor: pointer;}
 /*label,select,.ui-select-menu { } */
 /* select { width: 55px;}*/
 /*.ui-widget{font-family: Tahoma;font-size: 12px; }*/
+/* #328AA4 */
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
- color: #fff;background:#328AA4 url(<c:url value='/resources/images/tr_back.gif'/>) repeat-x;;padding: 5px 8px;border:1px solid #fff; 
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
 input[type="text"],[type="password"]{height:30px}
 img.ui-datepicker-trigger{cursor: pointer;}
@@ -191,6 +197,10 @@ top padding is 10px
 right padding is 5px
 bottom padding is 15px
 left padding is 20px */
+
+.stable-striped{
+   background-color: #F9F9F9;
+}
 </style>
 <c:set var="aoeTest">
   <spring:message code='navigation_home'/>
@@ -205,7 +215,7 @@ $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
-  
+ //  alert('');
 	mail_toG= $( "#mail_to" );
 	mail_subjectG= $( "#mail_subject" );
 	mail_messageG= $( "#mail_message" );
@@ -465,6 +475,7 @@ function openMailDialog(todo_id,todo_ref){
 	<body style="background-color:rgb(240,240,240);background-image:url(<c:url value='/resources/images/body-y.gif'/>); ">
 </sec:authorize> --%>
 <!-- 253,253,253 --> 
+<%--
 <c:if test="${myUser.missContact.maCustomizeHeadColor=='body.gif'}">
 	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body.gif'/>); "> 
 </c:if>
@@ -477,7 +488,8 @@ function openMailDialog(todo_id,todo_ref){
 <c:if test="${myUser.missContact.maCustomizeHeadColor=='body-o.gif'}">
 	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-o.gif'/>); "> 
 </c:if> 
-  
+   --%>
+<body style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
  <div class="container-fluid">
     <div class="row-fluid" >
     	<div class="span12" align="center"> 
@@ -530,7 +542,7 @@ function openMailDialog(todo_id,todo_ref){
 		<!-- <form class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)"> -->
 		
 		<!-- <form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid rgba(0, 0, 0, 0.05)"> -->
-		<form class="well">
+		<form id="_navi_element" class="well" style="background-color: ${UserMissContact.missTheme.mtBgColor}">
 		<!-- 
 		<form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid #DDD">
 		 -->
@@ -565,7 +577,10 @@ function openMailDialog(todo_id,todo_ref){
     <!-- <h3><strong>MC - Home</strong></h3> -->
       <fieldset style="font-family: sans-serif;">   
     <!--  <form   class="well" style="background-color:white;border: 2px solid #DDD" > -->
-     <form   class="well" style="border: 2px solid #DDD" method="post" enctype="multipart/form-data">
+    <%--
+     <form   class="well" style="border: 2px solid #DDD;background-color: ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+      --%>
+    <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	   <!--   <fieldset style="font-family: sans-serif;">    -->
@@ -606,7 +621,10 @@ function openMailDialog(todo_id,todo_ref){
 	    					</td>
 	    					</tr>
 	    					</table> 
-			<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+			 <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
+			 <!-- <table class="table table-striped table-bordered" border="1" style="font-size: 12px">  -->
+		<!-- 	<table class="simply" border="1" style="font-size: 12px"> 
+			 -->
         <thead>
           <tr>
             <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>

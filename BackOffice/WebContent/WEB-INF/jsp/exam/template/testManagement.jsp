@@ -48,6 +48,11 @@ function doAction(action,formID,sectionID){
 		});
   }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
@@ -60,11 +65,11 @@ function doAction(action,formID,sectionID){
 				<!-- <li><a href="#tabs-2">Evaluations</a></li> -->
 				<li><a href="#tabs-3">Questions</a></li>
 			</ul>
-			<div id="tabs-1">
+			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
-			<form:form  id="testForm_account" name="testForm_account" modelAttribute="testForm" cssClass="well"  method="post" action="">
+			<form:form  id="testForm_account" name="testForm_account" modelAttribute="testForm"   method="post" action="">
 			     <strong style="font-family: sans-serif;color: rgb(51,51,51)">Test Information</strong>
-			     <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+			    <!--  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			       <!-- <tr>
     					<td width="100%" colspan="2"><strong>Test Information</strong></td> 
@@ -96,10 +101,10 @@ function doAction(action,formID,sectionID){
     					 minutes</td> 
     				</tr>
     			</table>  
-    			</pre>  			
+    			<!-- </pre>  --> 			
 			<%-- </form:form>
 			<form:form  id="testForm_account" name="testForm_account" modelAttribute="testForm" cssClass="well"  method="post" action=""> --%>
-			    <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+			   <!--  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			       <tr>
     					<td width="100%" colspan="2"><strong>Introduction:</strong></td> 
@@ -161,7 +166,7 @@ function doAction(action,formID,sectionID){
 						</td> 
     				</tr>
     			</table>    		
-    			</pre>	
+    			<!-- </pre>	 -->
 			</form:form>
 			<div align="center">
 			<div align="center">
@@ -188,7 +193,7 @@ function doAction(action,formID,sectionID){
 			
 			</div>
 			 --%>
-			<div id="tabs-3">
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<%--
 			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm" cssClass="well"  method="post" action="">
 			<strong>Question List</strong>

@@ -63,12 +63,17 @@ function doAction(mode,id){
 }
 </script>
 
-
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
          <!--  <form class="well" style="border:2px solid #DDD"> -->
-             <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+             <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
+              
              <form:hidden path="mode"/>
             
             <form:hidden path="mtrIdArray" id="mtrIdArray"/>
@@ -193,7 +198,7 @@ function doAction(mode,id){
             	<td>?</td>            	
             	<td>?</td> 
             	<td>?</td> -->
-            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td> 
+            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${missTestResult.mtrStartTime}" /></td> 
             	<c:url value="/result/testPDF" var="downloadUrl">
             		<c:param name="mtrId" value="${missTestResult.mtrId}"></c:param>
             		<c:param name="meId" value="${missTestResult.meId}"></c:param>

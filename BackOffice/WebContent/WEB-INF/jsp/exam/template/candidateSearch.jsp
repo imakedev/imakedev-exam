@@ -155,14 +155,24 @@ function doAction(mode,id){
 		});
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
 <div id="dialog-confirmDelete" title="Delete Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Candidate ?
 </div>
-	    <fieldset style="font-family: sans-serif;">  
+<fieldset style="font-family: sans-serif;">
+	     <%-- <fieldset style="font-family: sans-serif;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>    
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
-      <!--     <form class="well" style="border:2px solid #DDD"> -->
-            <form:form  id="candidateForm" name="candidateForm" modelAttribute="candidateForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+           <%--  <pre  class="prettyprint"  style="font-family: sans-serif;font-size:12px;margin-top: 0px;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>
+             
+            <form:form  id="candidateForm" name="candidateForm" modelAttribute="candidateForm" 
+           cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"
+              method="post" action="">
+               
              <form:hidden path="mode"/>
             <form:hidden path="missCandidate.mcaId" id="mcaId"/>
             <form:hidden path="mcaIdArray" id="mcaIdArray"/>
@@ -247,6 +257,7 @@ function doAction(mode,id){
 	    				
 	    					</table> 
 	    					</form:form>
+	    				<!-- 	</fieldset> -->
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="50%">
@@ -260,7 +271,7 @@ function doAction(mode,id){
 	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doSearch('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a></td>
 	    					</tr>
 	    					</table> 
-		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
@@ -322,6 +333,6 @@ function doAction(mode,id){
           	</tr> -->
         	</tbody>
       </table>
-      
-      </fieldset>
+     <!--  </pre> -->
+      </fieldset> 
   

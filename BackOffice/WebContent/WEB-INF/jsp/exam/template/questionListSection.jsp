@@ -64,7 +64,7 @@ function loadQuestion(_url){
 <div id="dialog-confirm-Question-Delete" title="Delete Question" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Question ?
 </div>
-			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm" cssClass="well"  method="post" action="">
+			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm"  method="post" action="">
 			<strong>Question List</strong>
     				<div>${testForm.missExam.meName}</div>
     		<form:hidden path="mode"/>
@@ -88,7 +88,7 @@ function loadQuestion(_url){
 	    					</tr>
 	    					</table> 
     		<div align="right"></div>	
-    	 <table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+    	 <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class">Order</div></th>

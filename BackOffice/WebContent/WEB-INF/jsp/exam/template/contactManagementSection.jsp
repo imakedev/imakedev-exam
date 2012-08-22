@@ -120,7 +120,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     <strong>${message}</strong> 
     </div>
  <fieldset style="font-family: sans-serif;"> 
-	 <form:form  id="contactForm" name="contactForm" modelAttribute="contactForm" cssClass="well"  method="post" action="">
+	 <form:form  id="contactForm" name="contactForm" modelAttribute="contactForm"  method="post" action="">
 			<!--  <form class="well"> -->
 			  <input type="hidden" value="${contactForm.missContact.mcontactRef}" id="maId"/>
 			  <input type="hidden" value="${contactForm.missContact.mcontactType}" id="mcontactType"/>
@@ -130,7 +130,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 			  <form:hidden path="missContact.mcontactPicturePath" id="mcontactPicturePath" />
 			   
 			  <fieldset style="font-family: sans-serif;">   
-			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+			 <!--  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Contct Point Profile</strong></td>
@@ -262,7 +262,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     				
     			</c:if> --%>
     			</table>
-    			</pre>
+    			<!-- </pre> -->
     			</fieldset>
     			<!-- </form> -->
 			  </form:form> 

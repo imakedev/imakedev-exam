@@ -113,12 +113,38 @@ function doAction(action,formID,sectionID){
 		    appendContent(data);
 		});
   }
-
+function _getTheme(obj){ 
+	$.get("company/theme/${companyForm.missAccount.maId}/"+obj.value, function(data) {
+		
+		 	var _data = jQuery.parseJSON(data);		
+		 //   alert($("#_navi_element"))
+		 //	  alert(_data.mtLogo);
+		 //   alert($("#"))
+		 
+		  $("#_navi_element").css("background-color",_data.mtBgColor );
+		 	$("body").css("background-image", "url("+_path+"resources/images/"+_data.mtLogo+")");
+			$("#s2").attr("src", _path+"resources/images/"+_data.mtSamePlePicture);
+			 
+			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-5").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			 
+			 
+	});
+}
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff;
+} 
+</style>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>
+  <fieldset style="font-family: sans-serif;">  
    <input type="hidden" id="_maId" name="_maId" value="${companyForm.missAccount.maId}"/>
    <input type="hidden" id="_company_section" name="_company_section" value="${companyForm.missAccount.section}"/>
             <div id="tabs">
@@ -158,12 +184,12 @@ function doAction(action,formID,sectionID){
 			</form:form>
 			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_account','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			    </div> --%>
-			<div id="tabs-2">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
-			<form:form  id="companyForm_profile" name="companyForm_profile" modelAttribute="companyForm" cssClass="well"  method="post" action="">
+			<form:form  id="companyForm_profile" name="companyForm_profile" modelAttribute="companyForm"  method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Profile</strong></h6> 
-	       <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+	       <!-- <pre style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Company Profile</strong></td>
@@ -220,7 +246,7 @@ function doAction(action,formID,sectionID){
     				</tr>
     				 
     			</table>
-    				</pre>
+    				<!-- </pre> -->
     			</fieldset>
 		<!-- 	</form>
 			<form class="well"> -->
@@ -292,10 +318,10 @@ function doAction(action,formID,sectionID){
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_profile','5')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
-			<div id="tabs-3">
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
     		
     			</div>
-    			<div id="tabs-3_1">
+    			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
     		 <%--   <fieldset style="font-family: sans-serif;">   
            <form:form  id="companyForm_role" name="companyForm_role" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
             <form:hidden path="mode"/>
@@ -346,12 +372,13 @@ function doAction(action,formID,sectionID){
  --%>
     			</div>
     			
-			<div id="tabs-4">
+			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 		
 			</div>
-			<div id="tabs-5">
+			<div id="tabs-5" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
-			<form:form  id="companyForm_customize" name="companyForm_customize" modelAttribute="companyForm" cssClass="well"  method="post" action="">
+			<form:form  id="companyForm_customize" name="companyForm_customize" modelAttribute="companyForm" 
+			  method="post" action="">
 			    <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Customize</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
@@ -396,6 +423,34 @@ function doAction(action,formID,sectionID){
     				</tr>
     				</sec:authorize>
     				<tr valign="top">
+    					<td width="25%">Theme:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					
+    					<form:select path="missAccount.missTheme.mtId" onchange="_getTheme(this)">
+    					  <form:options items="${missThemes}" itemLabel="mtName" itemValue="mtId"></form:options>
+    						<%-- <form:option value="1">Theme 1</form:option>
+							<form:option value="2">Theme 2</form:option> --%>
+    					</form:select>
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%"> </td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<img id="s2" width="350" height="66" src="<c:url value='/resources/images/${companyForm.missAccount.missTheme.mtSamePlePicture}'/>"/>
+    				 </td>
+    					 <td width="25%">&nbsp;
+    					 <!-- <input type="button" class="btn" value="Apply"/> -->
+    					 </td>
+    				</tr>
+    				<%-- 
+    				<tr valign="top">
     					<td width="25%">Theme Color:</td>
     					<td width="50%" colspan="2">
     					<form:select path="missAccount.maCustomizeHeadColor">  
@@ -422,6 +477,7 @@ function doAction(action,formID,sectionID){
     					</form:select></td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
+    				--%>
     				<tr>
     					<td width="100%" colspan="4"><strong>Response Candidate</strong></td>
     				</tr>
@@ -491,3 +547,4 @@ function doAction(action,formID,sectionID){
 			</div>
 			
 		</div>
+		</fieldset>
