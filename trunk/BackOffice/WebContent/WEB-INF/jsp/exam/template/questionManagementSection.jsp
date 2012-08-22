@@ -174,12 +174,17 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 	// CKEDITOR.dialog.getCurrent().hide();
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
     </div>
  <fieldset style="font-family: sans-serif;"> 
-<form:form  id="testForm_questionList" name="testForm_questionList" modelAttribute="testForm" cssClass="well"  method="post" action="">
+<form:form  id="testForm_questionList" name="testForm_questionList" modelAttribute="testForm"   method="post" action="">
 			<form:hidden path="modeQuestion"/>
             <form:hidden path="missQuestion.mqId"/>
             <form:hidden path="mcIdArray"/>
@@ -271,7 +276,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 </form:form>
 			<div> Choices:</div>
 			
-			<table id="dataTable" class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
+			<table id="dataTable" class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class">Order</div></th>

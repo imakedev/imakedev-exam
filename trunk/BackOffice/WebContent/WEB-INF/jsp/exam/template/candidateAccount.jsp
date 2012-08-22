@@ -69,11 +69,11 @@ function doAction(action,formID,sectionID){
 				<li><a href="#tabs-1">Account</a></li>
 				<li><a href="#tabs-2">Profile</a></li>
 			</ul>
-			<div id="tabs-1">
+			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
-			<form:form  id="candidateForm_account" name="candidateForm_account" modelAttribute="candidateForm" cssClass="well"  method="post" action="">
+			<form:form  id="candidateForm_account" name="candidateForm_account" modelAttribute="candidateForm"  method="post" action="">
 			 <form:hidden path="mode"></form:hidden>
-			  <fieldset style="font-family: sans-serif;">   
+			  <!-- <fieldset style="font-family: sans-serif;"> -->   
 	      <h6><strong>Candidate - Account</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
    		 			<tr>
@@ -130,7 +130,7 @@ function doAction(action,formID,sectionID){
     				</tr>
     				 
     			</table>    
-    			</fieldset>			
+    			<!-- </fieldset>	 -->		
 			</form:form>
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','candidateForm_account','0')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a>&nbsp;
 			<%--
@@ -138,13 +138,17 @@ function doAction(action,formID,sectionID){
 			 --%>
 			<a class="btn btn-info"  onclick="doReactivate('action','candidateForm_account','2')"><i class="icon-refresh icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Reactivate</span></a>&nbsp;</div>
 			    </div>
-			<div id="tabs-2">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
-			<form:form  id="candidateForm_profile" name="candidateForm_profile" modelAttribute="candidateForm" cssClass="well"  method="post" action="">
-			  <fieldset style="font-family: sans-serif;">   
+			<form:form  id="candidateForm_profile" name="candidateForm_profile" modelAttribute="candidateForm"    method="post" action="">
+			 <!--  <fieldset style="font-family: sans-serif;">    -->
 	      <h6><strong>Candidate - Profile</strong></h6> 
-	      <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+	      
+	   <!--    <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
+			    	<tr>
+    					<td width="100%" colspan="3"><strong> </strong></td>
+    				</tr>
 			    	<tr valign="top">
     					<td width="25%">Account Type:</td>
     					<td width="50%" colspan="2">
@@ -154,11 +158,12 @@ function doAction(action,formID,sectionID){
     					 <td width="25%">&nbsp;</td>
     				</tr>
     			</table>
-    			</pre>
-    			</fieldset>
+    			<br></br>
+    			<!-- </pre> -->
+    			<!-- </fieldset> -->
 			<!-- </form> -->
 		<!-- 	<form class="well"> -->
-		<pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
+		<!-- <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Candidate Profile</strong></td>
@@ -262,7 +267,7 @@ function doAction(action,formID,sectionID){
     				</tr>
     				 
     			</table>
-    			</pre>
+    		<!-- 	</pre> -->
 			</form:form>
 			
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->

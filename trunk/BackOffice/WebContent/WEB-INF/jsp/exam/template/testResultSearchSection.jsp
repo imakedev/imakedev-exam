@@ -88,7 +88,7 @@ function doAction(mode,id){
             	<td>?</td>            	
             	<td>?</td> 
             	<td>?</td>
-            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy" value="${missTestResult.mtrTestDate}" /></td>
+            	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${missTestResult.mtrStartTime}" /></td>
             	<td>&nbsp;<a onclick="loadDynamicPage('result/report/')">?</a></td>
             	<td>&nbsp;<a onclick="loadDynamicPage('result/response/1')">?</a></td>
           	</tr>

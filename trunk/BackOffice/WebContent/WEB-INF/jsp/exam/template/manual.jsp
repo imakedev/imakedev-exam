@@ -67,8 +67,15 @@ function doAction(mode,id){
 	
 } */
 </script> 
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
+ 
 	    <fieldset style="font-family: sans-serif;">  
-		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px;width: 100%">
+		 <table class="table table-striped table-bordered table-condensed"  border="1" style="font-size: 12px;width: 100%;"> 
+		<!-- <table  border="1" style="font-size: 12px;width: 100%;"> -->
         	<thead>
           		<tr>
             		<th width="100%"><div class="th_class">Manual Series</div></th>            		 

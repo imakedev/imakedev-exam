@@ -54,11 +54,16 @@ function doRefill(){
 	});
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>
-<form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm" cssClass="well"  method="post" action="">
+<form:form  id="companyForm_unit" name="companyForm_unit" modelAttribute="companyForm"   method="post" action="">
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Unit</strong></h6> 
 			   <div>
@@ -93,7 +98,7 @@ function doRefill(){
     			 </fieldset>
     			 </form:form>
     			<div>
-    			 <table class="table table-striped table-bordered table-condensed" border="0" style="font-size: 12px">
+    			 <table class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="20%"><div class="th_class">Series</div></th> 

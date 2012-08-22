@@ -121,6 +121,11 @@ function goActionRole(_mode){
 		});
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
 <div id="dialog-confirmDelete" title="Delete Role" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Role ?
 </div>
@@ -134,7 +139,8 @@ function goActionRole(_mode){
     <strong>${message}</strong> 
   </div>
   <fieldset style="font-family: sans-serif;">   
-           <form:form  id="roleForm" name="roleForm" modelAttribute="roleForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+           <%-- <form:form  id="roleForm" name="roleForm" modelAttribute="roleForm" cssStyle="border:2px solid #DDD" method="post" action=""> --%>
+           <form:form  id="roleForm" name="roleForm" modelAttribute="roleForm"  method="post" action="">
                <form:hidden path="mode"/>
                <form:hidden path="roleName"/>
 	 
@@ -160,7 +166,7 @@ function goActionRole(_mode){
 	    					</table> 
 	    					
 	    					 
-		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>

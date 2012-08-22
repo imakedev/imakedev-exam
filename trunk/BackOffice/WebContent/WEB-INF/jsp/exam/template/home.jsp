@@ -77,6 +77,11 @@ function openDialog(todo_id,todo_ref){
 	});
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
 <!--Body content-->
 <!-- <div class="alert alert-info">
     <button class="close" data-dismiss="alert">×</button>
@@ -100,7 +105,8 @@ function openDialog(todo_id,todo_ref){
 </div>
   <fieldset style="font-family: sans-serif;"> 
 	   <!--  <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
-	   <form   class="well" style="border:2px solid #DDD" >
+	  <!--  <form   class="well" style="border:2px solid #DDD;background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)" > -->
+	   <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
 	   <!--   <fieldset style="font-family: sans-serif;">  -->  
 	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>MC - Home</strong></h3>  
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
@@ -124,8 +130,9 @@ function openDialog(todo_id,todo_ref){
 	    					<input type="hidden" value="${pageObj.pageSize}" id="pageSize"/>
 	    					</td>
 	    					</tr>
-	    					</table> 
-<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+	    					</table>  
+  <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
+<!-- <table   border="1" style="font-size: 12px;width:100%" > -->
         <thead>
           <tr>
             <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>

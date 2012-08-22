@@ -93,6 +93,42 @@ function getPhoto(_id,_hotlink){
 		$("#miss_photo").attr("src","getfile/missAccount/"+_id+"/"+_hotlink)
 	
 }
+ 
+function _getTheme(obj){
+	// alert(obj.value);
+	//alert($("body").css("background-image"));
+	
+//	$("body").css("background-image","url(/MISSExamBackOffice/resources/images/body-theme1.gif)");
+/* /usr/local/data/BACK_UP/Work/Server/apache-tomcat-7.0.27/webapps/MISSExamBackOffice/resources/images/gray.jpg
+  /usr/local/data/BACK_UP/Work/Server/apache-tomcat-7.0.27/webapps/MISSExamBackOffice/resources/images/blue1.jpg
+  */
+  <%-- 
+   if(obj.value=='1'){
+		$("body").css("background-image","url(<c:url value='/resources/images/body-theme4.gif'/>)");
+		$("#s2").attr("src","<c:url value='/resources/images/gray.jpg'/>");
+   }else if(obj.value=='2'){
+	   $("body").css("background-image","url(<c:url value='/resources/images/body-theme2.gif'/>)");
+	   $("#s2").attr("src","<c:url value='/resources/images/blue1.jpg'/>");
+   }
+   --%>
+	$.get("miss/theme/${missForm.missAccount.maId}/"+obj.value, function(data) {
+		
+		 	var _data = jQuery.parseJSON(data);		
+		 //   alert($("#_navi_element"))
+		 //	  alert(_data.mtLogo);
+		 //   alert($("#"))
+		 
+		 $("#_navi_element").css("background-color",_data.mtBgColor );
+			$("body").css("background-image", "url("+_path+"resources/images/"+_data.mtLogo+")");
+			$("#s2").attr("src", _path+"resources/images/"+_data.mtSamePlePicture);
+			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			
+			 
+	});
+}
 function doAction(action,formID,sectionID){
 	/* $("#mode").val(mode);
 	if(mode!='search'){
@@ -115,6 +151,11 @@ function doAction(action,formID,sectionID){
 		});
   }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff;
+} 
+</style>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
@@ -157,14 +198,17 @@ function doAction(action,formID,sectionID){
 			</form:form>
 				<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_account','0')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			  </div> --%>
-			<div id="tabs-2">
-		 <form:form  id="missForm_profile" name="missForm_profile" modelAttribute="missForm" method="post" cssClass="well" action="">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+		 <form:form  id="missForm_profile" name="missForm_profile" modelAttribute="missForm" method="post"
+		  action="">
+		 
 		<!--   <form class="well"> -->
 		
 			  <fieldset style="font-family: sans-serif;">  
 			    <h6><strong>MissConsult - Profile</strong></h6>  
-			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px">
-	   
+			   <%-- 
+			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px;margin-top: 0px;border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+	    --%>
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
     					<td width="100%" colspan="4"><strong>Company Profile</strong></td>
@@ -221,7 +265,9 @@ function doAction(action,formID,sectionID){
     				</tr>
     				 
     			</table>
+    			<%--
     			</pre>
+    			 --%>
     			  </fieldset>
     			  <!-- </form> -->
 			<%-- </form:form> --%>
@@ -301,20 +347,26 @@ function doAction(action,formID,sectionID){
 			 --%>
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_profile','1')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
-			<div id="tabs-3">
+			<!-- <div id="tabs-3"> -->
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+				
 			<!-- <form class="well"> -->
     			
 			
 			</div>
-			<div id="tabs-3_1">
+			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
     			
 			
 			</div>
 			
-			<div id="tabs-4">
+			<!-- <div id="tabs-4" style="background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)"> -->
+			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			  
 				<!-- <form class="well"> -->
-				 <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm" cssClass="well"  method="post" action="">
+				<%--  <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm" cssClass="well"  method="post" action=""> --%>
+				 <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm"   method="post" action=""> 
+				
 			  <fieldset style="font-family: sans-serif;">   
 	      <h6><strong>MissConsult - Customize</strong></h6> 
 			    <table border="0" width="100%" style="font-size: 12px">
@@ -336,6 +388,7 @@ function doAction(action,formID,sectionID){
     					
     					 <td width="25%">&nbsp;</td>
     				</tr>
+    				<%--
     				<tr valign="top">
     					<td width="25%">Theme Color:</td>
     					<td width="50%" colspan="2">
@@ -356,12 +409,39 @@ function doAction(action,formID,sectionID){
     				<tr valign="top">
     					<td width="25%">Background:</td>
     					<td width="50%" colspan="2">
-    					<!-- <img src=""/> -->
     					<form:select path="missAccount.maBackgroundColor">
     						<form:option value="240,240,240">Gray</form:option>
 							<form:option value="253,253,253">White</form:option>
     					</form:select></td>
     					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				 --%>
+    				<tr valign="top">
+    					<td width="25%">Theme:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					
+    					<form:select path="missAccount.missTheme.mtId" onchange="_getTheme(this)">
+    					  <form:options items="${missThemes}" itemLabel="mtName" itemValue="mtId"></form:options>
+    						<%-- <form:option value="1">Theme 1</form:option>
+							<form:option value="2">Theme 2</form:option> --%>
+    					</form:select>
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%"> </td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> --> 
+    					<img id="s2" width="350" height="66" src="<c:url value='/resources/images/${missForm.missAccount.missTheme.mtSamePlePicture}'/>"/>
+    				 </td>
+    					 <td width="25%">&nbsp;
+    					 <!-- <input type="button" class="btn" value="Apply"/> -->
+    					 </td>
     				</tr>
     				<tr>
     					<td width="100%" colspan="4"><strong>Response Candidate</strong></td>

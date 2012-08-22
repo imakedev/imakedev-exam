@@ -117,6 +117,12 @@ function loadContact(_url){
 		}
 	}
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
+
 <div id="dialog-confirm-Contact-Delete" title="Delete Contact" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Contact ?
 </div>
@@ -141,7 +147,7 @@ function loadContact(_url){
 	    					</td>
 	    					</tr>
 	    					</table> 
-		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px;background-color:#F9F9F9;">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="mcontactIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>

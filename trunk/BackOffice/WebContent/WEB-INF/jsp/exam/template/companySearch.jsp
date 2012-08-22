@@ -202,6 +202,11 @@ function doAction(mode,id){
 		});
 }
 </script>
+<style>
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+</style>
  <div id="dialog-confirmDelete" title="Delete Company" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Company ?
 </div>
@@ -227,7 +232,8 @@ function doAction(mode,id){
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
          <!--  <form class="well" style="border:2px solid #DDD"> -->
-           <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+           <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action=""> 
+          <%--  <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD;" method="post" action=""> --%>
             <form:hidden path="mode"/>
             <form:hidden path="missAccount.maId" id="maId"/>
             <form:hidden path="maIdArray" id="maIdArray"/>
