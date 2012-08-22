@@ -7,6 +7,8 @@ package th.co.aoe.makedev.missconsult.exam.service;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
@@ -26,6 +28,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
 import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTheme;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
@@ -291,5 +294,7 @@ public interface MissExamService
     
     public abstract int getQuestionOrdered(Long meId);
     public abstract int updateStatusMissTestResult(Long mtrId,String column,String value);
-    
+  
+    public abstract List listMissTheme(MissTheme missTheme);
+    public abstract MissTheme findMissThemeById(Long maId,Long mtId) ;
 }
