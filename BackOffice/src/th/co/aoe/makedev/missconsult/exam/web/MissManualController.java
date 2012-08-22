@@ -19,6 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"manualForm","UserMissContact"})
 public class MissManualController {
 	   private static Logger logger = Logger.getRootLogger();
+	   private static int PAGE_SIZE=100;
 	   @Autowired
 	    private MissExamService missExamService;
 	 /* @Autowired
@@ -36,7 +37,7 @@ public class MissManualController {
 	    	  model.addAttribute("missSeries",missSeries);*/
 	    	 
 	    	  ManualForm manualForm = new ManualForm();
-	    	  manualForm.getMissManual().getPagging().setPageSize(100);
+	    	  manualForm.getMissManual().getPagging().setPageSize(PAGE_SIZE);
 	    	 
 	    	  if(model.containsAttribute("UserMissContact")){
 	          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
@@ -50,7 +51,7 @@ public class MissManualController {
 	    	  
 	         VResultMessage vresultMessage = missExamService.searchMissManual(manualForm.getMissManual());
 	         model.addAttribute("missManuals", vresultMessage.getResultListObj());
-	         manualForm.getPaging().setPageSize(50);
+	         manualForm.getPaging().setPageSize(PAGE_SIZE);
 	         manualForm.setPageCount(IMakeDevUtils.calculatePage(manualForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
 	       
 	        model.addAttribute("manualForm", manualForm);

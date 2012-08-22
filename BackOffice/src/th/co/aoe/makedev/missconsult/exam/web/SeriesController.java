@@ -37,7 +37,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"seriesForm"})
 public class SeriesController
 {
-
+	private static int PAGE_SIZE=20;
   /*  @Autowired
     public SeriesController(MissExamService missExamService)
     {
@@ -50,10 +50,10 @@ public class SeriesController
     {
         model.addAttribute("missExams", missExamService.listMissExam());
         SeriesForm seriesForm = new SeriesForm();
-        seriesForm.getMissSery().getPagging().setPageSize(3);
+        seriesForm.getMissSery().getPagging().setPageSize(PAGE_SIZE);
         VResultMessage vresultMessage = missExamService.searchMissSery(seriesForm.getMissSery());
         model.addAttribute("missSeries", vresultMessage.getResultListObj());
-        seriesForm.getPaging().setPageSize(3);
+        seriesForm.getPaging().setPageSize(PAGE_SIZE);
         seriesForm.setPageCount(IMakeDevUtils.calculatePage(seriesForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("seriesForm", seriesForm);
         return "exam/template/seriesSearch";
@@ -87,7 +87,7 @@ public class SeriesController
         model.addAttribute("missExams", missExamService.listMissExam());
         seriesForm.setMissExam_selectbox(missExam_selectboxes);
         seriesForm.getMissSery().setMeIds(missExam_selectboxes);
-        seriesForm.getPaging().setPageSize(3);
+        seriesForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=seriesForm.getMissSery().getPagging()=")).append(seriesForm.getMissSery().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=seriesForm.getPaging()=")).append(seriesForm.getPaging()).toString());
         seriesForm.getMissSery().setPagging(seriesForm.getPaging());

@@ -30,6 +30,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
 import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTheme;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
@@ -1410,6 +1411,26 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getUpdateRecord().intValue();
+	}
+	@Override
+	public List listMissTheme(MissTheme missTheme) {
+		// TODO Auto-generated method stub
+		missTheme.setServiceName(ServiceConstant.MISS_THEME_LIST);
+	    VResultMessage resultMessage = postMessage(missTheme, missTheme.getClass().getName(), "missTheme", true);
+	    return resultMessage.getResultListObj();
+	}
+	@Override
+	public MissTheme findMissThemeById(Long maId,Long mtId) {
+		// TODO Auto-generated method stub
+		MissTheme missTheme = new MissTheme();
+		missTheme.setMtId(mtId);
+		missTheme.setMaId(maId);
+		missTheme.setServiceName(ServiceConstant.MISS_THEME_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(missTheme, missTheme.getClass().getName(), "missTheme", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (MissTheme)resultMessage.getResultListObj().get(0);
+	        else
+	        	return null;
 	}
 
 

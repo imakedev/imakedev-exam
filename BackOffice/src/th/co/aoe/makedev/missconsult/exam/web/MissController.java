@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
@@ -26,10 +27,13 @@ import th.co.aoe.makedev.missconsult.exam.form.MissForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissTheme;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value={"/miss"})
-@SessionAttributes(value={"missForm","contactForm"})
+@SessionAttributes(value={"missForm","contactForm","UserMissContact"})
 public class MissController
 {
 	private String account_type="1";
@@ -49,12 +53,19 @@ public class MissController
         else
             missForm = new MissForm();
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(1L));
+        if(missAccount.getMissTheme()==null){
+        	MissTheme missTheme =new MissTheme();
+        	missTheme.setMtId(1l);
+        	missAccount.setMissTheme(missTheme);
+        }
         missForm.setMissAccount(missAccount);
       /*  if(missAccount != null && missAccount.getMaContactBirthDate() != null)
             missForm.setMaContactBirthDate(format1.format(missAccount.getMaContactBirthDate()));*/
         model.addAttribute("display", "display: none");
         missForm.getMissAccount().setSection("0");
         model.addAttribute("missForm", missForm);
+    	List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	model.addAttribute("missThemes",missThemes);
         return "exam/template/missAccount";
     }
 
@@ -76,11 +87,18 @@ public class MissController
         missExamService.updateMissAccount(missForm.getMissAccount());
         message = "Update success !";
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(1L));
+        if(missAccount.getMissTheme()==null){
+        	MissTheme missTheme =new MissTheme();
+        	missTheme.setMtId(1l);
+        	missAccount.setMissTheme(missTheme);
+        }
         missForm.setMissAccount(missAccount);
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         missForm.getMissAccount().setSection(section);
         model.addAttribute("missForm", missForm);
+        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	model.addAttribute("missThemes",missThemes);
         return "exam/template/missAccount";
     }
 
@@ -206,6 +224,19 @@ public class MissController
         model.addAttribute("contactForm", contactForm);
         
         return "exam/template/contactManagementSection";
+    }
+    @RequestMapping(value={"/theme/{maId}/{mtId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    public String getTheme(@PathVariable Long maId,@PathVariable Long mtId, Model model)
+    {
+        MissTheme missTheme = missExamService.findMissThemeById(maId,mtId);
+        logger.debug("xxxxxxxxxxx=model.containsAttribute(\"UserMissContact\")"+model.containsAttribute("UserMissContact"));
+        if(model.containsAttribute("UserMissContact")){
+        	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+        	missContact.setMissTheme(missTheme); 
+        }
+        Gson gson=new Gson();
+		return gson.toJson(missTheme);
     }
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static Logger logger = Logger.getRootLogger();
