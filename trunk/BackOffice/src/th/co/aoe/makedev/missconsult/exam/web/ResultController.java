@@ -59,6 +59,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"resultForm"})
 public class ResultController
 {
+	private static int PAGE_SIZE=20;
 	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
 	  private static String MAIL_SERVER = "";
@@ -102,7 +103,7 @@ public class ResultController
     	  model.addAttribute("missSeries",missSeries);
     	 
     	  ResultForm resultForm = new ResultForm();
-    	  resultForm.getMissTestResult().getPagging().setPageSize(3);
+    	  resultForm.getMissTestResult().getPagging().setPageSize(PAGE_SIZE);
     	 
     	  if(missSeries!=null && missSeries.size()>0){
           		resultForm.getMissTestResult().setMsId(((MissSery)missSeries.get(0)).getMsId());
@@ -121,7 +122,7 @@ public class ResultController
         	resultForm.getMissTestResult().setMissCandidate(missCandidate);
          VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
          model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
-          resultForm.getPaging().setPageSize(3);
+          resultForm.getPaging().setPageSize(PAGE_SIZE);
           resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
          /* List<String> axisHeaders=new ArrayList<String>(4);
           axisHeaders.add("Fa");
@@ -200,7 +201,7 @@ public class ResultController
         }*/
        // resultForm.setMissExam_selectbox(missExam_selectboxes);
        // resultForm.getMissSery().setMeIds(missExam_selectboxes);
-        resultForm.getPaging().setPageSize(3);
+        resultForm.getPaging().setPageSize(PAGE_SIZE);
         resultForm.getMissTestResult().setPagging(resultForm.getPaging());
         VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
       

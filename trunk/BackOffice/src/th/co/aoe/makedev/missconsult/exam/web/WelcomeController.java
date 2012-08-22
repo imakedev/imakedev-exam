@@ -58,6 +58,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"UserMissContact"})
 public class WelcomeController
 {
+	private static int PAGE_SIZE=20;
 	 private static String MAIL_SERVER = "";
 	  private static String MAIL_PROTOCAL = "";
 	  private static String MAIL_PORT="";
@@ -97,7 +98,7 @@ public class WelcomeController
             pageNo = Integer.parseInt(pageNoStr);
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
-        page.setPageSize(20);
+        page.setPageSize(PAGE_SIZE);
         MissTodo missTodo = new MissTodo();
         missTodo.setPagging(page);
         if(model.containsAttribute("UserMissContact")){
@@ -135,7 +136,7 @@ public class WelcomeController
          localeResolver.setLocale(request, response,
              (Locale) localeEditor.getValue());
     	}
-    	System.out.println("into getNewForm "+LocaleContextHolder.getLocale().getDisplayLanguage());
+    	//System.out.println("into getNewForm "+LocaleContextHolder.getLocale().getDisplayLanguage());
     	logger.error("into init local "+LocaleContextHolder.getLocale());
     	//locale.getDisplayLanguage()
         int pageNo = 1;
@@ -143,7 +144,7 @@ public class WelcomeController
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
        
-        page.setPageSize(20);
+        page.setPageSize(PAGE_SIZE);
         MissTodo missTodo = new MissTodo();
         MissContact missContact= missExamService.findMissContactByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
@@ -208,7 +209,7 @@ public class WelcomeController
          
           Pagging page = new Pagging();
           page.setPageNo(pageNo);
-          page.setPageSize(20);
+          page.setPageSize(PAGE_SIZE);
           missTodo.setMtodoId(null);
           missTodo.setMtodoResponse(null);
          // MissTodo missTodo = new MissTodo();

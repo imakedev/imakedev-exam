@@ -31,16 +31,17 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissTheme;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value={"/company"})
-@SessionAttributes(value={"companyForm","contactForm"})
+@SessionAttributes(value={"companyForm","contactForm","UserMissContact"})
 public class CompanyController
 {
-
+	private static int PAGE_SIZE=20;
   /*  @Autowired
     public CompanyController(MissExamService missExamService)
     {
@@ -55,12 +56,12 @@ public class CompanyController
         model.addAttribute("missExams", missExamService.listMissExam());
         CompanyForm companyForm = null;
         companyForm = new CompanyForm();
-        companyForm.getPaging().setPageSize(3);
+        companyForm.getPaging().setPageSize(PAGE_SIZE);
         companyForm.getMissAccount().setPagging(companyForm.getPaging());
         companyForm.getMissAccount().setMaType("0");
         VResultMessage vresultMessage = missExamService.searchMissAccount(companyForm.getMissAccount());
         model.addAttribute("missAccounts", vresultMessage.getResultListObj());
-        companyForm.getPaging().setPageSize(3);
+        companyForm.getPaging().setPageSize(PAGE_SIZE);
         companyForm.setPageCount(IMakeDevUtils.calculatePage(companyForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("companyForm", companyForm);
@@ -99,7 +100,7 @@ public class CompanyController
         model.addAttribute("missExams", missExamService.listMissExam());
         companyForm.setMissExam_selectbox(missExam_selectboxes);
         companyForm.getMissAccount().setMeIds(missExam_selectboxes);
-        companyForm.getPaging().setPageSize(3);
+        companyForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=companyForm.getMissAccount().getPagging()=")).append(companyForm.getMissAccount().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=companyForm.getPaging()=")).append(companyForm.getPaging()).toString());
         companyForm.getMissAccount().setPagging(companyForm.getPaging());
@@ -139,6 +140,13 @@ public class CompanyController
        Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
        Long totalUnit= missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l; 
        missAccount.setMaAvailableUnit(totalUnit - usedUnit);
+       
+       if(missAccount.getMissTheme()==null){
+       	MissTheme missTheme =new MissTheme();
+       	missTheme.setMtId(1l);
+       	missAccount.setMissTheme(missTheme);
+       }
+      
         companyForm.setMissAccount(missAccount);
         model.addAttribute("companyForm", companyForm);
        // model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.valueOf(Long.parseLong(maId))));
@@ -150,6 +158,8 @@ public class CompanyController
 			}
         }*/
        // model.addAttribute("roleTypes", roleTypes);
+        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	model.addAttribute("missThemes",missThemes);
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
@@ -245,9 +255,18 @@ public class CompanyController
             companyForm = (CompanyForm)model.asMap().get("companyForm");
         else
             companyForm = new CompanyForm();
-        companyForm.setMissAccount(new MissAccount());
+        
+        MissAccount missAccount =new MissAccount();
+        if(missAccount.getMissTheme()==null){
+        	MissTheme missTheme =new MissTheme();
+        	missTheme.setMtId(1l);
+        	missAccount.setMissTheme(missTheme);
+        }
+        companyForm.setMissAccount(missAccount);
         companyForm.setMode("new");
         model.addAttribute("display", "display: none");
+        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	model.addAttribute("missThemes",missThemes);
         return "exam/template/companyAccount";
     }
 
@@ -288,11 +307,18 @@ public class CompanyController
                 message = "Update success !";
             }
         MissAccount missAccount = missExamService.findMissAccountById(id);
+        if(missAccount.getMissTheme()==null){
+        	MissTheme missTheme =new MissTheme();
+        	missTheme.setMtId(1l);
+        	missAccount.setMissTheme(missTheme);
+        }
         companyForm.setMissAccount(missAccount);
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         companyForm.getMissAccount().setSection(section);
         model.addAttribute("companyForm", companyForm);
+        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	model.addAttribute("missThemes",missThemes);
         return "exam/template/companyAccount";
     }
 
@@ -440,6 +466,19 @@ public class CompanyController
         model.addAttribute("contactForm", contactForm);
         
         return "exam/template/contactManagementSection";
+    }
+    @RequestMapping(value={"/theme/{maId}/{mtId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    public String getTheme(@PathVariable Long maId,@PathVariable Long mtId, Model model)
+    { 
+        MissTheme missTheme = missExamService.findMissThemeById(maId,mtId);
+        if(maId!=null && maId.intValue()!=1)
+        if(model.containsAttribute("UserMissContact")){
+        	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+        	missContact.setMissTheme(missTheme); 
+        }
+        Gson gson=new Gson();
+		return gson.toJson(missTheme);
     }
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static Logger logger = Logger.getRootLogger();

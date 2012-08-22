@@ -38,7 +38,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"testForm"})
 public class TestController
 {
-
+	private static int PAGE_SIZE=20;
     /*@Autowired
     public TestController(MissExamService missExamService)
     {
@@ -48,7 +48,7 @@ public class TestController
     private List getGroup(){
     Pagging page = new Pagging();
     page.setPageNo(1);
-    page.setPageSize(20);
+    page.setPageSize(PAGE_SIZE);
     MissExamGroup missExamGroup = new MissExamGroup();
     missExamGroup.setPagging(page);
     VResultMessage vresultMessage = missExamService.searchMissExamGroup(missExamGroup);
@@ -66,10 +66,10 @@ public class TestController
         model.addAttribute("missExamGroups", getGroup());
        
         TestForm testForm = new TestForm();
-        testForm.getMissExam().getPagging().setPageSize(3);
+        testForm.getMissExam().getPagging().setPageSize(PAGE_SIZE);
         VResultMessage  vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
         model.addAttribute("missExams", vresultMessage.getResultListObj());
-        testForm.getPaging().setPageSize(3);
+        testForm.getPaging().setPageSize(PAGE_SIZE);
         testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("testForm", testForm);
         return "exam/template/testSearch";
@@ -109,7 +109,7 @@ public class TestController
        // model.addAttribute("missExams", missExamService.listMissExam());
      /*   testForm.setMissExam_selectbox(missExam_selectboxes);
         testForm.getMissExam().setMeIds(missExam_selectboxes);*/
-        testForm.getPaging().setPageSize(3);
+        testForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=testForm.getMissExam().getPagging()=")).append(testForm.getMissExam().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=testForm.getPaging()=")).append(testForm.getPaging()).toString());
         testForm.getMissExam().setPagging(testForm.getPaging());
@@ -141,10 +141,10 @@ public class TestController
         missexam.setMeId(Long.parseLong(meId));
         missExamService.copyMissExam(missexam);
         TestForm testForm = new TestForm();
-        testForm.getMissExam().getPagging().setPageSize(3);
+        testForm.getMissExam().getPagging().setPageSize(PAGE_SIZE);
         VResultMessage  vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
         model.addAttribute("missExams", vresultMessage.getResultListObj());
-        testForm.getPaging().setPageSize(3);
+        testForm.getPaging().setPageSize(PAGE_SIZE);
         testForm.setPageCount(IMakeDevUtils.calculatePage(testForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("testForm", testForm);
         return "exam/template/testSearch";
@@ -174,7 +174,7 @@ public class TestController
     	testForm.getMissExam().setMeTimeLimit(120l);
     	 missExamService.createEmptyMissExam(testForm.getMissExam());
     	testForm = new TestForm();
-        testForm.getPaging().setPageSize(3);
+        testForm.getPaging().setPageSize(PAGE_SIZE);
         testForm.getMissExam().setPagging(testForm.getPaging());
         VResultMessage vresultMessage = missExamService.searchMissExam(testForm.getMissExam());
      

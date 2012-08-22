@@ -28,7 +28,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @SessionAttributes(value={"missExamForm"})
 public class MissExamController
 {
-
+	private static int PAGE_SIZE=20;
  /*   @Autowired
     public MissExamController(MissExamService missExamService)
     {
@@ -40,10 +40,10 @@ public class MissExamController
     public String init(Model model)
     {
         MissExamForm missExamForm = new MissExamForm();
-        missExamForm.getMissExam().getPagging().setPageSize(3);
+        missExamForm.getMissExam().getPagging().setPageSize(PAGE_SIZE);
         VResultMessage vresultMessage = missExamService.searchMissExam(missExamForm.getMissExam());
         model.addAttribute("missExams", vresultMessage.getResultListObj());
-        missExamForm.getPaging().setPageSize(3);
+        missExamForm.getPaging().setPageSize(PAGE_SIZE);
         missExamForm.setPageCount(IMakeDevUtils.calculatePage(missExamForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("missExamForm", missExamForm);
         return "exam/template/testSearch";
@@ -66,7 +66,7 @@ public class MissExamController
                 missExamForm = (MissExamForm)model.asMap().get("missExamForm");
             else
                 missExamForm = new MissExamForm();
-        missExamForm.getPaging().setPageSize(3);
+        missExamForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=missExamForm.getMissExam().getPagging()=")).append(missExamForm.getMissExam().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=missExamForm.getPaging()=")).append(missExamForm.getPaging()).toString());
         missExamForm.getMissExam().setPagging(missExamForm.getPaging());
