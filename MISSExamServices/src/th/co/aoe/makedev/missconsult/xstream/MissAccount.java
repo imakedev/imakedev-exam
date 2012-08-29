@@ -105,7 +105,10 @@ public class MissAccount extends VServiceXML implements Serializable {
 	
 	@XStreamAlias("maRegisterDate")
 	private Timestamp maRegisterDate;
-	
+	private String maTheme;
+	//bi-directional one-to-one association to MissTheme
+	@XStreamAlias("missTheme")
+	private MissTheme missTheme;
 	private List<MissAccountSeriesMap> missAccountSeriesMapList;
 	private List<MissSery> missSeryList;
 /*	private String maContactPictureHotlink;*/
@@ -421,6 +424,22 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMissSeryList(List<MissSery> missSeryList) {
 		this.missSeryList = missSeryList;
+	}
+
+	public String getMaTheme() {
+		return maTheme;
+	}
+
+	public void setMaTheme(String maTheme) {
+		this.maTheme = maTheme;
+	}
+
+	public MissTheme getMissTheme() {
+		return missTheme;
+	}
+
+	public void setMissTheme(MissTheme missTheme) {
+		this.missTheme = missTheme;
 	}
 	
 }

@@ -61,6 +61,12 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	@XStreamAlias("missSery")
 	private MissSery missSery;
+	
+	@XStreamAlias("missCareerMaster")
+	private MissCareerMaster missCareerMaster; 
+	
+	@XStreamAlias("missIndustryMaster")
+	private MissIndustryMaster missIndustryMaster;
 	private String mcaPictureHotlink;
 	private String mcaPosition;
 	private String mcaTitleType;
@@ -284,6 +290,22 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setMcaPosition(String mcaPosition) {
 		this.mcaPosition = mcaPosition;
+	}
+
+	public MissCareerMaster getMissCareerMaster() {
+		return missCareerMaster;
+	}
+
+	public void setMissCareerMaster(MissCareerMaster missCareerMaster) {
+		this.missCareerMaster = missCareerMaster;
+	}
+
+	public MissIndustryMaster getMissIndustryMaster() {
+		return missIndustryMaster;
+	}
+
+	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
+		this.missIndustryMaster = missIndustryMaster;
 	}
 
 	
