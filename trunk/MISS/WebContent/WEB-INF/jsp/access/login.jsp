@@ -63,13 +63,13 @@ $(document).ready(function() {
             <input type="text" name="j_username" id="name" />        
                         
             <label>Password
-            <span class="small">Min. size 6 chars</span>
+           <!--  <span class="small">Min. size 6 chars</span> -->
             </label>
             <input type="password" name="j_password" id="password" />
             <label>&nbsp;</label>
            <!--   <input name="submit" type="submit" value="Log-in"/> -->
               <button type="submit">Log-in</button>
-            <a href="#">Forget Password?</a>
+         <!--    <a href="#">Forget Password?</a> -->
             <div class="spacer"></div>
             
             </form>

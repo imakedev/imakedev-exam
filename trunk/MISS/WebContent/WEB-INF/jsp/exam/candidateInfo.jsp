@@ -231,6 +231,22 @@ function appendContent(data){
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="10%">Industry Type:</td>
+	    					 <td align="left" width="24%">  
+	    					  <form:select path="missCandidate.missIndustryMaster.mimId" cssStyle="background:#FFFFFF">
+    						<form:options items="${missIndustryMasterList}" itemLabel="mimName" itemValue="mimId"></form:options>
+    					</form:select>
+	    					 </td> 
+	    					<td align="left" width="10%">Career Type:</td>
+	    					<td align="left" width="24%">
+	    					 <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
+    						<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
+    					</form:select>
+	    					</td>
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
 	    					</table>  
 	    					</form:form>
 	     <div align="center">			
