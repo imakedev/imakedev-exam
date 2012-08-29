@@ -78,11 +78,16 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		query.setParameter("maId", transientInstance.getMissAccount().getMaId());
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
 		List<MissAccountSeriesMap> list=query.list();
+		//System.err.println("==========================list===>"+list);
 		if(list!=null && list.size()>0){
 			MissAccountSeriesMap missAccountSeriesMap = list.get(0);
 			masmAvailable=(missAccountSeriesMap.getMasmAvailable()!=null && missAccountSeriesMap.getMasmAvailable().length()>0)?Long.valueOf(missAccountSeriesMap.getMasmAvailable()):0l;
-		
+			//System.err.println("xxxxxxxx 1="+missAccountSeriesMap.getMissSery().getMsSeriesName());
+			//System.err.println("xxxxxxxx 2="+missAccountSeriesMap.getMissAccount().getMaName());
 		}
+		//System.err.println("==========================masmAvailable===>"+masmAvailable.intValue());
+		//System.err.println("==========================msUnitCost===>"+msUnitCost.intValue());
+		
 			//change sery
 			if(masmAvailable.intValue()>=msUnitCost.intValue()){
 				try{
@@ -358,6 +363,8 @@ int result = query.executeUpdate();*/
 			}
 			return returnRecord; 
 		}else if(section.equals("1")){
+			logger.debug("getMissIndustryMaster="+transientInstance.getMissIndustryMaster().getMimId());
+			logger.debug("getMissCareerMaster="+transientInstance.getMissCareerMaster().getMcmId());
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaType =:mcaType ,  " +
 					" missCandidate.mcaCitizenId =:mcaCitizenId ,  " +
@@ -370,7 +377,9 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaPosition =:mcaPosition ,  " + 
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
-					" missCandidate.mcaTitleType =:mcaTitleType    " +
+					" missCandidate.mcaTitleType =:mcaTitleType  ,  " +
+					" missCandidate.missIndustryMaster.mimId =:mimId   , " +
+					" missCandidate.missCareerMaster.mcmId =:mcmId    " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaType", transientInstance.getMcaType());
 			query.setParameter("mcaCitizenId", transientInstance.getMcaCitizenId());
@@ -384,6 +393,8 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
+			query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
+			query.setParameter("mcmId", transientInstance.getMissCareerMaster().getMcmId());
 			
 			return query.executeUpdate();
 		}else if(section.equals("2")){
