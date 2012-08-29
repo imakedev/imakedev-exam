@@ -5,8 +5,10 @@ import java.util.List;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
@@ -42,4 +44,7 @@ public interface MissExamService {
 	 public abstract MissManual findMissManualById(Long long1);
 	 public abstract MissAttach findMissAttachById(String matModule,Long matRef,String hotlink);
 	 public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
+	 
+	 public abstract List<MissCareerMaster> listMissCareerMaster() ;
+	 public abstract List<MissIndustryMaster> listMissIndustryMaster() ;
 }

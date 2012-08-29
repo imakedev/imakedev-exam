@@ -7,8 +7,10 @@ import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
@@ -198,6 +200,34 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 				.getClass().getName(), "missTodo", true);
 		missTodo = (MissTodo) resultMessage.getResultListObj().get(0);
 		return missTodo.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public List<MissCareerMaster> listMissCareerMaster() {
+		// TODO Auto-generated method stub
+		MissCareerMaster missCareerMaster =new MissCareerMaster();
+		missCareerMaster.setServiceName(ServiceConstant.CAREER_MASTER_LIST);
+		VResultMessage resultMessage = postMessage(missCareerMaster, missCareerMaster
+				.getClass().getName(), "missCareerMaster", true);
+		List<MissCareerMaster> missCareerMasters=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missCareerMasters=resultMessage.getResultListObj();
+		} 
+		return missCareerMasters;
+	}
+
+	@Override
+	public List<MissIndustryMaster> listMissIndustryMaster() {
+		// TODO Auto-generated method stub
+		MissIndustryMaster missIndustryMaster =new MissIndustryMaster();
+		missIndustryMaster.setServiceName(ServiceConstant.INDUSTRY_MASTER_LIST);
+		VResultMessage resultMessage = postMessage(missIndustryMaster, missIndustryMaster
+				.getClass().getName(), "missIndustryMaster", true);
+		List<MissIndustryMaster> missIndustryMasters=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missIndustryMasters=resultMessage.getResultListObj();
+		} 
+		return missIndustryMasters;
 	}
 
 }
