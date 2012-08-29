@@ -165,4 +165,26 @@
 		<property name="roleMappingService" ref="roleMappingService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
+	
+	<bean id="missThemeResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissThemeResource"
+		scope="prototype"> 
+		<property name="missThemeService" ref="missThemeService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	
+	<bean id="missCareerMasterResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissCareerMasterResource"
+		scope="prototype"> 
+		<property name="missCareerMasterService" ref="missCareerMasterService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	
+	<bean id="missIndustryMasterResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissIndustryMasterResource"
+		scope="prototype"> 
+		<property name="missIndustryMasterService" ref="missIndustryMasterService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+		
 </beans>
