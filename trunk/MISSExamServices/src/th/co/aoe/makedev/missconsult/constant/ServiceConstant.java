@@ -130,6 +130,10 @@ public class ServiceConstant {
 	public static final String MISS_TEMPLATE_SEARCH = "searchMissTemplate";
 	public static final String MISS_TEMPLATE_FIND_BY_ID = "findMissTemplateById"; 
 	
+	// MISS_THEME 
+	public static final String MISS_THEME_LIST = "listMissTheme"; 
+	public static final String MISS_THEME_FIND_BY_ID = "findMissThemeById";
+	
 	// MISS_TEST
 	public static final String MISS_TEST_SAVE = "saveMissTest";
 	public static final String MISS_TEST_UPDATE = "updateMissTest";
@@ -212,5 +216,12 @@ public class ServiceConstant {
 		public static final String ROLE_TYPE_ITEMS_DELETE ="deleteRoleTypeItems";
 		public static final String ROLE_TYPE_LIST_BY_RC_ID ="listRoleTypeByRcId";
 		public static final String ROLE_TYPE_LIST ="listRoleTypes";
+		
+		//MISS_CAREER_MASTER
+		public static final String CAREER_MASTER_LIST ="listCareerMaster";
+		
+		//MISS_INDUSTRY_MASTER
+		public static final String INDUSTRY_MASTER_LIST ="listIndustryMaster";
+		
 
 }
