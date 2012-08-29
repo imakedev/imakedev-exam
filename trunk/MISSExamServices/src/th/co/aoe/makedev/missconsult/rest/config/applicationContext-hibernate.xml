@@ -51,8 +51,8 @@
 	<!--  -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
-			p:password="${jdbc.password}"/>
-    
+			p:password="${jdbc.password}"/> 
+   <!--  <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/> -->
 	<!-- JNDI DataSource for JEE environments -->
        <!--
 		<jee:jndi-lookup id="dataSource" jndi-name="java:/comp/env/jdbc/officeDS" resource-ref="true"/>
@@ -127,7 +127,10 @@
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.Role</value>
  			 
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig</value>
- 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow</value> 
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow</value>
+ 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme</value>  
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster</value> 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster</value> 
 			</list>
    		</property>
    		<!-- 
@@ -291,8 +294,16 @@
 		<bean id="roleContactService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleContact">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
-		<bean id="roleMappingService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleMapping">
+	<bean id="roleMappingService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleMapping">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
-	
+	<bean id="missThemeService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissTheme">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missCareerMasterService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissCareerMaster">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean> 
+	<bean id="missIndustryMasterService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissIndustryMaster">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
 </beans>

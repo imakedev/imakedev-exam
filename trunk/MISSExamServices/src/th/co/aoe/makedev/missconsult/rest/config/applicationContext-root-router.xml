@@ -147,6 +147,26 @@
 							bean="roleMappingResource" />
 					</bean>
 				</entry>
+				
+				<entry key="/missTheme">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missThemeResource" />
+					</bean>
+				</entry>				
+				<entry key="/missCareerMaster">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missCareerMasterResource" />
+					</bean>
+				</entry>
+				 
+				<entry key="/missIndustryMaster">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missIndustryMasterResource" />
+					</bean>
+				</entry>
 			</map>
 		</property>
 		<!--<property name="routes[2].template.variables[URI]">
