@@ -64,6 +64,8 @@ public class MissContact  extends VServiceXML implements Serializable {
 	private String maCustomizeColor;
 	private String maBackgroundColor;
 	private String maGrade;
+	
+	private MissTheme missTheme;
 	public String getMaGrade() {
 		return maGrade;
 	}
@@ -321,6 +323,14 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	public void setMcontactIsAdmin(String mcontactIsAdmin) {
 		this.mcontactIsAdmin = mcontactIsAdmin;
+	}
+
+	public MissTheme getMissTheme() {
+		return missTheme;
+	}
+
+	public void setMissTheme(MissTheme missTheme) {
+		this.missTheme = missTheme;
 	}
 
 }
