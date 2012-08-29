@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -119,6 +121,13 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_REGISTER_DATE")
 	private Timestamp maRegisterDate;
 	
+	@Column(name="MA_THEME")
+	private String maTheme;
+	
+	//bi-directional one-to-one association to MissTheme
+	@ManyToOne
+	@JoinColumn(name="MT_ID")
+	private MissTheme missTheme;
 /*	@Column(name="MA_SEX")
 	private String maSex;*/
 
@@ -387,6 +396,22 @@ public class MissAccount implements Serializable {
 
 	public void setMaCustomizeHeadColor(String maCustomizeHeadColor) {
 		this.maCustomizeHeadColor = maCustomizeHeadColor;
+	}
+
+	public String getMaTheme() {
+		return maTheme;
+	}
+
+	public void setMaTheme(String maTheme) {
+		this.maTheme = maTheme;
+	}
+
+	public MissTheme getMissTheme() {
+		return missTheme;
+	}
+
+	public void setMissTheme(MissTheme missTheme) {
+		this.missTheme = missTheme;
 	}
 
 	
