@@ -319,8 +319,36 @@ $(document).ready(function() {
 					"children" : [
 							<c:if test="${isManageTest}">	
 								{ 							
-									attributes: { id : "pjson_5" }, data: { title : "Download",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/search"} 
+									attributes: { id : "pjson_5" }, data: { title : "<spring:message code='navigation_download'/>",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/search"} 
 								}
+							</c:if>
+					          ] 					
+				}
+				,				
+				{ 
+					"attr" : { "id" : "manage_report_node" }, 
+					"data" : { 
+						"title" : "<spring:message code='navigation_manage_report'/>", 
+						"attr" : { "href" : "www.google.com" } 
+					},
+					"children" : [
+							<c:if test="${isManageTest}">	
+								{ 							
+									attributes: { id : "pjson_7" }, data: { title : "EPT Norm Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/eptNormReport"} 
+								},
+								{ 							
+									attributes: { id : "pjson_8" }, data: { title : "Customer Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/customerReport"} 
+								},
+								{ 							
+									attributes: { id : "pjson_9" }, data: { title : "Service Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/serviceReport"} 
+								},
+								{ 							
+									attributes: { id : "pjson_10" }, data: { title : "Product Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/productReport"} 
+								},
+								{ 							
+									attributes: { id : "pjson_11" }, data: { title : "Consultant Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/consultantReport"} 
+								}
+								
 							</c:if>
 					          ] 					
 				}
