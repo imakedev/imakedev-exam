@@ -23,7 +23,10 @@ public class MissCandidateResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissCandidateService missCandidateService;
 	private com.thoughtworks.xstream.XStream xstream;
-	private static 	final String[] ignore_id=new String[]{"missAccount","missSery"};
+ 
+	private static 	final String[] ignore_id=new String[]{"missAccount","missSery","missCareerMaster","missIndustryMaster"};
+	private static final String[] id_ignore_theme=new String[]{"missTheme"};
+	
 	 
 	public MissCandidateResource() {
 		super();
@@ -63,6 +66,16 @@ public class MissCandidateResource extends BaseResource {
 						missSery.setMsId(xbpsTerm.getMissSery().getMsId());
 						bpsTerm.setMissSery(missSery);
 					}
+					if(xbpsTerm.getMissCareerMaster()!=null && xbpsTerm.getMissCareerMaster().getMcmId()!=null && xbpsTerm.getMissCareerMaster().getMcmId().intValue()!=0){
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster();
+						missCareerMaster.setMcmId(xbpsTerm.getMissCareerMaster().getMcmId());
+						bpsTerm.setMissCareerMaster(missCareerMaster);
+					}
+					if(xbpsTerm.getMissIndustryMaster()!=null && xbpsTerm.getMissIndustryMaster().getMimId()!=null && xbpsTerm.getMissIndustryMaster().getMimId().intValue()!=0){
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster();
+						missIndustryMaster.setMimId(xbpsTerm.getMissIndustryMaster().getMimId());
+						bpsTerm.setMissIndustryMaster(missIndustryMaster);
+					}
 					/*if(xbpsTerm.getMissAccount()!=null && xbpsTerm.getMissAccount().getMaName()!=null && xbpsTerm.getMissAccount().getMaName().trim().length()>0){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
 						missAccount.setMaName(xbpsTerm.getMissAccount().getMaName());
@@ -71,7 +84,12 @@ public class MissCandidateResource extends BaseResource {
 					if(xbpsTerm.getMissAccount()!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
 						//missAccount.setMaName(xbpsTerm.getMissAccount().getMaName());
-						BeanUtils.copyProperties(xbpsTerm.getMissAccount(),missAccount);
+						BeanUtils.copyProperties(xbpsTerm.getMissAccount(),missAccount,id_ignore_theme);
+						if(xbpsTerm.getMissAccount().getMissTheme()!=null && xbpsTerm.getMissAccount().getMissTheme().getMtId()!=null){
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme missTheme = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme();						
+							BeanUtils.copyProperties(xbpsTerm.getMissAccount().getMissTheme(),missTheme); 
+							missAccount.setMissTheme(missTheme);
+						}
 						bpsTerm.setMissAccount(missAccount);
 					}
 					if (xbpsTerm.getServiceName() != null
@@ -94,9 +112,24 @@ public class MissCandidateResource extends BaseResource {
 									missSery.setPagging(null);
 									xntcCalendarReturn.setMissSery(missSery);
 								}
+								if(ntcCalendarReturn.getMissCareerMaster()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId().intValue()!=0){
+									th.co.aoe.makedev.missconsult.xstream.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.xstream.MissCareerMaster();
+									missCareerMaster.setMcmId(ntcCalendarReturn.getMissCareerMaster().getMcmId());
+									xntcCalendarReturn.setMissCareerMaster(missCareerMaster);
+								}
+								if(ntcCalendarReturn.getMissIndustryMaster()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId().intValue()!=0){
+									th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();
+									missIndustryMaster.setMimId(ntcCalendarReturn.getMissIndustryMaster().getMimId());
+									xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
+								}
 								if(ntcCalendarReturn.getMissAccount()!=null && ntcCalendarReturn.getMissAccount().getMaId()!=null && ntcCalendarReturn.getMissAccount().getMaId().intValue()!=0){
 									th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-									BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount(), missAccount);
+									BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount(), missAccount,id_ignore_theme);
+									if(ntcCalendarReturn.getMissAccount().getMissTheme()!=null && ntcCalendarReturn.getMissAccount().getMissTheme().getMtId()!=null){
+										th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissTheme(),missTheme); 
+										missAccount.setMissTheme(missTheme);
+									}
 									 missAccount.setPagging(null);
 									xntcCalendarReturn.setMissAccount(missAccount);
 								}
@@ -126,9 +159,24 @@ public class MissCandidateResource extends BaseResource {
 									missSery.setMissExams(missExams);
 									xntcCalendarReturn.setMissSery(missSery);
 								}
+								if(ntcCalendarReturn.getMissCareerMaster()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId().intValue()!=0){
+									th.co.aoe.makedev.missconsult.xstream.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.xstream.MissCareerMaster();
+									missCareerMaster.setMcmId(ntcCalendarReturn.getMissCareerMaster().getMcmId());
+									xntcCalendarReturn.setMissCareerMaster(missCareerMaster);
+								}
+								if(ntcCalendarReturn.getMissIndustryMaster()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId().intValue()!=0){
+									th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();
+									missIndustryMaster.setMimId(ntcCalendarReturn.getMissIndustryMaster().getMimId());
+									xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
+								}
 								if(ntcCalendarReturn.getMissAccount()!=null && ntcCalendarReturn.getMissAccount().getMaId()!=null && ntcCalendarReturn.getMissAccount().getMaId().intValue()!=0){
 									th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-									BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount(), missAccount);
+									BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount(), missAccount,id_ignore_theme);
+									if(ntcCalendarReturn.getMissAccount().getMissTheme()!=null && ntcCalendarReturn.getMissAccount().getMissTheme().getMtId()!=null){
+										th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissTheme(),missTheme); 
+										missAccount.setMissTheme(missTheme);
+									}
 									 missAccount.setPagging(null);
 									xntcCalendarReturn.setMissAccount(missAccount);
 								}
@@ -268,9 +316,24 @@ public class MissCandidateResource extends BaseResource {
 				missSery.setPagging(null);
 				xmissCandidate.setMissSery(missSery);
 			}
+			if(missCandidate.getMissCareerMaster()!=null && missCandidate.getMissCareerMaster().getMcmId()!=null && missCandidate.getMissCareerMaster().getMcmId().intValue()!=0){
+				th.co.aoe.makedev.missconsult.xstream.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.xstream.MissCareerMaster();
+				missCareerMaster.setMcmId(missCandidate.getMissCareerMaster().getMcmId());
+				xmissCandidate.setMissCareerMaster(missCareerMaster);
+			}
+			if(missCandidate.getMissIndustryMaster()!=null && missCandidate.getMissIndustryMaster().getMimId()!=null && missCandidate.getMissIndustryMaster().getMimId().intValue()!=0){
+				th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();
+				missIndustryMaster.setMimId(missCandidate.getMissIndustryMaster().getMimId());
+				xmissCandidate.setMissIndustryMaster(missIndustryMaster);
+			}
 			if(missCandidate.getMissAccount()!=null && missCandidate.getMissAccount().getMaId()!=null && missCandidate.getMissAccount().getMaId().intValue()!=0){
 				th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-				BeanUtils.copyProperties(missCandidate.getMissAccount(), missAccount);
+				BeanUtils.copyProperties(missCandidate.getMissAccount(), missAccount,id_ignore_theme);
+				if(missCandidate.getMissAccount().getMissTheme()!=null && missCandidate.getMissAccount().getMissTheme().getMtId()!=null){
+					th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+					BeanUtils.copyProperties(missCandidate.getMissAccount().getMissTheme(),missTheme); 
+					missAccount.setMissTheme(missTheme);
+				}
 				 missAccount.setPagging(null);
 				xmissCandidate.setMissAccount(missAccount);
 			}

@@ -23,6 +23,8 @@ public class MissAccountResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissAccountService missAccountService;
 	private com.thoughtworks.xstream.XStream xstream;
+	private static final String[] id_ignore=new String[]{"missTheme"};
+	 
 	 
 	public MissAccountResource() {
 		super();
@@ -53,8 +55,12 @@ public class MissAccountResource extends BaseResource {
 				if (xbpsTerm != null) {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
 					
-					BeanUtils.copyProperties(xbpsTerm,bpsTerm); 
-					
+					BeanUtils.copyProperties(xbpsTerm,bpsTerm,id_ignore); 
+					if(xbpsTerm.getMissTheme()!=null && xbpsTerm.getMissTheme().getMtId()!=null){
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme missTheme = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme();						
+						BeanUtils.copyProperties(xbpsTerm.getMissTheme(),missTheme); 
+						bpsTerm.setMissTheme(missTheme);
+					}
 					if (xbpsTerm.getServiceName() != null
 							&& !xbpsTerm.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
@@ -67,7 +73,12 @@ public class MissAccountResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,id_ignore);
+								if(ntcCalendarReturn.getMissTheme()!=null && ntcCalendarReturn.getMissTheme().getMtId()!=null){
+									th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+									BeanUtils.copyProperties(ntcCalendarReturn.getMissTheme(),missTheme); 
+									xntcCalendarReturn.setMissTheme(missTheme);
+								}
 								xntcCalendarReturn.setPagging(null);
 								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
@@ -98,7 +109,7 @@ public class MissAccountResource extends BaseResource {
 							VResultMessage vresultMessage = new VResultMessage();
 							List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
 							th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-							BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+							BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,id_ignore);	
 							xntcCalendarReturn.setPagging(null);
 							xntcCalendars.add(xntcCalendarReturn);
 							vresultMessage.setResultListObj(xntcCalendars);
@@ -208,7 +219,12 @@ public class MissAccountResource extends BaseResource {
 				ntcCalendars.size());
 		for (th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount : ntcCalendars) {
 			th.co.aoe.makedev.missconsult.xstream.MissAccount xmissAccount =new th.co.aoe.makedev.missconsult.xstream.MissAccount ();
-			BeanUtils.copyProperties(missAccount, xmissAccount);
+			BeanUtils.copyProperties(missAccount, xmissAccount,id_ignore);
+			if(missAccount.getMissTheme()!=null && missAccount.getMissTheme().getMtId()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+				BeanUtils.copyProperties(missAccount.getMissTheme(),missTheme); 
+				xmissAccount.setMissTheme(missTheme);
+			}
 			xmissAccount.setPagging(null);
 			xntcCalendars.add(xmissAccount);
 		}
