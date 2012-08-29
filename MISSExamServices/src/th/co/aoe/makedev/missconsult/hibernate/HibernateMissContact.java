@@ -352,6 +352,19 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 					xntcCalendarReturn.setMaCustomizeColor(missAccount.getMaCustomizeColor());
 					xntcCalendarReturn.setMaBackgroundColor(missAccount.getMaBackgroundColor());
 					xntcCalendarReturn.setMaGrade(missAccount.getMaGrade());
+					th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme missTheme=null;
+					th.co.aoe.makedev.missconsult.xstream.MissTheme xmissTheme=new th.co.aoe.makedev.missconsult.xstream.MissTheme();
+					if(missAccount.getMissTheme()==null){
+						query=session.createQuery(" select missTheme from MissTheme missTheme where missTheme.mtId=1");
+						 obj=query.uniqueResult(); 
+						 if(obj!=null){
+							 missTheme=	(th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme)obj;
+						 }
+					}else{
+						missTheme=missAccount.getMissTheme(); 
+					}
+					 BeanUtils.copyProperties(missTheme,xmissTheme);
+					 xntcCalendarReturn.setMissTheme(xmissTheme);
 				}
 			xntcCalendarReturn.setIsMC(isMC);
 		}

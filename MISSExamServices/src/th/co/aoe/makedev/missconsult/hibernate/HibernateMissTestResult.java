@@ -322,6 +322,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						candidate.setMcaPosition(obj[12] != null ? obj[12] + "" : "");
 						candidate.setMcaDepartment(obj[13] != null ? obj[13] + "" : "");
 						missTestResult.setMtrTestDate(obj[4] != null ?(java.sql.Date)obj[4]:null);
+						missTestResult.setMtrStartTime(obj[5] != null ?(java.sql.Timestamp)obj[5]:null);
+						missTestResult.setMtrEndTime(obj[6] != null ?(java.sql.Timestamp)obj[6]:null);
 						missTestResult.setMtrResultCode(obj[8] != null ? obj[8] + "" : "");
 						missTestResult.setMtrStatus(obj[7] != null ? obj[7] + "" : "");
 						missTestResult.setMtrRespondedStatus(obj[15] != null ? obj[15] + "" : "");
