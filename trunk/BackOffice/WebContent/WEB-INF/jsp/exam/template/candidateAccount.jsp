@@ -265,6 +265,22 @@ function doAction(action,formID,sectionID){
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
+    				<tr valign="top">
+    					<td width="25%">Industry Type:</td>
+    					<td width="50%" colspan="2">
+    					 <form:select path="missCandidate.missIndustryMaster.mimId" cssStyle="background:#FFFFFF">    					 
+    						<form:options items="${missIndustryMasterList}" itemLabel="mimName" itemValue="mimId"></form:options>
+    					</form:select>
+    					</td>
+    				</tr>
+    				 <tr valign="top">
+    					<td width="25%">Career Type:</td>
+    					<td width="50%" colspan="2">
+    					 <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
+    						<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
+    					</form:select>
+    					</td>
+    				</tr>
     				 
     			</table>
     		<!-- 	</pre> -->

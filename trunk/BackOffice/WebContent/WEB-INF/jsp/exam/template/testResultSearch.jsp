@@ -87,7 +87,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Series<font color="red">*</font>:</td>
+	    					 <td align="left" width="17%"><spring:message code="page_testsearch_series"/><font color="red">*</font>:</td>
 	    					 <td align="left" width="17%">    					
 	    					<!--  <select id="mcaSeries">
 	    					      <option value="-1">-- Select Series --</option>
@@ -148,7 +148,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<tr>
 	    					<td align="left" width="60%">
 	    					
-	    					<a class="btn btn-success disabled"><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
+	    					<a class="btn btn-success"><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
 	    					<a class="btn btn-info disabled"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
 	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
 	    					<a class="btn btn-danger disabled"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a></td>
