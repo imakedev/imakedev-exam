@@ -153,6 +153,8 @@ public class CandidateController
         model.addAttribute("candidateForm", candidateForm);
         model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("display", "display: none");
+        model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
     }
 
@@ -167,6 +169,8 @@ public class CandidateController
         candidateForm.setMissCandidate(new MissCandidate());
         candidateForm.setMode("new");
         model.addAttribute("display", "display: none");
+        model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
     }
 
@@ -214,6 +218,8 @@ public class CandidateController
         candidateForm.getMissCandidate().setSection(section);
         model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("candidateForm", candidateForm);
+        model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
     }
 
