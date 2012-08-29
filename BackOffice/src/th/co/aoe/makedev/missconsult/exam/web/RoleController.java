@@ -1,5 +1,7 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,13 +45,33 @@ public class RoleController {
 		}
 		String mode=roleForm.getMode();
 		logger.debug(" ooooooooooooooooooooooo mode =>"+mode);
+		/*Enumeration e_num_header=request.getHeaderNames();
+		while (e_num_header.hasMoreElements()) {
+			String header = (String) e_num_header.nextElement();
+			heade
+		}*/
 		if(mode!=null ){
 			if(mode.equals("updateRoleMapping")){
-				String[] rtIdCheckbox=request.getParameterValues("rtIdCheckbox");
-				logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
+				//String[] rtIdCheckbox=request.getParameterValues("rtIdCheckbox");
+				Enumeration e_num=request.getParameterNames();
+				List<String> rtIdsList=new ArrayList<String>();
+				while (e_num.hasMoreElements()) {
+					String param_name = (String) e_num.nextElement();
+					if(param_name.startsWith("rtIdCheckbox_radio_")){
+						//System.out.println("object="+param_name+",value="+request.getParameter(param_name)); 
+						if(!request.getParameter(param_name).equals("0")){
+							rtIdsList.add(request.getParameter(param_name));
+						}
+					}
+				}
+				String[] rtIdRadio = new String[rtIdsList.size()];
+				rtIdRadio = rtIdsList.toArray(rtIdRadio);
+				//System.out.println("rtIdRadio size="+rtIdRadio.length); 
+				//logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 				RoleMapping roleMapping =new RoleMapping();
-				roleMapping.setRtIds(rtIdCheckbox);
+				//roleMapping.setRtIds(rtIdCheckbox);
+				roleMapping.setRtIds(rtIdRadio);
 				roleMapping.setRcId(roleForm.getRcId());
 				missExamService.updateRoleMapping(roleMapping);
 				 message = "Update Role success !";
@@ -79,6 +101,7 @@ public class RoleController {
 				 roleContact.setRcId(roleForm.getRcId());
 				 roleContact.setMaId(Long.parseLong(maId));  
 				 missExamService.deleteRoleContact(roleContact, ServiceConstant.ROLE_CONTACT_DELETE);
+				 roleForm.setRcId(null);
 			}
 		}
 		// action 0=List Role,1=Add Role,2=Edit Role,3=Delete Role,
