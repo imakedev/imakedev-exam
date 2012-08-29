@@ -150,11 +150,11 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <div id="tabs">
 			<ul>
 			<!-- 	<li><a href="#tabs-1">Account</a></li> -->
-				<li><a href="#tabs-2">Profile</a></li>
-				<li><a href="#tabs-3">Contact</a></li>
-				<li><a href="#tabs-3_1">Role</a></li>
-				<li><a href="#tabs-4">Unit</a></li>
-				<li><a href="#tabs-5">Customize</a></li>
+				<li><a href="#tabs-2"><spring:message code="tab_profile"/></a></li>
+				<li><a href="#tabs-3"><spring:message code="tab_contact"/></a></li>
+				<li><a href="#tabs-3_1"><spring:message code="tab_role"/></a></li>
+				<li><a href="#tabs-4"><spring:message code="tab_unit"/></a></li>
+				<li><a href="#tabs-5"><spring:message code="tab_customize"/></a></li>
 			</ul>
 			<%-- <div id="tabs-1">
 			<form:form  id="companyForm_account" name="companyForm_account" modelAttribute="companyForm" cssClass="well"  method="post" action="">

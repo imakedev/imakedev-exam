@@ -169,24 +169,47 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
+            		<!-- <th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th> -->
             		<th width="30%"><div class="th_class">Role</div></th> 
-            		<th width="65%"><div class="th_class">Description</div></th>            		 
+            		<th width="60%"><div class="th_class">Description</div></th>
+            		<th width="10%"><div class="th_class">Permission</div></th>              		 
           		</tr>
         	</thead>
         	<tbody>
         	 <c:forEach items="${roleTypes}" var="roleType" varStatus="loop"> 
           	<tr>
-            	<td>
+            	<%-- <td>
             	<c:if test="${roleType.selected=='1'}">
             		<input type="checkbox" name="rtIdCheckbox" checked="checked" value="${roleType.rtId}"/>
             	</c:if>
             	<c:if test="${roleType.selected!='1'}">
             		<input type="checkbox" name="rtIdCheckbox" value="${roleType.rtId}"/>
             	</c:if>
-            	</td> 
+            	</td>  --%>
             	<td>&nbsp;${roleType.role}</td>
             	<td>&nbsp;${roleType.roleDesc}</td>
+            	<td>${roleForm.rcId}
+            	 <c:if test="${not empty roleForm.rcId}"> 
+            	 	<c:if test="${roleForm.rcId!=0}">
+            	 		<c:if test="${roleType.selected=='1'}">
+            				<input type="radio" value="${roleType.rtId}" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
+            				<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            			</c:if>
+            			<c:if test="${roleType.selected!='1'}">
+            				<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
+            				<input type="radio" value="0" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            			</c:if>
+            	 	</c:if>   
+            	 	<c:if test="${roleForm.rcId==0}">
+            	 		<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
+            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            	 	</c:if>         	 	
+            	 </c:if>
+            	 <c:if test="${empty roleForm.rcId}"> 
+            	 		<input type="radio" value="${roleType.rtId}"   name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
+            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            	 </c:if>
+            	 </td>
           	</tr>
           	</c:forEach>
         </tbody>

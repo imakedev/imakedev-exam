@@ -166,10 +166,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 <div id="tabs">
 			<ul>
 				<!-- <li><a href="#tabs-1">Account</a></li> -->
-				<li><a href="#tabs-2">Profile</a></li>
-				<li><a href="#tabs-3">Contact</a></li>
-				<li><a href="#tabs-3_1">Role</a></li>
-				<li><a href="#tabs-4">Customize</a></li>
+				<li><a href="#tabs-2"><spring:message code="tab_profile"/></a></li>
+				<li><a href="#tabs-3"><spring:message code="tab_contact"/></a></li>
+				<li><a href="#tabs-3_1"><spring:message code="tab_role"/></a></li>
+				<li><a href="#tabs-4"><spring:message code="tab_customize"/></a></li>
 			</ul>
 			<%-- <div id="tabs-1">
 			 <form:form  id="missForm_account" name="missForm_account" modelAttribute="missForm" cssClass="well"  method="post" action="">
