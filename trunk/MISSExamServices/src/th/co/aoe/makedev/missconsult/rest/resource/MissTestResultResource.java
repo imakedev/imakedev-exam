@@ -128,7 +128,7 @@ public class MissTestResultResource extends BaseResource {
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						} 
-						if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SAVE)){
+						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missTestResultService.saveOrUpdateMissTestResult(xbpsTerm.getUserid(),bpsTerm)).intValue();
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
