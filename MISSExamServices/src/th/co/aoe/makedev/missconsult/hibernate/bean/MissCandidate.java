@@ -89,6 +89,15 @@ public class MissCandidate implements Serializable {
 	@JoinColumn(name="MS_ID")
 	private MissSery missSery;
     
+    @ManyToOne
+ 	@JoinColumn(name="MCM_ID")
+ 	private MissCareerMaster missCareerMaster; 
+
+ 	//bi-directional many-to-one association to MissIndustryMaster
+     @ManyToOne
+ 	@JoinColumn(name="MIM_ID")
+ 	private MissIndustryMaster missIndustryMaster;
+     
 	@Column(name="MCA_PICTURE_HOTLINK")
 	private String mcaPictureHotlink;
   
@@ -288,6 +297,22 @@ public class MissCandidate implements Serializable {
 
 	public void setMcaTitleType(String mcaTitleType) {
 		this.mcaTitleType = mcaTitleType;
+	}
+
+	public MissCareerMaster getMissCareerMaster() {
+		return missCareerMaster;
+	}
+
+	public void setMissCareerMaster(MissCareerMaster missCareerMaster) {
+		this.missCareerMaster = missCareerMaster;
+	}
+
+	public MissIndustryMaster getMissIndustryMaster() {
+		return missIndustryMaster;
+	}
+
+	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
+		this.missIndustryMaster = missIndustryMaster;
 	}
 
 	
