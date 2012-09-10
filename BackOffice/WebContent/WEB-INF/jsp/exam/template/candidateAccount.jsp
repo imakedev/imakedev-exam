@@ -199,7 +199,7 @@ function doAction(action,formID,sectionID){
     				</tr>
     				<tr valign="top">
     					<td width="25%">&nbsp;</td>
-    					<td width="50%" colspan="2" align="left"><input type="button" value="Search" /></td>
+    					<td width="50%" colspan="2" align="left"><input type="button" value="<spring:message code='button_search'/>" /></td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">

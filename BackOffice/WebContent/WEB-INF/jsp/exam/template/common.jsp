@@ -193,7 +193,7 @@ function loadDynamicPage(pageId){
 	    					<strong>To Do(Common):</strong></td>
 	    					<td align="right" width="80%">
 	    					
-	    					<a href="#">Prev</a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
+	    					<a href="#"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<select name="bpsGroupId" id="bpgGroupId"> 
 											 <option value="0">1</option>
 											 <option value="20">20</option>
 											 <option value="300">300</option>
