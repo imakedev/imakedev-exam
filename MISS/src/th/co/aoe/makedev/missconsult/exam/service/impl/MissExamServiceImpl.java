@@ -13,6 +13,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
+import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
@@ -228,6 +230,26 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 			missIndustryMasters=resultMessage.getResultListObj();
 		} 
 		return missIndustryMasters;
+	}
+
+	@Override
+	public int saveMissSeryProblem(MissSeryProblem missSeryProblem) {
+		// TODO Auto-generated method stub
+		missSeryProblem.setServiceName(ServiceConstant.MISS_SERY_PROBLEM_SAVE);
+		VResultMessage resultMessage = postMessage(missSeryProblem, missSeryProblem
+				.getClass().getName(), "missSeryProblem", true);
+		missSeryProblem = (MissSeryProblem) resultMessage.getResultListObj().get(0);
+		return missSeryProblem.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int saveMissSystemUse(MissSystemUse missSystemUse) {
+		// TODO Auto-generated method stub
+		missSystemUse.setServiceName(ServiceConstant.MISS_SYSTEM_USE_SAVE);
+		VResultMessage resultMessage = postMessage(missSystemUse, missSystemUse
+				.getClass().getName(), "missSystemUse", true);
+		missSystemUse = (MissSystemUse) resultMessage.getResultListObj().get(0);
+		return missSystemUse.getUpdateRecord().intValue();
 	}
 
 }
