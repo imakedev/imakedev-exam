@@ -58,7 +58,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 					accountNonExpired,
 					credentialsNonExpired,
 					accountNonLocked,
-					getAuthorities(domainUser.getRole().getRole()));
+				//	getAuthorities(domainUser.getRole().getRole()));
+					getAuthorities(1));
 			MyUser myUser=new MyUser(domainUser.getFirstName()+" "+domainUser.getLastName());
 			user.setMyUser(myUser);
 		return user;
