@@ -60,7 +60,7 @@
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
 
 
-<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.pack.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.js'/>"></script>
 <%-- 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.20.custom.min_bbff81bc5a8d9d5e8cda11.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu_305c7ca38a3344d0476fe44c3f837.js'/>"></script> 
@@ -229,10 +229,17 @@ $(document).ready(function() {
   }
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
+ //var startYear=new Date();
+ //var startYear=new Date(2012, 8, 6, 22, 43, 0, 0);
+ //var d3 = new Date(79,5,24,11,33,0) //new Date(year, month, day, hours, minutes, seconds, milliseconds)
+ // alert('${systemDate}');
+  //alert(startYear)
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
-  //format: 'YOWDHMS', description: ''});
- // format: 'HMS', description: ''});
-	  format: 'hms', description: ''});
+//	  $('#defaultCountdown').countdown({until: startYear, compact: true,
+  format: 'DHMS', description: ''});
+ // format: 'DHMS', description: ''});
+	//  format: 'hms', description: ''});
+	//  format: 'HMS', description: ''});
   
   //alert("new path="+_path)
  // $.jstree._themes = "/BackOffice/resources/js/themes/";
