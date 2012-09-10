@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
 
@@ -20,4 +21,6 @@ public interface MissExamService {
 		public  List searchMissExam(MissExam persistentInstance,	Pagging pagging)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List listMissExam()throws DataAccessException  ;
+		
+	
 }

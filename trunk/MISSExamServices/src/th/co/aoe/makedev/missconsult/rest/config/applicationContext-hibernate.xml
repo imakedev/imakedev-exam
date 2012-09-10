@@ -48,13 +48,16 @@
 		for the required JAR files. Alternatively you can use another connection pool
 		such as C3P0, similarly configured using Spring.
 	-->
-	<!--  -->
+	<!-- -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			p:password="${jdbc.password}"/> 
-   <!--  <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/> -->
+	<!--   
+     <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
+      --> 
 	<!-- JNDI DataSource for JEE environments -->
        <!--
+         
 		<jee:jndi-lookup id="dataSource" jndi-name="java:/comp/env/jdbc/officeDS" resource-ref="true"/>
     	
 		 
@@ -130,7 +133,15 @@
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow</value>
  			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme</value>  
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster</value> 
-			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster</value> 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster</value>  
+			 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup</value> 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountMapping</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissReactiveLog</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse</value>
 			</list>
    		</property>
    		<!-- 
@@ -304,6 +315,29 @@
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean> 
 	<bean id="missIndustryMasterService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissIndustryMaster">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	
+	<!--  Adding Manage Report Service -->
+	<bean id="missAccountGroupService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissAccountGroup">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missAccountMappingService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissAccountMapping">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missReactiveLogService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissReactiveLog">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missSeryOrderService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeryOrder">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missSeryProblemService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeryProblem">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missSeryUseService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeryUse">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="missSystemUseService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSystemUse">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 </beans>

@@ -223,5 +223,31 @@ public class ServiceConstant {
 		//MISS_INDUSTRY_MASTER
 		public static final String INDUSTRY_MASTER_LIST ="listIndustryMaster";
 		
+		// MISS_ACCOUNT_GROUP
+		public static final String MISS_ACCOUNT_GROUP_SAVE = "saveMissAccountGroup";
+		public static final String MISS_ACCOUNT_GROUP_SEARCH = "searchMissAccountGroup";
+		
+		// MISS_ACCOUNT_MAPPING
+		public static final String MISS_ACCOUNT_MAPPING_SAVE = "saveMissAccountMapping";
+		public static final String MISS_ACCOUNT_MAPPING_SEARCH = "searchMissAccountMapping";
+		
+		// MISS_REACTIVE_LOG
+		public static final String MISS_REACTIVE_LOG_SAVE = "saveMissReactiveLog";
+		public static final String MISS_REACTIVE_LOG_SEARCH = "searchMissReactiveLog";
 
+		// MISS_SERY_ORDER
+		public static final String MISS_SERY_ORDER_SAVE = "saveMissSeryOrder";
+		public static final String MISS_SERY_ORDER_SEARCH = "searchMissSeryOrder";
+				
+		// MISS_SERY_PROBLEM
+		public static final String MISS_SERY_PROBLEM_SAVE = "saveMissSeryProblem";
+		public static final String MISS_SERY_PROBLEM_SEARCH = "searchMissSeryOrder";
+				
+		// MISS_SERY_USE
+		public static final String MISS_SERY_USE_SAVE = "saveMissSeryUse";
+		public static final String MISS_SERY_USE_SEARCH = "searchMissSeryUse";
+				
+		// MISS_SYSTEM_USE
+		public static final String MISS_SYSTEM_USE_SAVE = "saveMissSystemUse";
+		public static final String MISS_SYSTEM_USE_SEARCH = "searchMissSystemUse";				
 }

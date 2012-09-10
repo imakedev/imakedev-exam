@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Hex;
@@ -13,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,8 @@ import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissReactiveLog;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissReactiveLogPK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.User;
@@ -395,7 +399,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
 			query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
 			query.setParameter("mcmId", transientInstance.getMissCareerMaster().getMcmId());
-			
+			//d
 			return query.executeUpdate();
 		}else if(section.equals("2")){
 			// System.out.println("xxxxxxxxxxxxxxxxxxx");
@@ -410,7 +414,22 @@ int result = query.executeUpdate();*/
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaStatus ='2' " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
-			return query.executeUpdate();
+			
+			// save reactive log
+			MissReactiveLogPK pk = new MissReactiveLogPK();
+			pk.setMcaId(transientInstance.getMcaId());
+			pk.setMsId(transientInstance.getMissSery().getMsId());
+			
+			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+			DateTime datetime=new DateTime(timeStampStartDate.getTime());
+			pk.setMrlDateTime(timeStampStartDate);
+			MissReactiveLog reactiveLog=new MissReactiveLog();
+			reactiveLog.setId(pk);
+			reactiveLog.setMrlWeek(Long.valueOf(datetime.weekOfWeekyear().get())) ;		
+			int returnId=query.executeUpdate();
+			session.save(reactiveLog);
+			return returnId;
+		
 		}
 		return 0;
 		//return update(sessionAnnotationFactory.getCurrentSession(), transientInstance);

@@ -58,7 +58,7 @@ public class MissTodoResource extends BaseResource {
 					th.co.aoe.makedev.missconsult.xstream.MissAccount account=xbpsTerm.getMissAccount();
 				    if(account!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount xaccount = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
-						BeanUtils.copyProperties(account, xaccount); 
+						BeanUtils.copyProperties(account, xaccount,new String[]{"missTheme"}); 
 						bpsTerm.setMissAccount(xaccount);
 					}
 					
