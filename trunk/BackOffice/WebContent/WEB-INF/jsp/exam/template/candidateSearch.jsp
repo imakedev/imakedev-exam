@@ -273,7 +273,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</table> 
 		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
-          		<tr>
+          		<tr> 
             		<th width="7%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
             		<th width="10%"><div class="th_class">Username</div></th> 
             		<th width="10%"><div class="th_class">Password</div></th>

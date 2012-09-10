@@ -329,8 +329,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="5%"><div class="th_class"><input type="checkbox" id="maIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="20%"><div class="th_class">Register Type</div></th> 
+            		<th width="7%"><div class="th_class"><input type="checkbox" id="maIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
+            		<th width="18%"><div class="th_class">Register Type</div></th> 
             		<th width="25%"><div class="th_class">Name</div></th>
             		<th width="10%"><div class="th_class">Phone</div></th> 
             		<th width="10%"><div class="th_class">Register No</div></th>
@@ -344,7 +344,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<tbody>
         	 <c:forEach items="${missAccounts}" var="missAccount" varStatus="loop"> 
           	<tr>
-            	<td><input type="checkbox" name="maIdCheckbox" value="${missAccount.maId}"/></td>
+            	<td><input type="checkbox" name="maIdCheckbox" value="${missAccount.maId}"/>${(companyForm.paging.pageNo-1)*companyForm.paging.pageSize+(loop.index+1)}.</td>
             	<td>&nbsp;${missAccount.maRegisterType}</td>
             	<td>&nbsp;${missAccount.maName}</td>
             	<td>&nbsp;${missAccount.maPhone}</td>
