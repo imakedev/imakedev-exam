@@ -7,9 +7,9 @@ package th.co.aoe.makedev.missconsult.exam.service;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
-
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountGroup;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountMapping;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
@@ -23,10 +23,15 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
+import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryOrder;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryUse;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
+import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -37,268 +42,332 @@ import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
-public interface MissExamService
-{
-	//public findByUsername;
-    public abstract Long saveMissExamGroup(MissExamGroup missexamgroup);
+public interface MissExamService {
+	// public findByUsername;
+	public abstract Long saveMissExamGroup(MissExamGroup missexamgroup);
 
-    public abstract int updateMissExamGroup(MissExamGroup missexamgroup);
+	public abstract int updateMissExamGroup(MissExamGroup missexamgroup);
 
-    public abstract int deleteMissExamGroup(MissExamGroup missexamgroup);
+	public abstract int deleteMissExamGroup(MissExamGroup missexamgroup);
 
-    public abstract MissExamGroup findMissExamGroupById(Long long1);
+	public abstract MissExamGroup findMissExamGroupById(Long long1);
 
-    public abstract VResultMessage searchMissExamGroup(MissExamGroup missexamgroup);
+	public abstract VResultMessage searchMissExamGroup(
+			MissExamGroup missexamgroup);
 
-    public abstract Long saveMissAccount(MissAccount missaccount);
+	public abstract Long saveMissAccount(MissAccount missaccount);
 
-    public abstract int updateMissAccount(MissAccount missaccount);
-    public abstract int updateMissAccountLogo(MissAccount transientInstance);
+	public abstract int updateMissAccount(MissAccount missaccount);
 
-    public abstract int deleteMissAccount(MissAccount missaccount, String s);
+	public abstract int updateMissAccountLogo(MissAccount transientInstance);
 
-    public abstract MissAccount findMissAccountById(Long long1);
+	public abstract int deleteMissAccount(MissAccount missaccount, String s);
 
-    public abstract VResultMessage searchMissAccount(MissAccount missaccount);
-    
-    public abstract MissAccount refillMissAccount(MissAccount missaccount);
+	public abstract MissAccount findMissAccountById(Long long1);
 
-    public abstract Long saveMissAccountSeriesMap(MissAccountSeriesMap missaccountseriesmap);
+	public abstract VResultMessage searchMissAccount(MissAccount missaccount);
 
-    public abstract int updateMissAccountSeriesMap(MissAccountSeriesMap missaccountseriesmap);
+	public abstract MissAccount refillMissAccount(MissAccount missaccount);
 
-    public abstract int deleteMissAccountSeriesMap(MissAccountSeriesMap missaccountseriesmap);
+	public abstract Long saveMissAccountSeriesMap(
+			MissAccountSeriesMap missaccountseriesmap);
 
-    public abstract MissAccountSeriesMap findMissAccountSeriesMapById(Long long1);
+	public abstract int updateMissAccountSeriesMap(
+			MissAccountSeriesMap missaccountseriesmap);
 
-    public abstract VResultMessage searchMissAccountSeriesMap(MissAccountSeriesMap missaccountseriesmap);
+	public abstract int deleteMissAccountSeriesMap(
+			MissAccountSeriesMap missaccountseriesmap);
 
-    public abstract Long saveMissCandidate(MissCandidate misscandidate);
+	public abstract MissAccountSeriesMap findMissAccountSeriesMapById(Long long1);
 
-    public abstract int updateMissCandidate(MissCandidate misscandidate);
-    public abstract int updateMissCandidatePhoto(MissCandidate transientInstance)  ;
+	public abstract VResultMessage searchMissAccountSeriesMap(
+			MissAccountSeriesMap missaccountseriesmap);
 
-    public abstract int deleteMissCandidate(MissCandidate misscandidate, String s);
+	public abstract Long saveMissCandidate(MissCandidate misscandidate);
 
-    public abstract MissCandidate findMissCandidateById(Long long1);
+	public abstract int updateMissCandidate(MissCandidate misscandidate);
 
-    public abstract VResultMessage searchMissCandidate(MissCandidate misscandidate);
+	public abstract int updateMissCandidatePhoto(MissCandidate transientInstance);
 
-    public abstract Long saveMissChoice(MissChoice misschoice);
+	public abstract int deleteMissCandidate(MissCandidate misscandidate,
+			String s);
 
-    public abstract int updateMissChoice(MissChoice misschoice);
+	public abstract MissCandidate findMissCandidateById(Long long1);
 
-    public abstract int deleteMissChoice(MissChoice misschoice);
+	public abstract VResultMessage searchMissCandidate(
+			MissCandidate misscandidate);
 
-    public abstract MissChoice findMissChoiceById(Long long1);
+	public abstract Long saveMissChoice(MissChoice misschoice);
 
-    public abstract VResultMessage searchMissChoice(MissChoice misschoice);
+	public abstract int updateMissChoice(MissChoice misschoice);
 
-    public abstract Long saveMissEvaluationTemplate(MissEvaluationTemplate missevaluationtemplate);
+	public abstract int deleteMissChoice(MissChoice misschoice);
 
-    public abstract int updateMissEvaluationTemplate(MissEvaluationTemplate missevaluationtemplate);
+	public abstract MissChoice findMissChoiceById(Long long1);
 
-    public abstract int deleteMissEvaluationTemplate(MissEvaluationTemplate missevaluationtemplate);
+	public abstract VResultMessage searchMissChoice(MissChoice misschoice);
 
-    public abstract MissEvaluationTemplate findMissEvaluationTemplateById(Long long1);
+	public abstract Long saveMissEvaluationTemplate(
+			MissEvaluationTemplate missevaluationtemplate);
 
-    public abstract VResultMessage searchMissEvaluationTemplate(MissEvaluationTemplate missevaluationtemplate);
+	public abstract int updateMissEvaluationTemplate(
+			MissEvaluationTemplate missevaluationtemplate);
 
-    public abstract Long saveMissExam(MissExam missexam);
+	public abstract int deleteMissEvaluationTemplate(
+			MissEvaluationTemplate missevaluationtemplate);
 
-    public abstract int updateMissExam(MissExam missexam);
+	public abstract MissEvaluationTemplate findMissEvaluationTemplateById(
+			Long long1);
 
-    public abstract int deleteMissExam(MissExam missexam, String s);
+	public abstract VResultMessage searchMissEvaluationTemplate(
+			MissEvaluationTemplate missevaluationtemplate);
 
-    public abstract MissExam findMissExamById(Long long1);
+	public abstract Long saveMissExam(MissExam missexam);
 
-    public abstract VResultMessage searchMissExam(MissExam missexam);
-    
-    public abstract int copyMissExam(MissExam missexam);
-    public abstract int createEmptyMissExam(MissExam missexam);
-    
-    public abstract List listMissExam();
+	public abstract int updateMissExam(MissExam missexam);
 
-    public abstract Long saveMissExamType(MissExamType missexamtype);
+	public abstract int deleteMissExam(MissExam missexam, String s);
 
-    public abstract int updateMissExamType(MissExamType missexamtype);
+	public abstract MissExam findMissExamById(Long long1);
 
-    public abstract int deleteMissExamType(MissExamType missexamtype);
+	public abstract VResultMessage searchMissExam(MissExam missexam);
 
-    public abstract MissExamType findMissExamTypeById(Long long1);
+	public abstract int copyMissExam(MissExam missexam);
 
-    public abstract VResultMessage searchMissExamType(MissExamType missexamtype);
+	public abstract int createEmptyMissExam(MissExam missexam);
 
-    public abstract Long saveMissQuestion(MissQuestion missquestion);
+	public abstract List listMissExam();
 
-    public abstract int updateMissQuestion(MissQuestion missquestion,String service);
+	public abstract Long saveMissExamType(MissExamType missexamtype);
 
-    public abstract int deleteMissQuestion(MissQuestion missquestion);
-    public abstract int setOrderItems(Long meId);
-    
+	public abstract int updateMissExamType(MissExamType missexamtype);
 
-    public abstract MissQuestion findMissQuestionById(Long long1);
+	public abstract int deleteMissExamType(MissExamType missexamtype);
 
-    public abstract VResultMessage searchMissQuestion(MissQuestion missquestion);
-    
-    public abstract List listMissQuestions(Long meId);
+	public abstract MissExamType findMissExamTypeById(Long long1);
 
-    public abstract Long saveMissSeriesMap(MissSeriesMap missseriesmap);
+	public abstract VResultMessage searchMissExamType(MissExamType missexamtype);
 
-    public abstract int updateMissSeriesMap(MissSeriesMap missseriesmap);
+	public abstract Long saveMissQuestion(MissQuestion missquestion);
 
-    public abstract int deleteMissSeriesMap(MissSeriesMap missseriesmap);
+	public abstract int updateMissQuestion(MissQuestion missquestion,
+			String service);
 
-    public abstract MissSeriesMap findMissSeriesMapById(Long long1);
+	public abstract int deleteMissQuestion(MissQuestion missquestion);
 
-    public abstract VResultMessage searchMissSeriesMap(MissSeriesMap missseriesmap);
+	public abstract int setOrderItems(Long meId);
 
-    public abstract Long saveMissSery(MissSery misssery);
+	public abstract MissQuestion findMissQuestionById(Long long1);
 
-    public abstract int updateMissSery(MissSery misssery);
+	public abstract VResultMessage searchMissQuestion(MissQuestion missquestion);
 
-    public abstract int deleteMissSery(MissSery misssery, String s);
+	public abstract List listMissQuestions(Long meId);
 
-    public abstract MissSery findMissSeryById(Long long1);
+	public abstract Long saveMissSeriesMap(MissSeriesMap missseriesmap);
 
-    public abstract VResultMessage searchMissSery(MissSery misssery);
+	public abstract int updateMissSeriesMap(MissSeriesMap missseriesmap);
 
-    public abstract List listMissSery();
+	public abstract int deleteMissSeriesMap(MissSeriesMap missseriesmap);
 
-    public abstract Long saveMissSurveySend(MissSurveySend misssurveysend);
+	public abstract MissSeriesMap findMissSeriesMapById(Long long1);
 
-    public abstract int updateMissSurveySend(MissSurveySend misssurveysend);
+	public abstract VResultMessage searchMissSeriesMap(
+			MissSeriesMap missseriesmap);
 
-    public abstract int deleteMissSurveySend(MissSurveySend misssurveysend);
+	public abstract Long saveMissSery(MissSery misssery);
 
-    public abstract MissSurveySend findMissSurveySendById(Long long1);
+	public abstract int updateMissSery(MissSery misssery);
 
-    public abstract VResultMessage searchMissSurveySend(MissSurveySend misssurveysend);
+	public abstract int deleteMissSery(MissSery misssery, String s);
 
-    public abstract Long saveMissTemplate(MissTemplate misstemplate);
+	public abstract MissSery findMissSeryById(Long long1);
 
-    public abstract int updateMissTemplate(MissTemplate misstemplate);
+	public abstract VResultMessage searchMissSery(MissSery misssery);
 
-    public abstract int deleteMissTemplate(MissTemplate misstemplate);
+	public abstract List listMissSery();
 
-    public abstract MissTemplate findMissTemplateById(Long long1);
+	public abstract Long saveMissSurveySend(MissSurveySend misssurveysend);
 
-    public abstract VResultMessage searchMissTemplate(MissTemplate misstemplate);
+	public abstract int updateMissSurveySend(MissSurveySend misssurveysend);
 
-    public abstract Long saveMissTest(MissTest misstest);
+	public abstract int deleteMissSurveySend(MissSurveySend misssurveysend);
 
-    public abstract int updateMissTest(MissTest misstest);
+	public abstract MissSurveySend findMissSurveySendById(Long long1);
 
-    public abstract int deleteMissTest(MissTest misstest);
+	public abstract VResultMessage searchMissSurveySend(
+			MissSurveySend misssurveysend);
 
-    public abstract MissTest findMissTestById(Long long1);
+	public abstract Long saveMissTemplate(MissTemplate misstemplate);
 
-    public abstract VResultMessage searchMissTest(MissTest misstest);
+	public abstract int updateMissTemplate(MissTemplate misstemplate);
 
-    public abstract Long saveMissTestResult(MissTestResult misstestresult);
+	public abstract int deleteMissTemplate(MissTemplate misstemplate);
 
-    public abstract int updateMissTestResult(MissTestResult misstestresult);
+	public abstract MissTemplate findMissTemplateById(Long long1);
 
-    public abstract int deleteMissTestResult(MissTestResult misstestresult);
+	public abstract VResultMessage searchMissTemplate(MissTemplate misstemplate);
 
-    public abstract MissTestResult findMissTestResultById(Long long1);
+	public abstract Long saveMissTest(MissTest misstest);
 
-    public abstract VResultMessage searchMissTestResult(MissTestResult misstestresult);
+	public abstract int updateMissTest(MissTest misstest);
 
-    public abstract Long saveMissTodo(MissTodo misstodo);
+	public abstract int deleteMissTest(MissTest misstest);
 
-    public abstract int updateMissTodo(MissTodo misstodo);
+	public abstract MissTest findMissTestById(Long long1);
 
-    public abstract int deleteMissTodo(MissTodo misstodo);
+	public abstract VResultMessage searchMissTest(MissTest misstest);
 
-    public abstract MissTodo findMissTodoById(Long long1);
+	public abstract Long saveMissTestResult(MissTestResult misstestresult);
 
-    public abstract VResultMessage searchMissTodo(MissTodo misstodo);
-  //  public abstract int updateMissTodoStatus(MissTodo misstodo);
-    
-    public abstract Long saveMissAttach(MissAttach missAttach);
-    
-    public abstract int updateMissAttach(MissAttach missAttach);
+	public abstract int updateMissTestResult(MissTestResult misstestresult);
 
-    public abstract int deleteMissAttach(MissAttach missAttach);
+	public abstract int deleteMissTestResult(MissTestResult misstestresult);
 
-    public abstract MissAttach findMissAttachById(String matModule,Long matRef,String hotlink);
+	public abstract MissTestResult findMissTestResultById(Long long1);
 
-    public abstract VResultMessage searchMissAttach(MissAttach missAttach);
-    
-    
-    public abstract Long saveMissContact(MissContact missContact);
-    
-    public abstract int updateMissContact(MissContact missContact);
-    public abstract int updateMissContactPhoto(MissContact transientInstance)  ;
+	public abstract VResultMessage searchMissTestResult(
+			MissTestResult misstestresult);
 
-    public abstract int deleteMissContact(MissContact missContact,String service);
+	public abstract Long saveMissTodo(MissTodo misstodo);
 
-    public abstract MissContact findMissContactById(Long long1);
-    public abstract MissContact findMissContactByUsername(String username);
-    
-    public abstract VResultMessage searchMissContact(MissContact missContact);
-    public abstract List listContacts(Long long1,String mcontactType);
-    
-    public abstract Long saveMissManual(MissManual missManual);
-    
-    public abstract int updateMissManual(MissManual missManual);
+	public abstract int updateMissTodo(MissTodo misstodo);
 
-    public abstract int deleteMissManual(MissManual missManual,String service);
+	public abstract int deleteMissTodo(MissTodo misstodo);
 
-    public abstract MissManual findMissManualById(Long long1);
+	public abstract MissTodo findMissTodoById(Long long1);
 
-    public abstract VResultMessage searchMissManual(MissManual missManual);
-    
-    public abstract int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+	public abstract VResultMessage searchMissTodo(MissTodo misstodo);
 
-    public abstract int deleteMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+	// public abstract int updateMissTodoStatus(MissTodo misstodo);
 
-    public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
-    
-    //Add
-   /* Service.java
-    RService.java
-    RService.java*/
-   public abstract Long saveRoleContact(RoleContact roleContact);
-    
-    public abstract int updateRoleContact(RoleContact roleContact);
+	public abstract Long saveMissAttach(MissAttach missAttach);
 
-    public abstract int deleteRoleContact(RoleContact roleContact,String service);
+	public abstract int updateMissAttach(MissAttach missAttach);
 
-    public abstract RoleContact findRoleContactById(Long rcId);
+	public abstract int deleteMissAttach(MissAttach missAttach);
 
-    public abstract VResultMessage searchRoleContact(RoleContact roleContact);
-    public abstract List listRoleContactBymaId(Long maId);
-    
- public abstract Long saveRoleMapping(RoleMapping roleMapping);
-    
-    public abstract int updateRoleMapping(RoleMapping roleMapping);
+	public abstract MissAttach findMissAttachById(String matModule,
+			Long matRef, String hotlink);
 
-    public abstract int deleteRoleMapping(RoleMapping roleMapping,String service);
+	public abstract VResultMessage searchMissAttach(MissAttach missAttach);
 
-    public abstract RoleMapping findRoleMappingById(Long rcId);
+	public abstract Long saveMissContact(MissContact missContact);
 
-    public abstract VResultMessage searchRoleMapping(RoleMapping roleContact);
+	public abstract int updateMissContact(MissContact missContact);
+
+	public abstract int updateMissContactPhoto(MissContact transientInstance);
+
+	public abstract int deleteMissContact(MissContact missContact,
+			String service);
+
+	public abstract MissContact findMissContactById(Long long1);
+
+	public abstract MissContact findMissContactByUsername(String username);
+
+	public abstract VResultMessage searchMissContact(MissContact missContact);
+
+	public abstract List listContacts(Long long1, String mcontactType);
+
+	public abstract Long saveMissManual(MissManual missManual);
+
+	public abstract int updateMissManual(MissManual missManual);
+
+	public abstract int deleteMissManual(MissManual missManual, String service);
+
+	public abstract MissManual findMissManualById(Long long1);
+
+	public abstract VResultMessage searchMissManual(MissManual missManual);
+
+	public abstract int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+
+	public abstract int deleteMissSeriesAttach(MissSeriesAttach missSeriesAttach);
+
+	public abstract MissSeriesAttach findMissSeriesAttachSearch(
+			String matModule, Long matRef1, Long matRef2, String hotlink);
+
+	// Add
+	/*
+	 * Service.java RService.java RService.java
+	 */
+	public abstract Long saveRoleContact(RoleContact roleContact);
+
+	public abstract int updateRoleContact(RoleContact roleContact);
+
+	public abstract int deleteRoleContact(RoleContact roleContact,
+			String service);
+
+	public abstract RoleContact findRoleContactById(Long rcId);
+
+	public abstract VResultMessage searchRoleContact(RoleContact roleContact);
+
+	public abstract List listRoleContactBymaId(Long maId);
+
+	public abstract Long saveRoleMapping(RoleMapping roleMapping);
+
+	public abstract int updateRoleMapping(RoleMapping roleMapping);
+
+	public abstract int deleteRoleMapping(RoleMapping roleMapping,
+			String service);
+
+	public abstract RoleMapping findRoleMappingById(Long rcId);
+
+	public abstract VResultMessage searchRoleMapping(RoleMapping roleContact);
+
 	public abstract List listRoleMappingByrcId(Long rcId);
-    
- public abstract Long saveRoleType(RoleType roleType);
-    
-    public abstract int updateRoleType(RoleType roleType);
 
-    public abstract int deleteRoleType(RoleType roleType,String service);
+	public abstract Long saveRoleType(RoleType roleType);
 
-    public abstract RoleType findRoleTypeById(Long rcId);
+	public abstract int updateRoleType(RoleType roleType);
 
-    public abstract VResultMessage searchRoleType(RoleType roleContact);
-    public abstract List listRoleTypeByRcId(Long rcId);
-    public abstract List listRoleTypes(Long maId) ;	
-    
-    public abstract int getQuestionOrdered(Long meId);
-    public abstract int updateStatusMissTestResult(Long mtrId,String column,String value);
-  
-    public abstract List listMissTheme(MissTheme missTheme);
-    public abstract MissTheme findMissThemeById(Long maId,Long mtId) ;
-    public abstract List<MissCareerMaster> listMissCareerMaster() ;
-	 public abstract List<MissIndustryMaster> listMissIndustryMaster() ;
+	public abstract int deleteRoleType(RoleType roleType, String service);
+
+	public abstract RoleType findRoleTypeById(Long rcId);
+
+	public abstract VResultMessage searchRoleType(RoleType roleContact);
+
+	public abstract List listRoleTypeByRcId(Long rcId);
+
+	public abstract List listRoleTypes(Long maId);
+
+	public abstract int getQuestionOrdered(Long meId);
+
+	public abstract int updateStatusMissTestResult(Long mtrId, String column,
+			String value);
+
+	public abstract List listMissTheme(MissTheme missTheme);
+
+	public abstract MissTheme findMissThemeById(Long maId, Long mtId);
+
+	public abstract List<MissCareerMaster> listMissCareerMaster();
+
+	public abstract List<MissIndustryMaster> listMissIndustryMaster();
+
+	// Report management
+	public abstract int saveMissSystemUse(MissSystemUse transientInstance);
+
+	public abstract List searchMissSystemUse(MissSystemUse persistentInstance);
+
+	public Long saveMissSeryUse(MissSeryUse transientInstance);
+
+	public abstract List searchMissSeryUse(MissSeryUse persistentInstance);
+
+	public abstract Long saveMissSeryProblem(MissSeryProblem transientInstance);
+
+	public abstract List searchMissSeryProblem(
+			MissSeryProblem persistentInstance);
+
+	public abstract Long saveMissSeryOrder(MissSeryOrder transientInstance);
+
+	public abstract List searchMissSeryOrder(MissSeryOrder persistentInstance);
+
+	public abstract Long saveMissReactiveLog(MissReactiveLog transientInstance);
+
+	public abstract List searchMissReactiveLog(
+			MissReactiveLog persistentInstance);
+
+	public abstract List searchMissAccountGroup(
+			MissAccountGroup persistentInstance);
+
+	public abstract List searchMissAccountMapping(
+			MissAccountMapping persistentInstance);
 }
