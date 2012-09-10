@@ -40,6 +40,10 @@ import org.springframework.transaction.annotation.Transactional;
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblemPK;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUsePK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -768,6 +772,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		query.setParameter("mcaUsername", userid);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){		
+			try{
+			boolean isIncomplete=false;
 			missCandidate=(MissCandidate)obj;
 			logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
 			missTestResult.setMissCandidate(missCandidate);
@@ -782,7 +788,6 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());*/
 			List list=query.list();
 			if(list!=null && list.size()>0){//update 
-
 				MissTestResult result =(MissTestResult)list.get(0);
 				logger.debug("size="+list.size());
 				logger.debug("MCA_ID="+missTestResult.getMissCandidate().getMcaId());
@@ -809,6 +814,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				int missQuestionSize=  ((java.lang.Long)query.uniqueResult()).intValue();
 				if((missTestSize*100)/missQuestionSize<90){
 					 missTestResult.setMtrStatus("0");
+					 isIncomplete=true;
 				}
 				//session.update(missTestResultUpdate);
 				String startTimesql="";
@@ -852,7 +858,13 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 					query.executeUpdate();
 				}
 			}else{ //save
-				try{
+				obj = session.save(missTestResult);
+				
+				if(obj!=null){
+					returnId =(Long) obj;
+					//returnId=1l;
+				}
+				/*try{
 					obj = session.save(missTestResult);
 				
 					if(obj!=null){
@@ -863,9 +875,26 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						if (session != null) {
 							session = null;
 						} 
-				}
+				}*/
 			}
     
+			if(isIncomplete){
+				MissSeryProblem problem=new MissSeryProblem();
+				MissSeryProblemPK pk =new MissSeryProblemPK();
+				pk.setMcaId(missCandidate.getMcaId());
+				pk.setMsId(missTestResult.getMsId());
+				java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+				DateTime datetime=new DateTime(timeStampStartDate.getTime());				
+				pk.setMspDateTime(timeStampStartDate);
+				problem.setMspWeek(Long.valueOf(datetime.weekOfWeekyear().get()));
+				problem.setId(pk);
+				session.save(problem);
+			}
+			} finally {
+					if (session != null) {
+						session = null;
+					} 
+			}
 		}
 		// TODO Auto-generated method stub
 		return returnId;
@@ -886,9 +915,9 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		Object obj=query.uniqueResult(); 
 	
 
-		// period of 1 year and 7 days
-		
-		if(obj!=null){		
+		// period of 1 year and 7 days 
+		try{
+		 if(obj!=null){		
 			missCandidate=(MissCandidate)obj;
 			 query=session.createQuery(" select missExam from MissExam missExam where missExam.meId=:meId");
 			 query.setParameter("meId", missTestResult.getMeId());
@@ -920,7 +949,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						timelimit=timelimit-(int)interval.toDuration().getStandardSeconds();
 						
 					}else{ //save
-						try{
+					//	try{
 							obj = session.save(missTestResult);
 						
 							if(obj!=null){
@@ -936,17 +965,34 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 									query.executeUpdate();
 								
 							}
-						} finally {
-								if (session != null) {
-									session = null;
-								} 
-						}
 						
-					}
-			 }
+						
+					} 
+					
+					java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+					DateTime datetime=new DateTime(timeStampStartDate.getTime());
+					  
+					MissSeryUse seryUse=new MissSeryUse();
+					MissSeryUsePK pk =new MissSeryUsePK();
+					pk.setMcaId(missCandidate.getMcaId());
+					pk.setMsId(missTestResult.getMsId());
+					pk.setMsuDdateTime(timeStampStartDate);
+					seryUse.setId(pk);
+					seryUse.setMsuWeek(Long.valueOf(datetime.weekOfWeekyear().get()));
+					session.save(seryUse);
+			  }
+		 }
+			 } finally {
+					if (session != null) {
+						session = null;
+					} 
+			}
+					// Save Sery Use
+					
+			// }
 			
     
-		}
+		//}
 		logger.debug("timelimit="+timelimit);
 		// TODO Auto-generated method stub
 		return timelimit;

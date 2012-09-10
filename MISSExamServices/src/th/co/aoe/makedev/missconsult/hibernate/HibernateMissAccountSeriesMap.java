@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,6 +19,8 @@ import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMapPK;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrderPK;
 import th.co.aoe.makedev.missconsult.managers.MissAccountSeriesMapService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
@@ -49,6 +53,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 	public Long saveMissAccountSeriesMap(MissAccountSeriesMap transientInstance,Long maId,Long msId )
 			throws DataAccessException {
 		// TODO Auto-generated method stub
+		//d
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Long orderUnit=transientInstance.getMasmOrderUnit();
 		StringBuffer sb =new StringBuffer();
@@ -115,6 +120,17 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			query.setParameter("maUsedUnit", Long.valueOf((orderUnit.intValue()+maUsedUnit.intValue())+""));
 			query.setParameter("maId", maId);
 			query.executeUpdate();
+			MissSeryOrder order=new MissSeryOrder();
+			MissSeryOrderPK pk =new MissSeryOrderPK();
+			pk.setMaId(maId);
+			pk.setMsId(msId);
+			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+			DateTime datetime=new DateTime(timeStampStartDate.getTime());
+			order.setMsoWeek(Long.valueOf(datetime.weekOfWeekyear().get()));
+			pk.setMsoDateTime(timeStampStartDate);
+			order.setId(pk);
+			order.setMsoAmount(orderUnit);
+			session.save(order);
 	//	}
 			returnId=1l;
    	 }

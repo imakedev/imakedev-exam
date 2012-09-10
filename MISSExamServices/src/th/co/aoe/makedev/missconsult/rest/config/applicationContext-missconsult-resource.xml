@@ -186,5 +186,49 @@
 		<property name="missIndustryMasterService" ref="missIndustryMasterService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
-		
+	
+	<!--  Adding Manage Report -->
+	<bean id="missAccountGroupResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountGroupResource"
+		scope="prototype"> 
+		<property name="missAccountGroupService" ref="missAccountGroupService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missAccountMappingResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountMappingResource"
+		scope="prototype"> 
+		<property name="missAccountMappingService" ref="missAccountMappingService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missReactiveLogResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissReactiveLogResource"
+		scope="prototype"> 
+		<property name="missReactiveLogService" ref="missReactiveLogService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSeryOrderResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeryOrderResource"
+		scope="prototype"> 
+		<property name="missSeryOrderService" ref="missSeryOrderService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSeryProblemResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeryProblemResource"
+		scope="prototype"> 
+		<property name="missSeryProblemService" ref="missSeryProblemService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSeryUseResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeryUseResource"
+		scope="prototype"> 
+		<property name="missSeryUseService" ref="missSeryUseService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="missSystemUseResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissSystemUseResource"
+		scope="prototype"> 
+		<property name="missSystemUseService" ref="missSystemUseService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	
 </beans>

@@ -167,6 +167,51 @@
 							bean="missIndustryMasterResource" />
 					</bean>
 				</entry>
+				
+				<!--  Adding manage report router -->
+				<entry key="/missAccountGroup">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missAccountGroupResource" />
+					</bean>
+				</entry>
+				<entry key="/missAccountMapping">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missAccountMappingResource" />
+					</bean>
+				</entry>
+				<entry key="/missReactiveLog">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missReactiveLogResource" />
+					</bean>
+				</entry>
+				<entry key="/missSeryOrder">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSeryOrderResource" />
+					</bean>
+				</entry>
+				<entry key="/missSeryProblem">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSeryProblemResource" />
+					</bean>
+				</entry>
+				<entry key="/missSeryUse">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSeryUseResource" />
+					</bean>
+				</entry>
+				<entry key="/missSystemUse">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missSystemUseResource" />
+					</bean>
+				</entry>
+				
 			</map>
 		</property>
 		<!--<property name="routes[2].template.variables[URI]">
