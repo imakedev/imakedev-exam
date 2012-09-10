@@ -268,26 +268,27 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					
 	    					<td align="right" width="50%">
 	    					
-	    					<a onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary" onclick="doSearch('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a></td>
+	    					<a onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary" onclick="doSearch('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a></td>
 	    					</tr>
 	    					</table> 
 		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="5%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
+            		<th width="7%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
             		<th width="10%"><div class="th_class">Username</div></th> 
             		<th width="10%"><div class="th_class">Password</div></th>
             		<th width="25%"><div class="th_class">Company</div></th> 
             		<th width="15%"><div class="th_class">Series</div></th>
             		<th width="20%"><div class="th_class">Last Login</div></th> 
             		<th width="5%"><div class="th_class">Status</div></th>
-            		<th width="10%"><div class="th_class">Action</div></th>  
+            		<th width="8%"><div class="th_class">Action</div></th>  
           		</tr>
         	</thead>
         	<tbody>
         	 <c:forEach items="${missCandidates}" var="missCandidate" varStatus="loop"> 
-          	<tr>
-            	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/></td>
+          	<tr> 
+            
+            	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/>${(candidateForm.paging.pageNo-1)*candidateForm.paging.pageSize+(loop.index+1)}.</td>
             	<td>&nbsp;${missCandidate.mcaUsername}</td>
             	<td>&nbsp;${missCandidate.mcaPassword}</td>
             	<td>&nbsp;${missCandidate.missAccount.maName}</td>

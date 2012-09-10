@@ -323,7 +323,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<a class="btn btn-danger"  onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a></td>
 	    					<td align="right" width="50%">
 	    					
-	    					<a  onclick="goPrev()">Prev</a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a  onclick="goNext()">Next</a>&nbsp;<a  class="btn btn-primary"  onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;Search</a></td>
+	    					<a  onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a  onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary"  onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a></td>
 	    					</tr>
 	    					</table> 
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
