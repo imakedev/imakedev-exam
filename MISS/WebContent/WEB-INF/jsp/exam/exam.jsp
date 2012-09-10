@@ -16,7 +16,7 @@
 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.21.custom.min.js'/>"></script>
 
-<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.pack.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.js'/>"></script>
 
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
@@ -82,7 +82,8 @@ $(document).ready(function() {
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
-	  format: 'hms', description: ''});
+	//  format: 'hms', description: ''});
+	  format: 'DHMS', description: ''});
   var timelimit=(parseInt('${timelimit}'))+"";
 	 // var endTime =new Date(parseInt(timelimit[2]), parseInt(timelimit[1]),  parseInt(timelimit[0]),timelimit[3],parseInt(timelimit[4])+4,parseInt(timelimit[5]),0);
 	 			// new Date(year        , month                 ,  day                   ,hours       ,minutes                  ,seconds,              milliseconds)
@@ -117,8 +118,13 @@ function watchCountdown(periods) {
 				 
 			}
 		},
-		close: function(event, ui) {  window.location.href="<c:url value='/logout'/>"; }
+		close: function(event, ui) {  
+			window.location.href="<c:url value='/logout'/>";  
+			}
 	});
+}
+function aoe(){ 
+	window.location.href="<c:url value='/timeout/${missExamForm.missCandidate.mcaId}/${missExamForm.missCandidate.missSery.msId}'/>";
 }
 function loadDynamicPage(pageId){
 //	alert(pageId)
@@ -297,7 +303,7 @@ function appendContent(data){
 				<p>
 					Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan.
 				</p>
-                 
+                 <span id="s" onclick="aoe()">Test</span>
               </div>
 	    
 	 </div>
