@@ -19,9 +19,9 @@ public class User {
 	private String username;
 	private String password;
 	
-	@OneToOne(mappedBy="user", cascade={CascadeType.ALL})
+	/*@OneToOne(mappedBy="user", cascade={CascadeType.ALL})
 	private Role role;
-
+*/
 	public Long getId() {
 		return id;
 	}
@@ -62,11 +62,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Role getRole() {
+	/*public Role getRole() {
 		return role;
 	}
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
+	}*/
 }

@@ -10,8 +10,8 @@ public class Role {
 	@Id
 	private Long id;
 	
-	@OneToOne
-	private User user;
+/*	@OneToOne
+	private User user;*/
 	private Integer role;
 	
 	public Long getId() {
@@ -20,12 +20,12 @@ public class Role {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 	public Integer getRole() {
 		return role;
 	}
