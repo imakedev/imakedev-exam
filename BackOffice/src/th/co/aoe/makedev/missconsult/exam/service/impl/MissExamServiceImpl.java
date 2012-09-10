@@ -12,6 +12,8 @@ import org.springframework.beans.BeanUtils;
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountGroup;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountMapping;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
@@ -25,10 +27,15 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
+import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryOrder;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
+import th.co.aoe.makedev.missconsult.xstream.MissSeryUse;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
+import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -1461,6 +1468,107 @@ public class MissExamServiceImpl extends PostCommon
 			missIndustryMasters=resultMessage.getResultListObj();
 		} 
 		return missIndustryMasters;
+	}
+
+	@Override
+	public int saveMissSystemUse(MissSystemUse missSystemUse) {
+		// TODO Auto-generated method stub
+		missSystemUse.setServiceName(ServiceConstant.MISS_SYSTEM_USE_SAVE);
+	    VResultMessage resultMessage = postMessage(missSystemUse, missSystemUse.getClass().getName(), "missSystemUse", true);
+	    missSystemUse = (MissSystemUse)resultMessage.getResultListObj().get(0);
+	    return missSystemUse.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public List searchMissSystemUse(MissSystemUse missSystemUse) {
+		// TODO Auto-generated method stub
+		missSystemUse.setServiceName(ServiceConstant.MISS_SYSTEM_USE_SEARCH);
+	    VResultMessage resultMessage = postMessage(missSystemUse, missSystemUse.getClass().getName(), "missSystemUse", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public Long saveMissSeryUse(MissSeryUse missSeryUse) {
+		// TODO Auto-generated method stub
+		missSeryUse.setServiceName(ServiceConstant.MISS_SERY_USE_SAVE);
+	    VResultMessage resultMessage = postMessage(missSeryUse, missSeryUse.getClass().getName(), "missSeryUse", true);
+	    missSeryUse = (MissSeryUse)resultMessage.getResultListObj().get(0);
+	    return missSeryUse.getMsId();
+	}
+
+	@Override
+	public List searchMissSeryUse(MissSeryUse missSeryUse) {
+		// TODO Auto-generated method stub
+		missSeryUse.setServiceName(ServiceConstant.MISS_SERY_USE_SEARCH);
+	    VResultMessage resultMessage = postMessage(missSeryUse, missSeryUse.getClass().getName(), "missSeryUse", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public Long saveMissSeryProblem(MissSeryProblem missSeryProblem) {
+		// TODO Auto-generated method stub
+		missSeryProblem.setServiceName(ServiceConstant.MISS_SERY_PROBLEM_SAVE);
+	    VResultMessage resultMessage = postMessage(missSeryProblem, missSeryProblem.getClass().getName(), "missSeryProblem", true);
+	    missSeryProblem = (MissSeryProblem)resultMessage.getResultListObj().get(0);
+	    return missSeryProblem.getMcaId();
+	}
+
+	@Override
+	public List searchMissSeryProblem(MissSeryProblem missSeryProblem) {
+		// TODO Auto-generated method stub
+		missSeryProblem.setServiceName(ServiceConstant.MISS_SERY_PROBLEM_SEARCH);
+	    VResultMessage resultMessage = postMessage(missSeryProblem, missSeryProblem.getClass().getName(), "missSeryProblem", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public Long saveMissSeryOrder(MissSeryOrder missSeryOrder) {
+		// TODO Auto-generated method stub
+		missSeryOrder.setServiceName(ServiceConstant.MISS_SERY_ORDER_SAVE);
+	    VResultMessage resultMessage = postMessage(missSeryOrder, missSeryOrder.getClass().getName(), "missSeryOrder", true);
+	    missSeryOrder = (MissSeryOrder)resultMessage.getResultListObj().get(0);
+	    return missSeryOrder.getMsId();
+	}
+
+	@Override
+	public List searchMissSeryOrder(MissSeryOrder missSeryOrder) {
+		// TODO Auto-generated method stub
+		missSeryOrder.setServiceName(ServiceConstant.MISS_SERY_ORDER_SEARCH);
+	    VResultMessage resultMessage = postMessage(missSeryOrder, missSeryOrder.getClass().getName(), "missSeryOrder", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public Long saveMissReactiveLog(MissReactiveLog missReactiveLog) {
+		// TODO Auto-generated method stub
+		missReactiveLog.setServiceName(ServiceConstant.MISS_REACTIVE_LOG_SAVE);
+	    VResultMessage resultMessage = postMessage(missReactiveLog, missReactiveLog.getClass().getName(), "missReactiveLog", true);
+	    missReactiveLog = (MissReactiveLog)resultMessage.getResultListObj().get(0);
+	    return missReactiveLog.getMcaId();
+	}
+
+	@Override
+	public List searchMissReactiveLog(MissReactiveLog missReactiveLog) {
+		// TODO Auto-generated method stub
+		missReactiveLog.setServiceName(ServiceConstant.MISS_REACTIVE_LOG_SEARCH);
+	    VResultMessage resultMessage = postMessage(missReactiveLog, missReactiveLog.getClass().getName(), "missReactiveLog", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List searchMissAccountGroup(MissAccountGroup missAccountGroup) {
+		// TODO Auto-generated method stub
+		missAccountGroup.setServiceName(ServiceConstant.MISS_ACCOUNT_GROUP_SAVE);
+	    VResultMessage resultMessage = postMessage(missAccountGroup, missAccountGroup.getClass().getName(), "missAccountGroup", true);
+	    return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List searchMissAccountMapping(MissAccountMapping missAccountMapping) {
+		// TODO Auto-generated method stub
+		missAccountMapping.setServiceName(ServiceConstant.MISS_ACCOUNT_MAPPING_SEARCH);
+	    VResultMessage resultMessage = postMessage(missAccountMapping, missAccountMapping.getClass().getName(), "missAccountMapping", true);
+	    return resultMessage.getResultListObj();
 	}
 
 
