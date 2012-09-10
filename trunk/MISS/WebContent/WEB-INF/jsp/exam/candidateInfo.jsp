@@ -14,7 +14,7 @@
 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.21.custom.min.js'/>"></script>
 
-<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.pack.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.js'/>"></script>
 
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
@@ -88,9 +88,9 @@ $(document).ready(function() {
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
-  //format: 'YOWDHMS', description: ''});
+  format: 'DHMS', description: ''});
  // format: 'HMS', description: ''});
-	  format: 'hms', description: ''});
+	//  format: 'hms', description: ''});
 });
 function doStart(){
 	//document.forms["missExamForm"].submit();
