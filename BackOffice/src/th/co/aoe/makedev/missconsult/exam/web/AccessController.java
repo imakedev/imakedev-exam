@@ -16,6 +16,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 
 @Controller
@@ -51,12 +52,29 @@ public class AccessController {
 		return "access/denied";
 	}
 	@RequestMapping(value = "/checking")
-   public String checking(Model model) {
+   public String checking(Model model,HttpServletRequest request) {
 		MissTestResult missTest=new MissTestResult();
 		String userid=SecurityContextHolder.getContext().getAuthentication().getName();
 		missTest.setUserid(userid);
 		int result=0;//missExamService.checkMissTestResult(missTest);
 		//0=not yet test finish, 1=  test finish
+		String	useragent = request.getHeader("User-Agent");
+		String user = useragent.toLowerCase();
+		String band="";
+		 if(user.indexOf("firefox") != -1) {
+			band="Firefox"; 		
+		} else if(user.indexOf("chrome") != -1) {
+			band="Chrome";
+		} else if(user.indexOf("opera") != -1) {
+			band="Opera";
+		} 
+		 MissSystemUse missSystemUse=new MissSystemUse(); 
+			missSystemUse.setMsystemType(1L);
+			missSystemUse.setMsystemUserId(userid); 
+			missSystemUse.setMsystemBrowserBand(band);
+			missSystemUse.setMsystemBrowserVersion(getVersionBrowser(band,user)); 
+			missSystemUse.setMsystemBrowserFullVersion(useragent); 
+			missExamService.saveMissSystemUse(missSystemUse);
 		if(result==1){ 
 			model.addAttribute("message", "You test finish"); 
 			return "access/login";
@@ -89,5 +107,39 @@ public class AccessController {
 			
 		}*/
 		return "redirect:/login?message="+message;
+	}
+	private String getVersionBrowser(String band,String fullAgent){
+		// mozilla/5.0 (x11; ubuntu; linux x86_64; rv:15.0) gecko/20100101 firefox/15.0
+		// mozilla/5.0 (x11; linux x86_64) applewebkit/537.1 (khtml, like gecko) chrome/21.0.1180.57 safari/537.1
+		// opera/9.80 (x11; linux x86_64; u; en) presto/2.10.289 version/12.01
+		String version=""; 
+		if(band.length()>0){
+			String[] versions=fullAgent.split(" ");
+			//System.out.println(" size "+versions.length); 
+			if("Chrome".equals(band)){				
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].indexOf("chrome")!=-1){
+						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}else if("Firefox".equals(band)){
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].indexOf("firefox")!=-1){
+						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}else if("Opera".equals(band)){
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].indexOf("version")!=-1){
+						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}
+		}
+		//System.out.println("vvvvvvvvvvvvvv "+version);
+		return version;
 	}
 }
