@@ -1,10 +1,8 @@
 package th.co.aoe.makedev.missconsult.exam.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity(name="user")
 public class User {
