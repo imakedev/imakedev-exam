@@ -59,7 +59,11 @@ public class AccessController {
 			band="Chrome";
 		} else if(user.indexOf("opera") != -1) {
 			band="Opera";
-		} 
+		}else if(user.indexOf("safari") != -1) {
+			band="Safari";
+		} else if(user.indexOf("msie") != -1) {
+			band="IE";
+		}
 		 
 		String userid=SecurityContextHolder.getContext().getAuthentication().getName();
 		missTest.setUserid(userid);
@@ -104,6 +108,22 @@ public class AccessController {
 				for (int i = 0; i < versions.length; i++) {
 					if(versions[i].indexOf("version")!=-1){
 						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}else if("Safari".equals(band)){
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].indexOf("version")!=-1){
+						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}else if("IE".equals(band)){
+				 versions=fullAgent.split(";");
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].trim().indexOf("msie")!=-1){
+						versions[i]=versions[i].trim();
+						version=versions[i].split(" ")[1];
 						break;
 					}
 				}
