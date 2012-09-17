@@ -107,6 +107,11 @@ public class MissCandidate implements Serializable {
 
 	@Column(name="MCA_TITLE_TYPE")
 	private String mcaTitleType;
+	
+
+	
+	
+	
 	 
 	
 	/*//bi-directional many-to-one association to MissTest
@@ -117,7 +122,9 @@ public class MissCandidate implements Serializable {
 	@OneToMany(mappedBy="missCandidate")
 	private Set<MissTestResult> missTestResults;*/
 
-    public MissCandidate() {
+    
+
+	public MissCandidate() {
     }
 
 	public Long getMcaId() {

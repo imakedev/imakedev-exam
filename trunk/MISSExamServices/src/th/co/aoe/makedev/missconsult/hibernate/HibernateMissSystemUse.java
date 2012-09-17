@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,8 @@ import th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUsePK;
 import th.co.aoe.makedev.missconsult.managers.MissSystemUseService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
-
+@Repository
+@Transactional
 public class HibernateMissSystemUse extends HibernateCommon implements MissSystemUseService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);

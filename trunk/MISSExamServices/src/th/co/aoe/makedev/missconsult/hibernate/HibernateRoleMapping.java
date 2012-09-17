@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,8 @@ import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping;
 import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMappingPK;
 import th.co.aoe.makedev.missconsult.managers.RoleMappingService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
-
+@Repository
+@Transactional
 public class HibernateRoleMapping  extends HibernateCommon implements RoleMappingService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);

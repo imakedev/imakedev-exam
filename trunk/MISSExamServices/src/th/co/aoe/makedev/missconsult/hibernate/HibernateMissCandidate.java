@@ -39,6 +39,8 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public class HibernateMissCandidate  extends HibernateCommon implements MissCandidateService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	private static 	final String[] ignore_id=new String[]{"missAccount","missSery","missCareerMaster","missIndustryMaster"};
+	private static final String[] id_ignore_theme=new String[]{"missTheme","missIndustryMaster"};
 	private static final SecureRandom random = new SecureRandom();
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
@@ -261,8 +263,38 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
 				 
-				 List l = query.list();   
-				 transList.add(l); 
+				 List<MissCandidate> l = query.list();   
+				 /*if(l!=null && l.size()>0){
+					 MissCandidate x =(MissCandidate)l.get(0);
+					 System.out.println("dddddddddddddd="+x.getMissAccount().getMaTotalUnit());
+					 System.out.println(x.getMissAccount().getMaUsedUnit());
+				 }*/
+				// StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
+				 List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
+							l.size());
+				  String masmAvailable;
+				  for (MissCandidate missCandidate : l) {
+					  sb.setLength(0);
+					  sb.append("select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap " +
+					  		"where missAccountSeriesMap.id.maId="+missCandidate.getMissAccount().getMaId().intValue()+" " +
+					  		 " and missAccountSeriesMap.id.msId="+missCandidate.getMissSery().getMsId());
+					  query =session.createQuery(sb.toString());
+					  List<MissAccountSeriesMap> seryMap=query.list();
+					  masmAvailable="0";
+					  if(seryMap!=null && seryMap.size()>0){
+						  MissAccountSeriesMap map =(MissAccountSeriesMap)seryMap.get(0);
+						  if(map.getMasmAvailable()!=null && map.getMasmAvailable().length()>0)
+							  masmAvailable=map.getMasmAvailable();
+					  }
+						  
+					  th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate=getxMissCandidateObject(missCandidate);
+					  xmissCandidate.setMasmAvailable(masmAvailable);
+					  xntcCalendars.add(xmissCandidate);
+					  
+					 // masmAvailable query.list();
+				   }
+				// SELECT * FROM MISS_CONSULT_EXAM3.MISS_ACCOUNT_SERIES_MAP;
+				 transList.add(xntcCalendars); 
 			 	 transList.add(size);
 				return transList;
 			} catch (Exception re) {
@@ -272,6 +304,52 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			}
 			return transList;
 		}
+	 private th.co.aoe.makedev.missconsult.xstream.MissCandidate getxMissCandidateObject(
+				th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate missCandidate) {
+		/*	List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
+					ntcCalendars.size());*/
+		//	for (th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate missCandidate : ntcCalendars) {
+				th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate =new th.co.aoe.makedev.missconsult.xstream.MissCandidate ();
+				BeanUtils.copyProperties(missCandidate, xmissCandidate,ignore_id);
+				xmissCandidate.setPagging(null);
+				if(missCandidate.getMissSery()!=null && missCandidate.getMissSery().getMsId()!=null && missCandidate.getMissSery().getMsId().intValue()!=0){
+					th.co.aoe.makedev.missconsult.xstream.MissSery missSery=new th.co.aoe.makedev.missconsult.xstream.MissSery();
+					BeanUtils.copyProperties(missCandidate.getMissSery(), missSery);
+					missSery.setPagging(null);
+					xmissCandidate.setMissSery(missSery);
+				}
+				if(missCandidate.getMissCareerMaster()!=null && missCandidate.getMissCareerMaster().getMcmId()!=null && missCandidate.getMissCareerMaster().getMcmId().intValue()!=0){
+					th.co.aoe.makedev.missconsult.xstream.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.xstream.MissCareerMaster();
+					missCareerMaster.setMcmId(missCandidate.getMissCareerMaster().getMcmId());
+					xmissCandidate.setMissCareerMaster(missCareerMaster);
+				}
+				if(missCandidate.getMissIndustryMaster()!=null && missCandidate.getMissIndustryMaster().getMimId()!=null && missCandidate.getMissIndustryMaster().getMimId().intValue()!=0){
+					th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();
+					missIndustryMaster.setMimId(missCandidate.getMissIndustryMaster().getMimId());
+					xmissCandidate.setMissIndustryMaster(missIndustryMaster);
+				}
+				if(missCandidate.getMissAccount()!=null && missCandidate.getMissAccount().getMaId()!=null && missCandidate.getMissAccount().getMaId().intValue()!=0){
+					th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+					BeanUtils.copyProperties(missCandidate.getMissAccount(), missAccount,id_ignore_theme);
+					if(missCandidate.getMissAccount().getMissTheme()!=null && missCandidate.getMissAccount().getMissTheme().getMtId()!=null){
+						th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+						BeanUtils.copyProperties(missCandidate.getMissAccount().getMissTheme(),missTheme); 
+						missAccount.setMissTheme(missTheme);
+					}
+					if(missCandidate.getMissAccount().getMissIndustryMaster()!=null && missCandidate.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+						th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+						BeanUtils.copyProperties(missCandidate.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+						missAccount.setMissIndustryMaster(missIndustryMaster);
+					}
+					 missAccount.setPagging(null);
+					xmissCandidate.setMissAccount(missAccount);
+				}
+				
+				//xntcCalendars.add(xmissCandidate);
+			//}
+			//return xntcCalendars;
+			return xmissCandidate;
+		} 
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int updateMissCandidate(MissCandidate transientInstance,String section)
 			throws DataAccessException {

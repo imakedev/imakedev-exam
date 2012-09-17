@@ -25,7 +25,7 @@ public class MissCandidateResource extends BaseResource {
 	private com.thoughtworks.xstream.XStream xstream;
  
 	private static 	final String[] ignore_id=new String[]{"missAccount","missSery","missCareerMaster","missIndustryMaster"};
-	private static final String[] id_ignore_theme=new String[]{"missTheme"};
+	private static final String[] id_ignore_theme=new String[]{"missTheme","missIndustryMaster"};
 	
 	 
 	public MissCandidateResource() {
@@ -90,6 +90,12 @@ public class MissCandidateResource extends BaseResource {
 							BeanUtils.copyProperties(xbpsTerm.getMissAccount().getMissTheme(),missTheme); 
 							missAccount.setMissTheme(missTheme);
 						}
+						if(xbpsTerm.getMissAccount().getMissIndustryMaster()!=null && xbpsTerm.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster();						
+							BeanUtils.copyProperties(xbpsTerm.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+							missAccount.setMissIndustryMaster(missIndustryMaster);
+						}
+						
 						bpsTerm.setMissAccount(missAccount);
 					}
 					if (xbpsTerm.getServiceName() != null
@@ -129,6 +135,11 @@ public class MissCandidateResource extends BaseResource {
 										th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
 										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissTheme(),missTheme); 
 										missAccount.setMissTheme(missTheme);
+									}
+									if(ntcCalendarReturn.getMissAccount().getMissIndustryMaster()!=null && ntcCalendarReturn.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+										th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+										missAccount.setMissIndustryMaster(missIndustryMaster);
 									}
 									 missAccount.setPagging(null);
 									xntcCalendarReturn.setMissAccount(missAccount);
@@ -176,6 +187,11 @@ public class MissCandidateResource extends BaseResource {
 										th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
 										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissTheme(),missTheme); 
 										missAccount.setMissTheme(missTheme);
+									}
+									if(ntcCalendarReturn.getMissAccount().getMissIndustryMaster()!=null && ntcCalendarReturn.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+										th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+										missAccount.setMissIndustryMaster(missIndustryMaster);
 									}
 									 missAccount.setPagging(null);
 									xntcCalendarReturn.setMissAccount(missAccount);
@@ -240,19 +256,20 @@ public class MissCandidateResource extends BaseResource {
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missCandidateService.searchMissCandidate(bpsTerm,page);
 							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate>) result
-										.get(0);
+								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate>) result
+										.get(0);*/
 								String faqs_size = (String) result.get(1);
 //								 
 								VResultMessage vresultMessage = new VResultMessage();
 
-								List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>();
+								//List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>();
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
+								/*if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissCandidateObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
+								}*/
+								vresultMessage.setResultListObj((java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>)result
+										.get(0));
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						}
@@ -333,6 +350,11 @@ public class MissCandidateResource extends BaseResource {
 					th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
 					BeanUtils.copyProperties(missCandidate.getMissAccount().getMissTheme(),missTheme); 
 					missAccount.setMissTheme(missTheme);
+				}
+				if(missCandidate.getMissAccount().getMissIndustryMaster()!=null && missCandidate.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+					th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+					BeanUtils.copyProperties(missCandidate.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+					missAccount.setMissIndustryMaster(missIndustryMaster);
 				}
 				 missAccount.setPagging(null);
 				xmissCandidate.setMissAccount(missAccount);

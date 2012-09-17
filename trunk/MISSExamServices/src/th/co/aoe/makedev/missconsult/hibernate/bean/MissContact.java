@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -88,6 +89,28 @@ public class MissContact implements Serializable {
 	@Column(name="MCONTACT_ISADMIN")
 	private String mcontactIsAdmin;
 	
+	@Column(name="MCONTACT_CREATED_TIME")
+	private Timestamp mcontactCreatedTime;
+	
+	@Column(name="MCONTACT_UPDATED_TIME")
+	private Timestamp mcontactUpdatedTime;
+	
+	public Timestamp getMcontactCreatedTime() {
+		return mcontactCreatedTime;
+	}
+
+	public void setMcontactCreatedTime(Timestamp mcontactCreatedTime) {
+		this.mcontactCreatedTime = mcontactCreatedTime;
+	}
+
+	public Timestamp getMcontactUpdatedTime() {
+		return mcontactUpdatedTime;
+	}
+
+	public void setMcontactUpdatedTime(Timestamp mcontactUpdatedTime) {
+		this.mcontactUpdatedTime = mcontactUpdatedTime;
+	}
+
 	@Column(name="rc_id")
 	private Long rcId;
 	

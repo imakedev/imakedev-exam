@@ -23,7 +23,7 @@ public class MissAccountResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissAccountService missAccountService;
 	private com.thoughtworks.xstream.XStream xstream;
-	private static final String[] id_ignore=new String[]{"missTheme"};
+	private static final String[] id_ignore=new String[]{"missTheme","missIndustryMaster"};
 	 
 	 
 	public MissAccountResource() {
@@ -61,6 +61,11 @@ public class MissAccountResource extends BaseResource {
 						BeanUtils.copyProperties(xbpsTerm.getMissTheme(),missTheme); 
 						bpsTerm.setMissTheme(missTheme);
 					}
+					if(xbpsTerm.getMissIndustryMaster()!=null && xbpsTerm.getMissIndustryMaster().getMimId()!=null){
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.hibernate.bean.MissIndustryMaster();						
+						BeanUtils.copyProperties(xbpsTerm.getMissIndustryMaster(),missIndustryMaster); 
+						bpsTerm.setMissIndustryMaster(missIndustryMaster);
+					}
 					if (xbpsTerm.getServiceName() != null
 							&& !xbpsTerm.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
@@ -79,6 +84,12 @@ public class MissAccountResource extends BaseResource {
 									BeanUtils.copyProperties(ntcCalendarReturn.getMissTheme(),missTheme); 
 									xntcCalendarReturn.setMissTheme(missTheme);
 								}
+								if(ntcCalendarReturn.getMissIndustryMaster()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId()!=null){
+									th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+									BeanUtils.copyProperties(ntcCalendarReturn.getMissIndustryMaster(),missIndustryMaster); 
+									xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
+								}
+								
 								xntcCalendarReturn.setPagging(null);
 								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
@@ -225,6 +236,12 @@ public class MissAccountResource extends BaseResource {
 				BeanUtils.copyProperties(missAccount.getMissTheme(),missTheme); 
 				xmissAccount.setMissTheme(missTheme);
 			}
+			if(missAccount.getMissIndustryMaster()!=null && missAccount.getMissIndustryMaster().getMimId()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+				BeanUtils.copyProperties(missAccount.getMissIndustryMaster(),missIndustryMaster); 
+				xmissAccount.setMissIndustryMaster(missIndustryMaster);
+			}
+			
 			xmissAccount.setPagging(null);
 			xntcCalendars.add(xmissAccount);
 		}

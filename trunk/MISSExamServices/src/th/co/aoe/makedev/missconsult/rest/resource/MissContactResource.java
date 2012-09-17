@@ -120,7 +120,7 @@ public class MissContactResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mcontactId=0l;
-						
+							bpsTerm.setMcontactCreatedTime(timeStampStartDate);
 								mcontactId=(missContactService.saveMissContact(bpsTerm));
 							xbpsTerm.setMcontactId(mcontactId);
 						
@@ -128,11 +128,13 @@ public class MissContactResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							bpsTerm.setMcontactUpdatedTime(timeStampStartDate);
 							int updateRecord=missContactService.updateMissContact(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_UPDATE_PHOTO)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							bpsTerm.setMcontactUpdatedTime(timeStampStartDate);
 							int updateRecord=missContactService.updateMissContactPhoto(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}

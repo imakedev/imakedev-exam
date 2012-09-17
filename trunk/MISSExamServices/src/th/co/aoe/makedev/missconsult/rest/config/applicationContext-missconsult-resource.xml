@@ -229,6 +229,36 @@
 		scope="prototype"> 
 		<property name="missSystemUseService" ref="missSystemUseService"></property> 
 		<property name="xstream" ref="xstream"></property>
-	</bean> 
+	</bean>  
 	
+	<bean id="eptNormReportResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.EPTNormReportResource"
+		scope="prototype"> 
+		<property name="eptNormReportService" ref="eptNormReportService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	<bean id="customerReportResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.CustomerReportResource"
+		scope="prototype"> 
+		<property name="customerReportService" ref="customerReportService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>
+	<bean id="serviceReportResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.ServiceReportResource"
+		scope="prototype"> 
+		<property name="serviceReportService" ref="serviceReportService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>
+	<bean id="productReportResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.ProductReportResource"
+		scope="prototype"> 
+		<property name="productReportService" ref="productReportService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	<bean id="consultantReportResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.ConsultantReportResource"
+		scope="prototype"> 
+		<property name="consultantReportService" ref="consultantReportService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>
 </beans>
