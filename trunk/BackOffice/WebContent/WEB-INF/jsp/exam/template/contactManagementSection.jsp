@@ -17,6 +17,12 @@ $(document).ready(function() {
 	   }
 
 	}); */
+	$("#mcontactBirthDate" ).datepicker({
+		showOn: "button",
+		buttonImage: _path+"resources/images/calendar.gif",
+		buttonImageOnly: true,
+		dateFormat:"dd/mm/yy" 
+	});
 	var target="contactImg";
 	/* if($("#mcontactType").val() != '1'){
 		target="company";
@@ -205,12 +211,12 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<form:radiobutton path="missContact.mcontactGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missContact.mcontactGender" value="1"/>Male
     					</td>
     				</tr>
-    				<%-- <tr valign="top">
+    				  <tr valign="top">
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
     					<form:input path="mcontactBirthDate" id="mcontactBirthDate" cssStyle="width: 75px"/>
     					</td>
-    				</tr> --%>
+    				</tr>  
     				<tr valign="top">
     					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">

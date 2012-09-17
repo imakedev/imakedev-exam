@@ -275,13 +275,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<thead>
           		<tr> 
             		<th width="7%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="10%"><div class="th_class">Username</div></th> 
-            		<th width="10%"><div class="th_class">Password</div></th>
-            		<th width="25%"><div class="th_class">Company</div></th> 
-            		<th width="15%"><div class="th_class">Series</div></th>
-            		<th width="20%"><div class="th_class">Last Login</div></th> 
+            		<th width="17%"><div class="th_class">Username/Password</div></th> 
+            		<!-- <th width="10%"><div class="th_class">Password</div></th> -->
+            		<th width="35%"><div class="th_class">Company [Total/Available Unit]</div></th> 
+            		<th width="20%"><div class="th_class">Series [Available Unit]</div></th>
+            		<th width="10%"><div class="th_class">Last Login</div></th> 
             		<th width="5%"><div class="th_class">Status</div></th>
-            		<th width="8%"><div class="th_class">Action</div></th>  
+            		<th width="6%"><div class="th_class">Action</div></th>  
           		</tr>
         	</thead>
         	<tbody>
@@ -289,10 +289,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	<tr> 
             
             	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/>${(candidateForm.paging.pageNo-1)*candidateForm.paging.pageSize+(loop.index+1)}.</td>
-            	<td>&nbsp;${missCandidate.mcaUsername}</td>
-            	<td>&nbsp;${missCandidate.mcaPassword}</td>
-            	<td>&nbsp;${missCandidate.missAccount.maName}</td>
-            	<td>&nbsp;${missCandidate.missSery.msSeriesName}</td>
+            	<td>&nbsp;${missCandidate.mcaUsername}&nbsp;/&nbsp;${missCandidate.mcaPassword}</td>
+            	<%-- <td>&nbsp;${missCandidate.mcaPassword}</td> --%>
+            	<td>&nbsp;${missCandidate.missAccount.maName}&nbsp;[${missCandidate.missAccount.maTotalUnit}/${missCandidate.missAccount.maTotalUnit-missCandidate.missAccount.maUsedUnit}]</td>
+            	<td>&nbsp;${missCandidate.missSery.msSeriesName}&nbsp;[${missCandidate.masmAvailable}]</td>
             	<td>&nbsp;${missCandidate.mcaLastlogin}</td>
             	<td>
             	<c:if test="${missCandidate.mcaStatus=='1'}">
