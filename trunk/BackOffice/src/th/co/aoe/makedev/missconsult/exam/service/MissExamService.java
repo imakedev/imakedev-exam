@@ -7,6 +7,9 @@ package th.co.aoe.makedev.missconsult.exam.service;
 
 import java.util.List;
 
+import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
+import th.co.aoe.makedev.missconsult.xstream.CustomerReport;
+import th.co.aoe.makedev.missconsult.xstream.EPTNormReport;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountMapping;
@@ -37,9 +40,11 @@ import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTheme;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
+import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public interface MissExamService {
@@ -370,4 +375,13 @@ public interface MissExamService {
 
 	public abstract List searchMissAccountMapping(
 			MissAccountMapping persistentInstance);
+//	public abstract ProductReport findProductReport(String mode,String year);
+	public abstract EPTNormReport findEPTNormReport(EPTNormReport eptNormReport);
+	public abstract EPTNormReport findCompanies(EPTNormReport eptNormReport); 
+	public abstract CustomerReport findCustomerReport(CustomerReport customerReport)  ;
+	public abstract CustomerReport findGroups(CustomerReport customerReport); 
+	public abstract ProductReport findProductReport(ProductReport productReport);
+	public abstract ServiceReport findServiceReport(ServiceReport serviceReport);
+	public abstract ConsultantReport findConsultantReport(ConsultantReport consultantReport);
+	public abstract ConsultantReport findSales(ConsultantReport consultantReport);
 }

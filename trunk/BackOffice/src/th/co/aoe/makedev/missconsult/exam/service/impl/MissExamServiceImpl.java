@@ -11,6 +11,9 @@ import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
+import th.co.aoe.makedev.missconsult.xstream.CustomerReport;
+import th.co.aoe.makedev.missconsult.xstream.EPTNormReport;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountMapping;
@@ -41,9 +44,11 @@ import th.co.aoe.makedev.missconsult.xstream.MissTest;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTheme;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
+import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
+import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -942,7 +947,7 @@ public class MissExamServiceImpl extends PostCommon
         //main.testMissQuestion();
      /*  MissAccount account=main.findMissAccountById(7l);
        System.out.println(account.getMissAccountSeriesMapList());*/
-        main.testMissQuestion();
+        //main.findProductReport("0","2012"); //0=year,1=all
       //  MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
       /*  System.out.println(IMakeDevUtils.calculatePage(3, 7));
         DateTime dt = new DateTime();
@@ -1571,5 +1576,101 @@ public class MissExamServiceImpl extends PostCommon
 	    return resultMessage.getResultListObj();
 	}
 
+	@Override
+	//public ProductReport findProductReport(String mode, String year) {
+	public ProductReport findProductReport(ProductReport productReport) {
+		// TODO Auto-generated method stub
+		/*ProductReport productReport = new ProductReport();
+		productReport.setMode(mode);
+		productReport.setYear(year);*/
+		productReport.setServiceName(ServiceConstant.PRODUCT_REPORT_FIND);
+	        VResultMessage resultMessage = postMessage(productReport, productReport.getClass().getName(), "productReport", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (ProductReport)resultMessage.getResultListObj().get(0);
+	        else
+	        	return null;
+	}
+
+	@Override
+	//public  ServiceReport findServiceReport(String month, String year) {
+	public  ServiceReport findServiceReport(ServiceReport serviceReport) {
+		// TODO Auto-generated method stub
+		/*ProductReport productReport = new ProductReport();
+		productReport.setMode(month);
+		productReport.setYear(year);*/
+		serviceReport.setServiceName(ServiceConstant.SERVICE_REPORT_FIND);
+	        VResultMessage resultMessage = postMessage(serviceReport, serviceReport.getClass().getName(), "serviceReport", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (ServiceReport)resultMessage.getResultListObj().get(0);
+	        else
+	        	return null;
+	}
+
+	@Override
+	public EPTNormReport findEPTNormReport(EPTNormReport eptNormReport) {
+		// TODO Auto-generated method stub
+		eptNormReport.setServiceName(ServiceConstant.EPT_NORM_REPORT_FIND);
+        VResultMessage resultMessage = postMessage(eptNormReport, eptNormReport.getClass().getName(), "eptNormReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (EPTNormReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
+
+	@Override
+	public EPTNormReport findCompanies(EPTNormReport eptNormReport) {
+		// TODO Auto-generated method stub
+		eptNormReport.setServiceName(ServiceConstant.EPT_NORM_REPORT_GET_COMPANIES);
+        VResultMessage resultMessage = postMessage(eptNormReport, eptNormReport.getClass().getName(), "eptNormReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (EPTNormReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
+
+	@Override
+	public CustomerReport findCustomerReport(CustomerReport customerReport) {
+		// TODO Auto-generated method stub
+		customerReport.setServiceName(ServiceConstant.CUSTOMER_REPORT_FIND);
+        VResultMessage resultMessage = postMessage(customerReport, customerReport.getClass().getName(), "customerReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (CustomerReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
+
+	@Override
+	public CustomerReport findGroups(CustomerReport customerReport) {
+		// TODO Auto-generated method stub
+		customerReport.setServiceName(ServiceConstant.CUSTOMER_REPORT_GET_GROUPS);
+        VResultMessage resultMessage = postMessage(customerReport, customerReport.getClass().getName(), "customerReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (CustomerReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
+
+	@Override
+	public ConsultantReport findConsultantReport(
+			ConsultantReport consultantReport) {
+		// TODO Auto-generated method stub
+		consultantReport.setServiceName(ServiceConstant.CONSULTANT_REPORT_FIND);
+        VResultMessage resultMessage = postMessage(consultantReport, consultantReport.getClass().getName(), "consultantReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (ConsultantReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
+
+	@Override
+	public ConsultantReport findSales(ConsultantReport consultantReport) {
+		// TODO Auto-generated method stub
+		consultantReport.setServiceName(ServiceConstant.CONSULTANT_REPORT_GET_SALES);
+        VResultMessage resultMessage = postMessage(consultantReport, consultantReport.getClass().getName(), "consultantReport", true);
+        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+        	return (ConsultantReport)resultMessage.getResultListObj().get(0);
+        else
+        	return null;
+	}
 
 }

@@ -5,6 +5,7 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -412,6 +413,10 @@ public class CompanyController
     //	if(meId!=null && !meId.equals("0")){
     		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
     //	} 
+    		if(missContact != null && missContact.getMcontactBirthDate() != null)
+    			contactForm.setMcontactBirthDate(format1.format(missContact.getMcontactBirthDate()));
+    		else
+    			contactForm.setMcontactBirthDate(null);
     		model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
     		model.addAttribute("display", "display: none");
       //  model.addAttribute("missContacts", missContacts);
@@ -428,6 +433,7 @@ public class CompanyController
         	contactForm = (ContactForm)model.asMap().get("contactForm");
         else
         	contactForm = new ContactForm();
+        contactForm.setMcontactBirthDate(null);
         MissContact missContact =new MissContact();
         missContact.setMcontactType(account_type);
         missContact.setMcontactRef(Long.parseLong(maId));
@@ -445,7 +451,16 @@ public class CompanyController
         String message = ""; 
         logger.debug("xxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyy doContactAction mode="+mode);
         Long id = null;
-        if(mode != null)
+        if(mode != null){
+        	if(contactForm.getMcontactBirthDate() != null && contactForm.getMcontactBirthDate().trim().length() > 0)
+                try
+                {
+                	contactForm.getMissContact().setMcontactBirthDate(format1.parse(contactForm.getMcontactBirthDate()));
+                }
+                catch(ParseException e)
+                {
+                    e.printStackTrace();
+                }
             if(mode.equals("new"))
             {
             	contactForm.getMissContact().setMcontactType(account_type);
@@ -460,6 +475,7 @@ public class CompanyController
                 id = contactForm.getMissContact().getMcontactId();
                 message = "Update success !";
             }
+        }
         model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(contactForm.getMaId())));
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
