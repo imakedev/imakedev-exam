@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
@@ -54,7 +55,11 @@ public class MissContact  extends VServiceXML implements Serializable {
 	private String mcontactType;
 	private String mcontactIsAdmin;
 	private Long rcId;
-
+	@XStreamAlias("mcontactCreatedTime")
+	private Timestamp mcontactCreatedTime;
+	
+	@XStreamAlias("mcontactUpdatedTime")
+	private Timestamp mcontactUpdatedTime;
 	//ext 
 	private String isMC;
 	private String maCustomizeLogoPath;
@@ -331,6 +336,22 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	public void setMissTheme(MissTheme missTheme) {
 		this.missTheme = missTheme;
+	}
+
+	public Timestamp getMcontactCreatedTime() {
+		return mcontactCreatedTime;
+	}
+
+	public void setMcontactCreatedTime(Timestamp mcontactCreatedTime) {
+		this.mcontactCreatedTime = mcontactCreatedTime;
+	}
+
+	public Timestamp getMcontactUpdatedTime() {
+		return mcontactUpdatedTime;
+	}
+
+	public void setMcontactUpdatedTime(Timestamp mcontactUpdatedTime) {
+		this.mcontactUpdatedTime = mcontactUpdatedTime;
 	}
 
 }

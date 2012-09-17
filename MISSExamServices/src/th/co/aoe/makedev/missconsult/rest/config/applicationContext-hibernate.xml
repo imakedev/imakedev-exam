@@ -48,13 +48,14 @@
 		for the required JAR files. Alternatively you can use another connection pool
 		such as C3P0, similarly configured using Spring.
 	-->
-	<!-- -->
+	<!-- 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			p:password="${jdbc.password}"/> 
-	<!--   
+	-->
+	  
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
-      --> 
+         
 	<!-- JNDI DataSource for JEE environments -->
        <!--
          
@@ -142,6 +143,7 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSaleMap</value>
 			</list>
    		</property>
    		<!-- 
@@ -338,6 +340,22 @@
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	<bean id="missSystemUseService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSystemUse">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	 
+	<bean id="eptNormReportService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateEPTNormReport">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="customerReportService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateCustomerReport">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="serviceReportService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateServiceReport">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean>
+	<bean id="productReportService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateProductReport">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean> 
+	<bean id="consultantReportService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateConsultantReport">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 </beans>

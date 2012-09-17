@@ -128,6 +128,10 @@ public class MissAccount implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="MT_ID")
 	private MissTheme missTheme;
+	
+	@ManyToOne
+    @JoinColumn(name="MIM_ID")
+	private MissIndustryMaster missIndustryMaster;
 /*	@Column(name="MA_SEX")
 	private String maSex;*/
 
@@ -152,6 +156,14 @@ public class MissAccount implements Serializable {
 	}*/
 
 
+
+	public MissIndustryMaster getMissIndustryMaster() {
+		return missIndustryMaster;
+	}
+
+	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
+		this.missIndustryMaster = missIndustryMaster;
+	}
 
 	public MissAccount() {
     }

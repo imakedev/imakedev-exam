@@ -1,5 +1,7 @@
 package th.co.aoe.makedev.missconsult.constant;
 
+import java.util.ResourceBundle;
+
 public class ServiceConstant {
 	public static final String hostReference = "http://10.2.0.76:10000/BPSService/RestletServlet/";
 	
@@ -7,6 +9,12 @@ public class ServiceConstant {
 	
 	public static final String INTERFACE_RETURN_TYPE = "java.util.List";
 	public static final String VOID_RETURN_TYPE = "void";
+	public static final ResourceBundle bundle;
+	public static String SCHEMA="";
+	static{
+		bundle =  ResourceBundle.getBundle( "jdbc" );	
+		SCHEMA=bundle.getString("schema");
+	}
 
 	// MISS_ACCOUNT
 	public static final String MISS_ACCOUNT_SAVE = "saveMissAccount";
@@ -249,5 +257,17 @@ public class ServiceConstant {
 				
 		// MISS_SYSTEM_USE
 		public static final String MISS_SYSTEM_USE_SAVE = "saveMissSystemUse";
-		public static final String MISS_SYSTEM_USE_SEARCH = "searchMissSystemUse";				
+		public static final String MISS_SYSTEM_USE_SEARCH = "searchMissSystemUse";		
+		
+		//Manage Report 
+		public static final String MANAGE_REPORT_MODE_ALL= "1";
+		public static final String MANAGE_REPORT_MODE_SECTION= "0";
+		public static final String EPT_NORM_REPORT_FIND= "findEPTNormReport";
+		public static final String EPT_NORM_REPORT_GET_COMPANIES= "getCompaniesEPTNormReport";
+		public static final String CUSTOMER_REPORT_FIND= "findCustomerReport";
+		public static final String CUSTOMER_REPORT_GET_GROUPS= "getGroupsCustomerReport";
+		public static final String SERVICE_REPORT_FIND= "findServiceReport";
+		public static final String PRODUCT_REPORT_FIND= "findProductReport";
+		public static final String CONSULTANT_REPORT_FIND= "findConsultantReport";
+		public static final String CONSULTANT_REPORT_GET_SALES= "getSalesConsultantReport";
 }

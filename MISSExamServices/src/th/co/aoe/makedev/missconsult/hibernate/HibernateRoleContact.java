@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,8 @@ import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.RoleContact;
 import th.co.aoe.makedev.missconsult.managers.RoleContactService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
-
+@Repository
+@Transactional
 public class HibernateRoleContact  extends HibernateCommon implements RoleContactService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);

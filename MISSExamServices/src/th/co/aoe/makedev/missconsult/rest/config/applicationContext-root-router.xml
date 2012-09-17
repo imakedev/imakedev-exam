@@ -212,6 +212,36 @@
 					</bean>
 				</entry>
 				
+				<entry key="/eptNormReport">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="eptNormReportResource" />
+					</bean>					
+				</entry>
+				<entry key="/customerReport">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="customerReportResource" />
+					</bean>					
+				</entry>
+				<entry key="/serviceReport">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="serviceReportResource" />
+					</bean>
+				</entry>
+				<entry key="/productReport">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="productReportResource" />
+					</bean>					
+				</entry>
+				<entry key="/consultantReport">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="consultantReportResource" />
+					</bean>					
+				</entry>
 			</map>
 		</property>
 		<!--<property name="routes[2].template.variables[URI]">

@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,8 @@ import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountMapping;
 import th.co.aoe.makedev.missconsult.managers.MissAccountMappingService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
-
+@Repository
+@Transactional
 public class HibernateMissAccountMapping extends HibernateCommon implements MissAccountMappingService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);

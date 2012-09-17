@@ -70,11 +70,14 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String mcaPictureHotlink;
 	private String mcaPosition;
 	private String mcaTitleType;
-	 
+	
+	
+	
 	//ext 
 	private String section; 
 	private String mcaIds;
 	private String amount;
+	private String masmAvailable;
 	
 	@XStreamImplicit(itemFieldName="missSeriesMap")
 	private List<MissSeriesMap> missSeriesMap;
@@ -307,6 +310,16 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
 		this.missIndustryMaster = missIndustryMaster;
 	}
+
+	public String getMasmAvailable() {
+		return masmAvailable;
+	}
+
+	public void setMasmAvailable(String masmAvailable) {
+		this.masmAvailable = masmAvailable;
+	}
+
+ 
 
 	
 	/*public Set<MissTest> getMissTests() {

@@ -109,6 +109,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	//bi-directional one-to-one association to MissTheme
 	@XStreamAlias("missTheme")
 	private MissTheme missTheme;
+	@XStreamAlias("missIndustryMaster")
+	private MissIndustryMaster missIndustryMaster;
 	private List<MissAccountSeriesMap> missAccountSeriesMapList;
 	private List<MissSery> missSeryList;
 /*	private String maContactPictureHotlink;*/
@@ -432,6 +434,14 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaTheme(String maTheme) {
 		this.maTheme = maTheme;
+	}
+
+	public MissIndustryMaster getMissIndustryMaster() {
+		return missIndustryMaster;
+	}
+
+	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
+		this.missIndustryMaster = missIndustryMaster;
 	}
 
 	public MissTheme getMissTheme() {

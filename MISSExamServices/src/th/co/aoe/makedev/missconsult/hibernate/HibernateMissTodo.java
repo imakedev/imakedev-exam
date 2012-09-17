@@ -124,7 +124,7 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 				StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo ");
 				
 				boolean iscriteria = false;
-				System.out.println(" maId="+maId+",pageSize="+pagging.getPageSize()+",pageNo="+pagging.getPageNo());
+				//System.out.println(" maId="+maId+",pageSize="+pagging.getPageSize()+",pageNo="+pagging.getPageNo());
 				if(maId !=null && maId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
