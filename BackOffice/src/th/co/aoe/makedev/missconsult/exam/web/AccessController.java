@@ -67,7 +67,13 @@ public class AccessController {
 			band="Chrome";
 		} else if(user.indexOf("opera") != -1) {
 			band="Opera";
-		} 
+		} else if(user.indexOf("safari") != -1) {
+			band="Safari";
+		} else if(user.indexOf("msie") != -1) {
+			band="IE";
+		}  
+		 
+		 
 		 MissSystemUse missSystemUse=new MissSystemUse(); 
 			missSystemUse.setMsystemType(1L);
 			missSystemUse.setMsystemUserId(userid); 
@@ -137,7 +143,27 @@ public class AccessController {
 						break;
 					}
 				}
+			}else if("Safari".equals(band)){
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].indexOf("version")!=-1){
+						version=versions[i].split("/")[1];
+						break;
+					}
+				}
+			}else if("IE".equals(band)){
+				 versions=fullAgent.split(";");
+				for (int i = 0; i < versions.length; i++) {
+					if(versions[i].trim().indexOf("msie")!=-1){
+						versions[i]=versions[i].trim();
+						version=versions[i].split(" ")[1];
+						break;
+					}
+				}
 			}
+			
+			//Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2
+			//Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)
+
 		}
 		//System.out.println("vvvvvvvvvvvvvv "+version);
 		return version;

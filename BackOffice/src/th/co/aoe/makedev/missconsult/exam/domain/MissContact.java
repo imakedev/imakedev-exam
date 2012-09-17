@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.exam.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -91,6 +92,11 @@ public class MissContact implements Serializable {
 	
 	@Column(name="rc_id")
 	private Long rcId;
+	@Column(name="MCONTACT_CREATED_TIME")
+	private Timestamp mcontactCreatedTime;
+	
+	@Column(name="MCONTACT_UPDATED_TIME")
+	private Timestamp mcontactUpdatedTime;
 
     public Long getRcId() {
 		return rcId;
@@ -279,6 +285,22 @@ public class MissContact implements Serializable {
 
 	public void setMcontactIsAdmin(String mcontactIsAdmin) {
 		this.mcontactIsAdmin = mcontactIsAdmin;
+	}
+
+	public Timestamp getMcontactCreatedTime() {
+		return mcontactCreatedTime;
+	}
+
+	public void setMcontactCreatedTime(Timestamp mcontactCreatedTime) {
+		this.mcontactCreatedTime = mcontactCreatedTime;
+	}
+
+	public Timestamp getMcontactUpdatedTime() {
+		return mcontactUpdatedTime;
+	}
+
+	public void setMcontactUpdatedTime(Timestamp mcontactUpdatedTime) {
+		this.mcontactUpdatedTime = mcontactUpdatedTime;
 	}
 
 }
