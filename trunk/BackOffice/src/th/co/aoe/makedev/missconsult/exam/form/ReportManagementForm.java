@@ -2,6 +2,9 @@ package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
 
+import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
+import th.co.aoe.makedev.missconsult.xstream.CustomerReport;
+import th.co.aoe.makedev.missconsult.xstream.EPTNormReport;
 import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 
@@ -11,9 +14,15 @@ public class ReportManagementForm  extends CommonForm implements Serializable {
 	private String productReport_year;
 	private ProductReport productReport;
 	private ServiceReport serviceReport;
+	private ConsultantReport consultantReport;
+	private CustomerReport customerReport;
+	private EPTNormReport eptNormReport; 
 	public ReportManagementForm(){
 		productReport=new ProductReport();
 		serviceReport=new ServiceReport();
+		consultantReport=new ConsultantReport();
+		customerReport= new CustomerReport();
+		eptNormReport =new EPTNormReport();
 	}
 	public String getProductReport_mode() {
 		return productReport_mode;
@@ -38,6 +47,24 @@ public class ReportManagementForm  extends CommonForm implements Serializable {
 	}
 	public void setServiceReport(ServiceReport serviceReport) {
 		this.serviceReport = serviceReport;
+	}
+	public ConsultantReport getConsultantReport() {
+		return consultantReport;
+	}
+	public void setConsultantReport(ConsultantReport consultantReport) {
+		this.consultantReport = consultantReport;
+	}
+	public CustomerReport getCustomerReport() {
+		return customerReport;
+	}
+	public void setCustomerReport(CustomerReport customerReport) {
+		this.customerReport = customerReport;
+	}
+	public EPTNormReport getEptNormReport() {
+		return eptNormReport;
+	}
+	public void setEptNormReport(EPTNormReport eptNormReport) {
+		this.eptNormReport = eptNormReport;
 	}
 
 }
