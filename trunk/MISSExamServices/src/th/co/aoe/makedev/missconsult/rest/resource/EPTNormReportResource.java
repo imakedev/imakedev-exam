@@ -106,11 +106,12 @@ public class EPTNormReportResource extends BaseResource {
 		// TODO Auto-generated method stub
 		 return null;
 	} 
-	public EPTNormReportService getEPTNormReportService() {
+	 
+	public EPTNormReportService getEptNormReportService() {
 		return eptNormReportService;
 	}
 
-	public void setEPTNormReportService(EPTNormReportService eptNormReportService) {
+	public void setEptNormReportService(EPTNormReportService eptNormReportService) {
 		this.eptNormReportService = eptNormReportService;
 	}
 

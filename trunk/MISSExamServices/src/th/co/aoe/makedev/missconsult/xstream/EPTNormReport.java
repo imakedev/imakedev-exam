@@ -23,7 +23,8 @@ public class EPTNormReport  extends VServiceXML implements Serializable {
 	private List<List<String>> liePercent; //1b
 	
 	@XStreamImplicit(itemFieldName="groupPercent")
-	private List<String> groupPercent; // 1c
+	private List<List<String>> groupPercent; // 1c
+	//private List<String> groupPercent; // 1c
 	
 	@XStreamImplicit(itemFieldName="careerPercent")
 	private List<List<String>> careerPercent; //1d
@@ -72,10 +73,11 @@ public class EPTNormReport  extends VServiceXML implements Serializable {
 	public void setLiePercent(List<List<String>> liePercent) {
 		this.liePercent = liePercent;
 	}
-	public List<String> getGroupPercent() {
+	 
+	public List<List<String>> getGroupPercent() {
 		return groupPercent;
 	}
-	public void setGroupPercent(List<String> groupPercent) {
+	public void setGroupPercent(List<List<String>> groupPercent) {
 		this.groupPercent = groupPercent;
 	}
 	public List<List<String>> getCareerPercent() {
