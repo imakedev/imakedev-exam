@@ -52,17 +52,23 @@ public class HibernateServiceReport extends HibernateCommon implements ServiceRe
 			List<String> strings =new ArrayList<String>(objects.length);
 			for (int i = 0; i < objects.length; i++) {
 			//System.out.println(objects[i].getClass().toString());
-			 if(objects[i] instanceof java.lang.String){
+			  if(objects[i]==null)
+					 strings.add(null);
+			  else	if(objects[i] instanceof java.lang.String){
 				//strings[i]=(String)objects[i];
 			//	System.out.println("value="+((String)objects[i]));
 				strings.add((String)objects[i]);
-			 }else if(objects[i] instanceof java.math.BigInteger){
+			 } else if(objects[i] instanceof java.lang.Integer){ 
+					strings.add((java.lang.Integer)objects[i]+"");
+			}else if(objects[i] instanceof java.math.BigInteger){
 					//strings[i]=(java.math.BigInteger)objects[i]+"";
 				//	System.out.println("value="+((java.math.BigInteger)objects[i]+""));
 					strings.add((java.math.BigInteger)objects[i]+"");
 			} else if(objects[i] instanceof java.math.BigDecimal){
 			//	System.out.println("value="+((java.math.BigDecimal)objects[i]+""));
 				strings.add(((java.math.BigDecimal)objects[i]+""));
+			}else if(objects[i] instanceof java.sql.Timestamp){
+				strings.add(format2.format((java.sql.Timestamp)objects[i])); 
 			}
 				
 			}

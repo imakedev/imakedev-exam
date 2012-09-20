@@ -19,7 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 @Transactional
 public class HibernateProductReport extends HibernateCommon implements ProductReportService {
 
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	private static ResourceBundle bundle;
 	private static String schema="";

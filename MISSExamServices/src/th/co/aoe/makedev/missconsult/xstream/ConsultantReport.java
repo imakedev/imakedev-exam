@@ -35,7 +35,7 @@ public class ConsultantReport  extends VServiceXML implements Serializable {
 	private List<List<String>> updateStat; //5e
 	
 	@XStreamImplicit(itemFieldName="birthdayStat")
-	private List<List<String>> birthdayStat; //5e
+	private List<List<String>> birthdayStat; //5f
 	
 	
 	public String getMode() {
