@@ -943,7 +943,28 @@ public class MissExamServiceImpl extends PostCommon
 	}
     public static void main(String args[])
     {
+    	
+
         MissExamServiceImpl main = new MissExamServiceImpl();
+  /* 	 List<MissQuestion> misses=ReadWriteWorkbook_bk.setQuestion();
+        List<MissQuestion> missQuestions = main.listMissQuestions(36l);
+        //main.searchMissChoice(missChoice)
+        System.out.println(missQuestions.get(0).getMissChoicesUpdate());
+      
+        // update question 
+        for (MissQuestion miss : misses) {
+        	MissQuestion missQuestion =missQuestions.get(miss.getMqId().intValue()-1);
+        	missQuestion.setMqNameTh1(miss.getMqNameTh1());
+        	 main.updateMissQuestion(missQuestion, "updateMissQuestion");
+		}*/
+        main.testMissQuestion();
+		/*
+        MissQuestion missQuestion =missQuestions.get(0);
+        missQuestion.setMqNameTh1(misses.get(0).getMqNameTh1());
+        main.updateMissQuestion(missQuestion, "updateMissQuestion");
+   */
+     /*   System.out.println(missQuestion.getMqNameTh1());
+        System.out.println(missQuestions.size());*/
         //main.testMissQuestion();
      /*  MissAccount account=main.findMissAccountById(7l);
        System.out.println(account.getMissAccountSeriesMapList());*/
@@ -1671,6 +1692,15 @@ public class MissExamServiceImpl extends PostCommon
         	return (ConsultantReport)resultMessage.getResultListObj().get(0);
         else
         	return null;
+	}
+
+	@Override
+	public int sendSurvey(MissSurveySend missSurveySend) {
+		// TODO Auto-generated method stub
+		missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND);
+	    VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
+	    missSurveySend = (MissSurveySend)resultMessage.getResultListObj().get(0);
+	    return missSurveySend.getUpdateRecord().intValue();
 	}
 
 }

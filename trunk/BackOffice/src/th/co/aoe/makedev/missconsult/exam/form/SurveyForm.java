@@ -7,13 +7,54 @@ package th.co.aoe.makedev.missconsult.exam.form;
 
 import java.io.Serializable;
 
-public class SurveyForm
-    implements Serializable
-{
-
-    public SurveyForm()
-    {
-    }
-
+public class SurveyForm implements Serializable {
     private static final long serialVersionUID = 1L;
+	public Long maId;
+	public Long msId;
+	public String[] survey_name;
+	public String[] survey_email;
+	public int amountSend;
+	public SurveyForm() {
+	}
+
+	public Long getMaId() {
+		return maId;
+	}
+
+	public Long getMsId() {
+		return msId;
+	}
+
+	public void setMsId(Long msId) {
+		this.msId = msId;
+	}
+
+	public void setMaId(Long maId) {
+		this.maId = maId;
+	}
+
+	public int getAmountSend() {
+		return amountSend;
+	}
+
+	public void setAmountSend(int amountSend) {
+		this.amountSend = amountSend;
+	}
+
+	public String[] getSurvey_name() {
+		return survey_name;
+	}
+
+	public void setSurvey_name(String[] survey_name) {
+		this.survey_name = survey_name;
+	}
+
+	public String[] getSurvey_email() {
+		return survey_email;
+	}
+
+	public void setSurvey_email(String[] survey_email) {
+		this.survey_email = survey_email;
+	}
+	
 }

@@ -160,7 +160,8 @@ public class CompanyController
         }*/
        // model.addAttribute("roleTypes", roleTypes);
         List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
-    	model.addAttribute("missThemes",missThemes);
+    	model.addAttribute("missThemes",missThemes); 
+    	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         model.addAttribute("display", "display: none");
         return "exam/template/companyAccount";
     }
@@ -268,6 +269,7 @@ public class CompanyController
         model.addAttribute("display", "display: none");
         List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
+    	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/companyAccount";
     }
 
@@ -320,6 +322,7 @@ public class CompanyController
         model.addAttribute("companyForm", companyForm);
         List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
+    	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/companyAccount";
     }
 

@@ -32,10 +32,12 @@ public class TestForm extends CommonForm
     private MissExam missExam;
     private MissQuestion missQuestion;
     private String modeQuestion;
+    private String lang;
     
     //for search
     private String megId;
     private String meIdArray;
+    
     
     
     private String mqIdArray;
@@ -125,6 +127,14 @@ public class TestForm extends CommonForm
 
 	public void setMegEmptyId(String megEmptyId) {
 		this.megEmptyId = megEmptyId;
+	}
+
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 	/*public String getMesIdArray() {

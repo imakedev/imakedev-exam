@@ -261,7 +261,9 @@ public class TestController
         testForm.setMcSize("1");
       //  model.addAttribute("missExamGroups", getGroup());
         model.addAttribute("display", "display: none");
-        return "exam/template/questionManagementSection";
+        testForm.setLang("TH");
+        //return "exam/template/questionManagementSection";
+        return "exam/template/questionManagementSectionTH";
     }
 
   /*  @RequestMapping(value={"/exam/{meId}/question/{mqId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
@@ -331,8 +333,8 @@ public class TestController
         model.addAttribute("testForm", testForm);
         return "exam/template/questionListSection";
     }
-    @RequestMapping(value={"/exam/{meId}/question/{mqId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String getQuestionItem(@PathVariable String meId,@PathVariable String mqId, Model model)
+    @RequestMapping(value={"/exam/{meId}/question/{mqId}/{lang}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getQuestionItem(@PathVariable String meId,@PathVariable String mqId,@PathVariable String lang, Model model)
     {
     	logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     	 TestForm testForm = null;
@@ -345,7 +347,11 @@ public class TestController
     //	if(meId!=null && !meId.equals("0")){
     		missQuestion = missExamService.findMissQuestionById(Long.parseLong(mqId));
     //	}
-    		List<MissChoice> missChoices=missQuestion.getMissChoices();
+    		List<MissChoice> missChoices=null;
+    		if(lang.equals("TH"))
+    			missChoices=missQuestion.getMissChoices();
+    		else
+    			missChoices=missQuestion.getMissChoicesEng();
     		String mcIdArray="";
     		int i=0;
     		int size=0;
@@ -368,11 +374,12 @@ public class TestController
     		testForm.setMcSize(size+"");
     	testForm.setMcIdArray(mcIdArray);
     	testForm.setMissQuestion(missQuestion);
+    	testForm.setLang(lang);
     	model.addAttribute("display", "display: none");
       //  model.addAttribute("missQuestions", missQuestions);
     	//missExamService
         model.addAttribute("testForm", testForm);
-        return "exam/template/questionManagementSection";
+        return "exam/template/questionManagementSection"+lang;
     } 
     @RequestMapping(value={"/action/{section}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doAction(HttpServletRequest request,@PathVariable String section, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
@@ -416,6 +423,7 @@ public class TestController
         String message = ""; 
         logger.debug("xxxxxxxxxxxxxxxxxxxxxxx doQuestionAction mode="+mode);
         Long id = null;
+        testForm.getMissQuestion().setLang(testForm.getLang());
         if(mode != null)
             if(mode.equals("new"))
             {
@@ -426,6 +434,7 @@ public class TestController
             } else
             if(mode.equals("edit"))
             {
+            	
                 missExamService.updateMissQuestion(testForm.getMissQuestion(),ServiceConstant.MISS_QUESTION_UPDATE);
                 id = testForm.getMissQuestion().getMqId();
                 message = "Update success !";
@@ -487,10 +496,15 @@ public class TestController
         missQuestion.setMissChoicesAdd(addChoices);
         missQuestion.setMissChoicesUpdate(updateChoices);
         missQuestion.setMcIds(deleteChoices);
+        missQuestion.setLang((testForm.getLang().equals("TH"))?"1":"2");
         missExamService.updateMissQuestion(missQuestion, ServiceConstant.MISS_QUESTION_CHOICES_UPDATE);
        // missExamService.saveMissChoice(misschoice)
          missQuestion = missExamService.findMissQuestionById(id);
-        List<MissChoice> missChoices=missQuestion.getMissChoices();
+         List<MissChoice> missChoices=null;
+        if(testForm.getLang().equals("TH"))
+        	missChoices=missQuestion.getMissChoices();
+        else
+        	missChoices=missQuestion.getMissChoicesEng();
 		String mcIdArray="";
 		int i=0;
 		int size=0;
@@ -521,7 +535,7 @@ public class TestController
         model.addAttribute("display", "display: block");
         model.addAttribute("testForm", testForm);
         
-        return "exam/template/questionManagementSection";
+        return "exam/template/questionManagementSection"+testForm.getLang();
     }
     private static Logger logger = Logger.getRootLogger();
     @Autowired
