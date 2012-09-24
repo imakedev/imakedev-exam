@@ -39,13 +39,10 @@ $(document).ready(function() {
 		},
 		onComplete : function(file, response){
 			var obj = jQuery.parseJSON(response); //obj.hotlink
-			//alert(response);
-			//alert(obj.hotlink)
-			/* response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			  alert(obj); */
-			//$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+response);
+			var _src="getfile/questionImg/${testForm.missQuestion.mqId}/"+obj.hotlink;
+			$("#mqImgTh1").val(_src);
+			$("#_upload_image").html("<img alt=\"\" src=\""+_src+"\" />");
+		 /*
 				var editor_data =CKEDITOR.instances['mqNameTh1']; //alert(editor2) // [obj]
 				var selection = editor_data.getSelection();//alert(selection) // [obj]
 				var text = selection.getNative();//alert(text) // ""
@@ -55,13 +52,14 @@ $(document).ready(function() {
 				 ranges[0].deleteContents();
 				 ranges[0].insertNode(newElement);
 				 ranges[0].selectNodeContents( newElement ); 
-			//$('#example2 .text').text('Uploaded ' + file);		
-			//alert(file);
-			//alert(response)
-		
+		*/
 		}		
 	});
 });
+function clearImage(){
+	$("#_upload_image").html("");
+	$("#mqImgTh1").val("");
+}
 function addRow(tableID) {
 	//alert(indexRow);
     var table = document.getElementById(tableID);
@@ -192,6 +190,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<form:hidden path="modeQuestion"/>
             <form:hidden path="missQuestion.mqId"/>
             <form:hidden path="mcIdArray"/>
+             <form:hidden path="missQuestion.mqImgEng1" id="mqImgEng1"/>
+            <form:hidden path="missQuestion.mqImgTh1" id="mqImgTh1"/>
              <form:hidden path="mcIdNewArray"/>
 			<strong>Question&nbsp;
 							 <c:if test="${testForm.modeQuestion=='new'}">
@@ -220,11 +220,19 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				<tr>
     					<td width="25%" align="right">Language&nbsp;:&nbsp;</td>
     					<td width="75%">
-    					  		<select name="question_lang" id="question_lang" onchange="changeQuestionLang()"> 
+    					<c:if test="${testForm.lang=='TH'}">
+    					Thai
+    					</c:if>
+    					<c:if test="${testForm.lang=='EN'}">
+    					English
+    					</c:if>
+    					
+    					  <!-- 	<select name="question_lang" id="question_lang" onchange="changeQuestionLang()"> 
 											 <option value="1">Thai</option>
 											 <option value="2">Eng</option>
-											<!-- <option value="2">Eng</option>	 -->
-	    					</select></td>
+	    					</select> -->
+	    					
+	    				</td>
     				</tr>
     				<tr>
     					<td width="25%" align="right"><!-- Question&nbsp;:&nbsp; --></td>
@@ -232,7 +240,17 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				</tr>
     				<tr style="padding: 2pt">
     					<td width="25%" align="left" colspan="2">
-    					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a><br/>
+    					 <span id="_upload_image">
+    					   <c:if test="${not empty testForm.missQuestion.mqImgTh1}"> 
+    					     <img alt="" src="${testForm.missQuestion.mqImgTh1}" />    				      
+    					   </c:if> 
+    					 </span>
+    					 </td> 
+    				</tr>
+    				<tr style="padding: 2pt">
+    					<td width="25%" align="left" colspan="2">
+    					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a> | 
+    					<a class="btn" id="question_img_delete">&nbsp;<span style="" onclick="clearImage()">Clear Image</span></a><br/>
     					 </td> 
     				</tr>
     				 

@@ -106,7 +106,8 @@ function loadQuestion(_url){
             	${missQuestion.mqNameTh1}
             	 --%>
             	<td  style="text-align: center;">
-            	<i title="Edit" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
+            	<i title="Edit TH" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}/TH')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
+            	<i title="Edit EN" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}/EN')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
             	<i title="Delete" onclick="confirmDelete('delete','${missQuestion.mqId}')" style="cursor: pointer;" class="icon-trash"></i>
             	<%-- <a href="<c:url value='/test/exam/1/question/2'/>">Edit</a> Delete --%>
             	</td> 

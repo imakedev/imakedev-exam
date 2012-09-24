@@ -203,6 +203,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					 <td width="25%" align="right" rowspan="2"></td>
     				</tr>
     				<tr valign="top">
+    					<td width="25%">Industry Type:</td>
+    					<td width="50%" colspan="2">
+    					 <form:select path="missAccount.missIndustryMaster.mimId" cssStyle="background:#FFFFFF">    					 
+    						<form:options items="${missIndustryMasterList}" itemLabel="mimName" itemValue="mimId"></form:options>
+    					</form:select>
+    					</td>
+    				</tr>
+    				<tr valign="top">
     					<td width="25%">Address:</td>
     					<td width="50%" colspan="2">
     					<form:textarea path="missAccount.maAddress" cols="4" rows="4" id="maAddress"/>
