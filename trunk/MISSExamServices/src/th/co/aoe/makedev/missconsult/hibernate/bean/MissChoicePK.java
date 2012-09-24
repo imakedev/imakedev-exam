@@ -19,6 +19,9 @@ public class MissChoicePK implements Serializable {
 
 	@Column(name="MQ_ID")
 	private Long mqId;
+	
+	@Column(name="MC_LANG")
+	private String mcLang;
 
     public MissChoicePK() {
     }
@@ -33,6 +36,12 @@ public class MissChoicePK implements Serializable {
 	}
 	public void setMqId(Long mqId) {
 		this.mqId = mqId;
+	}
+	public String getMcLang() {
+		return mcLang;
+	}
+	public void setMcLang(String mcLang) {
+		this.mcLang = mcLang;
 	}
 
 	

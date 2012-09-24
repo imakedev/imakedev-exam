@@ -152,14 +152,16 @@ public class HibernateMissChoice  extends HibernateCommon implements MissChoiceS
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int deleteMissChoice(Long mqId)
+	public int deleteMissChoice(Long mqId,String lang)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		
-		Query query=session.createQuery("delete MissChoice  missChoice where missChoice.id.mqId=:mqId  "); 
+		Query query=session.createQuery("delete MissChoice  missChoice where missChoice.id.mqId=:mqId and " +
+				"missChoice.id.mcLang=:mcLang  "); 
 	//	query.setParameter("mcNo", persistentInstance.getId().getMcNo());
 		query.setParameter("mqId",mqId);
+		query.setParameter("mcLang",lang);
 		return query.executeUpdate();
 		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
