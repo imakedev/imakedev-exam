@@ -67,7 +67,8 @@ public class MissController
         model.addAttribute("missForm", missForm);
     	List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
-        return "exam/template/missAccount";
+    	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
+    	return "exam/template/missAccount";
     }
 
     @RequestMapping(value={"/action/{section}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
@@ -100,6 +101,7 @@ public class MissController
         model.addAttribute("missForm", missForm);
         List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
+    	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/missAccount";
     }
 

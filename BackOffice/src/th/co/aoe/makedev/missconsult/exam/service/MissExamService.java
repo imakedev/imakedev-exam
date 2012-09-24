@@ -375,6 +375,9 @@ public interface MissExamService {
 
 	public abstract List searchMissAccountMapping(
 			MissAccountMapping persistentInstance);
+	
+	public abstract int sendSurvey(MissSurveySend misssurveysend);
+	
 //	public abstract ProductReport findProductReport(String mode,String year);
 	public abstract EPTNormReport findEPTNormReport(EPTNormReport eptNormReport);
 	public abstract EPTNormReport findCompanies(EPTNormReport eptNormReport); 
