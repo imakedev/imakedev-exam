@@ -61,8 +61,10 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 				BeanUtils.copyProperties(missQuestion.getMissTemplate(),missTemplate); 
 				xmissQuestion.setMissTemplate(missTemplate);
 			}
-			query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.id.mcNo asc ");
+			for(int i=1;i<=2;i++){
+			query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId and missChoice.id.mcLang=:mcLang  order by missChoice.id.mcNo asc ");
 			query.setParameter("mqId", mqId);
+			query.setParameter("mcLang", i+"");
 			@SuppressWarnings("unchecked")
 			List<MissChoice> missChoices= (List<MissChoice>) query.list();
 			List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>();
@@ -73,7 +75,12 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 				xmissChoice.setPagging(null);
 				xmissChoices.add(xmissChoice);
 			}
-			xmissQuestion.setMissChoices(xmissChoices);
+			 if(i==1)
+				 xmissQuestion.setMissChoices(xmissChoices);
+			 else
+				 xmissQuestion.setMissChoicesEng(xmissChoices);
+			
+			}
 			
 		}
 	  return xmissQuestion;
@@ -242,11 +249,11 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		//Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
 		//SELECT * FROM MISS_QUESTION QUESTION WHERE QUESTION.MQ_NO IS NULL ORDER BY QUESTION.MQ_ID ASC 
 	//	Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null  order by missQuestion.mqId asc ");
-		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=40  order by missQuestion.mqId asc ");
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=44  order by missQuestion.mqNo asc ");
 		 List<MissQuestion> list =query.list();
 		 int i=1;
 		 for (MissQuestion missQuestion : list) {
-			 query=session.createQuery("update MissQuestion missQuestion " +
+			 /*query=session.createQuery("update MissQuestion missQuestion " +
 						" set missQuestion.mqNameTh1 =:mqNameTh1 ," +
 						" missQuestion.mqChoose =1," +
 						" missQuestion.missTemplate.mtId =1 ," +
@@ -255,15 +262,16 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 			 query.setParameter("mqNameTh1", i+"");
 			 query.setParameter("mqNo",Long.valueOf(i));
 			 query.setParameter("mqId", missQuestion.getMqId());
-			 query.executeUpdate();
+			 query.executeUpdate();*/
 			i++;
 			StringBuffer sb=new StringBuffer();
-			for(int j =0;j<3;j++){
+			for(int j =0;j<4;j++){
 				
 				MissChoice choice =new MissChoice();
 				MissChoicePK pk =new MissChoicePK();
 				pk.setMcNo(Long.valueOf(j+1));
 				pk.setMqId(missQuestion.getMqId());
+				pk.setMcLang("1");
 				sb.setLength(0);
 				
 				
@@ -271,23 +279,56 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 				
 				
 
-				 if(j==0){
+				 /*if(j==0){
 						sb.append("ไม่เหมือนฉันเลย");
 					}else if(j==1){
 						sb.append("นานๆครั้ง ฉันก็เป็นแบบนี้");
 					}else if(j==2){
 						sb.append("เหมือนฉันเลย");
-					} 
+					}*/ 
 
 				/* if(j==0){
-					sb.append("ไม่เห็นด้วยอย่างยิ่ง");
+					sb.append("เห็นด้วยอย่างมาก");
 				}else if(j==1){
-					sb.append("ไม่เห็นด้วย");
-				}else if(j==2){
-					sb.append("ไม่มีความเห็น");
-				}else if(j==3){
 					sb.append("เห็นด้วย");
-				}else if(j==4){
+				}else if(j==2){
+					sb.append("ไม่เห็นด้วยมาก");
+				}else if(j==3){
+					sb.append("ไม่เห็นด้วย");
+				}*/
+				 if(j==0){
+						sb.append("ไม่เห็นด้วยอย่างมาก");
+					}else if(j==1){
+						sb.append("ไม่เห็นด้วย");
+					}else if(j==2){
+						sb.append("ค่อนข้างเห็นด้วย");
+					}else if(j==3){
+						sb.append("เห็นด้วยอย่างมาก");
+					}
+				/* if(j==0){
+						sb.append("1.");
+					}else if(j==1){
+						sb.append("2.");
+					}else if(j==2){
+						sb.append("3.");
+					}else if(j==3){
+						sb.append("4.");
+					}else if(j==4){
+						sb.append("5.");
+					}*/
+				  /* if(j==0){
+						sb.append("เห็นด้วย");
+					} else if(j==1){
+						sb.append("ไม่เห็นด้วย");
+					}*/
+				/* if(j==0){
+						sb.append("ชอบมากที่สุด");
+					} else if(j==1){
+						sb.append("ชอบบ้างแต่ไม่ทั้งหมด");
+					}else if(j==2){
+						sb.append("ไม่ชอบเลย");
+					}*/
+				/*else if(j==4){
 					sb.append("เห็นด้วยอย่างยิ่ง");
 				}*/
 				/* query=session.createQuery("update MissChoice missChoice " +

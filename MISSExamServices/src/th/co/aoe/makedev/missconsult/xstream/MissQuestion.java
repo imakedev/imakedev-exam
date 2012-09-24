@@ -46,8 +46,18 @@ public class MissQuestion extends VServiceXML implements Serializable {
 	private Long mqNo;
     @XStreamAlias("missExam")
 	private MissExam missExam;
+    
+    private String lang;
 
-    public Long getMqNo() {
+    public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public Long getMqNo() {
 		return mqNo;
 	}
 
@@ -58,7 +68,9 @@ public class MissQuestion extends VServiceXML implements Serializable {
 	@XStreamAlias("missTemplate")
 	private MissTemplate missTemplate;
     
-    
+	@XStreamImplicit(itemFieldName="missChoicesEng")
+	private List<MissChoice> missChoicesEng;
+	  
     @XStreamImplicit(itemFieldName="missChoices")
     private List<MissChoice> missChoices;
     
@@ -240,6 +252,14 @@ public class MissQuestion extends VServiceXML implements Serializable {
 
 	public void setMissChoicesUpdate(List<MissChoice> missChoicesUpdate) {
 		this.missChoicesUpdate = missChoicesUpdate;
+	}
+
+	public List<MissChoice> getMissChoicesEng() {
+		return missChoicesEng;
+	}
+
+	public void setMissChoicesEng(List<MissChoice> missChoicesEng) {
+		this.missChoicesEng = missChoicesEng;
 	}
 	
 /*	public Set<MissTest> getMissTests() {

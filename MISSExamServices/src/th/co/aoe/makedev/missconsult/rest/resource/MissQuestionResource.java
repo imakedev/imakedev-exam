@@ -125,7 +125,7 @@ public class MissQuestionResource extends BaseResource {
 							List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= xbpsTerm.getMissChoicesAdd();
 							if(xmissChoices!=null && xmissChoices.size()>0){
 								
-								missChoiceService.deleteMissChoice(xbpsTerm.getMqId());
+								missChoiceService.deleteMissChoice(xbpsTerm.getMqId(),xbpsTerm.getLang());
 								for (th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice : xmissChoices) {
 									th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice  missChoice= new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice();
 									BeanUtils.copyProperties(xmissChoice, missChoice,ignore_question_id);
@@ -134,6 +134,7 @@ public class MissQuestionResource extends BaseResource {
 											new th.co.aoe.makedev.missconsult.hibernate.bean.MissChoicePK();
 									pk.setMqId(bpsTerm.getMqId());
 									pk.setMcNo(xmissChoice.getMcNo());
+									pk.setMcLang(xbpsTerm.getLang());
 									missChoice.setId(pk);
 									missChoiceService.saveMissChoice(missChoice);
 								}

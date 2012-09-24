@@ -130,6 +130,7 @@ public class ServiceConstant {
 	public static final String MISS_SURVEY_SEND_DELETE = "deleteMissSurveySend";
 	public static final String MISS_SURVEY_SEND_SEARCH = "searchMissSurveySend";
 	public static final String MISS_SURVEY_SEND_FIND_BY_ID = "findMissSurveySendById"; 
+	public static final String MISS_SURVEY_SEND = "sendSurvey";
 	
 	// MISS_TEMPLATE
 	public static final String MISS_TEMPLATE_SAVE = "saveMissTemplate";

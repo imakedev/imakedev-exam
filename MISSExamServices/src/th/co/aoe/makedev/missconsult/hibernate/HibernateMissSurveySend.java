@@ -155,6 +155,24 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
+	@Override	
+	public int sendSurvey(MissSurveySend persistentInstance,Long maId,List<List<String>> userEmail)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		System.out.println(persistentInstance.getMissSery().getMsId());
+		for (List<String> list : userEmail) {
+			System.out.println("name="+list.get(0));			
+			System.out.println("email="+list.get(1));
+			MissSurveySend missSurveySend =new MissSurveySend();
+			missSurveySend.setMsEmail(list.get(1));
+			missSurveySend.setMissSery(persistentInstance.getMissSery());
+			session.save(missSurveySend);
+		}
+		// 1= success , 0 not success
+		return 0;
+	}
 	 
 
 }

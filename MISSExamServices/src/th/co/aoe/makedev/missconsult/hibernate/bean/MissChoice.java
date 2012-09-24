@@ -25,14 +25,24 @@ public class MissChoice implements Serializable {
 	@EmbeddedId
 	private MissChoicePK id;
 
-	@Column(name="MC_LANG")
-	private String mcLang;
+
 
 	@Column(name="MC_MULTIPLE_CHOOSE")
 	private Long mcMultipleChoose;
 
 	@Column(name="MC_NAME")
 	private String mcName;
+	
+	@Column(name="MC_NAME_ENG")
+	private String mcNameEng;
+
+	public String getMcNameEng() {
+		return mcNameEng;
+	}
+
+	public void setMcNameEng(String mcNameEng) {
+		this.mcNameEng = mcNameEng;
+	}
 
 	@Column(name="MC_SCORE")
 	private String mcScore;
@@ -59,9 +69,6 @@ public class MissChoice implements Serializable {
 		this.mcId = mcId;
 	}*/
 
-	public String getMcLang() {
-		return this.mcLang;
-	}
 
 	public MissChoicePK getId() {
 		return id;
@@ -71,9 +78,6 @@ public class MissChoice implements Serializable {
 		this.id = id;
 	}
 
-	public void setMcLang(String mcLang) {
-		this.mcLang = mcLang;
-	}
 
 	public Long getMcMultipleChoose() {
 		return this.mcMultipleChoose;

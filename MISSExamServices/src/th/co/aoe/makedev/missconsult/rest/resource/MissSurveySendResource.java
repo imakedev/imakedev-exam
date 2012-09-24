@@ -23,7 +23,8 @@ public class MissSurveySendResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissSurveySendService missSurveySendService;
 	private com.thoughtworks.xstream.XStream xstream;
-	 
+	private static 	final String[] ignore_id=new String[]{"missSery"};
+	
 	public MissSurveySendResource() {
 		super();
 		logger.debug("into constructor MissSurveySendResource");
@@ -54,8 +55,12 @@ public class MissSurveySendResource extends BaseResource {
 				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissSurveySend) ntcCalendarObj;
 				if (xbpsTerm != null) {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend();
-					BeanUtils.copyProperties(xbpsTerm,bpsTerm); 
-					
+					BeanUtils.copyProperties(xbpsTerm,bpsTerm,ignore_id); 
+				    if(xbpsTerm.getMissSery()!=null && xbpsTerm.getMissSery().getMsId()!=null){
+				    	th.co.aoe.makedev.missconsult.hibernate.bean.MissSery  missSery = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSery();
+				    	BeanUtils.copyProperties(xbpsTerm.getMissSery(),missSery); 
+				    	bpsTerm.setMissSery(missSery);
+				    }	
 					if (xbpsTerm.getServiceName() != null
 							&& !xbpsTerm.getServiceName().equals("")) {
 						logger.debug(" BPS servicename = "
@@ -68,7 +73,12 @@ public class MissSurveySendResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissSurveySend xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissSurveySend();
-								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
+							    if(ntcCalendarReturn.getMissSery()!=null && ntcCalendarReturn.getMissSery().getMsId()!=null){
+							    	th.co.aoe.makedev.missconsult.xstream.MissSery  xmissSery = new th.co.aoe.makedev.missconsult.xstream.MissSery();
+							    	BeanUtils.copyProperties(ntcCalendarReturn.getMissSery(),xmissSery); 
+							    	xntcCalendarReturn.setMissSery(xmissSery);
+							    }
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
@@ -78,17 +88,22 @@ public class MissSurveySendResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missSurveySendService.saveMissSurveySend(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missSurveySendService.updateMissSurveySend(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_DELETE)){
 							int updateRecord=missSurveySendService.deleteMissSurveySend(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND)){
+							int updateRecord=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							List result = (List) missSurveySendService.searchMissSurveySend(bpsTerm,page);
@@ -133,97 +148,7 @@ public class MissSurveySendResource extends BaseResource {
 	
 	}
 
-	@Override
-	protected Representation post(Representation entity)
-			throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("into Post MissSurveySendResource");
-		InputStream in = null;
-		try {
-			in = entity.getStream();
-			xstream.processAnnotations(th.co.aoe.makedev.missconsult.xstream.MissSurveySend.class);// or xstream.autodetectAnnotations(true); (Auto-detect  Annotations)
-			th.co.aoe.makedev.missconsult.xstream.MissSurveySend xbpsTerm = new th.co.aoe.makedev.missconsult.xstream.MissSurveySend();
-			Object ntcCalendarObj = xstream.fromXML(in);
-			if (ntcCalendarObj != null) {
-				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissSurveySend) ntcCalendarObj;
-				if (xbpsTerm != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend();
-					BeanUtils.copyProperties(bpsTerm, xbpsTerm); 
-					
-					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
-						logger.debug(" BPS servicename = "
-								+ xbpsTerm.getServiceName());
-						String serviceName = xbpsTerm.getServiceName();
-						if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend ntcCalendarReturn = missSurveySendService.findMissSurveySendById(bpsTerm.getMssId());
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
-								List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissSurveySend xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissSurveySend();
-								BeanUtils.copyProperties(xntcCalendarReturn, ntcCalendarReturn);								
-								
-								xntcCalendars.add(xntcCalendarReturn);
-								vresultMessage.setResultListObj(xntcCalendars);
-								export(entity, vresultMessage, xstream);
-							}
-						} 
-						if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=(missSurveySendService.saveMissSurveySend(bpsTerm)).intValue();
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missSurveySendService.updateMissSurveySend(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_DELETE)){
-							int updateRecord=missSurveySendService.deleteMissSurveySend(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-						}
-						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missSurveySendService.searchMissSurveySend(bpsTerm,page);
-							if (result != null && result.size() == 2) {
-								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend>) result
-										.get(0);
-								String faqs_size = (String) result.get(1);
-//								 
-								VResultMessage vresultMessage = new VResultMessage();
-
-								List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>();
-								if (faqs_size != null && !faqs_size.equals(""))
-									vresultMessage.setMaxRow(faqs_size);
-								if (ntcCalendars != null && ntcCalendars.size() > 0) {
-									xntcCalendars = getxMissSurveySendObject(ntcCalendars);
-								}
-								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-							}
-						}
-						
-					} else {
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			logger.debug(" into Finally Call");
-			try {
-				if (in != null)
-					in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub
@@ -280,19 +205,34 @@ public class MissSurveySendResource extends BaseResource {
 				ntcCalendars.size());
 		for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend missSurveySend : ntcCalendars) {
 			th.co.aoe.makedev.missconsult.xstream.MissSurveySend xmissSurveySend =new th.co.aoe.makedev.missconsult.xstream.MissSurveySend ();
-			BeanUtils.copyProperties(missSurveySend, xmissSurveySend);
+			BeanUtils.copyProperties(missSurveySend, xmissSurveySend,ignore_id);
+		 
+		    if(missSurveySend.getMissSery()!=null && missSurveySend.getMissSery().getMsId()!=null){
+		    	th.co.aoe.makedev.missconsult.xstream.MissSery  xmissSery = new th.co.aoe.makedev.missconsult.xstream.MissSery();
+		    	BeanUtils.copyProperties(missSurveySend.getMissSery(),xmissSery); 
+		    	xmissSurveySend.setMissSery(xmissSery);
+		    }
 			xmissSurveySend.setPagging(null);
 			xntcCalendars.add(xmissSurveySend);
 		}
 		return xntcCalendars;
 	} 
-	private void returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissSurveySend xbpsTerm,int updateRecord){
+	/*private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissTestResult xbpsTerm,int updateRecord){
+		VResultMessage vresultMessage = new VResultMessage();
+		List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(1);
+		xbpsTerm.setUpdateRecord(updateRecord);
+		xbpsTerms.add(xbpsTerm);
+		vresultMessage.setResultListObj(xbpsTerms);
+		return getRepresentation(entity, vresultMessage, xstream);
+	}*/
+	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissSurveySend xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>(1);
 		xbpsTerm.setUpdateRecord(updateRecord);
 		xbpsTerms.add(xbpsTerm);
 		vresultMessage.setResultListObj(xbpsTerms);
-		export(entity, vresultMessage, xstream);
+		//export(entity, vresultMessage, xstream);
+		return getRepresentation(entity, vresultMessage, xstream);
 	}
  
 	public MissSurveySendService getMissSurveySendService() {

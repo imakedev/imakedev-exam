@@ -244,6 +244,7 @@ int result = query.executeUpdate();*/
 					" missAccount.maAddress =:maAddress ,  " +
 					" missAccount.maPhone =:maPhone ,  " +
 					" missAccount.maFax =:maFax ,  " + 
+					" missAccount.missIndustryMaster.mimId =:mimId ,  " + 
 					" missAccount.maEmail =:maEmail   " +
 				//	" missAccount.maContactName =:maContactName ,  " +					
 				/*	" missAccount.maContactLastname =:maContactLastname ,  " +
@@ -260,6 +261,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maPhone", transientInstance.getMaPhone());
 			query.setParameter("maFax", transientInstance.getMaFax());
 			query.setParameter("maEmail", transientInstance.getMaEmail());
+			query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
 			/*query.setParameter("maContactName", transientInstance.getMaContactName());
 			query.setParameter("maContactLastname", transientInstance.getMaContactLastname());
 			query.setParameter("maContactGender", transientInstance.getMaContactGender());

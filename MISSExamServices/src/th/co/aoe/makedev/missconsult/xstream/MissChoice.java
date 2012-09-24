@@ -25,6 +25,7 @@ public class MissChoice extends VServiceXML implements Serializable {
 	private Long mcMultipleChoose;
 
 	private String mcName;
+	private String mcNameEng;
 
 	private String mcScore;
 	
@@ -129,6 +130,14 @@ public class MissChoice extends VServiceXML implements Serializable {
 
 	public void setMcNo(Long mcNo) {
 		this.mcNo = mcNo;
+	}
+
+	public String getMcNameEng() {
+		return mcNameEng;
+	}
+
+	public void setMcNameEng(String mcNameEng) {
+		this.mcNameEng = mcNameEng;
 	}
 
 	/*public List<MissChoice> getMissChoices() {
