@@ -171,8 +171,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		<tr>
             		<!-- <th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th> -->
             		<th width="30%"><div class="th_class">Role</div></th> 
-            		<th width="60%"><div class="th_class">Description</div></th>
-            		<th width="10%"><div class="th_class">Permission</div></th>              		 
+            		<th width="58%"><div class="th_class">Description</div></th>
+            		<th width="12%"><div class="th_class">Permission</div></th>              		 
           		</tr>
         	</thead>
         	<tbody>
@@ -188,26 +188,34 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	</td>  --%>
             	<td>&nbsp;${roleType.role}</td>
             	<td>&nbsp;${roleType.roleDesc}</td>
-            	<td>${roleForm.rcId}
+            	<td>
             	 <c:if test="${not empty roleForm.rcId}"> 
             	 	<c:if test="${roleForm.rcId!=0}">
             	 		<c:if test="${roleType.selected=='1'}">
-            				<input type="radio" value="${roleType.rtId}" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
-            				<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            				<input type="radio" value="${roleType.rtId}" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">
+            				<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            				<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">
+            				<img src="<c:url value='/resources/images/deSelect.png'/>"/>
             			</c:if>
             			<c:if test="${roleType.selected!='1'}">
-            				<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
-            				<input type="radio" value="0" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            				<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">
+            				<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            				<input type="radio" value="0" checked="checked" name="rtIdCheckbox_radio_${roleType.rtId}">
+            				<img src="<c:url value='/resources/images/deSelect.png'/>"/>
             			</c:if>
             	 	</c:if>   
             	 	<c:if test="${roleForm.rcId==0}">
-            	 		<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
-            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            	 		<input type="radio" value="${roleType.rtId}"  name="rtIdCheckbox_radio_${roleType.rtId}">
+            	 		<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">
+            			<img src="<c:url value='/resources/images/deSelect.png'/>"/>
             	 	</c:if>         	 	
             	 </c:if>
             	 <c:if test="${empty roleForm.rcId}"> 
-            	 		<input type="radio" value="${roleType.rtId}"   name="rtIdCheckbox_radio_${roleType.rtId}">|&nbsp;
-            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">O
+            	 		<input type="radio" value="${roleType.rtId}"   name="rtIdCheckbox_radio_${roleType.rtId}">
+            	 		<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            			<input type="radio" value="0" name="rtIdCheckbox_radio_${roleType.rtId}">
+            			<img src="<c:url value='/resources/images/deSelect.png'/>"/>
             	 </c:if>
             	 </td>
           	</tr>

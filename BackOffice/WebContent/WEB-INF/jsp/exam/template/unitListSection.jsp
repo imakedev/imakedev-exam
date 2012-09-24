@@ -17,6 +17,13 @@ $(document).ready(function() {
 
 	}); */
 });
+function doSurvey(){ 
+	$.get("survey/init/${companyForm.missAccount.maId}", function(data) {
+		if(data!=null){
+			appendContentWithId(data,"tabs-4"); 
+		  } 
+	});
+}
 function doOrder(msId){ 
 	var value=parseInt($("#_order_"+msId).val())*parseInt($("#_unitCost_"+msId).val());
 		$.get("company/item/unit/${companyForm.missAccount.maId}/"+msId+"/"+value, function(data) {
@@ -98,6 +105,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     			 </fieldset>
     			 </form:form>
     			<div>
+    			 <div align="right"><a class="btn btn-primary" onclick="doSurvey();"><span style="color: white;font-weight: bold;">Survey</span></a></div>
     			 <table class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>

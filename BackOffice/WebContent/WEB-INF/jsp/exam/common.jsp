@@ -441,8 +441,8 @@ function loadDynamicPage(pageId){
 				});
 }
 function appendContentWithId(data,contentId){
-	if(data.indexOf("j_username")!=-1){
-		//alert("to home") 
+	if(data.indexOf("j_username")!=-1 || data.indexOf("loginform")!=-1){
+		alert("to home") 
 		  window.location.href="<c:url value='/j_spring_security_logout'/>";
 		 //$("#_content").html(data);
 	  }else{

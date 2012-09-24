@@ -4,20 +4,6 @@
 <script type="text/javascript">
 var indexRow=parseInt('${testForm.mcSize}')+1;
 $(document).ready(function() {
-//	$('#tabs').tabs();
-  //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
-//	$('#tabs').tabs('select', parseInt($("#_test_section").val()));
-	/* $('#tabs').bind('tabsselect', function(event, ui) {
-
-	    // Objects available in the function context:
-	  
-	   //alert("index="+ui.index+",panel="+ui.panel+",tab="+ui.tab)
-	   if(ui.index==2){
-		   alert($("#_meId").val())
-		   $("#tabs-3").html("");
-	   }
-
-	}); */
 	new AjaxUpload('question_img', {
         action: 'upload/questionImg/${testForm.missQuestion.mqId}',
 		onSubmit : function(file , ext){
@@ -28,8 +14,6 @@ $(document).ready(function() {
 					'key': 'This string will be send with the file',
 					'test':'chatchai'
 				});					
-			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
-			//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
 			} else {					
 				// extension is not allowed
 				alert('Error: only images are allowed') ;
@@ -39,14 +23,11 @@ $(document).ready(function() {
 		},
 		onComplete : function(file, response){
 			var obj = jQuery.parseJSON(response); //obj.hotlink
-			//alert(response);
-			//alert(obj.hotlink)
-			/* response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			  alert(obj); */
-			//$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+response);
-				var editor_data =CKEDITOR.instances['mqNameTh1']; //alert(editor2) // [obj]
+			var _src="getfile/questionImg/${testForm.missQuestion.mqId}/"+obj.hotlink;
+			$("#mqImgEng1").val(_src);
+			$("#_upload_image").html("<img alt=\"\" src=\""+_src+"\" />");
+		/*
+			var editor_data =CKEDITOR.instances['mqNameEng1']; //alert(editor2) // [obj]
 				var selection = editor_data.getSelection();//alert(selection) // [obj]
 				var text = selection.getNative();//alert(text) // ""
 				var ranges = selection.getRanges();// alert(ranges) //[obj]
@@ -55,13 +36,14 @@ $(document).ready(function() {
 				 ranges[0].deleteContents();
 				 ranges[0].insertNode(newElement);
 				 ranges[0].selectNodeContents( newElement ); 
-			//$('#example2 .text').text('Uploaded ' + file);		
-			//alert(file);
-			//alert(response)
-		
+				 */
 		}		
 	});
 });
+function clearImage(){
+	$("#_upload_image").html("");
+	$("#mqImgEng1").val("");
+}
 function addRow(tableID) {
 	//alert(indexRow);
     var table = document.getElementById(tableID);
@@ -80,9 +62,6 @@ function addRow(tableID) {
     //cell1.appendChild(rowCount + 1);
     var count = document.createTextNode(rowCount);
     cell1.appendChild(count);
-    
-  /*   var cell2 = row.insertCell(1);
-    cell2.innerHTML = rowCount + 1; */
 
     var cell2 = row.insertCell(1);
     var element2 = document.createElement("input");
@@ -102,8 +81,6 @@ function deleteRow(tableID) {
         var chkbox = row.cells[0].childNodes[0];
         if(null != chkbox && true == chkbox.checked) {
            table.deleteRow(i);
-          // alert(document.getElementsByName(chkbox.name)[0].value);
-           //alert(chkbox.name);
             rowCount--;
             i--;
             indexRow--;
@@ -119,16 +96,14 @@ function goBackQuestions(){
 		  type: "get",
 		  url: "test/exam/${testForm.missExam.meId}/questions",
 		  cache: false
-		 // data: { name: "John", location: "Boston" }
 		}).done(function( data ) {
 			if(data!=null){
 				appendContentWithId(data,"tabs-3")
-				// $("#tabs-3").html(data);
 			  }
 		});
 }
 function doQuestionAction(action,mode,id){
-	$("#mqNameTh1").val(CKEDITOR.instances["mqNameTh1"].getData());
+	$("#mqNameEng1").val(CKEDITOR.instances["mqNameEng1"].getData());
 	 
 	$("#modeQuestion").val(mode);
 	if(mode!='search'){
@@ -149,20 +124,14 @@ function doQuestionAction(action,mode,id){
 		 }else{// add
 			 mcIdNewArray=mcIdNewArray+"09876i54321"+document.getElementById(chkArray[i].value).value+chkappend;
 		 }
-		 //mcId1@$@value1$$*$$mcId2@$@value2
 	}
-	//alert(mcIdNewArray)
-	//return false;
 	$("#mcIdNewArray").val(mcIdNewArray);
-	//alert(mcIdNewArray)
 	$.post("test/action/exam/question",$("#testForm_questionList").serialize(), function(data) {
-		  // alert(data);
 		   appendContentWithId(data,"tabs-3")
-		  // alert($("#_content").html());
 		});
   }
 function test(){
-	var editor_data =CKEDITOR.instances['mqNameTh1']; //alert(editor2) // [obj]
+	var editor_data =CKEDITOR.instances['mqNameEng1']; //alert(editor2) // [obj]
 	var selection = editor_data.getSelection();//alert(selection) // [obj]
 	var text = selection.getNative();//alert(text) // ""
 	var ranges = selection.getRanges();// alert(ranges) //[obj]
@@ -171,11 +140,6 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 	 ranges[0].deleteContents();
 	 ranges[0].insertNode(newElement);
 	 ranges[0].selectNodeContents( newElement ); 
-	// CKEDITOR.dialog.getCurrent().hide();
-}
-function changeQuestionLang(){
-	var value=document.getElementById("question_lang").value;
-	alert(value);
 }
 </script>
 <style>
@@ -192,7 +156,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<form:hidden path="modeQuestion"/>
             <form:hidden path="missQuestion.mqId"/>
             <form:hidden path="mcIdArray"/>
-             <form:hidden path="mcIdNewArray"/>
+            <form:hidden path="missQuestion.mqImgEng1" id="mqImgEng1"/>
+            <form:hidden path="missQuestion.mqImgTh1" id="mqImgTh1"/>
+            <form:hidden path="mcIdNewArray"/>
 			<strong>Question&nbsp;
 							 <c:if test="${testForm.modeQuestion=='new'}">
 	    					 New
@@ -220,33 +186,47 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				<tr>
     					<td width="25%" align="right">Language&nbsp;:&nbsp;</td>
     					<td width="75%">
-    					  		<select name="question_lang" id="question_lang" onchange="changeQuestionLang()"> 
+    					<c:if test="${testForm.lang=='TH'}">
+    					Thai
+    					</c:if>
+    					<c:if test="${testForm.lang=='EN'}">
+    					English
+    					</c:if>
+    					  <!-- 	<select name="question_lang" id="question_lang"> 
 											 <option value="1">Thai</option>
-											 <option value="2">Eng</option>
-											<!-- <option value="2">Eng</option>	 -->
-	    					</select></td>
+	    					</select> -->
+	    					</td>
     				</tr>
     				<tr>
     					<td width="25%" align="right"><!-- Question&nbsp;:&nbsp; --></td>
     					<td width="75%"></td>
     				</tr>
+    				<!-- <img alt=\"\" src=\"getfile/questionImg/${testForm.missQuestion.mqId}/'+obj.hotlink+'\" /> -->
     				<tr style="padding: 2pt">
     					<td width="25%" align="left" colspan="2">
-    					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a><br/>
+    					 <span id="_upload_image">
+    					   <c:if test="${not empty testForm.missQuestion.mqImgEng1}"> 
+    					     <img alt="" src="${testForm.missQuestion.mqImgEng1}" />    				      
+    					   </c:if> 
+    					 </span>
     					 </td> 
     				</tr>
-    				 
+    				<tr style="padding: 2pt">
+    					<td width="25%" align="left" colspan="2">
+    					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a> | 
+    					<a class="btn" id="question_img_delete">&nbsp;<span style="" onclick="clearImage()">Clear Image</span></a><br/>
+    					 </td> 
+    				</tr>
     				<tr>
     					<td width="25%" align="left" colspan="2">
-    					<form:textarea path="missQuestion.mqNameTh1" cols="4" rows="4" id="mqNameTh1"/>  
-    					<!-- <textarea cols="4" rows="4" id="mqName"></textarea> -->
+    					<form:textarea path="missQuestion.mqNameEng1" cols="4" rows="4" id="mqNameEng1"/>  
     					<script>
-    					if (CKEDITOR.instances['mqNameTh1']) {
+    					if (CKEDITOR.instances['mqNameEng1']) {
     						//alert("remove ")
-    			            CKEDITOR.remove(CKEDITOR.instances['mqNameTh1']);
+    			            CKEDITOR.remove(CKEDITOR.instances['mqNameEng1']);
     			         }
     				 
-						var editor0=CKEDITOR.replace( 'mqNameTh1',
+						var editor0=CKEDITOR.replace( 'mqNameEng1',
 									{
 										// Defines a simpler toolbar to be used in this sample.
 										// Note that we have added out "MyButton" button here.
@@ -289,8 +269,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	</thead>
         	<tbody>
         	 <c:if test="${testForm.modeQuestion=='edit'}">
-        	     <c:if test="${not empty testForm.missQuestion.missChoices}"> 
-        	     	<c:forEach items="${testForm.missQuestion.missChoices}" var="missChoice" varStatus="loop"> 
+        	     <c:if test="${not empty testForm.missQuestion.missChoicesEng}"> 
+        	     	<c:forEach items="${testForm.missQuestion.missChoicesEng}" var="missChoice" varStatus="loop"> 
 	    					<tr>
 	    					 		  <td><INPUT type="checkbox" name="chk" value="choice_edit_${missChoice.mcNo}"/>${loop.index+1}</td>
             						<td><input type="text" id="choice_edit_${missChoice.mcNo}" value="${missChoice.mcName}"/></td>  
@@ -304,18 +284,6 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             		<td><INPUT type="checkbox" name="chk" value="choice_add_1"/>1</td>
             		<td><input type="text" id="choice_add_1" value=""/></td>
           		</tr>
-          	<!-- <tr>
-            	<td><INPUT type="checkbox" name="chk"/>2</td>
-            	<td><input type="text" value="BB"/></td> 
-          	</tr>
-          	<tr>
-            	<td><INPUT type="checkbox" name="chk"/>3</td>
-            	<td><input type="text" value="CC"/></td>
-          	</tr>
-          	<tr>
-            	<td><INPUT type="checkbox" name="chk"/>4</td>
-            	<td><input type="text" value="DD"/></td>
-          	</tr> -->
 	    	</c:if>
              
         	</tbody>
@@ -327,16 +295,4 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<a class="btn btn-info"  onclick="goBackQuestions()"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a>	
     					 <a class="btn btn-primary"  onclick="doQuestionAction('action','${testForm.modeQuestion}','${testForm.missQuestion.mqId}')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a>
 			</div>
-			 <!-- <table border="0" width="100%" style="font-size: 12px">
-			    	<tr>
-    					<td width="50%" align="right">
-    					<input type="button" class="btn" value="Delete"/>
-    					<a class="btn btn-info"  onclick="doAction('search','doBack','0')"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a>	
-    					</td>
-    					<td width="50%" align="left">
-    					<input type="button" class="btn" value="Save"/>
-    					 <a class="btn btn-primary"  onclick="doAction('action','mode','msId')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a>
-    					</td>
-    				</tr>
-				</table> -->
 </fieldset>
