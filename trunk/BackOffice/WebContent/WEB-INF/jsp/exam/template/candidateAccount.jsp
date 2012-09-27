@@ -7,7 +7,9 @@ $(document).ready(function() {
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
-		dateFormat:"dd/mm/yy" 
+		dateFormat:"dd/mm/yy" ,
+		changeMonth: true,
+		changeYear: true
 	});
 	var _candidate_section=$("#_candidate_section").val().length>0?parseInt($("#_candidate_section").val()):0;
 	if(_candidate_section==2)

@@ -244,6 +244,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Company Search</strong></td>
 	    					</tr>
+	    					<%-- 
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Register Type:</td>
@@ -255,8 +256,20 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 </td>
 	    					<td align="left" width="17%">Register No:</td>
 	    					<td align="left" width="17%">
-	    					<form:input path="maRegisterNo"/>
-	    					<!-- <input type="text" name="registerNo"/> -->
+	    					<form:input path="maRegisterNo"/> 
+	    					</td>
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					 --%>
+	    					 <tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Register No:</td>
+	    					 <td align="left" width="17%">    
+	    					   	<form:input path="maRegisterNo"/> 			
+	    					 </td>
+	    					<td align="left" width="17%">&nbsp;</td>
+	    					<td align="left" width="17%">
+	    					&nbsp; 
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
@@ -330,12 +343,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<thead>
           		<tr>
             		<th width="7%"><div class="th_class"><input type="checkbox" id="maIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="18%"><div class="th_class">Register Type</div></th> 
+            		<!-- <th width="18%"><div class="th_class">Register Type</div></th> --> 
             		<th width="25%"><div class="th_class">Name</div></th>
             		<th width="10%"><div class="th_class">Phone</div></th> 
             		<th width="10%"><div class="th_class">Register No</div></th>
-            		<th width="10%"><div class="th_class">Register Date</div></th> 
-            		<th width="5%"><div class="th_class">Total Unit</div></th>
+            		<th width="18%"><div class="th_class">Register Date</div></th>
+            		<th width="15%"><div class="th_class">Total&nbsp;/&nbsp;Balance Unit</div></th>
             		<th width="5%"><div class="th_class">Create Candidate</div></th> 
             		<th width="5%"><div class="th_class">Edit</div></th>
             		<th width="5%"><div class="th_class">Delete</div></th> 
@@ -345,13 +358,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	 <c:forEach items="${missAccounts}" var="missAccount" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" name="maIdCheckbox" value="${missAccount.maId}"/>${(companyForm.paging.pageNo-1)*companyForm.paging.pageSize+(loop.index+1)}.</td>
-            	<td>&nbsp;${missAccount.maRegisterType}</td>
+            	<%-- <td>&nbsp;${missAccount.maRegisterType}</td> --%>
             	<td>&nbsp;${missAccount.maName}</td>
             	<td>&nbsp;${missAccount.maPhone}</td>
             	<td>&nbsp;${missAccount.maRegisterNo}</td>
             	<td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy hh:ss" value="${missAccount.maRegisterDate}" />
             	</td>
-            	<td>&nbsp;${missAccount.maTotalUnit}</td>
+            	<td>&nbsp;${missAccount.maTotalUnit}&nbsp;/&nbsp;${missAccount.maTotalUnit-missAccount.maUsedUnit}</td>
             	<td style="text-align: center;"><i  title="Create" style="cursor: pointer;" onclick="createCandidate('${missAccount.maId}')" class="icon-user"></i></td>
             	<td style="text-align: center;"><i  title="Edit" style="cursor: pointer;" onclick="loadDynamicPage('company/item/${missAccount.maId}')"  class="icon-edit"></i></td>
             	<td style="text-align: center;"><i  title="Delete"  style="cursor: pointer;"  onclick="confirmDelete('delete','${missAccount.maId}')" class="icon-trash"></i></td> 
