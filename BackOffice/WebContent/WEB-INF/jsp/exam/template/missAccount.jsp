@@ -49,7 +49,9 @@ $(document).ready(function() {
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
-		dateFormat:"dd/mm/yy" 
+		dateFormat:"dd/mm/yy" ,
+		changeMonth: true,
+		changeYear: true
 	});
 	//alert(parseInt($("#_miss_section").val()))
 	$('#tabs').tabs('select', parseInt($("#_miss_section").val())-1);

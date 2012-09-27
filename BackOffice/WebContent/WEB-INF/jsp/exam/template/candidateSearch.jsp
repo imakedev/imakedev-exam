@@ -80,9 +80,34 @@ function toggleCheckbox(){
 function exportCandidat(){
 	var src = "candidate/export";
 	//alert(src)
-   /*  var div = document.createElement("div");
-    document.body.appendChild(div);
-    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>"; */
+	var mcaIdCheckbox=document.getElementsByName("mcaIdCheckbox");
+	//alert(mcaIdCheckbox.length);
+	var mcaIds="";
+	for(var i=0;i<mcaIdCheckbox.length;i++){
+		 if(mcaIdCheckbox[i].checked)
+			 mcaIds=mcaIds+mcaIdCheckbox[i].value+",";
+	}
+	 
+	mcaIds=mcaIds.substring(0, mcaIds.length-1);
+	if(!(mcaIds.length>0)){
+		//alert(mcaIds);dialog-empty
+		$( "#dialog-empty" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+				} 
+			}
+		});
+	}else{
+		src=src+"?id="+mcaIds;
+	     var div = document.createElement("div");
+	    document.body.appendChild(div);
+	    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";  
+	}
+	
+    
 }
 function doDeleteItems(){
 	var mcaIdCheckbox=document.getElementsByName("mcaIdCheckbox");
@@ -108,6 +133,16 @@ function doDeleteItems(){
 					$( this ).dialog( "close" );
 					return false;
 				}
+			}
+		});
+	}else{
+		$( "#dialog-empty" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+				} 
 			}
 		});
 	}
@@ -162,6 +197,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 </style>
 <div id="dialog-confirmDelete" title="Delete Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Candidate ?
+</div>
+<div id="dialog-empty" title="Empty Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	Please select  Candidate
 </div>
 <fieldset style="font-family: sans-serif;">
 	     <%-- <fieldset style="font-family: sans-serif;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>    

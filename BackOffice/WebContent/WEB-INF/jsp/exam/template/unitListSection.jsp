@@ -80,17 +80,17 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				</tr> -->
    		 			<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Total Unit: <span id="maTotalUnitElement">${companyForm.missAccount.maTotalUnit}</span></td>
+    					<td width="60%">Total (unit): <span id="maTotalUnitElement">${companyForm.missAccount.maTotalUnit}</span></td>
     					 <td width="20%">&nbsp;</td> 
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Used Unit: <span id="maUsedUnitElement">${companyForm.missAccount.maUsedUnit}</span></td>
+    					<td width="60%">Used (unit): <span id="maUsedUnitElement">${companyForm.missAccount.maUsedUnit}</span></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="60%">Available Unit: <span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td>
+    					<td width="60%">Balance (unit): <span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">

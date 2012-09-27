@@ -48,11 +48,12 @@ function renderPageSelect(){
 }
 function doAction(mode,id){
 	$("#mode").val(mode);
-	if(mode=='deleteItems'){
+	if(mode=='deleteItems' ||mode=='ignoreItems' ){
 		$("#mtrIdArray").val(id);
 	}else if(mode!='search'){
 		$("#mtrId").val(id);
-	}else {
+	}
+	else {
 		$("#mtrId").val("0");
 	}
 	$.post("result/search",$("#resultForm").serialize(), function(data) {
@@ -61,6 +62,81 @@ function doAction(mode,id){
 		  // alert($("#_content").html());
 		});
 }
+function toggleCheckbox(){
+	var _check=document.getElementById("mtrIdCheckboxAll").checked;
+	var mtrIdCheckbox=document.getElementsByName("mtrIdCheckbox"); 
+	for(var i=0;i<mtrIdCheckbox.length;i++){ 
+		mtrIdCheckbox[i].checked=_check;
+	}
+}
+function exportTest(){
+	var src = "result/export";
+	//alert(src)
+	var mtrIdCheckbox=document.getElementsByName("mtrIdCheckbox");
+	//alert(mtrIdCheckbox.length);
+	var mtrIds="";
+	for(var i=0;i<mtrIdCheckbox.length;i++){
+		 if(mtrIdCheckbox[i].checked)
+			 mtrIds=mtrIds+mtrIdCheckbox[i].value+",";
+	}
+	 
+	mtrIds=mtrIds.substring(0, mtrIds.length-1);
+	if(!(mtrIds.length>0)){
+		//alert(mtrIds);dialog-empty
+		$( "#dialog-empty" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+				} 
+			}
+		});
+	}else{
+		src=src+"?id="+mtrIds+"&mcaSeries="+$("#mcaSeries").val();
+	     var div = document.createElement("div");
+	    document.body.appendChild(div);
+	    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";  
+	}
+	
+}
+function setIgnore(){
+	var mtrIdCheckbox=document.getElementsByName("mtrIdCheckbox");
+	//alert(mtrIdCheckbox.length);
+	var mtrIds="";
+	for(var i=0;i<mtrIdCheckbox.length;i++){
+		 if(mtrIdCheckbox[i].checked)
+			 mtrIds=mtrIds+mtrIdCheckbox[i].value+",";
+	} 
+	mtrIds=mtrIds.substring(0, mtrIds.length-1);
+	if(mtrIds.length>0){
+		//alert(mtrIds);
+		$( "#dialog-confirmIgnore" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Yes": function() { 
+					$( this ).dialog( "close" );
+					doAction("ignoreItems",mtrIds);
+				},
+				"No": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			}
+		});
+	}else{
+		$( "#dialog-empty" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+				} 
+			}
+		});
+	} 
+}
 </script>
 
 <style>
@@ -68,6 +144,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
 </style>
+<div id="dialog-confirmIgnore" title="Ignore Result" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	Are you sure you want to ignore Result ?
+</div>
+<div id="dialog-empty" title="Empty Result" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	Please select  Result
+</div>
 	    <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
@@ -149,9 +231,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<td align="left" width="60%">
 	    					
 	    					<a class="btn btn-success"><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
-	    					<a class="btn btn-info disabled"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
+	    					<a class="btn btn-info" onclick="exportTest()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
 	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
-	    					<a class="btn btn-danger disabled"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a></td>
+	    					<a class="btn btn-danger" onclick="setIgnore()"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a></td>
 	    					<td align="right" width="40%">
 	    					<a onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a>
 	    					</td>
@@ -161,7 +243,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
-            		<th width="5%"><div class="th_class"><input type="checkbox"/></div></th>
+            		<th width="5%"><div class="th_class"><input type="checkbox" id="mtrIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
             		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_username"/></div></th> 
             		<th width="15%"><div class="th_class"><spring:message code="page_testsearch_firstname"/></div></th>
             		<th width="10%"><div class="th_class"><spring:message code="page_testsearch_lastname"/></div></th> 
@@ -183,7 +265,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<tbody>
         	 <c:forEach items="${missTestResults}" var="missTestResult" varStatus="loop"> 
           	<tr>
-            	<td><input type="checkbox" /></td>
+            	<td><input type="checkbox" name="mtrIdCheckbox" value="${missTestResult.mtrId}"/></td>
             	<td>
             	<a>${missTestResult.missCandidate.mcaUsername}</a>
             	</td>
@@ -221,7 +303,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	<c:if test="${missTestResult.mtrRespondedStatus=='0' && missTestResult.mtrStatus!='0'}">            	
             			<a onclick="loadDynamicPage('result/response/${missTestResult.mtrId}')">Pending</a>
             	</c:if>
-            	<c:if test="${missTestResult.mtrRespondedStatus=='2' && missTestResult.mtrStatus!='0'}">            	
+            	<%-- <c:if test="${missTestResult.mtrRespondedStatus=='2' && missTestResult.mtrStatus!='0'}">    --%>
+            	<c:if test="${missTestResult.mtrRespondedStatus=='2'}">         	
             			Ignored
             	</c:if>
             	<c:if test="${missTestResult.mtrStatus=='0'}">            	
