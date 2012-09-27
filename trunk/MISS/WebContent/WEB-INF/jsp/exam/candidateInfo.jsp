@@ -83,7 +83,9 @@ $(document).ready(function() {
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
-		dateFormat:"dd/mm/yy" 
+		dateFormat:"dd/mm/yy" ,
+		changeMonth: true,
+		changeYear: true
 	});
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
