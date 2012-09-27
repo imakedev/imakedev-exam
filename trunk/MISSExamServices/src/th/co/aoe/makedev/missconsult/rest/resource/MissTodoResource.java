@@ -23,6 +23,10 @@ public class MissTodoResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissTodoService missTodoService;
 	private com.thoughtworks.xstream.XStream xstream;
+	private static final String[] ignore_account=new String[]{"missTheme","missIndustryMaster"};
+	private static final String[] ignore_todo=new String[]{"missAccount"}; 
+	
+	  
 	 
 	public MissTodoResource() {
 		super();
@@ -54,11 +58,11 @@ public class MissTodoResource extends BaseResource {
 				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.MissTodo) ntcCalendarObj;
 				if (xbpsTerm != null) {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo();
-					BeanUtils.copyProperties(xbpsTerm,bpsTerm,new String[]{"missAccount"}); 
+					BeanUtils.copyProperties(xbpsTerm,bpsTerm,ignore_todo); 
 					th.co.aoe.makedev.missconsult.xstream.MissAccount account=xbpsTerm.getMissAccount();
 				    if(account!=null){
 						th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount xaccount = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
-						BeanUtils.copyProperties(account, xaccount,new String[]{"missTheme"}); 
+						BeanUtils.copyProperties(account, xaccount,ignore_account);  
 						bpsTerm.setMissAccount(xaccount);
 					}
 					
@@ -74,7 +78,7 @@ public class MissTodoResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissTodo> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTodo>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissTodo xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTodo();
-								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);	
+								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_todo);	
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
@@ -196,7 +200,7 @@ public class MissTodoResource extends BaseResource {
 				ntcCalendars.size());
 		for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo missTodo : ntcCalendars) {
 			th.co.aoe.makedev.missconsult.xstream.MissTodo xmissTodo =new th.co.aoe.makedev.missconsult.xstream.MissTodo ();
-			BeanUtils.copyProperties(missTodo, xmissTodo,new String[]{"missAccount"});
+			BeanUtils.copyProperties(missTodo, xmissTodo,ignore_todo);
 			xmissTodo.setPagging(null);
 			xntcCalendars.add(xmissTodo);
 		}

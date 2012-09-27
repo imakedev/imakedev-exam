@@ -235,9 +235,7 @@ public class MissCandidateResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_ITEMS_DELETE)){
-						/*	int updateRecord=missCandidateService.deleteMissCandidate(bpsTerm);
-							returnUpdateRecord(entity,xbpsTerm,updateRecord);
-							*/
+						 
 							String[] mcaIds=xbpsTerm.getMcaIds().split(",");
 							//logger.debug("xbpsTerm.getMsIds()="+xbpsTerm.getMsIds());
 							int updateRecord=0;
@@ -248,6 +246,24 @@ public class MissCandidateResource extends BaseResource {
 							}
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_EXPORT)){
+							  
+								String[] mcaIds=xbpsTerm.getMcaIds().split(","); 
+								List result = (List) missCandidateService.exportMissCandidate(mcaIds); 
+								String faqs_size = (String) result.get(1);
+//								 
+								VResultMessage vresultMessage = new VResultMessage();
+								if (faqs_size != null && !faqs_size.equals(""))
+									vresultMessage.setMaxRow(faqs_size);
+								/*if (ntcCalendars != null && ntcCalendars.size() > 0) {
+									xntcCalendars = getxMissCandidateObject(ntcCalendars);
+								}*/
+								vresultMessage.setResultListObj((java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>)result
+										.get(0));
+								return getRepresentation(entity, vresultMessage, xstream);
+							
+							}
+						
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_DELETE)){
 							int updateRecord=missCandidateService.deleteMissCandidate(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);

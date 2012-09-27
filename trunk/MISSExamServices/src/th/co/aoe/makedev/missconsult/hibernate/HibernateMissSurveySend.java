@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend;
 import th.co.aoe.makedev.missconsult.managers.MissSurveySendService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -161,17 +163,51 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
-		System.out.println(persistentInstance.getMissSery().getMsId());
-		for (List<String> list : userEmail) {
-			System.out.println("name="+list.get(0));			
-			System.out.println("email="+list.get(1));
-			MissSurveySend missSurveySend =new MissSurveySend();
-			missSurveySend.setMsEmail(list.get(1));
-			missSurveySend.setMissSery(persistentInstance.getMissSery());
-			session.save(missSurveySend);
-		}
+
+		int returnRecord=0;
+		Query query=session.createQuery(" select missSery from MissSery missSery where missSery.msId=:msId " +
+				" "); 
+		query.setParameter("msId", persistentInstance.getMissSery().getMsId());
+		MissSery missSery = (MissSery)query.uniqueResult();
+		Long msUnitCost =(missSery.getMsUnitCost()!=null && missSery.getMsUnitCost().intValue()!=0)?missSery.getMsUnitCost():0l;
+		Long masmAvailable=0l;
+		query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId=:maId " +
+				" and missAccountSeriesMap.id.msId=:msId");
+		query.setParameter("maId", maId);
+		query.setParameter("msId", persistentInstance.getMissSery().getMsId());
+		List<MissAccountSeriesMap> list=query.list();
+		if(list!=null && list.size()>0){
+			MissAccountSeriesMap missAccountSeriesMap = list.get(0);
+			masmAvailable=(missAccountSeriesMap.getMasmAvailable()!=null && missAccountSeriesMap.getMasmAvailable().length()>0)?Long.valueOf(missAccountSeriesMap.getMasmAvailable()):0l;
+		
+		} 
+			int msUnitCostTotal=msUnitCost.intValue()*userEmail.size();
+			if(masmAvailable.intValue()>=msUnitCostTotal){
+				for (List<String> listUserEmail : userEmail) {
+					/*System.out.println("name="+list.get(0));			
+					System.out.println("email="+list.get(1));*/
+					MissSurveySend missSurveySend =new MissSurveySend();
+					missSurveySend.setMsEmail(listUserEmail.get(1));
+					missSurveySend.setMissSery(persistentInstance.getMissSery());
+					session.save(missSurveySend);
+				}
+				// update seryMap
+				query=session.createQuery(" update MissAccountSeriesMap missAccountSeriesMap " +
+						" set missAccountSeriesMap.masmAvailable =:masmAvailable " +
+						" where missAccountSeriesMap.id.maId=:maId " +
+						" and missAccountSeriesMap.id.msId=:msId");
+				query.setParameter("masmAvailable",(masmAvailable.intValue()-msUnitCostTotal)+"");
+				query.setParameter("maId", maId);
+				query.setParameter("msId", persistentInstance.getMissSery().getMsId());
+				returnRecord=query.executeUpdate();
+				returnRecord=1;
+			}else{
+				//returnRecord=-1;
+			} 
+		//System.out.println(persistentInstance.getMissSery().getMsId());
+		
 		// 1= success , 0 not success
-		return 0;
+		return returnRecord;
 	}
 	 
 

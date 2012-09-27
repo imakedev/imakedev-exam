@@ -249,11 +249,15 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 						/* select * from MISS_CONSULT_EXAM2.MISS_SERIES_MAP map left join 
 						 MISS_EXAM exam on map.me_id=exam.me_id where map.ms_id=1*/
 						 query =session.createQuery("select missExam from MissSeriesMap missMap, MissExam missExam " +
-						 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+xmissSery.getMsId());
+						 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+xmissSery.getMsId()+
+						 		" order by missMap.msmOrder asc ");
 						List<MissExam> missExams= (List<MissExam>)query.list();
 						 String str="";
+						 int index=0;
+						 int missExamsSize=missExams.size();
 							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissExam missExam : missExams) {
-								str=str+missExam.getMeName()+" ";
+								str=str+((index==(missExamsSize-1))?missExam.getMeName():missExam.getMeName()+" , ");
+								index++;
 							}
 							xmissSery.setTestStr(str);
 						//	logger.debug(" testStr="+str);

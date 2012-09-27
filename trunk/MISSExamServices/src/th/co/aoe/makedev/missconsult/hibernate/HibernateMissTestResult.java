@@ -117,11 +117,11 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		try {
 			Long msId=instance.getMsId();
 			MissCandidate missCandidate=instance.getMissCandidate();
-			String mcaUsername=missCandidate.getMcaUsername();
-			String mcaFirstName=missCandidate.getMcaFirstName();
-			String mcaLastName=missCandidate.getMcaLastName();
-			String mcaPosition=missCandidate.getMcaPosition();
-			String mcaDepartMent=missCandidate.getMcaDepartment();
+			String mcaUsername=missCandidate!=null?missCandidate.getMcaUsername():null;
+			String mcaFirstName=missCandidate!=null?missCandidate.getMcaFirstName():null;
+			String mcaLastName=missCandidate!=null?missCandidate.getMcaLastName():null;
+			String mcaPosition=missCandidate!=null?missCandidate.getMcaPosition():null;
+			String mcaDepartMent=missCandidate!=null?missCandidate.getMcaDepartment():null;
 			String mtrStartTime="";
 					if(instance.getMtrStartTime()!=null){
 						mtrStartTime=format.format(instance.getMtrStartTime());
@@ -132,7 +132,8 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 					}
 		
 			
-			String maName=missCandidate.getMissAccount().getMaName();
+					String maName=(missCandidate!=null && missCandidate.getMissAccount()!=null)?missCandidate.getMissAccount().getMaName():null;
+					
 			 
 					 
 			//StringBuffer sb =new StringBuffer(" select count(missTestResult) from MissTestResult missTestResult ");
@@ -206,7 +207,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissTestResult(MissTestResult instance,Pagging pagging) throws DataAccessException {
+	 public List searchMissTestResult(MissTestResult instance,String mtrIds,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			Long msId=instance.getMsId();
@@ -215,12 +216,12 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 				String megName = instance.getMegName();
 			*/
 				//Long msId=instance.getMsId();
-				MissCandidate missCandidate=instance.getMissCandidate();
-				String mcaUsername=missCandidate.getMcaUsername();
-				String mcaFirstName=missCandidate.getMcaFirstName();
-				String mcaLastName=missCandidate.getMcaLastName();
-				String mcaPosition=missCandidate.getMcaPosition();
-				String mcaDepartMent=missCandidate.getMcaDepartment();
+				MissCandidate missCandidate=instance.getMissCandidate(); 
+				String mcaUsername=missCandidate!=null?missCandidate.getMcaUsername():null;
+				String mcaFirstName=missCandidate!=null?missCandidate.getMcaFirstName():null;
+				String mcaLastName=missCandidate!=null?missCandidate.getMcaLastName():null;
+				String mcaPosition=missCandidate!=null?missCandidate.getMcaPosition():null;
+				String mcaDepartMent=missCandidate!=null?missCandidate.getMcaDepartment():null;
 				String mtrStartTime="";
 						if(instance.getMtrStartTime()!=null){
 							mtrStartTime=format.format(instance.getMtrStartTime());
@@ -231,7 +232,7 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 						}
 			
 				
-				String maName=missCandidate.getMissAccount().getMaName();
+				String maName=(missCandidate!=null && missCandidate.getMissAccount()!=null)?missCandidate.getMissAccount().getMaName():null;
 			
 				StringBuffer sb =new StringBuffer(" select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE," +
 						" result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS," +
@@ -253,6 +254,12 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 					//criteria.add(Expression.eq("megId", megId));	
 					 sb.append(iscriteria?(" and result.MS_ID="+msId+""):(" where result.MS_ID="+msId+""));
 					  iscriteria = true;
+				}
+				
+				if(mtrIds !=null && mtrIds.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and result.MTR_ID in ("+mtrIds+")"):(" where result.MTR_ID in ("+mtrIds+")"));
+					 iscriteria = true;
 				}
 				if(mcaUsername !=null && mcaUsername.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
@@ -1041,5 +1048,21 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 		query.setParameter("mtrId", mtrId); 
 		query.setParameter(column, value); 
 	return query.executeUpdate();
+	}
+	@Override
+	public int updateStatus(String mtrId, String column, String value)
+			throws DataAccessException {
+		//String mtrIds[] =mtrId.split(",");
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=null;
+		//for (int i = 0; i < mtrIds.length; i++) {
+			 query=session.createQuery("update MissTestResult missTestResult " +
+					" set missTestResult."+column+" =:"+column+" " +
+					" where missTestResult.mtrId in ("+mtrId+")");
+			//query.setParameter("mtrId", mtrId); 
+			query.setParameter(column, value); 
+			return query.executeUpdate();
+		//}
+		//return 0;
 	}
 }

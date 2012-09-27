@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -162,10 +161,15 @@ public class MissTestResultResource extends BaseResource {
 							int updateRecord=missTestResultService.updateStatus(xbpsTerm.getMtrId(), xbpsTerm.getColumn(), xbpsTerm.getValue());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS_LIST)){
+							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missTestResultService.updateStatus(xbpsTerm.getMtrIds(), xbpsTerm.getColumn(), xbpsTerm.getValue());
+						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
 						
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,page);
+							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,xbpsTerm.getMtrIds(),page);
 							if (result != null && result.size() == 3) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
 										.get(0);
@@ -211,34 +215,7 @@ public class MissTestResultResource extends BaseResource {
 	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		// TODO Auto-generated method stub
-		logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
-		logger.debug("into GET MissTestResultResource");
-		// Representation result = null;
-		
-			//return getRepresentation(null, vresultMessage, xstream);
-		Pagging page =new Pagging(); 
-		th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult();
-		//bpsTerm.setMegName("Aoe");
-		List result = (List) missTestResultService.searchMissTestResult(bpsTerm,page);
-		VResultMessage vresultMessage = new VResultMessage();
-		List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>();
-		if (result != null && result.size() == 2) {
-			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult>) result
-					.get(0);
-			String faqs_size = (String) result.get(1);
-//			 
-		
-
-		
-			if (faqs_size != null && !faqs_size.equals(""))
-				vresultMessage.setMaxRow(faqs_size);
-			if (ntcCalendars != null && ntcCalendars.size() > 0) {
-				xntcCalendars = getxMissTestResultObject(ntcCalendars);
-			}
-		}
-			vresultMessage.setResultListObj(xntcCalendars);
-			return getRepresentation(null, vresultMessage, xstream);
+		return null;
 	}
 	private List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> getxMissTestResultObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult> ntcCalendars) {
