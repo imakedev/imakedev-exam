@@ -445,7 +445,7 @@ int result = query.executeUpdate();*/
 			}
 			return returnRecord; 
 		}else if(section.equals("1")){
-			logger.debug("getMissIndustryMaster="+transientInstance.getMissIndustryMaster().getMimId());
+			//logger.debug("getMissIndustryMaster="+transientInstance.getMissIndustryMaster().getMimId());
 			logger.debug("getMissCareerMaster="+transientInstance.getMissCareerMaster().getMcmId());
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaType =:mcaType ,  " +
@@ -460,7 +460,7 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
 					" missCandidate.mcaTitleType =:mcaTitleType  ,  " +
-					" missCandidate.missIndustryMaster.mimId =:mimId   , " +
+				//	" missCandidate.missIndustryMaster.mimId =:mimId   , " +
 					" missCandidate.missCareerMaster.mcmId =:mcmId    " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaType", transientInstance.getMcaType());
@@ -475,7 +475,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
-			query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
+			//query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
 			query.setParameter("mcmId", transientInstance.getMissCareerMaster().getMcmId());
 			//d
 			return query.executeUpdate();
@@ -628,6 +628,48 @@ int result = query.executeUpdate();*/
 			}
 		}
 		return xmissExams;
+	}
+	@Override
+	public List exportMissCandidate(String[] mcaIds) throws DataAccessException {
+		// TODO Auto-generated method stub
+
+		ArrayList  transList = new ArrayList ();
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		try {
+		 
+			String inStr="(";
+			int mcaSize=mcaIds.length;
+			for (int i = 0; i <mcaSize ; i++) {
+				inStr=inStr+((i==(mcaSize-1))?mcaIds[i]:(mcaIds[i]+","));
+			}
+			inStr=inStr+")";
+			System.out.println(inStr);
+			StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId in "+inStr+"" +
+					" order by missCandidate.mcaId asc ");
+			  
+			Query query =session.createQuery(sb.toString());
+			 
+			 
+			 List<MissCandidate> l = query.list();   
+			 
+			 List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
+						l.size());
+			  String masmAvailable;
+			  for (MissCandidate missCandidate : l) {  
+				  th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate=getxMissCandidateObject(missCandidate); 
+				  xntcCalendars.add(xmissCandidate); 
+			   }
+			// SELECT * FROM MISS_CONSULT_EXAM3.MISS_ACCOUNT_SERIES_MAP;
+			 transList.add(xntcCalendars); 
+		 	 transList.add(xntcCalendars.size()+"");
+			return transList;
+		} catch (Exception re) {
+			//re.printStackTrace();
+			logger.error("find by property name failed", re);
+			 
+		}
+		return transList;
+	
 	}
 	 
 

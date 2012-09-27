@@ -412,11 +412,16 @@ int result = query.executeUpdate();*/
 				 xmissSery.setMsSeriesName(missSery.getMsSeriesName());
 				 xmissSery.setMsUnitCost(missSery.getMsUnitCost());
 				    query =session.createQuery("select missExam from MissSeriesMap missMap, MissExam missExam " +
-					 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+missSery.getMsId());
-					List<MissExam> missExams= (List<MissExam>)query.list();
-					 String str="";
+					 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+missSery.getMsId()+
+				    		" order by missMap.msmOrder asc ");
+				    List<MissExam> missExams= (List<MissExam>)query.list();
+					 
+					String str="";
+					 int index=0;
+					 int missExamsSize=missExams.size();
 						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissExam missExam : missExams) {
-							str=str+missExam.getMeName()+" ";
+							str=str+((index==(missExamsSize-1))?missExam.getMeName():missExam.getMeName()+" , ");
+							index++;
 						}
 				 xmissSery.setTestStr(str);
 				 if(map!=null){
