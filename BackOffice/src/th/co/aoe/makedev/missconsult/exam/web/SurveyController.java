@@ -77,10 +77,10 @@ public class SurveyController
     public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
     {
       
-    	System.out.println(surveyForm.getMaId());
+    	/*System.out.println(surveyForm.getMaId());
     	System.out.println(surveyForm.getSurvey_email().length);
-    	System.out.println(surveyForm.getAmountSend());
-    	
+    	System.out.println(surveyForm.getAmountSend());*/
+    	int resultReturn=0;
     	if(surveyForm.getSurvey_email().length>=surveyForm.getAmountSend()){
     		 Random randomGenerator = new Random();
     		 Map map=new HashMap<String,String >();
@@ -104,8 +104,8 @@ public class SurveyController
     		 missSery.setMsId(surveyForm.getMsId());
     		 missSurveySend.setMissSery(missSery);
     		 missSurveySend.setUserEmail(userEmail);
-    		int resultReturn= missExamService.sendSurvey(missSurveySend);
-    		 System.out.println(" resultReturn="+resultReturn);
+    		 resultReturn= missExamService.sendSurvey(missSurveySend);
+    		 //System.out.println(" resultReturn="+resultReturn);
     		 int size=map.size();
     		/* for(int i=0;i<size;i++){
     			 MailRunnable mailRunnableToTeam = new MailRunnable(
@@ -120,7 +120,7 @@ public class SurveyController
     		/**/ 
     	}
     	model.addAttribute("display", "display: block");
-    	model.addAttribute("message", "Send Success !!!");
+    	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success !!!"));
     	 model.addAttribute("missSeries", missExamService.listMissSery());
     	 model.addAttribute("surveyForm", surveyForm);
     	 return "exam/template/surveySend";

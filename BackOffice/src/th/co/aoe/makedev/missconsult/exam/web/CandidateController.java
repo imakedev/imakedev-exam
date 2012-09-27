@@ -8,6 +8,7 @@ package th.co.aoe.makedev.missconsult.exam.web;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -179,7 +180,7 @@ public class CandidateController
     {
         String mode = candidateForm.getMode();
         String message = "";
-        logger.debug((new StringBuilder(" aoeeeeeeeeeeee =")).append(section).toString());
+      //  logger.debug((new StringBuilder(" aoeeeeeeeeeeee =")).append(section).toString());
         candidateForm.getMissCandidate().setSection(section);
         Long id = null;
         if(candidateForm.getMcaBirthDate() != null && candidateForm.getMcaBirthDate().trim().length() > 0)
@@ -226,113 +227,86 @@ public class CandidateController
     @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void export(HttpServletRequest request, HttpServletResponse response)
     {
+    	
+    	String mcaIds=request.getParameter("id");
+    	System.out.println("request id ="+mcaIds);
+    	MissCandidate missCandidate =new MissCandidate();
+    	missCandidate.setMcaIds(mcaIds);
+    	 VResultMessage vresultMessage = missExamService.exportMissCandidate(missCandidate); 
+    	// vresultMessage.getResultListObj()
         HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet("new sheet");
-        HSSFRow row = sheet.createRow(0);
-        HSSFCellStyle style = wb.createCellStyle();
-        style.setBorderBottom((short)1);
-        style.setBottomBorderColor((short)8);
-        style.setBorderLeft((short)1);
-        style.setLeftBorderColor((short)8);
-        style.setBorderRight((short)1);
-        style.setRightBorderColor((short)8);
-        style.setBorderTop((short)1);
-        style.setTopBorderColor((short)8);
-        style.setAlignment((short)2);
-        style.setWrapText(true);
-        HSSFCell cell = row.createCell(0);
-        cell.setCellValue("\u0E41\u0E1A\u0E1A\u0E41\u0E2A\u0E14\u0E07\u0E23\u0E32\u0E22\u0E25\u0E30\u0E40\u0E2D\u0E35\u0E22\u0E14\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E42\u0E17\u0E23\u0E04\u0E21\u0E19\u0E32\u0E04\u0E21\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E01\u0E32\u0E23\u0E43\u0E2B\u0E49\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E42\u0E17\u0E23\u0E28\u0E31\u0E1E\u0E17\u0E4C\u0E40\u0E04\u0E25\u0E34\u0E48\u0E19\u0E17\u0E35\u0E48*");
-        cell.setCellStyle(style);
-        for(int i = 1; i <= 12; i++)
-            row.createCell(i).setCellStyle(style);
-
-        row = sheet.createRow(1);
-        cell = row.createCell(0);
-        cell.setCellStyle(style);
-        for(int i = 1; i <= 12; i++)
-            if(i == 1)
-            {
-                cell = row.createCell(i);
-                cell.setCellValue("\u0E08\u0E33\u0E19\u0E27\u0E19\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22(\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E02)");
-                cell.setCellStyle(style);
-            } else
-            {
-                row.createCell(i).setCellStyle(style);
-            }
-
-        row = sheet.createRow(2);
-        for(int i = 0; i <= 12; i++)
-        {
-            cell = row.createCell(i);
-            cell.setCellStyle(style);
-            if(i < 3)
-                cell.setCellValue(i + 1);
-            else
-                cell.setCellValue(i);
-        }
-
-        row = sheet.createRow(3);
-        for(int i = 0; i <= 12; i++)
-        {
-            cell = row.createCell(i);
-            cell.setCellStyle(style);
-            if(i == 0)
-                cell.setCellValue("\u0E01\u0E25\u0E38\u0E48\u0E21\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A\u0E08\u0E31\u0E14\u0E2A\u0E23\u0E23");
-            else
-            if(i == 1)
-                cell.setCellValue("\u0E27\u0E31\u0E19\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E01\u0E25\u0E38\u0E48\u0E21\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22 (Date of Activation)");
-            else
-            if(i == 2)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19 (Active Number)");
-        }
-
-        row = sheet.createRow(4);
-        for(int i = 0; i <= 12; i++)
-        {
-            cell = row.createCell(i);
-            cell.setCellStyle(style);
-            if(i == 2)
-                cell.setCellValue("\u0E41\u0E1A\u0E1A\u0E0A\u0E33\u0E23\u0E30\u0E04\u0E48\u0E32\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E23\u0E32\u0E22\u0E40\u0E14\u0E37\u0E2D\u0E19(Post Paid)");
-            else
-            if(i == 3)
-                cell.setCellValue("\u0E41\u0E1A\u0E1A\u0E0A\u0E33\u0E23\u0E30\u0E04\u0E48\u0E32\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E25\u0E48\u0E27\u0E07\u0E2B\u0E19\u0E49\u0E32(Pre- Paid)");
-            else
-            if(i == 4)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19 (not yet Activated Number)");
-            else
-            if(i == 5)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E2D\u0E22\u0E39\u0E48\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E01\u0E32\u0E23\u0E17\u0E33Quarantine");
-            else
-            if(i == 6)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E2D\u0E22\u0E39\u0E48\u0E23\u0E30\u0E2B\u0E27\u0E48\u0E32\u0E07\u0E01\u0E32\u0E23\u0E17\u0E33 SIM");
-            else
-            if(i == 7)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E17\u0E32\u0E07\u0E40\u0E17\u0E04\u0E19\u0E34\u0E04");
-            else
-            if(i == 8)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E17\u0E35\u0E48\u0E19\u0E33\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E43\u0E2B\u0E21\u0E48(Reused Numbers)");
-            else
-            if(i == 9)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E2A\u0E33\u0E23\u0E2D\u0E07");
-            else
-            if(i == 10)
-                cell.setCellValue("\u0E2D\u0E37\u0E48\u0E19\u0E46(\u0E42\u0E1B\u0E23\u0E14\u0E23\u0E30\u0E1A\u0E38)");
-            else
-            if(i == 11)
-                cell.setCellValue("\u0E40\u0E25\u0E02\u0E2B\u0E21\u0E32\u0E22\u0E04\u0E07\u0E40\u0E2B\u0E25\u0E37\u0E2D");
-            else
-            if(i == 12)
-                cell.setCellValue("\u0E20\u0E39\u0E21\u0E34\u0E20\u0E32\u0E04\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19");
-        }
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 12));
-        sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 11));
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 3));
-        sheet.addMergedRegion(new CellRangeAddress(3, 3, 2, 3));
-        sheet.addMergedRegion(new CellRangeAddress(3, 4, 0, 0));
-        sheet.addMergedRegion(new CellRangeAddress(3, 4, 1, 1));
+        HSSFSheet sheet = wb.createSheet("Candidate");
+      //  HSSFRow row = sheet.createRow(0);
+      //  HSSFCellStyle style = wb.createCellStyle(); 
+     
+        int indexRow = 0;  
+	    HSSFCellStyle cellStyle = wb.createCellStyle();
+	    HSSFCellStyle cellStyle2 = wb.createCellStyle();
+	    cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	    cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	    cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+	  
+	    cellStyle.setFillBackgroundColor(new HSSFColor.GREY_25_PERCENT().getIndex());     
+	    cellStyle.setWrapText(true);
+	    
+	    cellStyle2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	    cellStyle2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	    cellStyle2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setWrapText(true); 
+	   
+	 
+				//Header 5
+			    HSSFRow row = sheet.createRow(indexRow);
+			    HSSFCell cell = row.createCell((short)0);
+			   
+			    cell = row.createCell((short)0);	    
+			    cell.setCellValue("No");
+			     cell.setCellStyle(cellStyle);	   
+			    cell = row.createCell((short)1);	    
+			    cell.setCellValue("Username/Password");
+			    cell.setCellStyle(cellStyle); 
+			    
+			    cell = row.createCell((short)2);	    
+			    cell.setCellValue("Company");
+			    cell.setCellStyle(cellStyle);
+			    
+			    cell = row.createCell((short)3);	    
+			    cell.setCellValue("Series");
+			    cell.setCellStyle(cellStyle);
+			    
+			    indexRow++;
+			   
+			    sheet.setColumnWidth((short)0,(short)((50*8)/((double)1/20) ));
+			    sheet.setColumnWidth((short)1,(short)((50*8)/((double)1/20) ));
+			    sheet.setColumnWidth((short)2,(short)((50*8)/((double)1/20) ));
+			    sheet.setColumnWidth((short)3,(short)((50*8)/((double)1/20) )); 
+			   List<MissCandidate> missCandidates= vresultMessage.getResultListObj();
+			   int rowIndex=1;
+			   for (MissCandidate missCandidate2 : missCandidates) {
+				   row = sheet.createRow(indexRow);
+				    indexRow++;
+				    cell = row.createCell((short)0);	    
+				     cell.setCellValue(rowIndex++);
+				    cell.setCellStyle(cellStyle2); 
+				    cell = row.createCell((short)1);	    
+				    cell.setCellValue(missCandidate2.getMcaUsername()+" / "+missCandidate2.getMcaPassword());
+				    cell.setCellStyle(cellStyle2); 
+				    
+				    cell = row.createCell((short)2);	    
+				     cell.setCellValue(missCandidate2.getMissAccount().getMaName());
+				    cell.setCellStyle(cellStyle2);
+				    cell = row.createCell((short)3);	    
+				    cell.setCellValue(missCandidate2.getMissSery().getMsSeriesName());
+				    cell.setCellStyle(cellStyle2); 
+			 } 
         response.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
-        response.setHeader("Content-disposition", "attachment; filename=\u0E17\u0E14\u0E2A\u0E2D\u0E1A.xls");
+        response.setHeader("Content-disposition", "attachment; filename=Candidate.xls");
         ServletOutputStream servletOutputStream = null;
         try
         {

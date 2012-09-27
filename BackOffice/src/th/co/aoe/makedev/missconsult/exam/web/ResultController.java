@@ -5,7 +5,6 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,8 +30,13 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,6 +66,7 @@ public class ResultController
 	private static int PAGE_SIZE=20;
 	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
+	  private static SimpleDateFormat format3 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	  private static String MAIL_SERVER = "";
 	  private static String MAIL_PROTOCAL = "";
 	  private static String MAIL_PORT="";
@@ -186,7 +191,13 @@ public class ResultController
         	resultForm.getMissTestResult().setMtrIds(resultForm.getMtrIdArray());
         //    missExamService.deleteMissSery(resultForm.getMissSery(), "deleteMissSeryItems");
             resultForm.getPaging().setPageNo(1);
-        } else
+        } else if(mode != null && mode.equals("ignoreItems"))
+        {
+        	resultForm.getMissTestResult().setMtrIds(resultForm.getMtrIdArray());
+         //   missExamService.ignoreItems(resultForm.getMissSery(), "igMissSeryItems");
+            missExamService.updateStatusMissTestResult(resultForm.getMtrIdArray(), "mtrRespondedStatus", "2");
+            resultForm.getPaging().setPageNo(1);
+        }else 
         if(mode != null && mode.equals("delete")){
          //   missExamService.deleteMissSery(resultForm.getMissSery(), "deleteMissSery");
             resultForm.getPaging().setPageNo(1);
@@ -582,6 +593,230 @@ public class ResultController
 		}
 	   
     }
+    @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public void export(HttpServletRequest request, HttpServletResponse response)
+    {
+    	
+    	String mtrIds=request.getParameter("id");
+    	String msId=request.getParameter("mcaSeries");
+    	System.out.println("request id ="+mtrIds);
+    	MissTestResult missTestResult =new MissTestResult();
+    	missTestResult.setMtrIds(mtrIds);
+    	missTestResult.setMsId(Long.parseLong(msId));
+    	 
+    	   VResultMessage vresultMessage = missExamService.searchMissTestResult(missTestResult);
+    	// model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
+       
+       // model.addAttribute("axisHeaders", vresultMessage.getResultListObj().get(1));
+    	//xxx
+    	 //VResultMessage vresultMessage = missExamService.exportMissCandidate(missCandidate); 
+    	// vresultMessage.getResultListObj()
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("Candidate");
+      //  HSSFRow row = sheet.createRow(0);
+      //  HSSFCellStyle style = wb.createCellStyle(); 
+     
+        int indexRow = 0;  
+	    HSSFCellStyle cellStyle = wb.createCellStyle();
+	    HSSFCellStyle cellStyle2 = wb.createCellStyle();
+	    cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	    cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	    cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	    cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+	  
+	    cellStyle.setFillBackgroundColor(new HSSFColor.GREY_25_PERCENT().getIndex());     
+	    cellStyle.setWrapText(true);
+	    
+	    cellStyle2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	    cellStyle2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	    cellStyle2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	    cellStyle2.setWrapText(true); 
+	   
+	 
+				//Header 5
+			    HSSFRow row = sheet.createRow(indexRow);
+			    HSSFCell cell = row.createCell((short)0);
+			   int index=0;
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("No");
+			     cell.setCellStyle(cellStyle);	   
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Username");
+			    cell.setCellStyle(cellStyle); 
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("First Name");
+			    cell.setCellStyle(cellStyle);
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Last Name");
+			    cell.setCellStyle(cellStyle);
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Positione");
+			    cell.setCellStyle(cellStyle);
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Department");
+			    cell.setCellStyle(cellStyle); 
+			     
+			    List<String> axisHeaders =(List<String>) vresultMessage.getResultListObj().get(1);
+			    for (String string : axisHeaders) {
+			    	  cell = row.createCell((short)index++);	    
+					    cell.setCellValue(string);
+					    cell.setCellStyle(cellStyle);
+				}
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Test Date");
+			    cell.setCellStyle(cellStyle); 
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Report");
+			    cell.setCellStyle(cellStyle); 
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Status");
+			    cell.setCellStyle(cellStyle); 
+			    
+			    cell = row.createCell((short)index++);	    
+			    cell.setCellValue("Response");
+			    cell.setCellStyle(cellStyle);  
+			    
+			    indexRow++;
+			   
+			    for(int i=0;i<index;i++){
+			    	 sheet.setColumnWidth((short)i,(short)((50*8)/((double)1/20) ));
+			    }
+			   
+			  /*  sheet.setColumnWidth((short)1,(short)((50*8)/((double)1/20) ));
+			    sheet.setColumnWidth((short)2,(short)((50*8)/((double)1/20) ));
+			    sheet.setColumnWidth((short)3,(short)((50*8)/((double)1/20) )); */
+			   List<MissTestResult> results= (List<MissTestResult>) vresultMessage.getResultListObj().get(0);
+			   int rowIndex=1;
+			   String status="";
+			   String responseToUser="";
+			   for (MissTestResult result : results) {
+				   row = sheet.createRow(indexRow);
+				    indexRow++;
+				    index=0;
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(rowIndex++);
+				    cell.setCellStyle(cellStyle2);
+				     
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMissCandidate().getMcaUsername());
+				    cell.setCellStyle(cellStyle2); 
+				    
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMissCandidate().getMcaFirstName());
+				    cell.setCellStyle(cellStyle2);
+				    
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMissCandidate().getMcaLastName());
+				    cell.setCellStyle(cellStyle2);
+				    
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMissCandidate().getMcaPosition());
+				    cell.setCellStyle(cellStyle2);
+				    
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMissCandidate().getMcaDepartment());
+				    cell.setCellStyle(cellStyle2); 
+				     
+				   List<String> axisValues = result.getAxisValues();
+				   for (String string : axisValues) {
+					   cell = row.createCell((short)index++);	    
+					    cell.setCellValue(string);
+					    cell.setCellStyle(cellStyle2);
+				   }
+				   
+				    
+				    cell = row.createCell((short)index++);	 
+				    if(result.getMtrStartTime()!=null)
+				    	cell.setCellValue(format3.format(result.getMtrStartTime()));
+				    else
+				    	cell.setCellValue("");
+				    cell.setCellStyle(cellStyle2); 
+				    
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(result.getMtrResultCode());
+				    cell.setCellStyle(cellStyle2); 
+				    
+				    cell = row.createCell((short)index++);	 
+				    status="";
+				    if(result.getMtrStatus()!=null){
+				    	if(result.getMtrStatus().equals("0")){
+				    		status="Not finished";
+				    	}else if(result.getMtrStatus().equals("1")){
+				    		status="Finished";
+				    	}else if(result.getMtrStatus().equals("2")){
+				    		status="Responded";
+				    	}
+				    }  
+				    cell.setCellValue(status);
+				    cell.setCellStyle(cellStyle2); 
+				    
+				    responseToUser=""; 
+				    if(result.getMtrRespondedStatus()!=null){
+				    	if(result.getMtrRespondedStatus().equals("1") && result.getMtrStatus().equals("0")){
+				    		responseToUser="Completed";
+				    	}else if(result.getMtrRespondedStatus().equals("0") && result.getMtrStatus().equals("0")){
+				    		responseToUser="Pending";
+				    	}else if(result.getMtrRespondedStatus().equals("2") ){
+				    		responseToUser="Ignored";
+				    	}
+				    	 if(result.getMtrStatus().equals("0") ){
+				    		 responseToUser="";
+				    	}
+				    } 
+				    cell = row.createCell((short)index++);	    
+				    cell.setCellValue(responseToUser);
+				    cell.setCellStyle(cellStyle2);  
+				     
+			 } 
+        response.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
+        response.setHeader("Content-disposition", "attachment; filename=Report.xls");
+        ServletOutputStream servletOutputStream = null;
+        try
+        {
+            servletOutputStream = response.getOutputStream();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            wb.write(servletOutputStream);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            servletOutputStream.flush();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            servletOutputStream.close();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     /**
 	 * Processes the download for Excel format
 	 */
@@ -639,7 +874,7 @@ public class ResultController
     /**
 	 * Writes the report to the output stream
 	 */
-	private void writeReportToResponseStream(HttpServletResponse response,
+/*	private void writeReportToResponseStream(HttpServletResponse response,
 			ByteArrayOutputStream baos) {
 		
 		logger.debug("Writing report to the stream");
@@ -654,7 +889,7 @@ public class ResultController
 		} catch (Exception e) {
 			logger.error("Unable to write report to the output stream");
 		}
-	}
+	}*/
 
     private static Logger logger = Logger.getRootLogger();
     @Autowired
