@@ -338,7 +338,7 @@ public interface MissExamService {
 
 	public abstract int updateStatusMissTestResult(Long mtrId, String column,
 			String value);
-
+	public abstract int updateStatusMissTestResult(String mtrIds, String column, String value);
 	public abstract List listMissTheme(MissTheme missTheme);
 
 	public abstract MissTheme findMissThemeById(Long maId, Long mtId);
@@ -377,6 +377,9 @@ public interface MissExamService {
 			MissAccountMapping persistentInstance);
 	
 	public abstract int sendSurvey(MissSurveySend misssurveysend);
+	
+	 public abstract VResultMessage exportMissCandidate(MissCandidate missCandidate);
+	    
 	
 //	public abstract ProductReport findProductReport(String mode,String year);
 	public abstract EPTNormReport findEPTNormReport(EPTNormReport eptNormReport);

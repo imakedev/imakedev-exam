@@ -214,6 +214,11 @@ public class MissExamServiceImpl extends PostCommon
         missCandidate.setServiceName("searchMissCandidate");
         return postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
     }
+    public VResultMessage exportMissCandidate(MissCandidate missCandidate)
+    {
+        missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_EXPORT);
+        return postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
+    }
 
     public Long saveMissChoice(MissChoice missChoice)
     {
@@ -1443,6 +1448,18 @@ public class MissExamServiceImpl extends PostCommon
 		missTestResult.setColumn(column);
 		missTestResult.setValue(value);
 		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS);
+        VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
+        missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
+        return missTestResult.getUpdateRecord().intValue();
+	}
+	@Override
+	public int updateStatusMissTestResult(String mtrIds, String column, String value) {
+		// TODO Auto-generated method stub
+		MissTestResult missTestResult =new MissTestResult();
+		missTestResult.setMtrIds(mtrIds);
+		missTestResult.setColumn(column);
+		missTestResult.setValue(value);
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS_LIST);
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getUpdateRecord().intValue();
