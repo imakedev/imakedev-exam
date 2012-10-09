@@ -20,8 +20,8 @@ public class MissTestShowPK implements Serializable {
 	@Column(name="MS_ID")
 	private Long msId;
 
-	@Column(name="ME_ID")
-	private Long meId;
+	/*@Column(name="ME_ID")
+	private Long meId;*/
 
 	@Column(name="MTS_COLUMN")
 	private String mtsColumn;
@@ -55,11 +55,11 @@ public class MissTestShowPK implements Serializable {
 	public void setMsId(Long msId) {
 		this.msId = msId;
 	}
-	public Long getMeId() {
+	/*public Long getMeId() {
 		return this.meId;
 	}
 	public void setMeId(Long meId) {
 		this.meId = meId;
-	}
+	}*/
 
 }

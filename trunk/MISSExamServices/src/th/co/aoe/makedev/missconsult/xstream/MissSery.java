@@ -32,6 +32,8 @@ public class MissSery extends VServiceXML implements Serializable {
 	private String manualFileHotlink;
 	private String templateFile;
 	private String templateFileHotlink;
+	private String evalFile;
+	private String evalFileHotlink;
 	private List<MissExam> missExams;
 	
 	//for map
@@ -175,6 +177,22 @@ public class MissSery extends VServiceXML implements Serializable {
 
 	public void setMissExams(List<MissExam> missExams) {
 		this.missExams = missExams;
+	}
+
+	public String getEvalFile() {
+		return evalFile;
+	}
+
+	public void setEvalFile(String evalFile) {
+		this.evalFile = evalFile;
+	}
+
+	public String getEvalFileHotlink() {
+		return evalFileHotlink;
+	}
+
+	public void setEvalFileHotlink(String evalFileHotlink) {
+		this.evalFileHotlink = evalFileHotlink;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {

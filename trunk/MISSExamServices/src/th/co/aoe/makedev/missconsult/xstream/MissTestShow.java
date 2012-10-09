@@ -19,7 +19,7 @@ public class MissTestShow  extends VServiceXML implements Serializable {
 
 	private Long msId;
 
-	private Long meId;
+	//private Long meId;
 
 
 	private String mtsColumn;
@@ -74,7 +74,7 @@ public class MissTestShow  extends VServiceXML implements Serializable {
 
 
 
-	public Long getMeId() {
+	/*public Long getMeId() {
 		return meId;
 	}
 
@@ -83,7 +83,7 @@ public class MissTestShow  extends VServiceXML implements Serializable {
 	public void setMeId(Long meId) {
 		this.meId = meId;
 	}
-
+*/
 
 
 	public String getMtsColumn() {
