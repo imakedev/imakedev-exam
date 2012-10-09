@@ -1,0 +1,29 @@
+<html>
+<head><title></title>
+        <style>
+            body{
+                padding:0 0 0 0;
+                margin:0 0 0 0;
+            }
+        </style>
+<!-- 	<script language="JavaScript" src="../../FusionCharts/FusionCharts.js"></script> -->
+	<script language="JavaScript" src="../../newVersion/Charts/FusionCharts.js"></script> 
+	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> 
+</head>
+
+<body>
+<div id="chartdiv"><small>Loading chart...</small></div>  
+ <script type="text/javascript">
+   	//Create the chart.
+    
+	  FusionCharts.setCurrentRenderer('javascript'); // for new version
+     var myChart = new FusionCharts("../../newVersion/Charts/Column2D.swf", "myChartId", "600", "300", "0", "1"); //for new version
+     
+  //   var myChart = new FusionCharts("../../FusionCharts/Column2D.swf", "myChartId", "600", "300", "0", "1"); // for old version
+//	myChart.setDataURL("ServerSideSimple.xml");
+     myChart.setDataURL("DevData.xml");
+	
+	myChart.render("chartdiv");
+   </script> 
+</body>
+</html>
