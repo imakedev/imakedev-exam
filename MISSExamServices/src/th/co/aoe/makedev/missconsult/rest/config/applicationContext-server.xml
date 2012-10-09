@@ -7,7 +7,7 @@
 		<property name="server"> 
 			<bean class="org.restlet.ext.spring.SpringServer">
 				<constructor-arg value="http" />
-				<constructor-arg value="3000" />
+				<constructor-arg value="3003" />
 			</bean>
 		</property>
 		<property name="defaultTarget" ref="default" />

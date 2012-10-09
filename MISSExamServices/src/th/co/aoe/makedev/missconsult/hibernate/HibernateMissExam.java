@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.persistence.Column;
-
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -219,6 +217,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 								 MissChoicePK pk =new MissChoicePK();
 								 pk.setMcNo(Long.valueOf(j+1));
 								 pk.setMqId(missQuestion.getMqId());
+								 pk.setMcLang("1");
 								 missChoice.setId(pk);
 								// missChoice.setMissQuestion(missQuestion);
 								 session.save(missChoice);

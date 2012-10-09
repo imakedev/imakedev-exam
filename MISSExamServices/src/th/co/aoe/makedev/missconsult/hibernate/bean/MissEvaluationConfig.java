@@ -23,7 +23,8 @@ public class MissEvaluationConfig implements Serializable {
 
 	@Column(name="COLUMN_IS_SHOW")
 	private String columnIsShow;
-
+	@Column(name="ME_ID")
+	private Long meId;
 	@Column(name="COLUMN_NAME")
 	private String columnName;
 
@@ -62,6 +63,14 @@ public class MissEvaluationConfig implements Serializable {
 
 	public void setMecOrder(Long mecOrder) {
 		this.mecOrder = mecOrder;
+	}
+
+	public Long getMeId() {
+		return meId;
+	}
+
+	public void setMeId(Long meId) {
+		this.meId = meId;
 	}
 
 

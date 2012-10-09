@@ -17,8 +17,8 @@ public class MissEvaluationConfigPK implements Serializable {
 	@Column(name="MS_ID")
 	private Long msId;
 
-	@Column(name="ME_ID")
-	private Long meId;
+	/*@Column(name="ME_ID")
+	private Long meId;*/
 	
 	@Column(name="COLUMN_CODE")
 	private String columnCode;
@@ -34,9 +34,9 @@ public class MissEvaluationConfigPK implements Serializable {
 	public void setMsId(Long msId) {
 		this.msId = msId;
 	}
-	public Long getMeId() {
+	/*public Long getMeId() {
 		return this.meId;
-	}
+	}*/
 	public String getColumnCode() {
 		return columnCode;
 	}
@@ -49,7 +49,7 @@ public class MissEvaluationConfigPK implements Serializable {
 	public void setMecType(String mecType) {
 		this.mecType = mecType;
 	}
-	public void setMeId(Long meId) {
+	/*public void setMeId(Long meId) {
 		this.meId = meId;
-	}
+	}*/
 }

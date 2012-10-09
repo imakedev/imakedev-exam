@@ -216,6 +216,9 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
 		if(transientInstance.getMsatModule()!=null && transientInstance.getMsatModule().equals("evaluation")){
 			setConfig(session,rootPath+transientInstance.getMsatPath(),transientInstance.getMsatRef1(),transientInstance.getMsatRef2());
 		}
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
 			if (session != null) {
 				session = null;
@@ -280,7 +283,7 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
         	 th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfigPK pk =new th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfigPK();
         	// pk.setMcaId(mcaId);
         	 pk.setMsId(msId);
-        	 pk.setMeId(meId);
+        	 //pk.setMeId(meId);
         	 pk.setMecType("2");
          	 missEvaluationConfig.setMecOrder(Long.valueOf(order++));
          	 missEvaluationConfig.setColumnIsShow(sb.toString());	
@@ -297,11 +300,11 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
           }	 
           Query query=session.createQuery("delete MissEvaluationConfig missEvaluationConfig " + 
 					" where  " +
-					" missEvaluationConfig.id.meId=:meId and " +
+				//" missEvaluationConfig.id.meId=:meId and " +
 					" missEvaluationConfig.id.msId=:msId and " +
 					" missEvaluationConfig.id.mecType=:mecType ");
 			//query.setParameter("mcaId", mcaId); 
-			query.setParameter("meId", meId);
+			//query.setParameter("meId", meId);
 			query.setParameter("msId", msId);
 			query.setParameter("mecType", "2");
 			query.executeUpdate();

@@ -20,7 +20,8 @@ public class MissTestShow implements Serializable {
 	@EmbeddedId
 	private MissTestShowPK id;
 
-
+	@Column(name="ME_ID")
+	private Long meId;
 	@Column(name="MTS_VALUE")
 	private String mtsValue;
 
@@ -66,6 +67,14 @@ public class MissTestShow implements Serializable {
 
 	public void setMtsOrder(Long mtsOrder) {
 		this.mtsOrder = mtsOrder;
+	}
+
+	public Long getMeId() {
+		return meId;
+	}
+
+	public void setMeId(Long meId) {
+		this.meId = meId;
 	}
 
 }

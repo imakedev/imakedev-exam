@@ -23,7 +23,8 @@ public class MissTestResultResource extends BaseResource {
 	private MissTestResultService missTestResultService;
 	private com.thoughtworks.xstream.XStream xstream;
 	private static 	final String[] ignore_id=new String[]{"missCandidate"};
-	private static 	final String[] ignore_id_candidate=new String[]{"missAccount","missSery"}; 
+	private static 	final String[] ignore_id_candidate=new String[]{"missAccount","missSery","missCareerMaster","missIndustryMaster"}; 
+	private static 	final String[] ignore_id_account=new String[]{"missTheme","missIndustryMaster"};
 	 
 	 
 	public MissTestResultResource() {
@@ -62,7 +63,7 @@ public class MissTestResultResource extends BaseResource {
 						BeanUtils.copyProperties(xbpsTerm.getMissCandidate(),missCandidate,ignore_id_candidate); 
 						if(xbpsTerm.getMissCandidate().getMissAccount()!=null){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
-							BeanUtils.copyProperties(xbpsTerm.getMissCandidate().getMissAccount(),missAccount); 
+							BeanUtils.copyProperties(xbpsTerm.getMissCandidate().getMissAccount(),missAccount,ignore_id_account); 
 							missCandidate.setMissAccount(missAccount);
 						}
 						bpsTerm.setMissCandidate(missCandidate);
@@ -86,10 +87,11 @@ public class MissTestResultResource extends BaseResource {
 								if(ntcCalendarReturn.getMissCandidate()!=null){
 									mcaId=ntcCalendarReturn.getMissCandidate().getMcaId();
 									th.co.aoe.makedev.missconsult.xstream.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
+									
 									BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate(),missCandidate,ignore_id_candidate); 
 									if(ntcCalendarReturn.getMissCandidate().getMissAccount()!=null){
 										th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-										BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate().getMissAccount(),missAccount); 
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissCandidate().getMissAccount(),missAccount,ignore_id_account); 
 										missCandidate.setMissAccount(missAccount);
 									}
 									xntcCalendarReturn.setMissCandidate(missCandidate);
