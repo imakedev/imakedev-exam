@@ -15,12 +15,12 @@ $(document).ready(function() {
 		   document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArrayValues[0];
 		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
 		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
-		   if(missSeriesMapArrayValues[1]!='noFile'){
+		  /*  if(missSeriesMapArrayValues[1]!='noFile'){
 		   var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+missSeriesMapArrayValues[0]+"/"+missSeriesMapArrayValues[2]+'")';
 			$('#eval_file_attached_'+(i+1)).attr('onclick',path_file);
 			$('#eval_file_attached_'+(i+1)).html(missSeriesMapArrayValues[1]);
 			$('#eval_file_attached_'+(i+1)).attr('style','cursor: pointer;');
-	     }
+	     } */
 	   }
    }
    new AjaxUpload('template_file', {
@@ -49,6 +49,33 @@ $(document).ready(function() {
 			//$('#template_file_attached').attr('style','cursor: pointer;');	
 		}		
 	});
+   new AjaxUpload('eval_file', {
+       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+		onSubmit : function(file , ext){
+           // Allow only images. You should add security check on the server-side. 
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				 this.setData({
+					//'meId': document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1],
+					'msId': document.getElementById("msId").value
+				});					
+			} else {					
+				// extension is not allowed
+				alert('Error: only xls are allowed') ;
+				// cancel upload
+				return false;				
+			}	
+		},
+		onComplete : function(file, response){
+			var obj = jQuery.parseJSON(response);
+			//alert(file+","+obj.hotlink);
+			var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
+			$('#eval_file_attached').attr('onclick',path_file);
+			$('#eval_file_attached').html(file);
+			$('#eval_file_attached').attr('style','cursor: pointer;');
+			//$('#example2 .text').text('Uploaded ' + file);		
+		}		
+	});
+   
    new AjaxUpload('manual_file', {
        action: 'upload/attachManual/${seriesForm.missSery.msId}',
 		onSubmit : function(file , ext){
@@ -78,13 +105,13 @@ $(document).ready(function() {
 	});
    
  //  for(var i=1;i<=5;i++){ 
-	 //  new AjaxUpload('evaluation_file_'+i, {
+	 //  new AjaxUpload('evaluation_file_'+i,  {
+		 /*
 		   new AjaxUpload('evaluation_file_1', {
-	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+	       action: 'upload/evaluation/seriesForm.missSery.msId',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					/* Setting data */
 					 this.setData({
 						'meId': document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1],
 						'msId': document.getElementById("msId").value
@@ -100,7 +127,7 @@ $(document).ready(function() {
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1];
 				//alert(meId);
-				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
+				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_1').attr('onclick',path_file);
 				$('#eval_file_attached_1').html(file);
 				$('#eval_file_attached_1').attr('style','cursor: pointer;');
@@ -108,11 +135,10 @@ $(document).ready(function() {
 		});
    //}
 	   new AjaxUpload('evaluation_file_2', {
-	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+	       action: 'upload/evaluation/seriesForm.missSery.msId',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					/* Setting data */
 					 this.setData({
 						'meId': document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1] ,
 						'msId': document.getElementById("msId").value
@@ -127,18 +153,17 @@ $(document).ready(function() {
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
+				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_2').attr('onclick',path_file);
 				$('#eval_file_attached_2').html(file);
 				$('#eval_file_attached_2').attr('style','cursor: pointer;');
 			}		
 		});
 	   new AjaxUpload('evaluation_file_3', {
-	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+	       action: 'upload/evaluation/seriesForm.missSery.msId',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					/* Setting data */
 					 this.setData({
 						'meId': document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1] ,
 						'msId': document.getElementById("msId").value
@@ -153,18 +178,17 @@ $(document).ready(function() {
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
+				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_3').attr('onclick',path_file);
 				$('#eval_file_attached_3').html(file);
 				$('#eval_file_attached_3').attr('style','cursor: pointer;');
 			}		
 		});
 	   new AjaxUpload('evaluation_file_4', {
-	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+	       action: 'upload/evaluation/seriesForm.missSery.msId',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					/* Setting data */
 					 this.setData({
 						'meId': document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1] ,
 						'msId': document.getElementById("msId").value
@@ -179,18 +203,17 @@ $(document).ready(function() {
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
+				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_4').attr('onclick',path_file);
 				$('#eval_file_attached_4').html(file);
 				$('#eval_file_attached_4').attr('style','cursor: pointer;');
 			}		
 		});
 	   new AjaxUpload('evaluation_file_5', {
-	       action: 'upload/evaluation/${seriesForm.missSery.msId}',
+	       action: 'upload/evaluation/seriesForm.missSery.msId',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					/* Setting data */
 					 this.setData({
 						'meId': document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1] ,
 						'msId': document.getElementById("msId").value
@@ -205,12 +228,13 @@ $(document).ready(function() {
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
 				var meId= document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}_'+meId+"/"+obj.hotlink+'")';
+				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
 				$('#eval_file_attached_5').attr('onclick',path_file);
 				$('#eval_file_attached_5').html(file);
 				$('#eval_file_attached_5').attr('style','cursor: pointer;');
 			}		
 		});
+	   */
 });
 function getFileAttached(path){
 	// alert(path)
@@ -307,6 +331,16 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Evaluation File:</td>
+	    					 <td align="left" width="51%" colspan="3">    			
+	    						<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+	    						<span id="eval_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/evaluation/${seriesForm.missSery.msId}/${seriesForm.missSery.evalFileHotlink}')">
+	    						${seriesForm.missSery.evalFile}</span>
+	    					 </td>
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Manual File:</td>
 	    					 <td align="left" width="51%" colspan="3">    			
 	    						<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
@@ -348,10 +382,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="1_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     					
+	    		</select>&nbsp;   
+	    		  				<%--	
 	    						<a class="btn" id="evaluation_file_1"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
 	    							<span id="eval_file_attached_1" style="cursor: pointer;">
 	    						</span> (Evaluation File)
+	    						 --%>
 	    						</td>
           	</tr>
           	<tr>
@@ -363,10 +399,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="2_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     					
+	    		</select>&nbsp;  
+	    		<%--   					
 	    						<a class="btn" id="evaluation_file_2"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> 
 	    						<span id="eval_file_attached_2" style="cursor: pointer;">
 	    						</span> (Evaluation File)
+	    						--%>
 	    		</td>
           	</tr>
           	<tr>
@@ -378,10 +416,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="3_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     					
+	    		</select>&nbsp;   
+	    		<%--  					
 	    						<a class="btn" id="evaluation_file_3"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
 	    						<span id="eval_file_attached_3" style="cursor: pointer;">
 	    						</span> (Evaluation File)
+	    						 --%>
 	    		</td>
           	</tr>
           	<tr>
@@ -393,10 +433,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="4_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     					
+	    		</select>&nbsp;     	
+	    		<%--				
 	    						<a class="btn" id="evaluation_file_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> 
 	    						<span id="eval_file_attached_4" style="cursor: pointer;">
 	    						</span> (Evaluation File)
+	    						 --%>
 	    		</td>
           	</tr>
           	<tr>
@@ -408,10 +450,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="5_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     					
+	    		</select>&nbsp;
+	    		<%--     					
 	    						<a class="btn" id="evaluation_file_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> 
 	    						<span id="eval_file_attached_5" style="cursor: pointer;">
 	    						</span> (Evaluation File)
+	    						 --%>
 	    		</td>
           	</tr>
           	
