@@ -88,6 +88,7 @@ public class SurveyController
     			  int randomInt = randomGenerator.nextInt(surveyForm.getSurvey_email().length-1);
     			  map.put(randomInt+"", randomInt+"");
     		}
+    	
     		 List<List<String>> userEmail =new ArrayList<List<String>>(map.size());
     		 for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
     			 String key = (String) iterator.next();
