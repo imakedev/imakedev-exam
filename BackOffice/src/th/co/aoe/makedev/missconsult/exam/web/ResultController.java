@@ -56,6 +56,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.MissTestShow;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
@@ -380,6 +381,16 @@ public class ResultController
     	model.addAttribute("resultForm", resultForm);
         return "exam/template/testResponse";
     }
+    @RequestMapping(value={"/fusionchart/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String fusionchart(@PathVariable Long mtrId, Model model)
+    {
+    	/*MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+    	logger.debug("missTestResult=>"+missTestResult);
+    	ResultForm resultForm=new ResultForm();
+    	resultForm.setMissTestResult(missTestResult);
+    	model.addAttribute("resultForm", resultForm);*/
+        return "exam/template/fusionchart";
+    }
 
  /*   @RequestMapping(value={"/summary/{mtrId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String viewAnswer()d
@@ -393,6 +404,7 @@ public class ResultController
     	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
     	Context ctx =null;
 		Connection con = null;
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
     	try{
     	/* MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
     	 MissTestResult report=new MissTestResult(); 
@@ -447,11 +459,16 @@ public class ResultController
 		// JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
 		
 		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
-		 
+		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
-		 
 		 Map p =new HashMap();
+		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
+		 if(missTestShows!=null && missTestShows.size()>0){
+			 for (MissTestShow missTestShow : missTestShows) {
+				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
+			}
+		 }
 		/* p.put("SubDataSource", beanCollectionDataSource);
 		 p.put("name",missTestResult.getMissCandidate().getMcaFirstName()+" "+missTestResult.getMissCandidate().getMcaLastName());
 		 p.put("position",missTestResult.getMissCandidate().getMcaPosition());
@@ -467,7 +484,7 @@ public class ResultController
 		// missExamService.findMissTestById(long1)SeriesAttachSearch
 		/* p.put("lieScore", missTestResult.getLieScore());
 		 p.put("honestScore", missTestResult.getTotalScore());*/
-		 p.put("mtrId",mtrId);
+		 p.put("mtrId",mtrId+"");
 		 //p.put("lieScore", missTestResult.get)
 	 
 		 /*DefaultPieDataset dataset = new DefaultPieDataset();
@@ -511,7 +528,7 @@ public class ResultController
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}               
-			org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			 basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
 			//com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs = (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
 			
 		
@@ -574,9 +591,20 @@ public class ResultController
 			// TODO: handle exception
     		e.printStackTrace();
 		}finally{
+			 
+			/*if (basicDs != null) {
+				try {
+					if(!basicDs.isClosed())
+						basicDs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			}*/
 			if (con != null) {
 				try {
-					con.close();
+					if(!con.isClosed());
+						con.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

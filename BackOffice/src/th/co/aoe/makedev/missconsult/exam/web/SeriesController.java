@@ -131,6 +131,11 @@ public class SeriesController
         	missSery.setTemplateFile(missSeriesAttach.getMsatFileName());
         	missSery.setTemplateFileHotlink(missSeriesAttach.getMsatHotlink());
         }
+        MissSeriesAttach missSeriesEval =missExamService.findMissSeriesAttachSearch("evaluation",Long.parseLong(msId),null,null);
+        if(missSeriesEval!=null){
+        	missSery.setEvalFile(missSeriesEval.getMsatFileName());
+        	missSery.setEvalFileHotlink(missSeriesEval.getMsatHotlink());
+        }
         seriesForm.setMissSery(missSery);
         MissSeriesMap missSeriesMap = new MissSeriesMap();
         missSeriesMap.setMsId(Long.valueOf(Long.parseLong(msId)));

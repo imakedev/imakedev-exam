@@ -192,8 +192,9 @@ public class UploadController {
 					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[1])); //meId
 */					 
 					// missSeriesAttach.setMsatRef1(Long.parseLong(id)); //msId
-					 missSeriesAttach.setMsatRef1(Long.parseLong(request.getParameter("msId")));
-					 missSeriesAttach.setMsatRef2(Long.parseLong(request.getParameter("meId")));
+					/* missSeriesAttach.setMsatRef1(Long.parseLong(request.getParameter("msId")));
+					 missSeriesAttach.setMsatRef2(Long.parseLong(request.getParameter("meId")));*/
+					 missSeriesAttach.setMsatRef1(Long.parseLong(id));
 					 missSeriesAttach.setMsatModule(module);
 					 missSeriesAttach.setMsatHotlink(hotLink);
 					 missSeriesAttach.setMsatPath(pathFolder);
@@ -253,8 +254,9 @@ public class UploadController {
 			 content_type="";
 			 content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
 		}else if(module.equals("evaluation")){
-			String[] ids=id.split("_");
-			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
+		//	String[] ids=id.split("_");
+			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(id),null,hotlink);
+			//MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
 			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
 			 content_type="application/vnd.ms-excel";
 			 content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
