@@ -1,7 +1,14 @@
 package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -28,7 +35,7 @@ public class MissDataChart implements Serializable {
 
 	//bi-directional many-to-one association to MissTestResult
     @ManyToOne
-	@JoinColumn(name="MTR_ID")
+	@JoinColumn(name="MTR_ID",insertable=false,updatable=false)
 	private MissTestResult missTestResult;
 
     public MissDataChart() {

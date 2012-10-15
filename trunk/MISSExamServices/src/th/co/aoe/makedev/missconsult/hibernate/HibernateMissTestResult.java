@@ -82,13 +82,13 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	  return missTestResult;
 	}
 	@Transactional(readOnly=true)
-	public List findMissTestShow( Long mcaId,Long msId,Long meId){
+	public List findMissTestShow( Long mcaId,Long msId){
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missTestShow from MissTestShow missTestShow where missTestShow.id.mcaId=:mcaId" +
-				" and  missTestShow.id.msId=:msId and  missTestShow.id.meId=:meId and  missTestShow.id.mtsType='2' order by missTestShow.mtsOrder asc ");
+				" and  missTestShow.id.msId=:msId  and  missTestShow.id.mtsType='2' order by missTestShow.mtsOrder asc ");
 		query.setParameter("mcaId", mcaId);
 		query.setParameter("msId", msId);
-		query.setParameter("meId", meId);
+		//query.setParameter("meId", meId);
 		return query.list(); 	
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -594,7 +594,9 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
 	          for(int i=start;i<=end;i++){
 	            	  row=sheet.getRow(i);
 	            	  //cell_question= row.getCell(0);
-	            	  cell_question= row.getCell(column-1);
+	            	 /* System.out.println(row);
+	            	  System.out.println(column);*/
+	            	  cell_question= row.getCell(column-2);
 	            	  cell_answer=  row.getCell(column);
 	            	   //System.out.println(""+(format.format(cell_code.getNumericCellValue())));
 	            	  int question_no=(int)cell_question.getNumericCellValue();
@@ -755,15 +757,37 @@ public class HibernateMissTestResult  extends HibernateCommon implements MissTes
             	 //remove pk --> meId
             	// pk.setMeId(meId);
             	
-            	 String[] columns=r.getCell(1).getStringCellValue().split(":");
-             	  CellReference cr2 = new CellReference(columns[1]);
+            	 String[] columns=r.getCell(1).getStringCellValue().split("!");             	 
              	 Sheet sheet1_1 = wb.getSheetAt(Integer.parseInt(columns[0]));
+             	 CellReference cr2 = new CellReference(columns[1]);
+             	 System.out.println("cr2--"+cr2.getRow()+","+cr2.getCol());
              	  row_code= sheet1_1.getRow(cr2.getRow());
+             	 System.out.println("row_code="+row_code);
                   cell_code  =row_code.getCell(cr2.getCol());
                   
                   pk.setMtsColumn(r.getCell(0).getStringCellValue());                 
                   pk.setMtsType("2");
-                  missTestShow.setMtsValue(format.format(cell_code.getNumericCellValue()));
+                  String value="";
+                  System.out.println(r.getCell(0).getStringCellValue()+",cell_code.getCellType()==>"+cell_code.getCellType());
+                  if(cell_code.getCellType()==Cell.CELL_TYPE_NUMERIC){
+                	  value= format.format(cell_code.getNumericCellValue());
+                  }else if(cell_code.getCellType()==Cell.CELL_TYPE_STRING){
+                	  value=cell_code.getStringCellValue();
+                  }else if(cell_code.getCellType()==Cell.CELL_TYPE_FORMULA){
+                	  FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+                	  int type=evaluator.evaluateInCell(cell_code).getCellType();
+                	  System.out.println(" inner="+r.getCell(0).getStringCellValue()+",cell_code.getCellType()==>"+type);
+                	  if(type==Cell.CELL_TYPE_NUMERIC){
+                		  value=  format.format(cell_code.getNumericCellValue());
+                      }else if(type==Cell.CELL_TYPE_STRING){
+                    	  value=cell_code.getStringCellValue();
+                      }else if(type==Cell.CELL_TYPE_ERROR){
+                    	  System.out.println("ERROR="+cell_code.getErrorCellValue());
+                    	 // value=cell_code.getErrorCellValue();
+                      }
+                	//  code=cell_code.getNumericCellValue()+"";
+                  }
+                  missTestShow.setMtsValue(value);
                   missTestShow.setId(pk);
                   missTestShow.setMtsOrder(Long.valueOf(index++));
                   missTestShow.setColumnIsShow(sb.toString());
