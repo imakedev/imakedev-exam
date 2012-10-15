@@ -54,9 +54,9 @@
 			p:password="${jdbc.password}"/>
 			 --> 
 	<!-- 
-	   -->
+	    -->
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
-        
+       
 	<!-- JNDI DataSource for JEE environments -->
        <!--
          

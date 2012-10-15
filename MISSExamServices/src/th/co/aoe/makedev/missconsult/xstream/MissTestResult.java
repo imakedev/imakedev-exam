@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -41,6 +42,8 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private int totalScore;
 	private String column;
 	private String value;
+	//private Map<String,String> paramMap;
+	private List<MissTestShow> missTestShows;
 	public String getColumn() {
 		return column;
 	}
@@ -231,6 +234,15 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 		this.mtrIgnored = mtrIgnored;
 	}
 
+	public List<MissTestShow> getMissTestShows() {
+		return missTestShows;
+	}
+
+	public void setMissTestShows(List<MissTestShow> missTestShows) {
+		this.missTestShows = missTestShows;
+	}
+
+	 
 	 
 	
 }

@@ -82,8 +82,8 @@ public class MissTestResultResource extends BaseResource {
 								th.co.aoe.makedev.missconsult.xstream.MissTestResult xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTestResult();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
 								Long mcaId=null;
-								/*Long msId=ntcCalendarReturn.getMsId();
-								Long meId=ntcCalendarReturn.getMeId();*/
+								Long msId=ntcCalendarReturn.getMsId();
+								/*Long meId=ntcCalendarReturn.getMeId();*/
 								if(ntcCalendarReturn.getMissCandidate()!=null){
 									mcaId=ntcCalendarReturn.getMissCandidate().getMcaId();
 									th.co.aoe.makedev.missconsult.xstream.MissCandidate missCandidate = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
@@ -101,27 +101,21 @@ public class MissTestResultResource extends BaseResource {
 							    int a_Score=0;
 							    int c_Score=0;
 							    int totalScore=0;
-								if(mcaId!=null && msId!=null && meId!=null){
-									List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=missTestResultService.findMissTestShow(mcaId, msId, meId);
+							    */
+								if(mcaId!=null && msId!=null ){
+									List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=missTestResultService.findMissTestShow(mcaId, msId );
 									if(missTestShows!=null && missTestShows.size()>0){
+										List<th.co.aoe.makedev.missconsult.xstream.MissTestShow> xmissTestShows =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestShow>(missTestShows.size());
 										for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShows) {
-											String mtsValue="";
-											if(missTestShow.getMtsValue()!=null && missTestShow.getMtsValue().trim().length()>0){
-												mtsValue=missTestShow.getMtsValue();
-											}
-											if("A Score".equals(missTestShow.getId().getMtsColumn())){
-												a_Score=Integer.parseInt(mtsValue);
-											}else if("C Score".equals(missTestShow.getId().getMtsColumn())){
-												c_Score=Integer.parseInt(mtsValue);
-											}else if("Lie Score".equals(missTestShow.getId().getMtsColumn())){
-												lieScore=Integer.parseInt(mtsValue);
-											}
+											th.co.aoe.makedev.missconsult.xstream.MissTestShow xmissTestShow =new 
+													th.co.aoe.makedev.missconsult.xstream.MissTestShow();
+											xmissTestShow.setMtsColumn(missTestShow.getId().getMtsColumn());
+											xmissTestShow.setMtsValue(missTestShow.getMtsValue());
+											xmissTestShows.add(xmissTestShow);
 										}
-										totalScore=a_Score-c_Score;
-										xntcCalendarReturn.setTotalScore(totalScore);
-										xntcCalendarReturn.setLieScore(lieScore);
+										xntcCalendarReturn.setMissTestShows(xmissTestShows);
 									}
-								}*/
+								}
 								
 								xntcCalendarReturn.setPagging(null);
 								xntcCalendars.add(xntcCalendarReturn);

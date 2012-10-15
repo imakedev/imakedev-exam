@@ -12,7 +12,7 @@ public interface MissTestResultService {
 		public int updateMissTestResult(MissTestResult transientInstance) throws DataAccessException ;
 		public int deleteMissTestResult(MissTestResult persistentInstance) throws DataAccessException ;	
 		public MissTestResult findMissTestResultById(Long mtrId)throws DataAccessException  ;
-		public List findMissTestShow( Long mcaId,Long msId,Long meId)throws DataAccessException;
+		public List findMissTestShow( Long mcaId,Long msId)throws DataAccessException;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissTestResult(MissTestResult persistentInstance,String mtrIds,Pagging pagging)throws DataAccessException  ;
 		public int processMissTestResult(MissTestResult persistentInstance,String userid,String rootPath)throws DataAccessException  ; 
