@@ -51,8 +51,8 @@ public class RenderImageServlet extends HttpServlet {
 		 String[] mtrIds= request.getParameter("mtrId").split("_"); 
 		 String mtrId=mtrIds[0];
 		 String mdc_key=mtrIds[1];//request.getParameter("key");
-		/* mtrId="20";
-		 mdc_key="chart1";*/
+		  mtrId="20";
+		 mdc_key="chart1"; 
 		 String swfName="";
 		 String width=mtrIds[2];
 		 String height=mtrIds[3];
@@ -72,15 +72,15 @@ public class RenderImageServlet extends HttpServlet {
 			}*/               
 			
 			try {
-				System.out.println(this.getClass());
-				System.out.println("ds=="+ds);
+				//System.out.println(this.getClass());
+				//System.out.println("ds=="+ds);
 				basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
 				con = basicDs.getConnection();//("oracle", "password");//Connection();
 				//con = ds.getConnection();//("oracle", "password");//Connection();
-				System.out.println("basicDs="+basicDs);
-				System.out.println("con="+con);
+				//System.out.println("basicDs="+basicDs);
+				//System.out.println("con="+con);
 				String sql="SELECT * FROM "+SCHEMA+".MISS_DATA_CHART where mtr_id="+mtrId+" and mdc_key='"+mdc_key+"'";
-				System.out.println("sql\n"+sql);
+				//System.out.println("sql\n"+sql);
 				 pst = con.prepareStatement(sql);
 				 result = pst.executeQuery();
 					if(result!=null)					
@@ -108,27 +108,27 @@ public class RenderImageServlet extends HttpServlet {
 				if (con != null) {
 					try {
 						if(result!=null){
-							System.out.println("result is Closed="+result.isClosed());
+							//System.out.println("result is Closed="+result.isClosed());
 							if(!result.isClosed()){
 								result.close();
-								System.out.println("result is Closed affter close="+result.isClosed());
+								//System.out.println("result is Closed affter close="+result.isClosed());
 								result=null;
 							}
 							
 						}
 						if (pst != null) {
-							System.out.println("pst is Closed="+pst.isClosed());
+							//System.out.println("pst is Closed="+pst.isClosed());
 							if(!pst.isClosed()){
 								pst.close();			
-								System.out.println("pst is Closed affter close="+pst.isClosed());
+								//System.out.println("pst is Closed affter close="+pst.isClosed());
 								pst = null;
 							} 
 							
 						}
-						System.out.println("connection is Closed="+con.isClosed());
+						//System.out.println("connection is Closed="+con.isClosed());
 						if(!con.isClosed());
 							con.close();
-						System.out.println("connection is Closed affter close="+con.isClosed());
+						//System.out.println("connection is Closed affter close="+con.isClosed());
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -203,7 +203,12 @@ public class RenderImageServlet extends HttpServlet {
 				"</chart>";*/
 			/*<chart  alternateVGridColor="AFD8F8" baseFontColor="114B78" toolTipBorderColor="114B78" toolTipBgColor="E7EFF6" useRoundEdges="1" showBorder="0" bgColor="FFFFFF,FFFFFF"><set label="Orange" value="23"/><set label="Apple" value="12"/><set label="Banana" value="17"/><set label="Mango" value="14"/><set label="Litchi" value="12"/></chart>*/
 
- 
+			//<chart  alternateVGridColor="AFD8F8" baseFontColor="114B78" toolTipBorderColor="114B78" toolTipBgColor="E7EFF6" useRoundEdges="1" showBorder="0" bgColor="FFFFFF,FFFFFF"><set label="Imagineative" value="9" color="#54E8FF"/><set label="Factual" value="10"  color="#54E8FF"/><set label="Perceiving" value="9" color="#BBFF00"/><set label="Judging" value="13" color="#BBFF00"/><set label="Assertive" value="18" color="#D4D300"/><set label="Passive" value="7" color="#D4D300"/><set label="Introvert" value="5" color="#4891A2"/><set label="Extravert" value="15" color="#4891A2"/></chart>
+			
+			  
+			
+			
+			
 		 
 			session.setAttribute("XMLDATA", xmlData);
 	        session.setAttribute("swfName", swfName);

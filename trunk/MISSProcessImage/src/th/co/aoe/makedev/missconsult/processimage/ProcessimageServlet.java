@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,12 +32,13 @@ public class ProcessimageServlet extends HttpServlet {
 	 */
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("doProcess");
+		//System.out.println("doProcess");
 		 String mtrId= request.getParameter("mtrId"); 
 		 String mdc_key=request.getParameter("key");
 		 String width=request.getParameter("w");
 		 String height=request.getParameter("h");
-		 
+		 String page=request.getParameter("page");
+		 String type=request.getParameter("type");
 		/* mtrId="20";
 		 mdc_key="chart1";*/
 		 try {
@@ -51,14 +51,30 @@ public class ProcessimageServlet extends HttpServlet {
 	            * http://localhost:8080/MISSProcessImage/render?mtrId=20&key=chart1
 	                               + " " + cmd[2]);*/
 	         //String cmd="/usr/local/data/WebServer/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --format jpg --use-xserver http://localhost:8080/MISSProcessImage/render /tmp/aoe2.jpg"; String width=request.getParameter("w");			 String height=request.getParameter("h");
-	        String cmd="/usr/local/data/WebServer/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
-	       //  String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg http://203.150.20.37/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+"  /tmp/"+fileGen+".jpg";
-	         System.out.println("cmd\n"+cmd);
+	       
+			  //String cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
+	         String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg http://203.150.20.37/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+"  /tmp/"+fileGen+".jpg";
+			  Process proc=null;
+			  if(page!=null && page.length()>0){
+				  // 1074
+				  String speed="1000";
+				  if(page.equals("workwheel_1"))
+						  speed="3000";
+				 // cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
+				  /*proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay",speed,
+						  "--quality","75","--crop-w",width,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/eptplus?page="+page+"&type="+type,"/tmp/"+fileGen+".jpg"}); */
+				  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,
+						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/eptplus?page="+page+"&type="+type,"/tmp/"+fileGen+".jpg"});
+			        
+			  }else{
+				    proc = rt.exec(cmd);
+			  }
+			  System.out.println("cmd\n"+cmd);
 			// String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 1000 --quality 75 --format jpg  http://203.150.20.37:8080/TestFusion/ExportChartSamples/JavaScriptExport/ServerSideSimple.html /tmp/aoe2.jpg";
 	        // ProcessBuilder pb = new ProcessBuilder(cmd);
 	        // Map<String, String> env = pb.environment();
 	        // pb.directory(new File("/usr/local/data/WebServer/apache2/htdocs/fcimg/bin"));
-	         Process proc = rt.exec(cmd);
+	        
 	        // Process proc =	pb.start(); 
 	            // any error message?
 	           /* StreamGobbler errorGobbler = new 
@@ -76,13 +92,13 @@ public class ProcessimageServlet extends HttpServlet {
 	            try {
 					int exitVal = proc.waitFor();
 					
-					System.out.println("exitVal="+exitVal);
+					//System.out.println("exitVal="+exitVal);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			long end =System.currentTimeMillis();
-			System.out.println(end-start);
+			//System.out.println(end-start);
 			File file = new File("/tmp/"+fileGen+".jpg");
 
 			boolean fileExists = file.exists();
