@@ -274,19 +274,18 @@ public class MissExamController {
 		 model.addAttribute("answered", answered);
         return "exam/template/exam";
 	 }else{
-		 MissTestResult missTestResult = new MissTestResult();
-		 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
-		 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+		
 		// missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
-		 missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+		/* missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
 		 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
 		 missTestResult.setMtrEndTime(timeStampEndTime);
 		 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
 		 missTestResult.setMtrRespondedStatus("0");
 		 missTestResult.setRootPath(bundle.getString("evaluationPath"));
-		 missExamService.processMissTestResult(missTestResult);
-		
-		 int ref=missExamService.saveOrUpdateMissTestResult(missTestResult);
+		 missExamService.processMissTestResult(missTestResult);*/
+		 
+		// old version
+		/* int ref=missExamService.saveOrUpdateMissTestResult(missTestResult);
 		 
 		 // save To do List
 		 MissTodo missTodo =new MissTodo();
@@ -295,17 +294,43 @@ public class MissExamController {
 		 missTodo.setMtodoType("1"); // 1 = send to approver
 		 
 		 missTodo.setMtodoTask(missExamForm.getMissCandidate().getMissSery().getMsSeriesName()+" ("+missExamForm.getMissCandidate().getMcaFirstName() +" "+missExamForm.getMissCandidate().getMcaLastName()+")"); // sery (username)
-		 missExamService.saveOrUpdateMissTodo(missTodo);
+		 missExamService.saveOrUpdateMissTodo(missTodo);*/
 		 //0 
 		 if(missExamForm.getExamIndex()<(missExamForm.getMissCandidate().getMissSery().getMissExams().size()-1)){
-			 logger.debug("before "+missExamForm.getExamIndex());
+			 //System.out.println(" into loop 1");
+			// logger.debug("before "+missExamForm.getExamIndex());
 			 missExamForm.setExamIndex(missExamForm.getExamIndex()+1);
 			 missExamForm.setQuestionIndex(0);
-			 logger.debug("affter "+missExamForm.getExamIndex());
+			// logger.debug("affter "+missExamForm.getExamIndex());
 			 model.addAttribute("missExamForm",missExamForm);
 			 return "redirect:/exam/info";
-		 }else 
+		 }else {
+			 //System.out.println(" into loop 2");
+			 // new version
+			 MissTestResult missTestResult = new MissTestResult();
+			 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
+			 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+			 
+			 missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+			 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
+			 missTestResult.setMtrEndTime(timeStampEndTime);
+			 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
+			 missTestResult.setMtrRespondedStatus("0");
+			 missTestResult.setRootPath(bundle.getString("evaluationPath"));
+			 missExamService.processMissTestResult(missTestResult);
+			// MissTestResult sssd	
+			 int ref=missExamService.saveOrUpdateMissTestResult(missTestResult);
+			 
+			 // save To do List
+			 MissTodo missTodo =new MissTodo();
+			 missTodo.setMissAccount(missExamForm.getMissCandidate().getMissAccount());
+			 missTodo.setMtodoRef(Long.valueOf(ref));
+			 missTodo.setMtodoType("1"); // 1 = send to approver
+			 
+			 missTodo.setMtodoTask(missExamForm.getMissCandidate().getMissSery().getMsSeriesName()+" ("+missExamForm.getMissCandidate().getMcaFirstName() +" "+missExamForm.getMissCandidate().getMcaLastName()+")"); // sery (username)
+			 missExamService.saveOrUpdateMissTodo(missTodo);
 			 return "exam/examMessage";
+		 }
 	 }
     }
 	@RequestMapping(value="/exam", method = RequestMethod.POST)
