@@ -74,6 +74,7 @@ public class RenderImageServlet extends HttpServlet {
 			try {
 				//System.out.println(this.getClass());
 				//System.out.println("ds=="+ds);
+			 
 				basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
 				con = basicDs.getConnection();//("oracle", "password");//Connection();
 				//con = ds.getConnection();//("oracle", "password");//Connection();
