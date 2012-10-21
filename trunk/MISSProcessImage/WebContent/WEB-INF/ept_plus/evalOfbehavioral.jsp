@@ -42,8 +42,17 @@
 				<td style="text-align: center;">10</td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"><img src="<c:url value='/images/img-5.png'/>"/></td>
-				<td style="text-align: center;"><img src="<c:url value='/images/img-4.png'/>"/></td>
+			 <c:forEach var="img" items="${evalBehavioral.imges}">
+			 	<td style="text-align: center;"><img src="<c:url value='/images/${img}.png'/>"/></td>
+			 </c:forEach>
+			
+				<%-- <td style="text-align: center;">
+				<img src="<c:url value='/images/img-5.png'/>"/>
+				
+				</td>
+				<td style="text-align: center;">
+				<img src="<c:url value='/images/img-4.png'/>"/>
+				</td>
 				<td style="text-align: center;"><img src="<c:url value='/images/img-3.png'/>"/></td>
 				<td style="text-align: center;"><img src="<c:url value='/images/img-2.png'/>"/></td>
 				<td style="text-align: center;"><img src="<c:url value='/images/img-1.png'/>"/></td>
@@ -52,7 +61,7 @@
 				<td style="text-align: center;"><img src="<c:url value='/images/img-2.png'/>"/></td>
 				<td style="text-align: center;"><img src="<c:url value='/images/img-3.png'/>"/></td>
 				<td style="text-align: center;"><img src="<c:url value='/images/img-4.png'/>"/></td>
-				<td style="text-align: center;"><img src="<c:url value='/images/img-5.png'/>"/></td>
+				<td style="text-align: center;"><img src="<c:url value='/images/img-5.png'/>"/></td> --%>
 			</tr>
 		</table>
 		</td>
