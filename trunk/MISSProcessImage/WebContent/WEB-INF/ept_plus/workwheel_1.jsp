@@ -100,7 +100,11 @@ the Work Wheel Fit.
 <table style="width: 1070px;border-spacing:0px;border-color:#DBDBDB;" border="1">
 	<tr style="background-color: #DBDBDB;">
 		<td  width="20%"  align="center">Type of Work</td>
-		<td   width="10%" align="center">Promoting</td>
+		 <c:forEach var="message" items="${messages}">
+			<td   width="10%" align="center">${message.mepwwmType}</td>
+		</c:forEach>
+	 
+		<%-- <td   width="10%" align="center">Promoting</td> 
 		<td   width="10%" align="center">Organizing</td>
 		<td    width="10%" align="center">Producing</td>
 		<td    width="10%" align="center">Inspecting
@@ -109,19 +113,23 @@ the Work Wheel Fit.
 		<td    width="10%" align="center">Advising</td>
 		<td    width="10%" align="center">Innovating
 </td>
+--%>
 	</tr>
 	
 	<tr style="background-color: #FFFFFF;">
 		<td align="center">Score</td>
-		<td align="center">?</td>
+		 <c:forEach var="message" items="${messages}">
+			<td align="center">${message.mepwwmValue}</td>
+		</c:forEach>
+		<!-- <td align="center">?</td>
 		<td align="center">?</td>
 		<td align="center">?</td>
 		<td align="center">?
-</td>
+</td> 
 <td  align="center">?</td>
 		<td align="center">?</td>
 		<td  align="center">?
-</td>
+</td>-->
 	</tr>
 </table>
 <br/>
