@@ -9,6 +9,7 @@ public class MissEptEvalBehavioralValue  implements Serializable {
 	private  int meebvOrder;
 	private  String message1;
 	private  String message2;
+	private String[] imges;
 	public String getMeebvKey() {
 		return meebvKey;
 	}
@@ -38,6 +39,12 @@ public class MissEptEvalBehavioralValue  implements Serializable {
 	}
 	public void setMessage2(String message2) {
 		this.message2 = message2;
+	}
+	public String[] getImges() {
+		return imges;
+	}
+	public void setImges(String[] imges) {
+		this.imges = imges;
 	}
 
 }
