@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralGroup;
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralValue;
+import th.co.aoe.makedev.missconsult.domain.MissEptPlusWorkWheelMessage;
 
 /**
  * Servlet implementation class EPTPlusServlet
@@ -50,6 +51,9 @@ public class EPTPlusServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//http://localhost:8080/MISSProcessImage/eptplus?page=workwheel_1&type=ept_plus&mtrId=61&lang=1
+		//http://localhost:8080/MISSProcessImage/eptplus?page=analysis_1&type=ept_plus&mtrId=61&lang=1
+		//http://localhost:8080/MISSProcessImage/eptplus?page=evalOfbehavioral_1&type=ept_plus&mtrId=61&lang=1
 		String page=request.getParameter("page");
 		String type=request.getParameter("type");
 		String mtrId=request.getParameter("mtrId");
@@ -57,9 +61,13 @@ public class EPTPlusServlet extends HttpServlet {
 		 HttpSession session = request.getSession(true);
 		if(page.indexOf("evalOfbehavioral")!=-1){
 			List<MissEptEvalBehavioralGroup> groups= getMissEptEvalBehavioralGroups(mtrId,page,lang);
-			System.out.println("groups size="+groups.size());
+			//System.out.println("groups size="+groups.size());
 			session.setAttribute("groups", groups);
 			page="evalOfbehavioral";
+		}else if(page.indexOf("workwheel")!=-1){
+			 List<MissEptPlusWorkWheelMessage> messages= getMissEptPlusWorkWheelMessages(mtrId,page,lang);
+			session.setAttribute("messages", messages);
+			
 		}
 		// RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ept_plus/"+page+".jsp");
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/"+type+"/"+page+".jsp");
@@ -87,6 +95,9 @@ public class EPTPlusServlet extends HttpServlet {
 		 ResultSet result= null;
 		 PreparedStatement pst_inner = null;
 		 ResultSet result_inner= null;
+		 int [] values=new int[]{-10,-8,-6,-4,-2,0,1,3,5,7,9};
+		 String [] valuesString=new String[]{"img-5","img-4","img-3","img-2","img-1","img0","img-1","img-2","img-3","img-4","img-5"};
+		
 		 List<MissEptEvalBehavioralGroup> missEptEvalBehavioralGroups =new ArrayList<MissEptEvalBehavioralGroup>();
 		try {
 			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
@@ -97,6 +108,7 @@ public class EPTPlusServlet extends HttpServlet {
 			 result = pst.executeQuery();
 				
 				StringBuffer sbGroupId=new StringBuffer("");
+				int meebvValue=0;
 				if(result!=null)					
 						while (result.next()) { 
 							MissEptEvalBehavioralGroup group=new MissEptEvalBehavioralGroup();
@@ -117,7 +129,26 @@ public class EPTPlusServlet extends HttpServlet {
 								 while (result_inner.next()) { 
 									 MissEptEvalBehavioralValue value=new MissEptEvalBehavioralValue();
 									 value.setMeebvKey(result_inner.getString("MEEB_KEY"));
-									 value.setMeebvValue(result_inner.getInt("MEEBV_VALUE"));
+									 // int [] values=new int[]{-10,-8,-6,-4,-2,0,1,3,5,7,9};
+									 // String [] valuesString=new String[]{"img-5","img-4","img-3","img-2","img-1","img0","img-1","img-2","img-3","img-4","img-5"};
+									 meebvValue=result_inner.getInt("MEEBV_VALUE");
+									 String [] imges=new String[values.length];
+									 for (int i = 0; i < values.length; i++) {
+										if(i==5){
+											if(meebvValue==0)
+												imges[i]=valuesString[i]+"-selected";
+											else
+												imges[i]=valuesString[i]+"";
+										}else{
+											 if(meebvValue==values[i] || meebvValue==(values[i]+1)){
+												imges[i]=valuesString[i]+"-selected";
+											}else
+												imges[i]=valuesString[i]+"";
+										}  
+									}
+				
+									 value.setImges(imges);
+									 value.setMeebvValue(meebvValue);
 									
 									 value.setMessage1(result_inner.getString("MEEB_MESSAGE1"));
 									 value.setMessage2(result_inner.getString("MEEB_MESSAGE2"));
@@ -174,5 +205,65 @@ public class EPTPlusServlet extends HttpServlet {
 			} 
 		}
 	return missEptEvalBehavioralGroups;
+	}
+	private List<MissEptPlusWorkWheelMessage> getMissEptPlusWorkWheelMessages(String mtrId,String page,String lang){
+		Connection con = null; 
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
+		 PreparedStatement pst = null;
+		 ResultSet result= null;
+		 List<MissEptPlusWorkWheelMessage> missEptPlusWorkWheelMessages =new ArrayList<MissEptPlusWorkWheelMessage>();
+		try {
+			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			con = basicDs.getConnection();//("oracle", "password");//Connection();
+			StringBuffer sqlSB=new StringBuffer("SELECT * FROM "+SCHEMA+".MISS_EPT_PLUS_WORK_WHEEL_MESSAGE message where message.mtr_id="+mtrId+" and message.mepwwm_lang='"+lang+"' " +
+					" order by message.mepwwm_value desc  ");
+			
+			pst = con.prepareStatement(sqlSB.toString());
+			 result = pst.executeQuery();
+				
+				StringBuffer sbGroupId=new StringBuffer("");
+				int meebvValue=0;
+				if(result!=null)					
+						while (result.next()) { 
+							MissEptPlusWorkWheelMessage message=new MissEptPlusWorkWheelMessage();
+							message.setMepwwmCharecter1(result.getString("MEPWWM_CHARECTER1"));
+							message.setMepwwmCharecter2(result.getString("MEPWWM_CHARECTER2"));
+							message.setMepwwmPercent(result.getString("MEPWWM_PERCENT"));
+							message.setMepwwmRole(result.getString("MEPWWM_ROLE"));
+							message.setMepwwmSample(result.getString("MEPWWM_SAMPLE"));
+							message.setMepwwmType(result.getString("MEPWWM_TYPE"));
+							message.setMepwwmValue(result.getBigDecimal("MEPWWM_VALUE"));
+							 
+							missEptPlusWorkWheelMessages.add(message);
+						}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{ 
+			if (con != null) {
+				try {
+					if(result!=null){
+						if(!result.isClosed()){
+							result.close();
+							result=null;
+						}
+					}
+					if (pst != null) {
+						if(!pst.isClosed()){
+							pst.close();			 
+							pst = null;
+						} 
+						
+					} 
+					if(!con.isClosed());
+						con.close(); 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			} 
+		}
+	return missEptPlusWorkWheelMessages;
 	}
 }
