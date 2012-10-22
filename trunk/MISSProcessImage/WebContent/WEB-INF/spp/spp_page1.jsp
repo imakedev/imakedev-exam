@@ -1,4 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -91,7 +94,7 @@ div.body{
     <td id="td_right">Date of Test:</td><td id="td_left"><span class="cd_detail">20/09/2553</span></td>
     </tr>
     <tr>
-    <td id="td_right">Name/ Last Name:</td><td id="td_left"><span class="cd_detail">ธรรศ  พงศาสนองกุล</span></td>
+    <td id="td_right">Name/ Last Name:</td><td id="td_left"><span class="cd_detail">à¸à¸£à¸£à¸¨  à¸à¸à¸¨à¸²à¸ªà¸à¸­à¸à¸à¸¸à¸¥</span></td>
     </tr>
     <tr>
     <td id="td_right">Age:</td><td id="td_left"><span class="cd_detail">37</span></td>

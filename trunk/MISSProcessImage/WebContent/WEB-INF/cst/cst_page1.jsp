@@ -1,4 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -63,7 +66,7 @@ p{
 </table></div>
 <div class="body">
 <img src="images/cst01.png"  />
-<p style="font-size:40px; font-family:AngsanaUPC; font-weight:bold; color:#666666;">&nbsp;แบบประเมิณทัศนคติด้านงานบริการ</p>
+<p style="font-size:40px; font-family:AngsanaUPC; font-weight:bold; color:#666666;">&nbsp;à¹à¸à¸à¸à¸£à¸°à¹à¸¡à¸´à¸à¸à¸±à¸¨à¸à¸à¸à¸´à¸à¹à¸²à¸à¸à¸²à¸à¸à¸£à¸´à¸à¸²à¸£</p>
 <p style="font-size:36px; font-family:AngsanaUPC; font-weight:bold; color:#990000;">&nbsp;SERVICE ATTITUDE TEST REPORT</p>
 <p><img src="images/cst01.png"  />
   <br /><br />
@@ -80,19 +83,19 @@ p{
     <td width="231">Section head</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">อีเมลล์ / E-mail :</td>
+    <td style="font-weight:bold;">à¸­à¸µà¹à¸¡à¸¥à¸¥à¹ / E-mail :</td>
     <td>Prataporn_a@acer.co.th</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">เบอร์โทรศัพท์ / Tel :</td>
+    <td style="font-weight:bold;">à¹à¸à¸­à¸£à¹à¹à¸à¸£à¸¨à¸±à¸à¸à¹ / Tel :</td>
     <td>0814554406</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">อายุ / Age :</td>
+    <td style="font-weight:bold;">à¸­à¸²à¸¢à¸¸ / Age :</td>
     <td>30</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">วันที่ทดสอบ / Date Test :</td>
+    <td style="font-weight:bold;">à¸§à¸±à¸à¸à¸µà¹à¸à¸à¸ªà¸­à¸ / Date Test :</td>
     <td>02/03/2554</td>
   </tr>
 </table>
