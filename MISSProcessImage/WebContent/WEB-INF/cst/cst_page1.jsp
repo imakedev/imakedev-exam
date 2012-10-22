@@ -66,14 +66,14 @@ p{
 </table></div>
 <div class="body">
 <img src="images/cst01.png"  />
-<p style="font-size:40px; font-family:AngsanaUPC; font-weight:bold; color:#666666;">&nbsp;à¹à¸à¸à¸à¸£à¸°à¹à¸¡à¸´à¸à¸à¸±à¸¨à¸à¸à¸à¸´à¸à¹à¸²à¸à¸à¸²à¸à¸à¸£à¸´à¸à¸²à¸£</p>
+<p style="font-size:40px; font-family:AngsanaUPC; font-weight:bold; color:#666666;">&nbsp;แบบประเมิณทัศนคติด้านงานบริการ</p>
 <p style="font-size:36px; font-family:AngsanaUPC; font-weight:bold; color:#990000;">&nbsp;SERVICE ATTITUDE TEST REPORT</p>
 <p><img src="images/cst01.png"  />
   <br /><br />
 </p>
 <p>&nbsp;</p>
 <p style="font-size:36px; font-family:AngsanaUPC; font-weight:bold; color:#000;">Report prepared for:&nbsp;<span class="rp_name">Edward</span></p>
-<p><img src="images/cst_banner02.png"  /></p>
+<p><img src="<c:url value='/images/cst/cst_banner02.png'/>"/></p>
 <p>&nbsp; </p>
 <p style="font-size:34px; font-family:AngsanaUPC; font-weight:bold; color:#000;">Report prepared for:</p>
 <p style="font-size:30px; font-family:AngsanaUPC; font-weight:bold; color:#0000FF;">Prataporn Anancharoenyos</p>
@@ -83,19 +83,19 @@ p{
     <td width="231">Section head</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">à¸­à¸µà¹à¸¡à¸¥à¸¥à¹ / E-mail :</td>
+    <td style="font-weight:bold;">อีเมลล์ / E-mail :</td>
     <td>Prataporn_a@acer.co.th</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">à¹à¸à¸­à¸£à¹à¹à¸à¸£à¸¨à¸±à¸à¸à¹ / Tel :</td>
+    <td style="font-weight:bold;">เบอร์โทรศัพท์ / Tel :</td>
     <td>0814554406</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">à¸­à¸²à¸¢à¸¸ / Age :</td>
+    <td style="font-weight:bold;">อายุ / Age :</td>
     <td>30</td>
   </tr>
   <tr>
-    <td style="font-weight:bold;">à¸§à¸±à¸à¸à¸µà¹à¸à¸à¸ªà¸­à¸ / Date Test :</td>
+    <td style="font-weight:bold;">วันที่ทดสอบ / Date Test :</td>
     <td>02/03/2554</td>
   </tr>
 </table>

@@ -14,59 +14,39 @@ margin:2 2 2 2;
 }
 
 div.header{
-	width:900px;
-	margin-left:auto;
+	margin-left:20px;
+	width:980px;
+	height:30px;
 	margin-right:auto;
 }
 div.body{
-	width:900px;
-	margin-left:auto;
+	margin-left:20px;
+	width:980px;
 	margin-right:auto;
 	font-family: Tahoma, Geneva, sans-serif;
 }
-.body #rpf p#rpf_title{
-	font-family: Tahoma, Geneva, sans-serif;
-	font-weight: bold;
-	color: #900;
-	font-size: 14px;
+p{
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:14px;
 }
-.body #rpf #rpf_name {
-	font-family: Tahoma, Geneva, sans-serif;
-	font-weight: bold;
-	font-size: 24px;
-	color: #00F;
-}
-.body #Candidate_Detail #cd_title {
-	font-family: Tahoma, Geneva, sans-serif;
-	font-weight: bold;
-	color: #900;
-	font-size: 14px;
-}
-.body #Candidate_Detail{
-	font-family: Tahoma, Geneva, sans-serif;
-	color: #000;
-	font-size: 14px;
-}
-.body #cd_title{
-	font-family: Tahoma, Geneva, sans-serif;
-	font-weight: bold;
-	color: #900;
-	font-size: 14px;
-}
-.body #Candidate_Detail {
-	margin-left: 60px;
-	width: 400px;
-}
-.body span.cd_detail{
-	color:#0000FF;
-}
-.body #td_right{text-align:right; width:130px;}
-.body #td_left{text-align:left;}
 .footer{
-	width: 900px; 
+	width: 980px; 
 	height:100px;
-	margin-left:auto;
+	margin-left:20px;
 	margin-right:auto;
+}
+div.body #tbresult{
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	color: #FFF;
+}
+div.body #tbresult td{
+	background-color: #0000FF;
+}
+div.body #tbsq{
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:12px;
 }
 </style>
 </head>
@@ -74,40 +54,88 @@ div.body{
 <body>
 <table style="width: 1070px;border-spacing:0px;border-color:#DBDBDB;" border="0">
 <tr><td>
-<div class="header">
-	<div id="banner"> <img src="images/banner.png" align="right" />
-	</div>
-</div>
+<div class="header"></div>
 <div class="body">
-	<div id="img_1"><img src="images/spp01.png" /></div>
-  	<div id="rpf">
-  		<p id="rpf_title">Report prepared for:</p>
-        <p id="rpf_name">Edward</p>
-  	</div>
-    <div id="img_2"><img src="images/spp02.png" hspace="10" /></div>
-  <p id="cd_title">Candidate Detail</p>
-    <table cellspacing="2" id="Candidate_Detail">
-    <tr>
-    <td id="td_right">Position Apply:</td><td id="td_left"><span class="cd_detail">RSM & Sales training manager</span></td>
-    </tr>
-    <tr>
-    <td id="td_right">Date of Test:</td><td id="td_left"><span class="cd_detail">20/09/2553</span></td>
-    </tr>
-    <tr>
-    <td id="td_right">Name/ Last Name:</td><td id="td_left"><span class="cd_detail">à¸à¸£à¸£à¸¨  à¸à¸à¸¨à¸²à¸ªà¸à¸­à¸à¸à¸¸à¸¥</span></td>
-    </tr>
-    <tr>
-    <td id="td_right">Age:</td><td id="td_left"><span class="cd_detail">37</span></td>
-    </tr>
-    <tr>
-    <td id="td_right">Tel:</td><td id="td_left"><span class="cd_detail">0850706211</span></td>
-    </tr>
-    <tr>
-    <td id="td_right">E-Mail:</td><td id="td_left"><span class="cd_detail">ptat@scj.com</span></td>
-    </tr>
-    </table>
+<p style="color:#0000FF; font-weight:bold;">การอ่านผล (Sales Scale)</p>
+<table id="tbresult" width="500" border="0" cellspacing="2">
+  <tr>
+    <td width="169">Result:</td>
+    <td width="312">Low Score</td>
+  </tr>
+  <tr>
+    <td>Report Status:</td>
+    <td>Reliable</td>
+  </tr>
+</table>
+<p style="color:#0000FF;">A person who gets a Score in "Low Score" is a person who doesn’t pass Sales Test cause of their attitude. They might be a good person but they have
+a negative attitude that let them lack a strong sense of individual ambition for Sales Career. They don’t disassociate themselves from coworker who are
+negative and lack ambitions. They can't work under high pressure and competitive environment like Sales Position</p>
+<p style="color:#0000FF;">Low Score แสดงให้เห็นถึง ผู้ทดสอบที่มีนิสัยที่ไม่ชอบการทำงานบนการกำหนดยอดหรือผลงานขาย และ ลักษณะงานที่มีความกดดันสูง ขาดแรงจูงใจในตนเอง: เป็นกลุ่มคนที่จะไม่ผ่านเกณฑ์ในส่วนคะแนนสุดท้ายของการทดสอบ Sales โดยกลุ่มผู้ทดสอบที่ได้คะแนน Low Score โดยส่วนใหญ่จะกลัวการทำงานที่ต้องแข่งขัน การทำงานที่เร่งรัด และ การทำงานบนการเปลี่ยนแปลง เพราะ ลักษณะงานดังกล่าว สร้างความกดดัน และทำให้พวกเขารู้สึกอึดอัด และ วิตกกังวลต่อสถานการณ์ที่ควบคุม หรือเปลี่ยนแปลงบ่อย ทำให้ไม่สามารถสร้างผลงานได้ดี ตลอดจน หมดกำลังใจได้ง่าย ดังนั้น พวกเขาไม่สามารถทำงานที่กดดัน เน้นยอดขาย หรือสร้างผลงานในลักษณะ ที่ต้องแข่งขัน ถ้าต้องการรับจำเป็นต้องเป็นลักษณะงานที่ไม่ใช่ลักษณะของการแข่งขันบนยอดขาย แต่เป็นลักษณะของงานขายเชิงให้คำปรึกษา (ดูรายละเอียดเพิ่มเติมในกราฟแสดงคุณลักษณะ Sales แล้วสัมภาษณ์เพิ่มเติม)</p><br />
+<img src="images/spp07.png" hspace="80" />
+<p>Table of Sales Qualifications</p>
+<table id="tbsq" width="980" border="0" cellspacing="0">
+  <tr>
+    <td width="430" align="center" style="font-size:14px; background-color:#00FFFF;">Type of Traits</td>
+    <td width="94" align="center" style="font-size:14px; background-color:#00FFFF;">Score<br />
+      out of 10</td>
+    <td width="430" align="center" style="font-size:14px; background-color:#00FFFF;">Remark</td>
+  </tr>
+  <tr>
+    <td>Flexible - ทักษะการปรับตัว ความยืดหยุ่น</td>
+    <td align="center">6.25</td>
+    <td>การปรับตัว ความยืดหยุ่น และการเปิดรับสิ่งใหม่ๆ</td>
+  </tr>
+  <tr>
+    <td>Positive Thinking - ทัศนคติบวก</td>
+    <td align="center">6.25</td>
+    <td>ทัศนคติการคิดบวกต่อตนเองและสิ่งแวดล้อมรอบตัว</td>
+  </tr>
+  <tr>
+    <td>Enthusiasm - ความกระตือรือร้น</td>
+    <td align="center">6.00</td>
+    <td>ลักษณะทางบุคลิกภาพที่แสดงถึงความกระตือรือร้นและพลัง</td>
+  </tr>
+  <tr>
+    <td>Out going - ทำงานออกภายนอก</td>
+    <td align="center">5.75</td>
+    <td>ลักษณะของการทำงานภายนอก การสร้างเครือข่าย</td>
+  </tr>
+  <tr>
+    <td>Fast Learning - ทักษะการเรียนรู้</td>
+    <td align="center">5.38</td>
+    <td>การเรียนรู้และการเข้าใจในเรื่องต่างๆ</td>
+  </tr>
+  <tr>
+    <td>Stress &amp; Competitive - การรับมือต่อการแข่งขัน</td>
+    <td align="center">5.13</td>
+    <td>การทำงานกดดันและการแข่งขันที่มีเป้าหมายเป็นตัวกำหนด</td>
+  </tr>
+  <tr>
+    <td>Ambition - ความทะเยอทะยาน</td>
+    <td align="center">5.00</td>
+    <td>ทัศนคติต่อการพัฒนาตนเองและการมุ่งสู่ผลสำเร็จ</td>
+  </tr>
+  <tr>
+    <td>Communication - การสื่อสาร</td>
+    <td align="center">5.00</td>
+    <td>การสื่อสารและประสิทธิภาพของการติดต่อสื่อสารกับผู้อื่น</td>
+  </tr>
+  <tr>
+    <td>Problem Solving - การแก้ไขปัญหาเฉพาะหน้า</td>
+    <td align="center">4.75</td>
+    <td>การแก้ไขปัญหาเฉพาะหน้าและการคิดเชิงเหตุและผล</td>
+  </tr>
+  <tr>
+    <td bgcolor="#666666">&nbsp;</td>
+    <td bgcolor="#666666">&nbsp;</td>
+    <td bgcolor="#666666">&nbsp;</td>
+  </tr>
+</table>
+<p align="center">Thank you for using our professional test by MissConsult.com</p>
+<center><img src="images/spp08.png"  /></center>
 </div>
 <div class="footer"></div>
-</td></tr></table>
+</td></tr>
+</table>
 </body>
 </html>
