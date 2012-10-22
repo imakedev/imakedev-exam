@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="<c:url value='/css/cst/style.css'/>" type="text/css" media="screen"/>
 <title>CST Report</title>
 <style type="text/css">
 body{
