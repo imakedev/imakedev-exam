@@ -57,7 +57,7 @@ p{
 <table width="880" border="0" cellspacing="0">
   <tr>
     <td width="676"><p id="txttitle">Psychometric Testing & Career Development & Assessment Center Training</p></td>
-    <td width="200"><img src="images/cst_banner.png" align="right"  /></td>
+    <td width="200"><img src="<c:url value='/images/cst/cst_banner.png'/>" align="right"  /></td>
   </tr>
   <tr>
   <td></td>
@@ -65,10 +65,10 @@ p{
   </tr>
 </table></div>
 <div class="body">
-<img src="images/cst01.png"  />
+<img src="<c:url value='/images/cst/cst01.png'/>" />
 <p style="font-size:40px; font-family:AngsanaUPC; font-weight:bold; color:#666666;">&nbsp;แบบประเมิณทัศนคติด้านงานบริการ</p>
 <p style="font-size:36px; font-family:AngsanaUPC; font-weight:bold; color:#990000;">&nbsp;SERVICE ATTITUDE TEST REPORT</p>
-<p><img src="images/cst01.png"  />
+<p><img src="<c:url value='/images/cst/cst01.png'/>" />
   <br /><br />
 </p>
 <p>&nbsp;</p>
@@ -104,10 +104,10 @@ p{
 <div class="footer">
 <table width="880" border="0" cellspacing="5">
   <tr>
-    <td width="163"><img src="images/cst_footer01.png"  /></td>
+    <td width="163"><img src="<c:url value='/images/cst/cst_footer01.png'/>" /></td>
     <td width="381" style="color:#666;">14th Flr.,Q.House Asoke Bldg., 66 Sukhumvit 21
 North Klongtoey,Wattana, Bangkok 10110</td>
-    <td width="103"><img src="images/cst_footer02.png"  /></td>
+    <td width="103"><img src="<c:url value='/images/cst/cst_footer02.png'/>" /></td>
     <td width="200" style="color:#666;">www.missconsult.com
 info@missconsult.com</td>
   </tr>
