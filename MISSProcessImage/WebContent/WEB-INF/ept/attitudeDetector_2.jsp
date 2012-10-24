@@ -155,17 +155,17 @@ body {
 </table>
 <script type="text/javascript">
 var dataString ='<chart   useRoundEdges="1" bgColor="FFFFFF,FFFFFF" showBorder="0">\n\
-<set label="Communication" value="25000"  /> \n\
-<set label="Flexible" value="35000" /> \n\
-<set label="Vision" value="42300" /> \n\
-<set label="Positive Thinking" value="35300" /> \n\
-<set label="Ambition" value="31300" />\n\
-<set label="Self - Confident" value="31300" />\n\
-<set label="Creditable" value="31300" />\n\
-<set label="Determined" value="31300" />\n\
-<set label="Dependenable" value="31300" />\n\
-<set label="Self - Motivate" value="31300" />\n\
-<set label="Persistent" value="31300" />\n\
+<set label="Communication" value="4.55"  /> \n\
+<set label="Flexible" value="3.82" /> \n\
+<set label="Vision" value="3.82" /> \n\
+<set label="Positive Thinking" value="3.64" /> \n\
+<set label="Ambition" value="3.45" />\n\
+<set label="Self - Confident" value="3.45" />\n\
+<set label="Creditable" value="3.09" />\n\
+<set label="Determined" value="3.09" />\n\
+<set label="Dependenable" value="2.73" />\n\
+<set label="Self - Motivate" value="2.55" />\n\
+<set label="Persistent" value="2.36" />\n\
 \n\
 </chart>';
 	  FusionCharts.setCurrentRenderer('javascript'); // for new version 

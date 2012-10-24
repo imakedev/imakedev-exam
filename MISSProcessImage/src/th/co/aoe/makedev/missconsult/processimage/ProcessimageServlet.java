@@ -33,8 +33,11 @@ public class ProcessimageServlet extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//System.out.println("doProcess");
+		//"http://203.150.20.37/MISSProcessImage/process?mtrId="+$P{mtrId}.toString()+"&key=chart1&w=800&h=400&chart=bar"
+		
 		 String mtrId= request.getParameter("mtrId"); 
 		 String mdc_key=request.getParameter("key");
+		 String chart=request.getParameter("chart");
 		 String width=request.getParameter("w");
 		 String height=request.getParameter("h");
 		 String page=request.getParameter("page");
@@ -46,27 +49,35 @@ public class ProcessimageServlet extends HttpServlet {
 		 try {
 			 long start =System.currentTimeMillis();
 			 String fileGen=genToken();
-		//	Process p = Runtime.getRuntime().exec("/usr/local/data/WebServer/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --javascript-delay 1000 --quality 75 --format jpg --use-xserver http://203.150.20.37:8080/TestFusion/ExportChartSamples/JavaScriptExport/ServerSideSimple.html /tmp/aoe2.jpg");
 			 Runtime rt = Runtime.getRuntime();
-			
-	           /* System.out.println("Execing " + cmd[0] + " " + cmd[1] 
+			 /*http://203.150.20.37/MISSProcessImage/process?page=workwheel_1&type=ept_plus&w=1090&lang=1&mtrId=61
+			 http://203.150.20.37/MISSProcessImage/process?mtrId="+$P{mtrId}.toString()+"&key=chart1&w=800&h=400&lang=1
+			 http://203.150.20.37/MISSProcessImage/process?page=evalOfbehavioral_1&type=ept_plus&w=1090&lang=1&mtrId=61&lang=1
+*/	           /* System.out.println("Execing " + cmd[0] + " " + cmd[1] 
 	            * http://localhost:8080/MISSProcessImage/render?mtrId=20&key=chart1
 	                               + " " + cmd[2]);*/
-	         //String cmd="/usr/local/data/WebServer/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --format jpg --use-xserver http://localhost:8080/MISSProcessImage/render /tmp/aoe2.jpg"; String width=request.getParameter("w");			 String height=request.getParameter("h");
 	       
-			 //String cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
-	         String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg http://203.150.20.37/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+"  /tmp/"+fileGen+".jpg";
+			 String cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 3000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+chart+"_"+lang+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
+	         //String cmd="";
 			  Process proc=null;
-			  if(page!=null && page.length()>0){
+			  if(mdc_key!=null && mdc_key.length()>0){
+				  if(lang==null)
+					  lang="1";
+				  proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay","3000",  
+						  "--quality","75","--crop-w",width,"--crop-h",height,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
+				/*  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","5000",  
+						  "--quality","75","--crop-w",width,"--crop-h",height,"--format","jpg","http://203.150.20.37/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});*/
+				  System.out.println("cmd chart\nhttp://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+" /tmp/"+fileGen+".jpg");
+			  }else	  if(page!=null && page.length()>0){
 				  // 1074
 				  String speed="1000";
 				  if(page.equals("workwheel_1"))
 						  speed="3000";
 				 // cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
-				 /*proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay",speed,
-						  "--quality","75","--crop-w",width,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/eptplus?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); */ 
-				  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,  
-						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/eptplus?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
+				 proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay",speed,
+						  "--quality","75","--crop-w",width,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/eptplus?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); 
+				 /* proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,  
+						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/eptplus?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});*/ 
 			      //  System.out.println("chatchai debug =>"+"http://localhost:8080/MISSProcessImage/eptplus?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"");
 			  }else{
 				    proc = rt.exec(cmd);
@@ -75,7 +86,6 @@ public class ProcessimageServlet extends HttpServlet {
 			// String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 1000 --quality 75 --format jpg  http://203.150.20.37:8080/TestFusion/ExportChartSamples/JavaScriptExport/ServerSideSimple.html /tmp/aoe2.jpg";
 	        // ProcessBuilder pb = new ProcessBuilder(cmd);
 	        // Map<String, String> env = pb.environment();
-	        // pb.directory(new File("/usr/local/data/WebServer/apache2/htdocs/fcimg/bin"));
 	        
 	        // Process proc =	pb.start(); 
 	            // any error message?
