@@ -19,11 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import th.co.aoe.makedev.missconsult.domain.MissEptAttitudeDetectorReport;
 import th.co.aoe.makedev.missconsult.domain.MissEptCareer;
+import th.co.aoe.makedev.missconsult.domain.MissEptDominance;
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralGroup;
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralValue;
 import th.co.aoe.makedev.missconsult.domain.MissEptMessageConfig;
 import th.co.aoe.makedev.missconsult.domain.MissEptPlusWorkWheelMessage;
+import th.co.aoe.makedev.missconsult.domain.MissEptTraitsDetector;
 
 /**
  * Servlet implementation class EPTPlusServlet
@@ -83,6 +86,19 @@ public class EPTPlusServlet extends HttpServlet {
 				session.setAttribute("xmlData", getXML(mtrId,"chart2_eptplus",lang));*/
 			
 		}
+		else if(page.indexOf("attitudeDetector_1")!=-1){
+			List attitudeDetectors = getAttitudeDetectorReport(mtrId,lang);
+			 
+			session.setAttribute("radarxmlData", attitudeDetectors.get(0));
+			session.setAttribute("dominance", attitudeDetectors.get(1));			
+			session.setAttribute("messages", attitudeDetectors.get(2)); 
+		}else if(page.indexOf("attitudeDetector_2")!=-1){
+			List traitsDetectors = getTraitsDetector(mtrId,lang);
+			 
+			session.setAttribute("column2DxmlData", traitsDetectors.get(0));
+			session.setAttribute("traits", traitsDetectors.get(1)); 
+		}
+		
 		// RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ept_plus/"+page+".jsp");
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/"+type+"/"+page+".jsp");
 		 dispatcher.forward(request, response);
@@ -438,6 +454,170 @@ AND MEC_LANG='1' ORDER BY MEC_ORDER
 		results.add(fullname);
 		results.add(configs);
 		results.add(careers);
+	return results;
+	}
+	
+	private List getAttitudeDetectorReport(String mtrId,String lang){
+		/*
+		 * 
+		 * 
+		 SELECT * FROM MISS_CONSULT_EXAM.MISS_EPT_ATTITUDE_DETECTOR_REPORT
+where mtr_id=61 and meadr_lang='1' order by meadr_order 
+
+SELECT * FROM MISS_CONSULT_EXAM.MISS_EPT_DOMINANCE
+where mtr_id=61
+
+SELECT * FROM MISS_CONSULT_EXAM.MISS_DATA_CHART 
+where mtr_id=20 and mdc_key='chart2_ept'
+		 */
+		Connection con = null; 
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
+		 PreparedStatement pst = null;
+		 ResultSet result= null;
+		 List results=new ArrayList(3);
+		 
+		 String xml=""; 
+		 List<MissEptAttitudeDetectorReport> attitudes=new ArrayList<MissEptAttitudeDetectorReport>();
+		 MissEptDominance dominance =new MissEptDominance();
+		try {
+			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			con = basicDs.getConnection();//("oracle", "password");//Connection();
+			StringBuffer sqlSB=new StringBuffer("SELECT * FROM "+SCHEMA+".MISS_EPT_ATTITUDE_DETECTOR_REPORT " +
+					" where mtr_id="+mtrId+" and meadr_lang='"+lang+"' order by meadr_order ");			
+			pst = con.prepareStatement(sqlSB.toString());
+			 result = pst.executeQuery();
+				if(result!=null){					
+						while (result.next()) { 
+							MissEptAttitudeDetectorReport report =new MissEptAttitudeDetectorReport();
+							report.setMeadrDetail(result.getString("MEADR_DETAIL"));
+							report.setMeadrKey(result.getString("MEADR_KEY"));
+							report.setMeadrTopic(result.getString("MEADR_TOPIC")); 
+							attitudes.add(report);
+						}
+				}
+				sqlSB.setLength(0);
+				sqlSB.append("SELECT * FROM "+SCHEMA+".MISS_EPT_DOMINANCE where mtr_id="+mtrId);
+				pst = con.prepareStatement(sqlSB.toString());
+				 result = pst.executeQuery();
+					if(result!=null){					
+							while (result.next()) {   
+								dominance.setMepDominance(result.getString("MEP_DOMINANCE"));
+								dominance.setMepSubDominance(result.getString("MEP_SUB_DOMINANCE")); 
+							}
+					}
+				sqlSB.setLength(0);
+				sqlSB.append(" SELECT * FROM "+SCHEMA+".MISS_DATA_CHART where mtr_id="+mtrId+" and mdc_key='chart2_ept'");
+				pst = con.prepareStatement(sqlSB.toString());
+				result = pst.executeQuery();
+					if(result!=null){					
+						while (result.next()) { 
+							xml=result.getString("MDC_DATA");
+						}
+					}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{ 
+			if (con != null) {
+				try {
+					if(result!=null){
+						if(!result.isClosed()){
+							result.close();
+							result=null;
+						}
+					}
+					if (pst != null) {
+						if(!pst.isClosed()){
+							pst.close();			 
+							pst = null;
+						} 
+						
+					} 
+					if(!con.isClosed());
+						con.close(); 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			} 
+		}
+		results.add(xml);
+		results.add(dominance);
+		results.add(attitudes);
+	return results;
+	}
+	private List getTraitsDetector(String mtrId,String lang){
+		/*
+		 * 
+		 * 
+		 SELECT * FROM MISS_CONSULT_EXAM.MISS_DATA_CHART 
+where mtr_id=20 and mdc_key='chart3_ept'
+
+SELECT * FROM MISS_CONSULT_EXAM.MISS_EPT_TRAITS_DETECTOR
+where mtr_id=61 and metd_lang='1' order by metd_order asc 
+		 */
+		Connection con = null; 
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
+		 PreparedStatement pst = null;
+		 ResultSet result= null;
+		 List results=new ArrayList(2);
+		
+		 String xml="";
+		 List<MissEptTraitsDetector> traitsDetectors=new ArrayList<MissEptTraitsDetector>(); 
+		try {
+			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			con = basicDs.getConnection();//("oracle", "password");//Connection();
+			StringBuffer sqlSB=new StringBuffer(" SELECT * FROM "+SCHEMA+".MISS_DATA_CHART where mtr_id="+mtrId+" and mdc_key='chart3_ept'");			
+			 
+			pst = con.prepareStatement(sqlSB.toString());
+			 result = pst.executeQuery();
+				if(result!=null){					
+						while (result.next()) { 
+							xml=result.getString("MDC_DATA");
+						}   
+				}
+				sqlSB.setLength(0);
+				sqlSB.append(" SELECT * FROM  "+SCHEMA+".MISS_EPT_TRAITS_DETECTOR where mtr_id="+mtrId+" and metd_lang='"+lang+"' order by metd_order asc ");
+				pst = con.prepareStatement(sqlSB.toString());
+				 result = pst.executeQuery();
+					if(result!=null){					
+							while (result.next()) { 
+								MissEptTraitsDetector traits=new MissEptTraitsDetector();
+								traits.setMetdName(result.getString("METD_NAME"));
+								traits.setMetdValue(result.getBigDecimal("METD_VALUE"));
+								traitsDetectors.add(traits);
+							}
+					}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{ 
+			if (con != null) {
+				try {
+					if(result!=null){
+						if(!result.isClosed()){
+							result.close();
+							result=null;
+						}
+					}
+					if (pst != null) {
+						if(!pst.isClosed()){
+							pst.close();			 
+							pst = null;
+						} 
+						
+					} 
+					if(!con.isClosed());
+						con.close(); 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			} 
+		}
+		results.add(xml);
+		results.add(traitsDetectors); 
 	return results;
 	}
 }
