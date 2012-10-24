@@ -40,7 +40,7 @@ body {
 			<td width="10%">&nbsp;</td>
 			<td width="30%">
 				<table style="width: 100%;">
-					<tr>
+					<tr align="center">
 						<td colspan="3" style="background-color: #52A09D">Your 3 Highest Detector Traits</td>
 					</tr>
 					<tr align="center">
@@ -48,6 +48,16 @@ body {
 						<td width="45%"><b>Type of Traits</b></td>
 						<td width="45%"><b>Yr Score</b></td>
 					</tr>
+					<c:forEach var="trait" items="${traits}"  varStatus="ms"> 
+		   			 <c:if test="${ms.index < 3}">
+						<tr align="center">
+							<td>${ms.index+1}</td>
+							<td width="45%">${trait.metdName}</td>
+							<td width="45%">${trait.metdValue}</td>
+						</tr>
+		   			 </c:if>
+					 </c:forEach>
+					 <!-- 
 					<tr align="center">
 						<td>1</td>
 						<td width="45%">Communication</td>
@@ -63,12 +73,13 @@ body {
 						<td width="45%">Flexible</td>
 						<td width="45%">3.82</td>
 					</tr>
+					 -->
 				</table>
 			</td>
 			<td width="20%">&nbsp;</td>
 			<td width="30%">
 				<table  style="width: 100%;">
-					<tr>
+					<tr align="center">
 						<td colspan="3" style="background-color: #E16951">Your 3 Lowest Detector Traits</td>
 					</tr>
 					<tr align="center">
@@ -76,6 +87,20 @@ body {
 						<td width="45%"><b>Type of Traits</b></td>
 						<td width="45%"><b>Yr Score</b></td>
 					</tr>
+					<c:set var="endLoop" value="${fn:length(traits)}"/>
+					<c:set var="indexLoop" value="1"/>  
+					<c:forEach var="trait" items="${traits}"  varStatus="ms"> 
+		   			 <c:if test="${ms.index > (endLoop-4)}">
+						<tr align="center">
+							<td>${indexLoop}</td>
+							<td width="45%">${trait.metdName}</td>
+							<td width="45%">${trait.metdValue}</td>
+							<c:set var="indexLoop" value="${indexLoop+1}"/> 
+						</tr>
+		   			 </c:if>
+					 </c:forEach>
+					 
+					 <!-- 
 					<tr align="center">
 						<td>1</td>
 						<td width="45%">Persistent</td>
@@ -91,6 +116,7 @@ body {
 						<td width="45%">Dependenable</td>
 						<td width="45%">2.73</td>
 					</tr>
+					 -->
 				</table>
 			</td>
 			<td width="10%">&nbsp;</td>
@@ -108,6 +134,13 @@ body {
 			<td width="80%">Type of Traits</td>
 			<td width="20%">Score out of 10</td> 
 		</tr>
+		<c:forEach var="trait" items="${traits}"  varStatus="ms">
+			<tr> 
+				<td width="80%">&nbsp;&nbsp;${trait.metdName}</td>
+				<td width="20%" align="center">${trait.metdValue}</td> 
+			</tr>
+		</c:forEach>
+		<!--  
 		<tr>
 			<td width="80%">Communication</td>
 			<td width="20%" align="center">4.55</td> 
@@ -152,6 +185,7 @@ body {
 			<td width="80%">Persistent</td>
 			<td width="20%" align="center">2.36</td> 
 		</tr>
+		 -->
 </table>
 <script type="text/javascript">
 var dataString ='<chart   useRoundEdges="1" bgColor="FFFFFF,FFFFFF" showBorder="0">\n\
@@ -171,7 +205,7 @@ var dataString ='<chart   useRoundEdges="1" bgColor="FFFFFF,FFFFFF" showBorder="
 	  FusionCharts.setCurrentRenderer('javascript'); // for new version 
           //   var chart = new FusionCharts("/MISSProcessImage/Charts/Radar.swf", "ChartId", "380", "300", "0");
              var chart = new FusionCharts("/MISSProcessImage/Charts/Column2D.swf", "ChartId_flash", "1000", "400", "0", "1" );      
-	  chart.setXMLData( dataString);
+	  chart.setXMLData('${column2DxmlData}');
             chart.render("chartdiv");
        </script>
 </body>

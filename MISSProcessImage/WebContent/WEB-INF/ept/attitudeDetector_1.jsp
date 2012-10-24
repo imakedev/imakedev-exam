@@ -28,21 +28,24 @@ body {
 	<table
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
-		<tr>
-			<td width="10%"></td>
-			<td width="90%">
-				<ul>
-					<li>Introduction: </li> 
-				</ul>				
-			</td>
-		</tr>
-		<tr>
-			<td width="10%"></td>
-			<td width="90%">
-				Summary results of the attitude of the person, than at the test. Demonstrate the nature of attitudes found.
-Through the development process of the mind and the nature of the different test Can be observed from the interviews.				
-			</td>
-		</tr> 
+		<c:forEach var="message" items="${messages}"  varStatus="ms">
+			<c:if test="${ms.index==0}">
+			<tr>
+				<td width="10%"></td>
+				<td width="90%">
+					<ul>
+						<li><b><font color="red">${message.meadrKey}:</font></b> ${message.meadrDetail}</li> 
+					</ul>				
+				</td>
+			</tr>
+			<%-- <tr>
+				<td width="10%"></td>
+				<td width="90%">${message.meadrDetail}
+				</td>
+			</tr> --%>
+			</c:if>
+		</c:forEach>
+		 
 	</table> 
 	
 <table style="width: 1070px;border-color: black;" border="0">
@@ -61,9 +64,10 @@ Through the development process of the mind and the nature of the different test
 					</td>
 				</tr>
 				<tr>
-					<td align="center"><font color="#FF3D3D">Passive</font>
+					<td align="center"><font color="#FF3D3D">${dominance.mepDominance}</font>
+	 
 					</td>
-					<td align="center"><font color="#0303FF">Imaginative</font>
+					<td align="center"><font color="#0303FF">${dominance.mepSubDominance}</font>
 					</td>
 				</tr>
 			</table>
@@ -73,6 +77,24 @@ Through the development process of the mind and the nature of the different test
 <table
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
+		<c:forEach var="message" items="${messages}"  varStatus="ms">
+			<c:if test="${ms.index>0}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">
+						<ul>
+							<li><b>${message.meadrKey}: <font color="blue">${message.meadrTopic}</font></b></li> 
+						</ul>				
+					</td>
+				</tr>
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">${message.meadrDetail}
+					</td>
+				</tr>
+			</c:if>
+		</c:forEach>
+		<!-- 
 		<tr>
 			<td width="10%"></td>
 			<td width="90%">
@@ -179,6 +201,7 @@ things which need deep thoughts and they have a diverse idea about it which ulti
 likes the opportunity of having their ideas known and used.
 			</td>
 		</tr>
+		 -->
 </table>
 <script type="text/javascript">
 //var dataString='<chart   canvasBorderAlpha="0"  yMaxValue="10" showLimits="0" bgColor="FFFFFF" plotBorderThickness="1" radarSpikeThickness="3" divlineColor="9A9F9B" anchorRadius="4" anchorBorderThickness="2">\n\
@@ -218,7 +241,7 @@ var dataString='<chart  canvasBorderAlpha="0"  bgColor="FFFFFF" plotBorderThickn
 	*/
 	  FusionCharts.setCurrentRenderer('javascript'); // for new version 
              var chart = new FusionCharts("/MISSProcessImage/PowerChart/Charts/Radar.swf", "ChartId", "380", "300", "0");
-            chart.setXMLData( dataString);
+            chart.setXMLData( '${radarxmlData}');
             chart.render("chartdiv");
        </script>
 </body>
