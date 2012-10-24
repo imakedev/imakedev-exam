@@ -71,7 +71,7 @@ public class ProcessimageServlet extends HttpServlet {
 			  }else	  if(page!=null && page.length()>0){
 				  // 1074
 				  String speed="1000";
-				  if(page.equals("workwheel_1"))
+				  if(page.equals("workwheel_1") || page.indexOf("attitudeDetector_")!=-1)
 						  speed="3000";
 				 // cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 5000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
 				 proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay",speed,
