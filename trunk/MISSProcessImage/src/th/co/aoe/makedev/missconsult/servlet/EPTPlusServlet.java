@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import th.co.aoe.makedev.missconsult.domain.MissEptCareer;
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralGroup;
 import th.co.aoe.makedev.missconsult.domain.MissEptEvalBehavioralValue;
+import th.co.aoe.makedev.missconsult.domain.MissEptMessageConfig;
 import th.co.aoe.makedev.missconsult.domain.MissEptPlusWorkWheelMessage;
 
 /**
@@ -58,6 +60,7 @@ public class EPTPlusServlet extends HttpServlet {
 		String type=request.getParameter("type");
 		String mtrId=request.getParameter("mtrId");
 		String lang=request.getParameter("lang");
+		String key= request.getParameter("key");
 		 HttpSession session = request.getSession(true);
 		if(page.indexOf("evalOfbehavioral")!=-1){
 			List<MissEptEvalBehavioralGroup> groups= getMissEptEvalBehavioralGroups(mtrId,page,lang);
@@ -67,6 +70,17 @@ public class EPTPlusServlet extends HttpServlet {
 		}else if(page.indexOf("workwheel")!=-1){
 			 List<MissEptPlusWorkWheelMessage> messages= getMissEptPlusWorkWheelMessages(mtrId,page,lang);
 			session.setAttribute("messages", messages);
+			if(page.indexOf("workwheel_2")!=-1)
+				session.setAttribute("xmlData", getXML(mtrId,"chart2_eptplus",lang));
+			
+		}else if(page.indexOf("analysis_")!=-1){
+			 List analysis=getAnalysisMessage(mtrId,lang); 
+			 
+			session.setAttribute("fullname", analysis.get(0));
+			session.setAttribute("configs", analysis.get(1));			
+			session.setAttribute("careers", analysis.get(2));
+			/*if(page.indexOf("workwheel_2")!=-1)
+				session.setAttribute("xmlData", getXML(mtrId,"chart2_eptplus",lang));*/
 			
 		}
 		// RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/ept_plus/"+page+".jsp");
@@ -220,9 +234,6 @@ public class EPTPlusServlet extends HttpServlet {
 			
 			pst = con.prepareStatement(sqlSB.toString());
 			 result = pst.executeQuery();
-				
-				StringBuffer sbGroupId=new StringBuffer("");
-				int meebvValue=0;
 				if(result!=null)					
 						while (result.next()) { 
 							MissEptPlusWorkWheelMessage message=new MissEptPlusWorkWheelMessage();
@@ -265,5 +276,168 @@ public class EPTPlusServlet extends HttpServlet {
 			} 
 		}
 	return missEptPlusWorkWheelMessages;
+	}
+	private String getXML(String mtrId,String mdcKey,String lang){
+		//SELECT * FROM MISS_CONSULT_EXAM.MISS_DATA_CHART;
+		Connection con = null; 
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
+		 PreparedStatement pst = null;
+		 ResultSet result= null;
+		 String xmlData="";
+		// String swfName="";
+		try {
+			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			con = basicDs.getConnection();//("oracle", "password");//Connection();
+			StringBuffer sqlSB=new StringBuffer("SELECT * FROM "+SCHEMA+".MISS_DATA_CHART chart where chart.mtr_id="+mtrId+" and chart.mdc_key='"+mdcKey+"' " +
+					" ");
+			
+			pst = con.prepareStatement(sqlSB.toString());
+			 result = pst.executeQuery();
+				if(result!=null)					
+						while (result.next()) { 
+							xmlData=result.getString("MDC_DATA");
+							//swfName=result.getString("MDC_SWF_NAME");
+						}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{ 
+			if (con != null) {
+				try {
+					if(result!=null){
+						if(!result.isClosed()){
+							result.close();
+							result=null;
+						}
+					}
+					if (pst != null) {
+						if(!pst.isClosed()){
+							pst.close();			 
+							pst = null;
+						} 
+						
+					} 
+					if(!con.isClosed());
+						con.close(); 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			} 
+		}
+	return xmlData;
+	}
+	private List getAnalysisMessage(String mtrId,String lang){
+		/*
+		 * 
+		 * 
+		  SELECT CONCAT_WS(" ",candidate.mca_first_name,candidate.mca_last_name),candidate.mca_first_name , candidate.mca_last_name FROM MISS_TEST_RESULT result 
+left join MISS_CANDIDATE candidate 
+on result.mca_id=candidate.mca_id 
+WHERE result.mtr_id=61
+
+select * from MISS_EPT_MESSAGE_CONFIG 
+WHERE CODE='FJAE' AND MEMC_LANG='1'
+ORDER BY MEMC_ORDER 
+
+
+
+SELECT * FROM MISS_EPT_CAREER where MEC_CODE='FJAE' 
+AND MEC_LANG='1' ORDER BY MEC_ORDER 
+		 */
+		Connection con = null; 
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
+		 PreparedStatement pst = null;
+		 ResultSet result= null;
+		 List results=new ArrayList(3);
+		 String fullname="";
+		 String code="";
+		 List<MissEptMessageConfig> configs=new ArrayList<MissEptMessageConfig>();
+		 List<MissEptCareer> careers=new ArrayList<MissEptCareer>();
+		  
+		 List<MissEptPlusWorkWheelMessage> missEptPlusWorkWheelMessages =new ArrayList<MissEptPlusWorkWheelMessage>();
+		try {
+			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+			con = basicDs.getConnection();//("oracle", "password");//Connection();
+			/*StringBuffer sqlSB=new StringBuffer("SELECT * FROM "+SCHEMA+".MISS_EPT_PLUS_WORK_WHEEL_MESSAGE message where message.mtr_id="+mtrId+" and message.mepwwm_lang='"+lang+"' " +
+					" order by message.mepwwm_value desc  ");*/
+			StringBuffer sqlSB=new StringBuffer("SELECT CONCAT_WS(' ',candidate.mca_first_name,candidate.mca_last_name) as FULL_NAME , " +
+					" result.MTR_RESULT_CODE AS CODE ,candidate.mca_first_name" +
+					" , candidate.mca_last_name FROM "+SCHEMA+".MISS_TEST_RESULT result left join "+SCHEMA+".MISS_CANDIDATE candidate" +
+					"	on result.mca_id=candidate.mca_id WHERE result.mtr_id="+mtrId);			
+			pst = con.prepareStatement(sqlSB.toString());
+			 result = pst.executeQuery();
+				if(result!=null){					
+						while (result.next()) { 
+							fullname=result.getString("FULL_NAME");
+							code=result.getString("CODE"); 
+						}
+						// for test
+						code="FJAE";
+						sqlSB.setLength(0);
+						sqlSB.append("SELECT * from "+SCHEMA+".MISS_EPT_MESSAGE_CONFIG WHERE CODE='"+code+"' AND MEMC_LANG='"+lang+"' ORDER BY MEMC_ORDER ");
+						pst = con.prepareStatement(sqlSB.toString());
+						 result = pst.executeQuery();
+							if(result!=null){					
+									while (result.next()) { 
+										MissEptMessageConfig config=new MissEptMessageConfig();
+										config.setCode(code);
+										config.setMemcDesc(result.getString("MEMC_DESC"));
+										config.setMemcKey(result.getString("MEMC_KEY"));
+										config.setMemcLang(result.getString("MEMC_LANG"));
+										config.setMemcMessage(result.getString("MEMC_MESSAGE")); 
+										configs.add(config);
+									}
+							}
+						
+						sqlSB.setLength(0);
+						sqlSB.append("SELECT * FROM MISS_EPT_CAREER where MEC_CODE='"+code+"' " +
+								" AND MEC_LANG='"+lang+"' ORDER BY MEC_ORDER");
+						pst = con.prepareStatement(sqlSB.toString());
+						result = pst.executeQuery();
+								if(result!=null){					
+										while (result.next()) { 
+											MissEptCareer career=new MissEptCareer();
+											career.setMecCareerName(result.getString("MEC_CAREER_NAME"));
+											career.setMecCode(result.getString("MEC_CODE"));
+											career.setMecLang(result.getString("MEC_LANG"));
+											//career.setMecOrder(result.getString("MEC_ORDER"));  
+											careers.add(career);
+										}
+								}	
+							 
+				}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{ 
+			if (con != null) {
+				try {
+					if(result!=null){
+						if(!result.isClosed()){
+							result.close();
+							result=null;
+						}
+					}
+					if (pst != null) {
+						if(!pst.isClosed()){
+							pst.close();			 
+							pst = null;
+						} 
+						
+					} 
+					if(!con.isClosed());
+						con.close(); 
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}					
+			} 
+		}
+		results.add(fullname);
+		results.add(configs);
+		results.add(careers);
+	return results;
 	}
 }

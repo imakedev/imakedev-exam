@@ -37,6 +37,24 @@ body {
 	<table
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
+		<c:forEach var="config" items="${configs}"  varStatus="ms">
+			<c:if test="${ms.index ==5}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">
+						<ul><li><b>${config.memcKey} : ${config.memcDesc}</b></li></ul> 			
+					</td>
+				</tr>
+				<c:if test="${not empty config.memcMessage && fn:length(config.memcMessage)>0}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">${config.memcMessage}  
+					</td>
+				</tr>
+				</c:if>
+		</c:if>
+		</c:forEach>
+		<!-- 
 		<tr>
 			<td width="10%"></td>
 			<td width="90%">
@@ -116,6 +134,7 @@ and meeting deadlines.
 and experience and considered important.				
 			</td>
 		</tr> 
+		 -->
 	</table>	
 	<table
 		style="width: 1070px; border-spacing: 0px;"
@@ -136,6 +155,40 @@ careers. However, the following are careers that this candidate may find particu
 		</tr>
 	</table>
 	<table style="width: 1070px;border-spacing:0px;border-color:#DBDBDB;" border="0">
+	 <c:set var="endLoop" value="${fn:length(careers)}"/>  
+	<c:forEach var="career" items="${careers}"  varStatus="ms">
+	<!--  // 0 =0 , =1 , 2=2,3=0,4=1  -->
+	        <c:if test="${ms.index % 3==0}">
+	        	<tr style="background-color: #DBDBDB;">
+					<td width="5%" align="left">&nbsp;</td>
+					<td  width="30%" align="left">${career.mecCareerName}</td>
+	        </c:if>
+	         <c:if test="${ms.index % 3==2}"> 
+					<td  width="30%" align="left">${career.mecCareerName}</td>
+					<td  width="5%" align="left">&nbsp;</td>
+				</tr>
+	        </c:if>
+	         <c:if test="${ms.index % 3==1}">
+	         	<td  width="30%" align="left">${career.mecCareerName}</td>
+	         </c:if> 
+	</c:forEach>
+	<c:if test="${endLoop % 3 !=0 }">
+		 <c:set var="loop_td" value="${endLoop % 3 }"/>  
+		<%--  <c:forEach var="td" items="${loop_td}"  varStatus="ms"> --%>
+		 	 <c:if test="${loop_td==1}">
+	         	<td  width="30%" align="left"></td>
+	         	<td  width="30%" align="left"></td>
+	         	<td  width="5%" align="left"></td>
+	         	</tr>
+	         </c:if>  
+	          <c:if test="${loop_td==2}"> 
+	         	<td  width="30%" align="left"></td>
+	         	<td  width="5%" align="left"></td>
+	         	</tr>
+	         </c:if> 
+		 <%-- </c:forEach> --%>
+	</c:if>
+	<!--  
 	<tr style="background-color: #DBDBDB;">
 		<td width="5%" align="left">&nbsp;</td>
 		<td  width="30%" align="left">Government employee</td>
@@ -150,6 +203,7 @@ careers. However, the following are careers that this candidate may find particu
 		<td  width="30%" align="left">Technical trainer</td>
 		<td  width="5%" align="left">&nbsp;</td>
 	</tr>
+	 -->
 	</table>
 	<table
 		style="width: 1070px; border-spacing: 0px;"

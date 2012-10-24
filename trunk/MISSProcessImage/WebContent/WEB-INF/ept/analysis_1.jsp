@@ -37,18 +37,36 @@ body {
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
 		<tr>
-			<td>The result of personality for Chris Marie as details</td>
+			<td>The result of personality for ${fullname} as details</td>
 		</tr>
 	</table>
 	<br />
 	<table
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
+		<c:forEach var="config" items="${configs}"  varStatus="ms">
+			<c:if test="${ms.index < 4}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">
+						<ul><li><b>${config.memcKey} : ${config.memcDesc}</b></li></ul> 			
+					</td>
+				</tr>
+				<c:if test="${not empty config.memcMessage && fn:length(config.memcMessage)>0}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">${config.memcMessage}  
+					</td>
+				</tr>
+				</c:if>
+		</c:if>
+		</c:forEach>
+		<!-- 
 		<tr>
 			<td width="10%"></td>
 			<td width="90%">
 				<ul>
-					<li>Type of Personality Group: FJAE TYPE</li>
+					<li>Type of Personality Group: FJAE TYPEs</li>
 					<li>FJAE TYPE: ‘Director’</li>
 				</ul>				
 			</td>
@@ -129,6 +147,7 @@ a situation. They need to learn to consciously delay making decisions until they
 alternatives they may have overlooked.				
 			</td>
 		</tr>
+		-->
 	</table>
 	<table
 		style="width: 1070px; border-spacing: 0px;"
@@ -142,6 +161,24 @@ alternatives they may have overlooked.
 	<table
 		style="width: 1070px; border-spacing: 0px; border-color: #DBDBDB;"
 		border="0">
+		<c:forEach var="config" items="${configs}"  varStatus="ms">
+			<c:if test="${ms.index == 4}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">
+						<ul><li><b>${config.memcKey} : ${config.memcDesc}</b></li></ul> 			
+					</td>
+				</tr>
+				<c:if test="${not empty config.memcMessage && fn:length(config.memcMessage)>0}">
+				<tr>
+					<td width="10%"></td>
+					<td width="90%">${config.memcMessage}  
+					</td>
+				</tr>
+				</c:if>
+		</c:if>
+		</c:forEach>
+		<!-- 
 		<tr>
 			<td width="10%"></td>
 			<td width="90%">
@@ -216,6 +253,7 @@ alternatives they may have overlooked.
 				11. Common sense and realistic perspectives				
 			</td>
 		</tr>
+		-->
 	</table>	
 </body>
 </html>

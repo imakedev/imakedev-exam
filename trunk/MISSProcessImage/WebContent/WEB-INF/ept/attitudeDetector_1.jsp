@@ -181,7 +181,8 @@ likes the opportunity of having their ideas known and used.
 		</tr>
 </table>
 <script type="text/javascript">
-var dataString='<chart   canvasBorderAlpha="0"  yMaxValue="10" showLimits="0" bgColor="FFFFFF" plotBorderThickness="1" radarSpikeThickness="3" divlineColor="9A9F9B" anchorRadius="4" anchorBorderThickness="2">\n\
+//var dataString='<chart   canvasBorderAlpha="0"  yMaxValue="10" showLimits="0" bgColor="FFFFFF" plotBorderThickness="1" radarSpikeThickness="3" divlineColor="9A9F9B" anchorRadius="4" anchorBorderThickness="2">\n\
+var dataString='<chart  canvasBorderAlpha="0"  bgColor="FFFFFF" plotBorderThickness="1" radarSpikeThickness="3" divlineColor="9A9F9B">\n\
 	<categories>\n\
 	<category label="Imaginative" toolText="Centralized Deployability"/>\n\
 	<category label="Perceiving" toolText="Centralized Signature Updating"/>\n\
@@ -192,15 +193,15 @@ var dataString='<chart   canvasBorderAlpha="0"  yMaxValue="10" showLimits="0" bg
 	<category label="Passive" toolText="Technical Support"/>\n\
 	<category label="Extravert" toolText="Technical Support"/>\n\
 	</categories>\n\
-	<dataset>\n\
-	<set value="8"/>\n\
-	<set value="9"/>\n\
+	<dataset showValues="1">\n\
+	<set value="8" />\n\
+	<set value="9" />\n\
 	<set value="9"/>\n\
 	<set value="8"/>\n\
 	<set value="7"/>\n\
 	<set value="9"/>\n\
 	<set value="8"/>\n\
-	<set value="8"/>\n\
+	<set value="6" />\n\
 	</dataset>\n\
 	</chart>';
 	/*
