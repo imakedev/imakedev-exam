@@ -4,14 +4,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>MissConsult : The 4 Factor s Personalized Analysis of the report</title>
 <style>
 body{
 padding:0 0 0 0;
 /* margin:0 0 0 0; */
 margin:2 2 2 2;
-font-family:Tahoma, Geneva, sans-serif;
+font-family:Tahoma, Geneva, sans-serif; 
 font-size:16px;
 }
 
