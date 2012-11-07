@@ -239,9 +239,17 @@ function doAction(action,formID,sectionID){
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" id="datepicker" style="width: 75px"/> -->
-    					<form:input path="mcaBirthDate"  id="mcaBirthDate" cssStyle="width: 75px"/>
+    					<form:input path="mcaBirthDate"  id="mcaBirthDate" cssStyle="width: 85px"/>
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
+    				</tr>
+    				 <tr valign="top">
+    					<td width="25%">Career Group:</td>
+    					<td width="50%" colspan="2">
+    					 <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
+    						<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
+    					</form:select>
+    					</td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Position:</td>
@@ -275,14 +283,7 @@ function doAction(action,formID,sectionID){
     					</form:select>
     					</td>
     				</tr>
-    				 <tr valign="top">
-    					<td width="25%">Career Type:</td>
-    					<td width="50%" colspan="2">
-    					 <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
-    						<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
-    					</form:select>
-    					</td>
-    				</tr>
+    				
     				 
     			</table>
     		<!-- 	</pre> -->

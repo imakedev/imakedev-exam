@@ -71,7 +71,7 @@ $(document).ready(function() {
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
-	}); */
+	});  */
 	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):5;
 	//$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
 	$('#tabs').tabs('select', _company_section-5);

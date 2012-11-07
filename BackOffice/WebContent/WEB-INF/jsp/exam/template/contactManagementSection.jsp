@@ -216,7 +216,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     				  <tr valign="top">
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="mcontactBirthDate" id="mcontactBirthDate" cssStyle="width: 75px"/>
+    					<form:input path="mcontactBirthDate" id="mcontactBirthDate" cssStyle="width: 85px"/>
     					</td>
     				</tr>  
     				<tr valign="top">
