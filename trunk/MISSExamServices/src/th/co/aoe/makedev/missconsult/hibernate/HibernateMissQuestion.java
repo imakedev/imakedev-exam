@@ -249,20 +249,20 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		//Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
 		//SELECT * FROM MISS_QUESTION QUESTION WHERE QUESTION.MQ_NO IS NULL ORDER BY QUESTION.MQ_ID ASC 
 	//	Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null  order by missQuestion.mqId asc ");
-		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=44  order by missQuestion.mqNo asc ");
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=50  order by missQuestion.mqNo asc ");
 		 List<MissQuestion> list =query.list();
 		 int i=1;
 		 for (MissQuestion missQuestion : list) {
-			 /*query=session.createQuery("update MissQuestion missQuestion " +
-						" set missQuestion.mqNameTh1 =:mqNameTh1 ," +
-						" missQuestion.mqChoose =1," +
+			 query=session.createQuery("update MissQuestion missQuestion " +
+						" set missQuestion.mqNameTh1 =:mqNameTh1 " +
+						/*" missQuestion.mqChoose =1," +
 						" missQuestion.missTemplate.mtId =1 ," +
-						" missQuestion.mqNo =:mqNo " +
+						" missQuestion.mqNo =:mqNo " +*/
 						" where missQuestion.mqId=:mqId" );
 			 query.setParameter("mqNameTh1", i+"");
-			 query.setParameter("mqNo",Long.valueOf(i));
+			// query.setParameter("mqNo",Long.valueOf(i));
 			 query.setParameter("mqId", missQuestion.getMqId());
-			 query.executeUpdate();*/
+			 query.executeUpdate();
 			i++;
 			StringBuffer sb=new StringBuffer();
 			for(int j =0;j<4;j++){
@@ -297,13 +297,13 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 					sb.append("ไม่เห็นด้วย");
 				}*/
 				 if(j==0){
-						sb.append("ไม่เห็นด้วยอย่างมาก");
+						sb.append("ไม่เห็นด้วยอย่างยิ่ง");
 					}else if(j==1){
 						sb.append("ไม่เห็นด้วย");
 					}else if(j==2){
-						sb.append("ค่อนข้างเห็นด้วย");
+						sb.append("เห็นด้วย");
 					}else if(j==3){
-						sb.append("เห็นด้วยอย่างมาก");
+						sb.append("เห็นด้วยอย่างยิ่ง");
 					}
 				/* if(j==0){
 						sb.append("1.");
@@ -344,6 +344,7 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 				choice.setMcName(sb.toString());
 				choice.setId(pk);
 				session.saveOrUpdate(choice);
+				
 			}
 		}
 			 

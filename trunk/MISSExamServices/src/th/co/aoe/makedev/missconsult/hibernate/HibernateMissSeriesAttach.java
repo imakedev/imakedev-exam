@@ -232,6 +232,7 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
         //FileOutputStream fileOut = null;
         try
         {
+        	//System.out.println("filename="+filename);
             try {
 				fileIn = new FileInputStream(filename);
 			} catch (FileNotFoundException e) {
@@ -266,7 +267,10 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
           format.setGroupingUsed(false);
           //get config
           Sheet sheet1_0 = wb.getSheetAt(0);
+         // Sheet sheet1_1 = wb.getSheetAt(1);
+      //    System.out.println(sheet1_1.getSheetName());
           int endRow=sheet1_0.getLastRowNum();
+          //System.out.println(sheet1_0.getSheetName());
           Row r=null;
           List < th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig> missEvaluationConfigs=
         		  new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig>();
@@ -275,6 +279,7 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
           for(int i=7;i<=endRow;i++){
         	 r= sheet1_0.getRow(i); 
         	 sb.setLength(0);
+        	// System.out.println("r.getCell(2).getBooleanCellValue()="+r.getCell(2).getStringCellValue());
         	 if(r.getCell(2).getBooleanCellValue()){  // 1=true,0=false;
         		 sb.append("1");
         	 }else
