@@ -206,6 +206,20 @@ function appendContent(data){
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="10%">Career Group:</td>
+	    					 <td align="left" width="24%">  
+	    					   <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
+    								<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
+    						  </form:select>
+	    					 </td> 
+	    					<td align="left" width="10%"></td>
+	    					<td align="left" width="24%">
+	    					
+	    					</td>
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Position:</td>
 	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPosition"/>
 	    					 </td>
@@ -225,7 +239,7 @@ function appendContent(data){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Birth date:</td>
-	    					 <td align="left" width="24%"> <form:input path="mcaBirthDate" cssStyle="width:75px"/>
+	    					 <td align="left" width="24%"> <form:input path="mcaBirthDate" cssStyle="width:85px"/>
 	    					 </td>
 	    					<td align="left" width="10%">Gender:</td>
 	    					<td align="left" width="24%">
@@ -233,20 +247,7 @@ function appendContent(data){
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
-	    				  <tr>
-	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="10%">Career Type:</td>
-	    					 <td align="left" width="24%">  
-	    					   <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
-    								<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
-    						  </form:select>
-	    					 </td> 
-	    					<td align="left" width="10%"></td>
-	    					<td align="left" width="24%">
-	    					
-	    					</td>
-	    					<td align="left" width="15%">&nbsp;</td>
-	    					</tr>
+	    				  
 	    					<%--
 	    					 <tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
