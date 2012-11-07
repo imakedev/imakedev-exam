@@ -48,15 +48,15 @@
 		for the required JAR files. Alternatively you can use another connection pool
 		such as C3P0, similarly configured using Spring.
 	-->
-	<!--  
+	<!-- 	 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			p:password="${jdbc.password}"/>
-			 --> 
-	<!-- 
-	    -->
+		  -->
+	<!--  -->
+	    
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
-       
+      
 	<!-- JNDI DataSource for JEE environments -->
        <!--
          
@@ -146,6 +146,11 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissSaleMap</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptEvalBehavioralValue</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptPlusWorkWheelMessage</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptDominance</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptAttitudeDetectorReport</value> 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector</value> 
 			</list>
    		</property>
    		<!-- 

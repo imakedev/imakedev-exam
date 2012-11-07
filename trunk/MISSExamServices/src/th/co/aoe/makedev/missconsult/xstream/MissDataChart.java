@@ -21,8 +21,9 @@ public class MissDataChart extends VServiceXML implements Serializable {
 	private String mdcSwfName;
 
 	private String mdcData;
-	private String mdcHeight;
-	private String mdcWidth;
+	private String mdcType;
+	/*private String mdcHeight;
+	private String mdcWidth;*/
 	
 	@XStreamAlias("missTestResult")
 	private MissTestResult missTestResult;
@@ -36,23 +37,14 @@ public class MissDataChart extends VServiceXML implements Serializable {
 	public void setMdcData(String mdcData) {
 		this.mdcData = mdcData;
 	}
+ 
 
-	public String getMdcHeight() {
-		return this.mdcHeight;
+	public String getMdcType() {
+		return mdcType;
 	}
-
-	public void setMdcHeight(String mdcHeight) {
-		this.mdcHeight = mdcHeight;
+	public void setMdcType(String mdcType) {
+		this.mdcType = mdcType;
 	}
-
-	public String getMdcWidth() {
-		return this.mdcWidth;
-	}
-
-	public void setMdcWidth(String mdcWidth) {
-		this.mdcWidth = mdcWidth;
-	}
-
 	public MissTestResult getMissTestResult() {
 		return this.missTestResult;
 	}
