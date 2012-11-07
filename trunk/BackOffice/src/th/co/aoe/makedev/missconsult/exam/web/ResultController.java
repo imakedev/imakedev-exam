@@ -341,7 +341,8 @@ public class ResultController
 		} 
        try {
     	   fileSize=JasperExportManager.exportReportToPdf(jasperPrint);
-		} catch (JRException e) {
+    	   
+       } catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
