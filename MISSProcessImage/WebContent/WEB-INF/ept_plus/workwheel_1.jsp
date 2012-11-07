@@ -39,7 +39,7 @@ the Work Wheel Fit.
 	  FusionCharts.setCurrentRenderer('javascript'); // for new version
      //var myChart = new FusionCharts("<c:url value='/Charts/Column2D.swf'/>", "myChartId", "600", "300", "0", "1"); //for new version
      //Bar2D.swf , 500 , 400 
-     var myChart = new FusionCharts("/MISSProcessImage/Charts/Pie3D.swf", "myChartId","560", "400", "0", "0"); //for new version
+     var myChart = new FusionCharts("/MISSProcessImage/Charts/Pie3D.swf", "myChartId","1000", "600", "0", "1"); //for new version
   
      var xml='<chart palette="2" animation="1" pieSliceDepth="30" startingAngle="125">'+
      '<set label="Promoting" value="61.00" displayValue="Promoting,Score,61.00,15.25%" isSliced="1" />'+

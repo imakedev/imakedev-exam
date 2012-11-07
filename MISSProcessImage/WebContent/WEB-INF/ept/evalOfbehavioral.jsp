@@ -26,7 +26,7 @@
 		<td width="40%" style="text-align: center;">
 		<table  width="100%" >
 			<tr>
-				<td colspan="11" style="text-align: center;">${evalBehavioral.meebvKey} (${evalBehavioral.meebvValue})</td>
+				<td colspan="11" style="text-align: center;">${evalBehavioral.meebvKey}</td>
 			</tr>
 			<tr>
 				<td style="text-align: center;">10</td>

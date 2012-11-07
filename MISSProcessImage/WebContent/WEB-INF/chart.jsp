@@ -11,7 +11,16 @@
                 margin:2 2 2 2;
             }
         </style> 
+		
+<c:if test="${mdcType=='FusionCharts'}">
 <script type="text/javascript" src="/MISSProcessImage/Charts/FusionCharts.js"></script>  
+</c:if>
+<c:if test="${mdcType=='PowerCharts'}">
+<script type="text/javascript" src="/MISSProcessImage/PowerChart/Charts/FusionCharts.js"></script>  
+</c:if>
+<c:if test="${mdcType=='FusionWidgets'}">
+<script type="text/javascript" src="/MISSProcessImage/Widgets/Charts/FusionCharts.js"></script>  
+</c:if>
 </head>
 
 <body>
