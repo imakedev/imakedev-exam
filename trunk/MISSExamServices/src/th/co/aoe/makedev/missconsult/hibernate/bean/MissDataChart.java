@@ -27,11 +27,21 @@ public class MissDataChart implements Serializable {
 	@Column(name="MDC_DATA")
 	private String mdcData;
 
-	@Column(name="MDC_HEIGHT")
+    public String getMdcType() {
+		return mdcType;
+	}
+
+	public void setMdcType(String mdcType) {
+		this.mdcType = mdcType;
+	}
+
+	@Column(name="MDC_TYPE")
+	private String mdcType;
+	/*@Column(name="MDC_HEIGHT")
 	private String mdcHeight;
 
 	@Column(name="MDC_WIDTH")
-	private String mdcWidth;
+	private String mdcWidth;*/
 
 	//bi-directional many-to-one association to MissTestResult
     @ManyToOne
@@ -57,21 +67,7 @@ public class MissDataChart implements Serializable {
 		this.mdcData = mdcData;
 	}
 
-	public String getMdcHeight() {
-		return this.mdcHeight;
-	}
-
-	public void setMdcHeight(String mdcHeight) {
-		this.mdcHeight = mdcHeight;
-	}
-
-	public String getMdcWidth() {
-		return this.mdcWidth;
-	}
-
-	public void setMdcWidth(String mdcWidth) {
-		this.mdcWidth = mdcWidth;
-	}
+	 
 
 	public MissTestResult getMissTestResult() {
 		return this.missTestResult;
