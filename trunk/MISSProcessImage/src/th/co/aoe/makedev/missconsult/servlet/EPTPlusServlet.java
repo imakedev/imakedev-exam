@@ -73,7 +73,7 @@ public class EPTPlusServlet extends HttpServlet {
 		}else if(page.indexOf("workwheel")!=-1){
 			 List<MissEptPlusWorkWheelMessage> messages= getMissEptPlusWorkWheelMessages(mtrId,page,lang);
 			session.setAttribute("messages", messages);
-			if(page.indexOf("workwheel_2")!=-1)
+			if(page.indexOf("workwheel_1")!=-1)
 				session.setAttribute("xmlData", getXML(mtrId,"chart2_eptplus",lang));
 			
 		}else if(page.indexOf("analysis_")!=-1){
@@ -148,7 +148,7 @@ public class EPTPlusServlet extends HttpServlet {
 							List<MissEptEvalBehavioralValue> missEptEvalBehavioralValues =new ArrayList<MissEptEvalBehavioralValue>();
 							//sql="SELECT * FROM "+SCHEMA+".MISS_EPT_EVAL_BEHAVIORAL_VALUE b_group order by b_group.meebg_id  ";
 							sqlSB.setLength(0);
-							sqlSB.append("SELECT b_value.meeb_key as MEEB_KEY ,b_value.meebv_value as MEEBV_VALUE ,b_config.MEEB_MESSAGE1 as MEEB_MESSAGE1,b_config.MEEB_MESSAGE2 as MEEB_MESSAGE2 " +
+							sqlSB.append("SELECT b_config.meeb_key as MEEB_KEY ,b_value.meebv_value as MEEBV_VALUE ,b_config.MEEB_MESSAGE1 as MEEB_MESSAGE1,b_config.MEEB_MESSAGE2 as MEEB_MESSAGE2 " +
 								" FROM "+SCHEMA+".MISS_EPT_EVAL_BEHAVIORAL_VALUE b_value left  join "+SCHEMA+".MISS_EPT_EVAL_BEHAVIORAL_GROUP b_group" +
 								"	on (b_value.meebg_id=b_group.meebg_id and b_group.meebg_lang='"+lang+"') left join "+SCHEMA+".MISS_EPT_EVAL_BEHAVIORAL b_config" +
 								"	on ( b_value.meebg_id=b_config.meebg_id and b_value.meebv_order=b_config.meeb_order and b_config.meeb_lang='"+lang+"' )" +
@@ -621,3 +621,6 @@ where mtr_id=61 and metd_lang='1' order by metd_order asc
 	return results;
 	}
 }
+
+
+

@@ -65,6 +65,7 @@ public class ChartServlet extends HttpServlet {
 		String[] data = getDefualtXML(mtrId,key);
 		 String xmlData=data[0];
 		 String swfName=data[1];
+		 String mdcType=data[2];
 		  /* if(type.equals("ept") || type.equals("ept_plus")){
 			   xmlData = getBarChartXML(mtrId,chart,lang);
 		   }
@@ -74,6 +75,7 @@ public class ChartServlet extends HttpServlet {
 		
 			session.setAttribute("XMLDATA", xmlData);
 	        session.setAttribute("swfName", swfName);
+	        session.setAttribute("mdcType", mdcType);
 	        session.setAttribute("width", width);
 	        session.setAttribute("height", height);
 	        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/chart.jsp");
@@ -107,10 +109,11 @@ public class ChartServlet extends HttpServlet {
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
 		 PreparedStatement pst = null;
 		 ResultSet result= null;
-		 String[] data=new String[2];
+		 String[] data=new String[3];
 		 String xmlData="";
 		 String swfName="";
-		 mdc_key="chart1"; 
+		 String mdcType="";
+		// mdc_key="chart1"; 
 		try {
 			basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
 			con = basicDs.getConnection();//("oracle", "password");//Connection();
@@ -122,6 +125,7 @@ public class ChartServlet extends HttpServlet {
 						while (result.next()) { 
 							xmlData=result.getString("MDC_DATA");
 							swfName=result.getString("MDC_SWF_NAME");
+							mdcType=result.getString("MDC_TYPE");
 						}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -151,6 +155,12 @@ public class ChartServlet extends HttpServlet {
 		}
 		data[0]=xmlData;
 		data[1]=swfName;
+		/*/usr/local/data/FusionChart/FusionChartsSuiteEval/FusionCharts XT
+		/usr/local/data/FusionChart/FusionChartsSuiteEval/FusionMaps XT
+		/usr/local/data/FusionChart/FusionChartsSuiteEval/FusionWidgets XT
+		/usr/local/data/FusionChart/FusionChartsSuiteEval/PowerCharts XT*/
+		data[2]=(mdcType!=null&&mdcType.length()>0)?mdcType:"FusionCharts";
+		
 		return data;
 	}
 
