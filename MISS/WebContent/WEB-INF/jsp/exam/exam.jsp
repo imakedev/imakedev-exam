@@ -194,7 +194,7 @@ function appendContent(data){
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
  <div id="dialog-timeOut" title="TimeOut" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
-	TimeOut
+	You're running out of time
 </div>
  <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
  <div class="container-fluid">
@@ -208,14 +208,14 @@ function appendContent(data){
     	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" />
     	</h1>
     	  </div> 
-    	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
+    	<div align="right" style="position: absolute; z-index:0; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
        <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown">hh:mm</span><br/><br/>
-        TH | EN        
+         <%-- <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> --%>
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
         <sec:authentication var="myUser" property="principal.myUser"/> 
        <%--  ${myUser.fullName} --%>
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
             </div>
            </div>
            </div>

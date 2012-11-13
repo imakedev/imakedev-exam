@@ -83,7 +83,16 @@ $(document).ready(function() {
  // format: 'HMS', description: ''});
 	 // format: 'hms', description: ''});
 	  format: 'DHMS', description: ''});
+	 
 });
+/* window.onbeforeunload = function() {
+	//alert("You work will be lost.");
+	return "You work will be lost.";
+};
+window.history.go = function(){
+	  alert("can't back");
+	  return false;
+}; */
 function loadDynamicPage(pageId){
 	//	var id="1";
 	
@@ -126,7 +135,10 @@ function appendContent(data){
 	appendContentWithId(data,"_content");
 	
 }
-
+function logoutExam(){
+	 window.location.href="<c:url value='/logout'/>";
+	 
+}
 </script>
 </head>
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
@@ -144,12 +156,12 @@ function appendContent(data){
     	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" />
     	</h1>
     	  </div> 
-    	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
+    	<div align="right" style="position: absolute; z-index:0; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
        <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown">hh:mm</span><br/><br/>
-        TH | EN        
+        <%-- <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> --%>       
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
             </div>
            </div>
            </div>
@@ -175,6 +187,17 @@ function appendContent(data){
 	    					</tr> 
 	    					</table> 
 	    					</form>
+	    		<table border="0" width="100%" style="font-size: 13px">
+              				<tr>
+	    					 <td align="left" width="100%" colspan="6"><br/></td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="center" width="100%">
+	    					 <a class="btn btn-success" onclick="logoutExam()" ><span style="color: white;font-weight: bold;">&nbsp;Submit&nbsp;</span></a>
+	    					 </td> 
+	    					</tr> 
+	    					</table>
+	    					
 	   
        
 </fieldset> 

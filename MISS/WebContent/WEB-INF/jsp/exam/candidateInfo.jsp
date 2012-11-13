@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.8.21.custom.min.js'/>"></script>
 
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.countdown.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/bday-picker.min.js'/>"></script> 
 
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
@@ -79,6 +80,7 @@ $(document).ready(function() {
 	  _path=_path.split(";jsessionid=")[0];
 	  //alert(_path.split(";jsessionid=").length);
   }
+  /*
   $("#mcaBirthDate" ).datepicker({
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
@@ -87,6 +89,19 @@ $(document).ready(function() {
 		changeMonth: true,
 		changeYear: true
 	});
+  */
+  $("#picker2").birthdaypicker({
+      futureDates: true,
+     // maxYear: 2020,
+      maxAge: 90 ,
+     // defaultDate: "10-17-1980"
+      defaultDate: "${missExamForm.mcaBirthDate}"
+    });
+	 $('select[class="birth-month"]').css("width","70px");
+	 $('select[class="birth-day"]').css("width","61px");
+	 $('select[class="birth-year"]').css("width","63px");
+	 $('fieldset[class="birthday-picker"]').css("padding","0px");
+	 
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
@@ -98,6 +113,7 @@ function doStart(){
 	//document.forms["missExamForm"].submit();
 //	$("#a_start").click(); 
 //alert("x");
+  $("#mcaBirthDate").val($("#birthdate").val());
 	$.post("exam/info",$("#missExamForm").serialize(), function(data) {
 	   window.location.href='${examInfoUrl}';
 	});
@@ -161,12 +177,13 @@ function appendContent(data){
     	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;"><h1><img src="<c:url value='/resources/images/logowebmc.png'/>" />
     	</h1>
     	  </div> 
-    	<div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
+    	<!-- <div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;"> -->
+    	<div align="right" style="position: absolute; z-index:0; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
        <strong>System Time:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown">hh:mm</span><br/><br/>
-        TH | EN        
+        <%-- <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> --%>      
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
             </div>
            </div>
            </div>
@@ -239,7 +256,10 @@ function appendContent(data){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Birth date:</td>
-	    					 <td align="left" width="24%"> <form:input path="mcaBirthDate" cssStyle="width:85px"/>
+	    					 <td align="left" width="24%"> 
+	    					 <div class="picker" id="picker2"></div> 
+    						<form:hidden path="mcaBirthDate"  id="mcaBirthDate"/>
+	    				<%-- 	 <form:input path="mcaBirthDate" cssStyle="width:85px"/> --%>
 	    					 </td>
 	    					<td align="left" width="10%">Gender:</td>
 	    					<td align="left" width="24%">
