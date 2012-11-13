@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
 
@@ -22,4 +24,7 @@ public interface MissCandidateService {
 		
 		@SuppressWarnings("rawtypes")
 		public  List exportMissCandidate(String[] mcaIds)throws DataAccessException  ;
+		
+		public MissAccount findMissAccountById(Long maId)throws DataAccessException  ;
+		public MissSery findMissSeryById(Long msId)throws DataAccessException  ;
 }

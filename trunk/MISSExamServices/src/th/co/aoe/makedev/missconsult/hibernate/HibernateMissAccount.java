@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissContact;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
 import th.co.aoe.makedev.missconsult.managers.MissAccountService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -25,7 +28,8 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
 public class HibernateMissAccount  extends HibernateCommon implements MissAccountService {
-
+	private static SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+	 //2012-05-21 23:59:59.0
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
@@ -35,18 +39,38 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public MissAccount findMissAccountById(Long maId)
+	public th.co.aoe.makedev.missconsult.xstream.MissAccount findMissAccountById(Long maId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		MissAccount missAccount = null;
+		th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn =null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
 		query.setParameter("maId", maId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missAccount=(MissAccount)obj;
+			xntcCalendarReturn= new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+			query=session.createQuery("select count(missCandidate) from MissCandidate missCandidate " +
+					" where missCandidate.mcaStatus ='2' " +
+					" and missCandidate.missAccount.maId ="+maId); 
+			Object countObj=query.uniqueResult();  
+			BeanUtils.copyProperties(missAccount,xntcCalendarReturn,new String[]{"missTheme","missIndustryMaster"});
+			xntcCalendarReturn.setMaAvailableCandidate((Long)countObj);
+			
+			if(missAccount.getMissTheme()!=null && missAccount.getMissTheme().getMtId()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+				BeanUtils.copyProperties(missAccount.getMissTheme(),missTheme); 
+				xntcCalendarReturn.setMissTheme(missTheme);
+			}
+			if(missAccount.getMissIndustryMaster()!=null && missAccount.getMissIndustryMaster().getMimId()!=null){
+				th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+				BeanUtils.copyProperties(missAccount.getMissIndustryMaster(),missIndustryMaster); 
+				xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
+			}
 		}
-	  return missAccount;
+		
+	  return xntcCalendarReturn;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public Long saveMissAccount(MissAccount transientInstance)
@@ -79,21 +103,45 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 	
 	
 
-	private int getSize(Session session, MissAccount instance) throws Exception{
+	private int getSize(Session session, MissAccount instance,String maContactName) throws Exception{
 		try {
 			String maType=instance.getMaType();
 			String maRegisterType = instance.getMaRegisterType();
 			String maRegisterNo = instance.getMaRegisterNo();
 			Timestamp maRegisterFrom = instance.getMaRegisterFrom();
 			Timestamp maRegisterTo = instance.getMaRegisterTo();
+			
 			//String maContactName = instance.getMaContactName();
 			String maPhone = instance.getMaPhone();
 			String maName = instance.getMaName();
-		
-		
+			Query query=null;
+			String maId_in="";
+			if(maContactName!=null && maContactName.length()>0){
+				StringBuffer sb =new StringBuffer(" select missContact from MissContact missContact " +
+						" where lcase(concat(concat(missContact.mcontactName,' '),missContact.mcontactLastname)) like '%"+maContactName.trim().toLowerCase()+"%' ");
+						/*"where lcase(missContact.mcontactName) like '%"+maContactName.trim().toLowerCase()+"%' " +
+						" or lcase(missContact.mcontactLastname) like '%"+maContactName.trim().toLowerCase()+"%' ");*/					 
+				query=session.createQuery(sb.toString());
+				List l = query.list();
+				int size=l.size();
+				if(size>0)
+					maId_in="(";
+				for (int i = 0; i < size; i++) {
+					MissContact contact=(MissContact)l.get(i); 
+					if(i==(size-1)){
+						maId_in=maId_in+""+contact.getMcontactRef().intValue()+")";
+					}else
+						maId_in=maId_in+""+contact.getMcontactRef().intValue()+",";
+					
+				}
+			}
 			StringBuffer sb =new StringBuffer(" select count(missAccount) from MissAccount missAccount ");
 			
 			boolean iscriteria = false;
+			if(maId_in.length()>0){
+				 sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+				  iscriteria = true;
+			}
 			if(maType !=null && maType.length()> 0 ){  
 				//criteria.add(Expression.eq("megId", megId));	
 				 sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
@@ -109,11 +157,20 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}
-			/*if(maContactName !=null && maContactName.trim().length() > 0){  
+			if(maRegisterTo !=null && maRegisterFrom!=null){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"));
+				sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
 				  iscriteria = true;
-			}*/
+				  //2012-05-21 23:59:59.0 
+			}else if(maRegisterTo !=null && maRegisterFrom==null){ 
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+					  iscriteria = true; 
+			}else if(maRegisterTo ==null && maRegisterFrom!=null){ 
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
+				  iscriteria = true; 
+		    }
 			if(maPhone !=null && maPhone.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
@@ -128,7 +185,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 		
 			
 			
-			Query query =session.createQuery(sb.toString());
+			  query =session.createQuery(sb.toString());
 			 
 				 return ((Long)query.uniqueResult()).intValue(); 
 		} catch (HibernateException re) {
@@ -141,7 +198,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissAccount(MissAccount instance,Pagging pagging) throws DataAccessException {
+	 public List searchMissAccount(MissAccount instance,String maContactName,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
@@ -157,14 +214,42 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				String maRegisterNo = instance.getMaRegisterNo();
 				Timestamp maRegisterFrom = instance.getMaRegisterFrom();
 				Timestamp maRegisterTo = instance.getMaRegisterTo();
+				// System.out.println("xxxxxxxx="+maRegisterFrom+","+maRegisterTo);
 				//String maContactName = instance.getMaContactName();
 				String maPhone = instance.getMaPhone();
 				String maName = instance.getMaName();
-			
-			
+				Query query = null;
+				String maId_in="";
+				if(maContactName!=null && maContactName.length()>0){
+					StringBuffer sb =new StringBuffer(" select missContact from MissContact missContact " +
+							" where lcase(concat(concat(missContact.mcontactName,' '),missContact.mcontactLastname)) like '%"+maContactName.trim().toLowerCase()+"%' ");
+							/*"where lcase(missContact.mcontactName) like '%"+maContactName.trim().toLowerCase()+"%' " +
+							" or lcase(missContact.mcontactLastname) like '%"+maContactName.trim().toLowerCase()+"%' ");*/					 
+					query=session.createQuery(sb.toString());
+					List l = query.list();
+					int size=l.size();
+					if(size>0)
+						maId_in="(";
+					for (int i = 0; i < size; i++) {
+						MissContact contact=(MissContact)l.get(i); 
+						if(i==(size-1)){
+							maId_in=maId_in+""+contact.getMcontactRef().intValue()+")";
+						}else
+							maId_in=maId_in+""+contact.getMcontactRef().intValue()+",";
+						
+					}
+				}
+				
+				/*System.out.println("xxxxxxxxxx =maId_in"+maId_in);
+				System.out.println("maContactName ="+maContactName);*/
+				
 				StringBuffer sb =new StringBuffer(" select missAccount from MissAccount missAccount ");
 				
 				boolean iscriteria = false;
+				if(maId_in.length()>0){
+					 sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+					  iscriteria = true;
+				}
 				if(maType !=null && maType.length()> 0 ){  
 					//criteria.add(Expression.eq("megId", megId));	
 					 sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
@@ -179,12 +264,22 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
-				}
-				/*if(maContactName !=null && maContactName.trim().length() > 0){  
+				} 
+				if(maRegisterTo !=null && maRegisterFrom!=null){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maContactName) like '%"+maContactName.trim().toLowerCase()+"%'"));
+					sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
 					  iscriteria = true;
-				}*/
+					  //2012-05-21 23:59:59.0 
+				}else if(maRegisterTo !=null && maRegisterFrom==null){ 
+						//criteria.add(Expression.eq("megId", megId));	
+						sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+						  iscriteria = true; 
+				}else if(maRegisterTo ==null && maRegisterFrom!=null){ 
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
+					  iscriteria = true; 
+			    }
+				 
 				if(maPhone !=null && maPhone.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
@@ -198,9 +293,9 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missAccount."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
-				Query query =session.createQuery(sb.toString());
+				 query =session.createQuery(sb.toString());
 				// set pagging.
-				 String size = String.valueOf(getSize(session, instance)); 
+				 String size = String.valueOf(getSize(session, instance,maContactName)); 
 				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
@@ -315,16 +410,19 @@ int result = query.executeUpdate();*/
 			return query.executeUpdate();
 	}
 	@Override
-	public MissAccount refill(Long maId,Long refill) throws DataAccessException {
+	public th.co.aoe.makedev.missconsult.xstream.MissAccount refill(Long maId,Long refill) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		MissAccount missAccount = null;
+		th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn =null;
 		Query query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
 		query.setParameter("maId", maId);
 		Long refill_add=0l;
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missAccount=(MissAccount)obj;
+			xntcCalendarReturn= new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+			BeanUtils.copyProperties(missAccount,xntcCalendarReturn,new String[]{"missTheme","missIndustryMaster"});	
 		}
 		if(missAccount!=null){
 			Long total=missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l;
@@ -339,8 +437,14 @@ int result = query.executeUpdate();*/
 			query.setParameter("maTotalUnit", refill_add);
 			query.executeUpdate();
 			missAccount.setMaTotalUnit(refill_add);
+			 
+			query=session.createQuery("select count(missCandidate) from MissCandidate missCandidate " +
+					" where missCandidate.mcaStatus ='2' " +
+					" and missCandidate.missAccount.maId ="+maId); 
+			Object countObj=query.uniqueResult();
+			xntcCalendarReturn.setMaAvailableCandidate((Long)countObj); 
 		} 
-		return missAccount;
+		return xntcCalendarReturn;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public int deleteMissAccount(MissAccount persistentInstance)
@@ -376,7 +480,7 @@ int result = query.executeUpdate();*/
 					xmissAccountSeriesMap.setMasmAvailable(missAccountSeriesMap.getMasmAvailable());
 					xmissAccountSeriesMap.setMasmExpire(missAccountSeriesMap.getMasmExpire());
 					xmissAccountSeriesMap.setMasmOrderUnit(missAccountSeriesMap.getMasmOrderUnit());
-					xmissAccountSeriesMap.setMasmStatus(missAccountSeriesMap.getMasmStatus());
+					xmissAccountSeriesMap.setMasmStatus(missAccountSeriesMap.getMasmStatus()); 
 					
 					/* query=session.createQuery("select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId="+missAccountSeriesMap.getId().getMsId().intValue());
 					 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> missSeriesMapList = query.list();
@@ -451,6 +555,12 @@ int result = query.executeUpdate();*/
 						 groupStr.append(missExamList.get(0).getMissExamGroup().getMegName()+" ");
 					 }
 				}
+				 query=session.createQuery("select count(missCandidate) from MissCandidate missCandidate " +
+							" where missCandidate.mcaStatus ='2' " +
+							" and missCandidate.missSery.msId =" +missSery.getMsId()+
+							" and missCandidate.missAccount.maId ="+maId); 
+				 	Object countObj=query.uniqueResult(); 
+				 	xmissSery.setMasmCandidateAvailable(((Long)countObj).intValue()+"");
 				 xmissSery.setGroupStr(groupStr.toString());
 				 xmissSeryList.add(xmissSery);
 			}

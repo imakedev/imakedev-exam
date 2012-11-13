@@ -45,6 +45,8 @@ public class MissSery extends VServiceXML implements Serializable {
 	private String masmStatus;
 
 	private String masmAvailable;
+	
+	private String masmCandidateAvailable;
 
 	private String groupStr;
 	
@@ -193,6 +195,14 @@ public class MissSery extends VServiceXML implements Serializable {
 
 	public void setEvalFileHotlink(String evalFileHotlink) {
 		this.evalFileHotlink = evalFileHotlink;
+	}
+
+	public String getMasmCandidateAvailable() {
+		return masmCandidateAvailable;
+	}
+
+	public void setMasmCandidateAvailable(String masmCandidateAvailable) {
+		this.masmCandidateAvailable = masmCandidateAvailable;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {

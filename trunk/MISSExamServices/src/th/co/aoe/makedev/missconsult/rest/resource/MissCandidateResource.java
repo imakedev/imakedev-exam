@@ -222,7 +222,24 @@ public class MissCandidateResource extends BaseResource {
 							}
 							xbpsTerm.setMcaId(mcaId);
 						
-							return returnUpdateRecord(entity,xbpsTerm,mcaId.intValue());
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=missCandidateService.findMissAccountById(bpsTerm.getMissAccount().getMaId());
+							if(missAccount!=null){
+								th.co.aoe.makedev.missconsult.xstream.MissAccount xmissAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+								BeanUtils.copyProperties(missAccount, xmissAccount,id_ignore_theme);
+								xbpsTerm.setMissAccount(xmissAccount);
+							}
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissSery missSery= missCandidateService.findMissSeryById(bpsTerm.getMissSery().getMsId());
+							if(missSery!=null){
+								th.co.aoe.makedev.missconsult.xstream.MissSery xmissSery=new th.co.aoe.makedev.missconsult.xstream.MissSery();
+								BeanUtils.copyProperties(missSery, xmissSery);
+								xbpsTerm.setMissSery(xmissSery);
+							}
+							List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(1);
+							xntcCalendars.add(xbpsTerm);
+							VResultMessage vresultMessage = new VResultMessage();
+							vresultMessage.setResultListObj(xntcCalendars);
+							return getRepresentation(entity, vresultMessage, xstream);
+							//return returnUpdateRecord(entity,xbpsTerm,mcaId.intValue());
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_UPDATE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());

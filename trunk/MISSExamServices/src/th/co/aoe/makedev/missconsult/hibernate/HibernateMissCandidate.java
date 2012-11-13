@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissChoice;
@@ -42,6 +44,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 	private static 	final String[] ignore_id=new String[]{"missAccount","missSery","missCareerMaster","missIndustryMaster"};
 	private static final String[] id_ignore_theme=new String[]{"missTheme","missIndustryMaster"};
 	private static final SecureRandom random = new SecureRandom();
+	private static final  SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -286,9 +289,26 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 						  if(map.getMasmAvailable()!=null && map.getMasmAvailable().length()>0)
 							  masmAvailable=map.getMasmAvailable();
 					  }
-						  
+					  
+					  sb.setLength(0);
+					  sb.append("select missSeryUse from MissSeryUse missSeryUse " +
+					  		"where missSeryUse.id.mcaId="+missCandidate.getMcaId().intValue()+" order by missSeryUse.id.msuDdateTime desc "
+					  		 );					  
+					  query =session.createQuery(sb.toString());
+					  query.setFirstResult(0);
+				      query.setMaxResults(1);
+				      Object obj= query.uniqueResult();
+				      String lastLogin="";
+				      if(obj!=null){
+				    	  th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse missSeryUse=(th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse)obj;
+				    	  if(missSeryUse.getId().getMsuDdateTime()!=null){
+				    		  lastLogin=format.format(missSeryUse.getId().getMsuDdateTime());
+				    	  };
+				      }
+					  
 					  th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate=getxMissCandidateObject(missCandidate);
 					  xmissCandidate.setMasmAvailable(masmAvailable);
+					  xmissCandidate.setLastLogin(lastLogin);
 					  xntcCalendars.add(xmissCandidate);
 					  
 					 // masmAvailable query.list();
@@ -446,6 +466,11 @@ int result = query.executeUpdate();*/
 			return returnRecord; 
 		}else if(section.equals("1")){
 			//logger.debug("getMissIndustryMaster="+transientInstance.getMissIndustryMaster().getMimId());
+			Long mcmId=null;
+			if(transientInstance.getMissIndustryMaster()!=null && transientInstance.getMissIndustryMaster().getMimId()!=null 
+					&& transientInstance.getMissIndustryMaster().getMimId().intValue()!=0){
+				mcmId=transientInstance.getMissIndustryMaster().getMimId();
+			}
 			logger.debug("getMissCareerMaster="+transientInstance.getMissCareerMaster().getMcmId());
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaType =:mcaType ,  " +
@@ -460,7 +485,7 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaDepartment =:mcaDepartment ,  " + 
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
 					" missCandidate.mcaTitleType =:mcaTitleType  ,  " +
-				//	" missCandidate.missIndustryMaster.mimId =:mimId   , " +
+					((mcmId!=null)?(" missCandidate.missIndustryMaster.mimId =:mimId  , missCandidate.mimExt=:mimExt, " ):"")+
 					" missCandidate.missCareerMaster.mcmId =:mcmId    " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaType", transientInstance.getMcaType());
@@ -475,7 +500,10 @@ int result = query.executeUpdate();*/
 			query.setParameter("mcaDepartment", transientInstance.getMcaDepartment());
 			query.setParameter("mcaPhone", transientInstance.getMcaPhone());
 			query.setParameter("mcaTitleType", transientInstance.getMcaTitleType());
-			//query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
+			if(mcmId!=null){
+				query.setParameter("mimId", transientInstance.getMissIndustryMaster().getMimId());
+				query.setParameter("mimExt", transientInstance.getMimExt());
+			}
 			query.setParameter("mcmId", transientInstance.getMissCareerMaster().getMcmId());
 			//d
 			return query.executeUpdate();
@@ -536,6 +564,11 @@ int result = query.executeUpdate();*/
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		String username="";
 		int canUpdate = 0;
+		Long msId=null;
+		Long msUnitCost=null;
+		String mcaStatus=null;
+		Long maId=null;
+		Long maTotalUnit=null;
 		try{
 			Query query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId=:mcaId");
 			query.setParameter("mcaId", persistentInstance.getMcaId());
@@ -543,17 +576,57 @@ int result = query.executeUpdate();*/
 			if(obj!=null){
 				MissCandidate missCandidate=(MissCandidate)obj;
 				username=missCandidate.getMcaUsername();
+				msId=missCandidate.getMissSery().getMsId();
+				msUnitCost=missCandidate.getMissSery().getMsUnitCost();
+				mcaStatus=missCandidate.getMcaStatus();
+				maId=missCandidate.getMissAccount().getMaId();
+				maTotalUnit=missCandidate.getMissAccount().getMaTotalUnit();
 				session.delete(missCandidate);
-			}
-			
-	
-		
+				
+				
+				 if(mcaStatus!=null && mcaStatus.equals("2")  // refund
+						 && msId!=null && maId!=null && msUnitCost!=null){ 
+					   query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap" +
+					   		"  where missAccountSeriesMap.id.maId=:maId and missAccountSeriesMap.id.msId=:msId");  
+						query.setParameter("maId", maId);
+						query.setParameter("msId",msId);
+						 obj=query.uniqueResult();
+						 if(obj!=null){
+							 MissAccountSeriesMap missAccountSeriesMap=(MissAccountSeriesMap)obj;
+							int masmAvailable= missAccountSeriesMap.getMasmAvailable()!=null?(Integer.parseInt(missAccountSeriesMap.getMasmAvailable())):0;
+							
+							masmAvailable=masmAvailable+msUnitCost.intValue();
+							 query=session.createQuery("update MissAccountSeriesMap missAccountSeriesMap " +
+										" set missAccountSeriesMap.masmAvailable =:masmAvailable  " + 
+										" where missAccountSeriesMap.id.maId=:maId " +
+										" and missAccountSeriesMap.id.msId=:msId ");
+							 	query.setParameter("masmAvailable", masmAvailable+"");
+							    query.setParameter("maId", maId);
+								query.setParameter("msId",msId);
+								query.executeUpdate();
+								
+								maTotalUnit = new Long(maTotalUnit.intValue()+msUnitCost.intValue());
+								query=session.createQuery("update MissAccount missAccount " +
+										" set missAccount.maTotalUnit =:maTotalUnit  " + 
+										" where missAccount.maId=:maId " +
+										" ");
+							 	query.setParameter("maTotalUnit", maTotalUnit);
+							    query.setParameter("maId", maId); 
+								query.executeUpdate();
+						 }
+				   }
+			}  
 	   if(username!=null && username.length()>0){
 		   query=session.createQuery("delete User user where user.username =:username");
 		   query.setParameter("username",username);
 			int result = query.executeUpdate();
 	   }
-		
+	  
+	  /* 1=used,
+			   2=avaliable
+			   
+		d 
+		MissSery*/
 		canUpdate =1;
 		}finally {
 			if (session != null) {
@@ -670,6 +743,33 @@ int result = query.executeUpdate();*/
 		}
 		return transList;
 	
+	}
+	@Override
+	public MissAccount findMissAccountById(Long maId)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissAccount missAccount = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
+		query.setParameter("maId", maId);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missAccount=(MissAccount)obj;
+		}
+	  return missAccount;
+	}
+	@Override
+	public MissSery findMissSeryById(Long msId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissSery missSery = null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missSery from MissSery missSery where missSery.msId=:msId");
+		query.setParameter("msId", msId);
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missSery=(MissSery)obj;
+		}
+	  return missSery;
 	}
 	 
 

@@ -98,6 +98,9 @@ public class MissCandidate implements Serializable {
  	@JoinColumn(name="MIM_ID")
  	private MissIndustryMaster missIndustryMaster;
      
+    @Column(name="MIM_EXT")
+  	private String mimExt;
+     
 	@Column(name="MCA_PICTURE_HOTLINK")
 	private String mcaPictureHotlink;
   
@@ -320,6 +323,14 @@ public class MissCandidate implements Serializable {
 
 	public void setMissIndustryMaster(MissIndustryMaster missIndustryMaster) {
 		this.missIndustryMaster = missIndustryMaster;
+	}
+
+	public String getMimExt() {
+		return mimExt;
+	}
+
+	public void setMimExt(String mimExt) {
+		this.mimExt = mimExt;
 	}
 
 	

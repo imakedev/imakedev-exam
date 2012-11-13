@@ -72,24 +72,12 @@ public class MissAccountResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_FIND_BY_ID)){
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount ntcCalendarReturn = missAccountService.findMissAccountById(bpsTerm.getMaId());
-						logger.debug(" object return ="+ntcCalendarReturn);
-							if(ntcCalendarReturn!=null){
+							th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn  = missAccountService.findMissAccountById(bpsTerm.getMaId());
+						logger.debug(" object return ="+xntcCalendarReturn);
+							if(xntcCalendarReturn!=null){
 								VResultMessage vresultMessage = new VResultMessage();
 								List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
-								th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,id_ignore);
-								if(ntcCalendarReturn.getMissTheme()!=null && ntcCalendarReturn.getMissTheme().getMtId()!=null){
-									th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
-									BeanUtils.copyProperties(ntcCalendarReturn.getMissTheme(),missTheme); 
-									xntcCalendarReturn.setMissTheme(missTheme);
-								}
-								if(ntcCalendarReturn.getMissIndustryMaster()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId()!=null){
-									th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
-									BeanUtils.copyProperties(ntcCalendarReturn.getMissIndustryMaster(),missIndustryMaster); 
-									xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
-								}
-								
+								 
 								xntcCalendarReturn.setPagging(null);
 								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
@@ -116,11 +104,10 @@ public class MissAccountResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_REFILL)){
 							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount ntcCalendarReturn=missAccountService.refill(xbpsTerm.getMaId(),xbpsTerm.getRefill());
+							th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn=missAccountService.refill(xbpsTerm.getMaId(),xbpsTerm.getRefill());
 							VResultMessage vresultMessage = new VResultMessage();
 							List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>(1);
-							th.co.aoe.makedev.missconsult.xstream.MissAccount xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAccount();
-							BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,id_ignore);	
+							
 							xntcCalendarReturn.setPagging(null);
 							xntcCalendars.add(xntcCalendarReturn);
 							vresultMessage.setResultListObj(xntcCalendars);
@@ -152,7 +139,7 @@ public class MissAccountResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missAccountService.searchMissAccount(bpsTerm,page);
+							List result = (List) missAccountService.searchMissAccount(bpsTerm,xbpsTerm.getMaContactName(), page);
 							if (result != null && result.size() == 2) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount>) result
 										.get(0);
@@ -204,7 +191,7 @@ public class MissAccountResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
 	//	bpsTerm.setMegName("Aoe");
-		List result = (List) missAccountService.searchMissAccount(bpsTerm,page);
+		List result = (List) missAccountService.searchMissAccount(bpsTerm,null,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>();
 		if (result != null && result.size() == 2) {

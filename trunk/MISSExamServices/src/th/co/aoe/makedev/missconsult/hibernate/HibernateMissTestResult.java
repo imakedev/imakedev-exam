@@ -408,7 +408,43 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						+ " " + pagging.getSortBy().toLowerCase());
 			}
 			logger.debug("sb ========================== >" + sb.toString());
-			Query query = session.createSQLQuery(sb.toString());
+			
+			// get header
+			Query 	query = session
+					.createQuery("select issEvaluationConfig from MissEvaluationConfig issEvaluationConfig "
+							+ " where issEvaluationConfig.id.mecType='2' "
+							+ " and issEvaluationConfig.id.msId="
+							+ msId.intValue()
+							+ " "
+							+ " and issEvaluationConfig.columnIsShow='1' order by issEvaluationConfig.mecOrder asc ");
+
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig> missEvaluationConfigs = query
+					.list();
+			// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>
+			// xmissEvaluationConfig=null;
+			List<String> axisHeaders = null;
+			if (missEvaluationConfigs != null
+					&& missEvaluationConfigs.size() > 0) {
+				// xmissEvaluationConfig=new
+				// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>(missEvaluationConfigs.size());
+				axisHeaders = new ArrayList<String>(
+						missEvaluationConfigs.size());
+				for (th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig missEvaluationConfig : missEvaluationConfigs) {
+					// th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig
+					// evaluationConfig =new
+					// th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig();
+					// evaluationConfig.setColumnCode(missEvaluationConfig.getId().getColumnCode());
+					// xmissEvaluationConfig.add(evaluationConfig);
+					axisHeaders.add(missEvaluationConfig.getId()
+							.getColumnCode());
+				}
+			} else {
+				// xmissEvaluationConfig=new
+				// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>();
+				axisHeaders = new ArrayList<String>(0);
+			}
+			// end get header
+			query = session.createSQLQuery(sb.toString());
 			// set pagging.
 			String size = String.valueOf(getSize(session, instance));
 			logger.debug(" first Result="
@@ -474,13 +510,22 @@ public class HibernateMissTestResult extends HibernateCommon implements
 								"and missTestShow.columnIsShow='1' order by missTestShow.mtsOrder ");
 				List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShowResult = query
 						.list();
+				List<String> axisValues =null;
 				if (missTestShowResult != null && missTestShowResult.size() > 0) {
-					List<String> axisValues = new ArrayList<String>(
+					axisValues= new ArrayList<String>(
 							missTestShowResult.size());
 					for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShowResult) {
 						axisValues.add(missTestShow.getMtsValue());
 					}
 					missTestResult.setAxisValues(axisValues);
+				}else{
+					axisValues = new ArrayList<String>(
+							axisHeaders.size());
+					for(int z=0;z<axisHeaders.size();z++){
+						axisValues.add(""); 
+					}
+					missTestResult.setAxisValues(axisValues);
+					//axisHeaders
 				}
 
 				/*
@@ -492,39 +537,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				result.set(j, missTestResult);
 			}
 			// List l = query.list();
-			query = session
-					.createQuery("select issEvaluationConfig from MissEvaluationConfig issEvaluationConfig "
-							+ " where issEvaluationConfig.id.mecType='2' "
-							+ " and issEvaluationConfig.id.msId="
-							+ msId.intValue()
-							+ " "
-							+ " and issEvaluationConfig.columnIsShow='1' order by issEvaluationConfig.mecOrder asc ");
-
-			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig> missEvaluationConfigs = query
-					.list();
-			// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>
-			// xmissEvaluationConfig=null;
-			List<String> axisHeaders = null;
-			if (missEvaluationConfigs != null
-					&& missEvaluationConfigs.size() > 0) {
-				// xmissEvaluationConfig=new
-				// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>(missEvaluationConfigs.size());
-				axisHeaders = new ArrayList<String>(
-						missEvaluationConfigs.size());
-				for (th.co.aoe.makedev.missconsult.hibernate.bean.MissEvaluationConfig missEvaluationConfig : missEvaluationConfigs) {
-					// th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig
-					// evaluationConfig =new
-					// th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig();
-					// evaluationConfig.setColumnCode(missEvaluationConfig.getId().getColumnCode());
-					// xmissEvaluationConfig.add(evaluationConfig);
-					axisHeaders.add(missEvaluationConfig.getId()
-							.getColumnCode());
-				}
-			} else {
-				// xmissEvaluationConfig=new
-				// java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissEvaluationConfig>();
-				axisHeaders = new ArrayList<String>(0);
-			}
+			
 
 			transList.add(result);
 			transList.add(size);
