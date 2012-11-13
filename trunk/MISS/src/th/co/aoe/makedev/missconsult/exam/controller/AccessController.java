@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
@@ -25,11 +27,22 @@ import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 @Controller
 @RequestMapping
 public class AccessController {
+	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
 	@Autowired
 	private MissExamService missExamService;
 	@RequestMapping("/login")
-	public String login(Model model, @RequestParam(required=false) String message) {
-		
+	public String login(Model model, @RequestParam(required=false) String message,HttpServletRequest request,HttpServletResponse response) {
+		logger.info(" in to login");
+		String language=request.getParameter("language");
+		logger.info("language1="+language);
+		if(language!=null && language.length()>0){
+	    	 LocaleEditor localeEditor = new LocaleEditor();
+	         localeEditor.setAsText(language);
+ 
+	         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+	         localeResolver.setLocale(request, response,
+	             (Locale) localeEditor.getValue());
+	    	}
 		//model.addAttribute("message", message);
 	//	model.addAttribute("message", "เทสสส");
 		return "access/login";
@@ -42,12 +55,12 @@ public class AccessController {
 	@RequestMapping(value = "/checking")
  	public String checking(Model model,HttpServletRequest request,HttpServletResponse response) {
 		//request.get 
-	
+		logger.info(" into checking");
 	 
 	String	useragent = request.getHeader("User-Agent");
 		String user = useragent.toLowerCase();
 		 
-		//System.out.println("xxxxxxxxxxxxxx= "+user); 
+		logger.info("xxxxxxxxxxxxxx= "+user); 
 		/*Enumeration<String> ex=request.getHeaderNames();
 		while (ex.hasMoreElements()) {
 			String param_name = (String) ex.nextElement();
@@ -98,7 +111,7 @@ public class AccessController {
 		String version=""; 
 		if(band.length()>0){
 			String[] versions=fullAgent.split(" ");
-			//System.out.println(" size "+versions.length); 
+			logger.info(" size "+versions.length); 
 			if("Chrome".equals(band)){				
 				for (int i = 0; i < versions.length; i++) {
 					if(versions[i].indexOf("chrome")!=-1){
@@ -138,17 +151,61 @@ public class AccessController {
 				}
 			}
 		}
-		//System.out.println("vvvvvvvvvvvvvv "+version);
+		//logger.info("vvvvvvvvvvvvvv "+version);
 		return version;
 	}
 	@RequestMapping(value = "/login/failure")
- 	public String loginFailure(Model model) {
+ 	public String loginFailure(Model model,HttpServletRequest request,HttpServletResponse response) {
+		logger.info(" into loginFailure");
+		/*String message = "Login Failure!";
+		return "redirect:/login?message="+message;*/
+		//logger.info(ae.getMessage()+"xxxxxx");
+	//	UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken)ae.getAuthentication();
+		   
+		String message = "Invalid User or Password.";
+		logger.info("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
+		if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
+			message="ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง.";
+		String language=request.getParameter("language");
+		logger.info("language1="+language);
+		if(language!=null && language.length()>0){
+	    	 LocaleEditor localeEditor = new LocaleEditor();
+	         localeEditor.setAsText(language);
+ 
+	         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+	         localeResolver.setLocale(request, response,
+	             (Locale) localeEditor.getValue());
+	         message="";
+	    	}
+		
+	//	String message = "Login เออเร่อ!";
+	/*	MissTestResult missTest=new MissTestResult();
+		missTest.setMtrResultCode(message);
+		model.addAttribute("missTest", missTest);*/
+		model.addAttribute("message", message);
+		return "access/login";
+	}
+	@RequestMapping(value = "/login/duplicate")
+ 	public String loginDuplicate(Model model,HttpServletRequest request,HttpServletResponse response) {
+		logger.info(" into loginDuplicate");
 		/*String message = "Login Failure!";
 		return "redirect:/login?message="+message;*/
 		String message = "This Account already been used.";
-		//System.out.println("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
+		logger.info("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
 		if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
 			message="บัญชีนี้ได้ถูกใช้ไปแล้ว.";
+		String language=request.getParameter("language");
+		logger.info("language1="+language);
+		if(language!=null && language.length()>0){
+	    	 LocaleEditor localeEditor = new LocaleEditor();
+	         localeEditor.setAsText(language);
+ 
+	         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+	         localeResolver.setLocale(request, response,
+	             (Locale) localeEditor.getValue());
+	         message="";
+	    	}
+		
 	//	String message = "Login เออเร่อ!";
 	/*	MissTestResult missTest=new MissTestResult();
 		missTest.setMtrResultCode(message);
@@ -174,7 +231,7 @@ public class AccessController {
 	  
 	@RequestMapping(value = "/timeout/{mcaId}/{msId}")
  	public String timeOutSuccess(@PathVariable Long mcaId,@PathVariable Long msId ) {
-		//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mcaId="+mcaId+",msId="+msId);
+		logger.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mcaId="+mcaId+",msId="+msId);
 		MissSeryProblem missSeryProblem =new MissSeryProblem();
 		missSeryProblem.setMcaId(mcaId);
 		missSeryProblem.setMsId(msId);
