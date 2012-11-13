@@ -39,6 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			//userRepository.
 			
 			boolean enabled = true;
+			//boolean accountNonExpired = true;
 			boolean accountNonExpired = true;
 			boolean credentialsNonExpired = true;
 			boolean accountNonLocked = true;
@@ -66,6 +67,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 					
 			
 		} catch (Exception e) {
+			//e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
