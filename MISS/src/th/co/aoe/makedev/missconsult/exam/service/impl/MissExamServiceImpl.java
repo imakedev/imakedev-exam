@@ -180,8 +180,11 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_CHECK);
 		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
 				.getClass().getName(), "missTestResult", true);
-		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
-		return missTestResult.getUpdateRecord().intValue();
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null){
+			missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+			return missTestResult.getUpdateRecord().intValue();
+		}else
+			return 0;
 	}
 
 	@Override
@@ -248,8 +251,12 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		missSystemUse.setServiceName(ServiceConstant.MISS_SYSTEM_USE_SAVE);
 		VResultMessage resultMessage = postMessage(missSystemUse, missSystemUse
 				.getClass().getName(), "missSystemUse", true);
-		missSystemUse = (MissSystemUse) resultMessage.getResultListObj().get(0);
-		return missSystemUse.getUpdateRecord().intValue();
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null){
+			missSystemUse = (MissSystemUse) resultMessage.getResultListObj().get(0);
+			return missSystemUse.getUpdateRecord().intValue();
+		}else
+			return 0;
+		
 	}
 
 }

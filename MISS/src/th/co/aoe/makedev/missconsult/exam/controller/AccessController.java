@@ -1,14 +1,21 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.LocaleEditor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
@@ -33,8 +40,10 @@ public class AccessController {
 		return "access/denied";
 	}
 	@RequestMapping(value = "/checking")
- 	public String checking(Model model,HttpServletRequest request) {
-		//request.get
+ 	public String checking(Model model,HttpServletRequest request,HttpServletResponse response) {
+		//request.get 
+	
+	 
 	String	useragent = request.getHeader("User-Agent");
 		String user = useragent.toLowerCase();
 		 
@@ -136,7 +145,10 @@ public class AccessController {
  	public String loginFailure(Model model) {
 		/*String message = "Login Failure!";
 		return "redirect:/login?message="+message;*/
-		String message = "Login Failure!";
+		String message = "This Account already been used.";
+		//System.out.println("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
+		if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
+			message="บัญชีนี้ได้ถูกใช้ไปแล้ว.";
 	//	String message = "Login เออเร่อ!";
 	/*	MissTestResult missTest=new MissTestResult();
 		missTest.setMtrResultCode(message);
@@ -166,7 +178,7 @@ public class AccessController {
 		MissSeryProblem missSeryProblem =new MissSeryProblem();
 		missSeryProblem.setMcaId(mcaId);
 		missSeryProblem.setMsId(msId);
-		missSeryProblem.setMspMessage("Time Out");
+		missSeryProblem.setMspMessage("You're running out of time");
 		missSeryProblem.setMspType("0");
 		 
 		missExamService.saveMissSeryProblem(missSeryProblem);
