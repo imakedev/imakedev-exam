@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#tabs').tabs();
+	/*
 	$("#mcaBirthDate" ).datepicker({
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
@@ -11,6 +12,20 @@ $(document).ready(function() {
 		changeMonth: true,
 		changeYear: true
 	});
+	*/
+	$("#picker2").birthdaypicker({
+         futureDates: true,
+        // maxYear: 2020,
+         maxAge: 90 ,
+        // defaultDate: "10-17-1980"
+         defaultDate: "${candidateForm.mcaBirthDate}"
+       });
+	 $('select[class="birth-month"]').css("width","70px");
+	 $('select[class="birth-day"]').css("width","61px");
+	 $('select[class="birth-year"]').css("width","63px");
+	 $('fieldset[class="birthday-picker"]').css("padding","0px");
+	// picker2.defaultDate="04-17-1983";
+	// alert(picker2.defaultDate);
 	var _candidate_section=$("#_candidate_section").val().length>0?parseInt($("#_candidate_section").val()):0;
 	if(_candidate_section==2)
 		_candidate_section=0;
@@ -56,10 +71,21 @@ function doAction(action,formID,sectionID){
 	$("#maCustomizeRetestMessage").val(CKEDITOR.instances["maCustomizeRetestMessage"].getData()); */
 	//alert($("#maCustomizePassMessage").val());
 	//$("#_miss_section").val(sectionID);
+	if(formID=='candidateForm_profile'){
+		$("#mcaBirthDate").val($("#birthdate").val());
+	}
 	$.post("candidate/"+action+"/"+sectionID,$("#"+formID).serialize(), function(data) {
 		    appendContent(data);
 		});
   }
+function checkIndustryMaster(obj){
+	
+	//alert(obj.value)
+	if(obj.value==999999999){
+		$("#mimExt").css("display","block");
+	}else
+		$("#mimExt").css("display","none");
+}
 </script> 
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -238,11 +264,18 @@ function doAction(action,formID,sectionID){
     				<tr valign="top">
     					<td width="25%">Birth Date:</td>
     					<td width="50%" colspan="2">
-    					<!-- <input type="text" id="datepicker" style="width: 75px"/> -->
-    					<form:input path="mcaBirthDate"  id="mcaBirthDate" cssStyle="width: 85px"/>
-    					</td>
-    					 <!-- <td width="25%">&nbsp;</td> -->
+    					<div class="picker" id="picker2"></div> 
+    					<form:hidden path="mcaBirthDate"  id="mcaBirthDate"/>
+    					</td> 
     				</tr>
+    				<!-- <tr valign="top">
+    					<td width="25%">Birth Date2:</td>
+    					<td width="50%" colspan="2">
+    					<input type="text" id="datepicker" style="width: 75px"/>
+    					<div class="picker" id="picker2"></div>
+    					</td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr> -->
     				 <tr valign="top">
     					<td width="25%">Career Group:</td>
     					<td width="50%" colspan="2">
@@ -277,10 +310,21 @@ function doAction(action,formID,sectionID){
     				</tr>
     				<tr valign="top">
     					<td width="25%">Industry Type:</td>
-    					<td width="50%" colspan="2">
-    					 <form:select path="missCandidate.missIndustryMaster.mimId" cssStyle="background:#FFFFFF">    					 
+    					<td width="75%" colspan="3"> 
+    					 <form:select path="missCandidate.missIndustryMaster.mimId" cssStyle="background:#FFFFFF" onchange="checkIndustryMaster(this)">    					 
     						<form:options items="${missIndustryMasterList}" itemLabel="mimName" itemValue="mimId"></form:options>
-    					</form:select>
+    					</form:select> 
+    					<c:if test="${candidateForm.missCandidate.missIndustryMaster.mimId==999999999}">
+    					   <span id="mimExt" style="display:block">
+    						 <form:input path="missCandidate.mimExt"/>&nbsp;&nbsp;( ระบุ )
+    						 </span>
+    					</c:if>
+    					<c:if test="${candidateForm.missCandidate.missIndustryMaster.mimId!=999999999}">
+    						<span id="mimExt"  style="display:none">
+    						 <form:input path="missCandidate.mimExt"/>&nbsp;&nbsp;( ระบุ )
+    						 </span>
+    					</c:if>
+    					 
     					</td>
     				</tr>
     				

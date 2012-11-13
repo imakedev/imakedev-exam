@@ -38,6 +38,21 @@ $(document).ready(function() {
 	 	    	doAction('search','0');
 	 	   }
 	 }); */
+	/* $(document).keypress(function(event){
+		 
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			//alert('You pressed a "enter" key in somewhere');	
+			doSearch('search','0');
+		} 
+	}); */
+	 $("input[id=mcaUsername],[id=mcaPassword],[id=mcaCompanyName]").keypress(function(event) {
+	// $(document).keypress(function(event) {
+	 	  if ( event.which == 13 ) {
+	 	     event.preventDefault();
+	 	    	doAction('search','0');
+	 	   }
+	 });
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -194,6 +209,7 @@ function doAction(mode,id){
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
+/* tr:nth-child(odd) {background: #e0e0e0} */
 </style>
 <div id="dialog-confirmDelete" title="Delete Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Candidate ?
@@ -308,8 +324,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					
 	    					<a onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary" onclick="doSearch('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a></td>
 	    					</tr>
-	    					</table> 
-		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+	    					</table>  
+		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr> 
             		<th width="7%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
@@ -323,15 +339,16 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody>
+        	<c:if test="${not empty missCandidates}"> 
         	 <c:forEach items="${missCandidates}" var="missCandidate" varStatus="loop"> 
           	<tr> 
             
-            	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/>${(candidateForm.paging.pageNo-1)*candidateForm.paging.pageSize+(loop.index+1)}.</td>
+            	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/>&nbsp;&nbsp;${(candidateForm.paging.pageNo-1)*candidateForm.paging.pageSize+(loop.index+1)}.</td>
             	<td>&nbsp;${missCandidate.mcaUsername}&nbsp;/&nbsp;${missCandidate.mcaPassword}</td>
             	<%-- <td>&nbsp;${missCandidate.mcaPassword}</td> --%>
             	<td>&nbsp;${missCandidate.missAccount.maName}&nbsp;[${missCandidate.missAccount.maTotalUnit}/${missCandidate.missAccount.maTotalUnit-missCandidate.missAccount.maUsedUnit}]</td>
             	<td>&nbsp;${missCandidate.missSery.msSeriesName}&nbsp;[${missCandidate.masmAvailable}]</td>
-            	<td>&nbsp;${missCandidate.mcaLastlogin}</td>
+            	<td>&nbsp;${missCandidate.lastLogin}</td>
             	<td>
             	<c:if test="${missCandidate.mcaStatus=='1'}">
             	Used
@@ -347,6 +364,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	 
           	</tr>
           	</c:forEach>
+          </c:if>
+          <c:if test="${empty missCandidates}"> 
+          	<tr>
+          		<td colspan="7" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
+          	</tr>
+          </c:if>
          <!--  <tr>
             	<td><input type="checkbox" /></td>
             	<td>Company</td>

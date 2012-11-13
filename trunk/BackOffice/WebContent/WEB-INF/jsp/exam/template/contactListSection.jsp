@@ -147,14 +147,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</td>
 	    					</tr>
 	    					</table> 
-		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px;background-color:#F9F9F9;">
+		<table id="table_list" class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px;background-color:#F9F9F9;">
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="mcontactIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="25%"><div class="th_class">First-Lastname</div></th> 
+            		<th width="20%"><div class="th_class">First-Lastname</div></th> 
             		<th width="15%"><div class="th_class">Position</div></th>
             		<th width="20%"><div class="th_class">Department</div></th> 
-            		<th width="10%"><div class="th_class">Phone</div></th>
+            		<th width="15%"><div class="th_class">Mobile Phone</div></th>
             		<th width="15%"><div class="th_class">Email</div></th> 
             		<th width="10%"><div class="th_class">Action</div></th> 
           		</tr>
@@ -166,7 +166,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	<td>&nbsp;${missContact.mcontactName}&nbsp;${missContact.mcontactLastname}</td>
             	<td>&nbsp;${missContact.mcontactPostion}</td>
             	<td>&nbsp;${missContact.mcontactDepartment}</td>
-            	<td>&nbsp;${missContact.mcontactPhone}</td>
+            	<td>&nbsp;${missContact.mcontactMobilePhone}</td>
             	<td>&nbsp;${missContact.mcontactEmail}</td>
             	<td style="text-align: center;">
             	<i title="Edit" onclick="loadContactInit('/account/${missContact.mcontactRef}/contact/${missContact.mcontactId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;

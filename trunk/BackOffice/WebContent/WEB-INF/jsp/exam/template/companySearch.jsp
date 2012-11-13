@@ -38,12 +38,13 @@ $(document).ready(function() {
 			buttonImageOnly: true,
 			dateFormat:"dd/mm/yy" 
 		});
-	/*  $("input[id=msSeriesName],[id=msUnitCost]").keypress(function(event) {
-	 	  if ( event.which == 13 ) {
-	 	     event.preventDefault();
-	 	    	doAction('search','0');
-	 	   }
-	 }); */
+	 $("input[id=maRegisterNo],[id=maRegisterFrom],[id=maRegisterTo],[id=maContactName],[id=maDayTimePhone],[id=maName]").keypress(function(event) { 
+			 	  if ( event.which == 13 ) {
+			 	     event.preventDefault();
+			 	    	doAction('search','0');
+			 	   }
+	});
+	 
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -127,12 +128,13 @@ function doCreateCandidate(company_id){
 	$("#mssery_candidate_hidden").val($("select[id=mssery_candidate] option:selected").val());
 	$("#company_candidate_hidden").val(company_id);	
 	$.get("company/candidate/create",$("#create_candidate_form").serialize(), function(data) {
-		var obj = jQuery.parseJSON(data);
+		var obj = data;//jQuery.parseJSON(data);
 		   if(obj.updateRecord!=0 && obj.updateRecord!=-1){
 			   $("#message_candidate_create").html("<strong>Add Candidate Success</strong>");
 			   $("#dialog-create-candidate-alert").css("display","block");
 		   }else{
-			   $("#message_candidate_create").html("<strong>Can't Create Candidate</strong>");
+			   //Can't Create Candidate. / Company: ประเทศไทย / Series: EPT, Customer Mind
+			   $("#message_candidate_create").html("<strong>Can't Create Candidate / Company: "+obj.missAccount.maName+" / Series: "+obj.missSery.msSeriesName+"</strong>");
 			   $("#dialog-create-candidate-alert").css("display","block");
 		   }
 		 //  alert(data.updateRecord);
@@ -314,17 +316,43 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<tr valign="top">
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Purchased Test:</td>
-	    					 <td align="left"  colspan="3" width="51%">    					
-	    						 <span style="display: block;">
-	    					  		<c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
-	    					 			 <input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+	    					 <td align="left"  colspan="4" width="66%">  
+	    					 <!--  <span style="display: block;">  -->
+	    					    <table width="100%" border="0" style="font-size: 13px;">
+	    					    	<c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
+	    					    	  <c:if test="${loop.index % 2==0}">
+	    					    	  	<tr>
+	    					    			<td>
+ 												<input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+ 												</td>
+	    					    	  </c:if>
+	    					    	  <c:if test="${loop.index % 2==1}"> 
+												<td>
+												<input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+												</td>
+										</tr>
+	        						 </c:if>
+	    					    		<%-- <tr>
+	    					    			<td>
+	    					    				<input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+	    					    			</td>
+	    					    		</tr> --%>
 	    					 		</c:forEach>
-	    					  </span>
+	    					 		<c:if test="${fn:length(missExams) %2 != 0}">
+	    					 			<td>
+												&nbsp;&nbsp;
+												</td>
+										</tr>
+	    					 		</c:if> 
+	    					    </table>  					
+	    						  <!-- </span> -->
+	    					  		
+	    					 
 	    					   <input type="hidden" id="meIdArray" value="${meIdArray}">
 	    						<!-- <input type="checkbox"/>4FT	&nbsp;&nbsp;<input type="checkbox"/>EPT	&nbsp;&nbsp;<input type="checkbox"/>EST	&nbsp;&nbsp;<input type="checkbox"/>MCCT	&nbsp;&nbsp; -->
 	    					 </td>
 	    					
-	    					<td align="left" width="15%">&nbsp;</td>
+	    				<!-- 	<td align="left" width="15%">&nbsp;</td> -->
 	    					</tr>
 	    					</table> 
 	    					</form:form>
@@ -355,9 +383,11 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody>
+        	<c:if test=""></c:if>
+          <c:if test="${not empty missAccounts}"> 
         	 <c:forEach items="${missAccounts}" var="missAccount" varStatus="loop"> 
           	<tr>
-            	<td><input type="checkbox" name="maIdCheckbox" value="${missAccount.maId}"/>${(companyForm.paging.pageNo-1)*companyForm.paging.pageSize+(loop.index+1)}.</td>
+            	<td><input type="checkbox" name="maIdCheckbox" value="${missAccount.maId}"/>&nbsp;&nbsp;${(companyForm.paging.pageNo-1)*companyForm.paging.pageSize+(loop.index+1)}.</td>
             	<%-- <td>&nbsp;${missAccount.maRegisterType}</td> --%>
             	<td>&nbsp;${missAccount.maName}</td>
             	<td>&nbsp;${missAccount.maPhone}</td>
@@ -370,29 +400,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	<td style="text-align: center;"><i  title="Delete"  style="cursor: pointer;"  onclick="confirmDelete('delete','${missAccount.maId}')" class="icon-trash"></i></td> 
           	</tr>
           	</c:forEach>
-        <!--   <tr>
-            	<td><input type="checkbox" /></td>
-            	<td>Company</td>
-            	<td>Company A chatchai pimtun co.th make dev aoe</td>
-            	<td>0848810484</td>
-            	<td>M000000</td>
-            	<td>D/M/Y h:m</td>
-            	<td>300</td>
-            	<td>xx</td>
-            	<td><a  onclick="loadDynamicPage('company/account/2')">xx</a></td>
-            	<td>xx</td> 
-          	</tr><tr>
-            	<td><input type="checkbox" /></td>
-            	<td>Company</td>
-            	<td>Company A</td>
-            	<td>0848810484</td>
-            	<td>M000000</td>
-            	<td>D/M/Y h:m</td>
-            	<td>300</td>
-            	<td>xx</td>
-            	<td><a onclick="loadDynamicPage('company/account/3')" >xx</a></td>
-            	<td>xx</td> 
-          	</tr> -->
+          	</c:if>
+            <c:if test="${empty missAccounts}"> 
+          	  <tr>
+            	<td colspan="9" style="text-align: center;">&nbsp;Not Found&nbsp;
+            	</td>
+              </tr>
+          	</c:if> 
         	</tbody>
       </table>
 </fieldset>

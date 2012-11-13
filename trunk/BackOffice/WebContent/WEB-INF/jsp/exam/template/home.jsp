@@ -81,6 +81,8 @@ function openDialog(todo_id,todo_ref){
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
+table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
+/* tr:nth-child(odd) {background: #FFFFFF} */
 </style>
 <!--Body content-->
 <!-- <div class="alert alert-info">
@@ -108,7 +110,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	  <!--  <form   class="well" style="border:2px solid #DDD;background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)" > -->
 	   <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
 	   <!--   <fieldset style="font-family: sans-serif;">  -->  
-	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>MC - Home</strong></h3>  
+	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>
+	      <c:if test="${UserMissContact.isMC=='1'}">
+	      	MC - Home
+	      </c:if>
+	       <c:if test="${UserMissContact.isMC=='0'}">
+	      	Company - Home
+	      </c:if>
+	      </strong></h3>  
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
 	    					<table border="0" width="100%" style="font-size: 13px">
 	    					<tr>
@@ -131,26 +140,27 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</td>
 	    					</tr>
 	    					</table>  
-  <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
+ 
+  <table id="table_list"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
 <!-- <table   border="1" style="font-size: 12px;width:100%" > -->
         <thead>
           <tr>
-            <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>
-            <th width="20%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
+            <th width="70%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="15%"><div class="th_class">Status</div></th> 
+            <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
           </tr>
         </thead>
         <tbody>
          <c:forEach items="${todolists}" var="todolist" varStatus="loop">  
             <tr>
-             <td><div class="th_class"><c:out value="${todolist.mtodoTask}"/>
-             <c:if test="${todolist.mtodoResponse=='1'}">
+             <td><div class="th_class" style="text-align: left;"><c:out value="${todolist.mtodoTask}"/> 
+            </div></td>
+            <td><div class="th_class"><c:if test="${todolist.mtodoResponse=='1'}">
               &nbsp;<span style="color: green;">Completed</span>
              </c:if>
               <c:if test="${todolist.mtodoResponse!='1'}">
                &nbsp;<span style="color: orange;">Pending</span>
-              </c:if>
-            
-            </div></td>
+              </c:if></div></td>
             <td><div class="th_class"><a onclick="doSendMail('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td> 
           </tr>
           </c:forEach>

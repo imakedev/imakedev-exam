@@ -17,6 +17,7 @@ $(document).ready(function() {
 	   }
 
 	}); */
+	/*
 	$("#mcontactBirthDate" ).datepicker({
 		showOn: "button",
 		buttonImage: _path+"resources/images/calendar.gif",
@@ -25,6 +26,19 @@ $(document).ready(function() {
 		changeMonth: true,
 		changeYear: true
 	});
+	*/
+	$("#picker2").birthdaypicker({
+        futureDates: true,
+       // maxYear: 2020,
+        maxAge: 90 ,
+       // defaultDate: "10-17-1980"
+        defaultDate: "${contactForm.mcontactBirthDate}"
+      });
+	 $('select[class="birth-month"]').css("width","70px");
+	 $('select[class="birth-day"]').css("width","61px");
+	 $('select[class="birth-year"]').css("width","63px");
+	 $('fieldset[class="birthday-picker"]').css("padding","0px");
+	 
 	var target="contactImg";
 	/* if($("#mcontactType").val() != '1'){
 		target="company";
@@ -100,6 +114,9 @@ function doContactAction(action,mode,id){
 		$("#mqId").val("0");
 	}
  */	
+	 
+		$("#mcontactBirthDate").val($("#birthdate").val());
+ 
 	var target="miss";
 	if($("#mcontactType").val() != '1'){
 		target="company";
@@ -151,7 +168,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					</c:if>
     					<c:if test="${contactForm.mode!='edit'}">    					
     						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
-    					</c:if>
+    					</c:if><font color="red">*</font>
     					</td>
     					 <td width="25%"  align="right"  rowspan="8">
     					 <c:if test="${not empty contactForm.missContact.mcontactPictureHotlink}"> 
@@ -170,6 +187,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="50%" colspan="2">
     					<input type="password" value="${contactForm.missContact.mcontactPassword}" id="mcontactPassword" name="missContact.mcontactPassword">
     					<%-- <form:password path="missContact.mcontactPassword" id="mcontactPassword"/> --%>
+    					<font color="red">*</font>
     					</td>
     				</tr>
     				<tr valign="top">
@@ -179,7 +197,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     						 <form:option value="-1">-- Select Role --</form:option> 
     						 <form:options items="${roleContacts}" itemLabel="rcName" itemValue="rcId"></form:options>
 	    					     
-    					</form:select>
+    					</form:select><font color="red">*</font>
     					</td>
     				</tr>
    		 			<tr valign="top">
@@ -193,7 +211,7 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					</form:select>
     					<form:input path="missContact.mcontactName" id="mcontactName" cssStyle="width:120px"/>
     					&nbsp;
-    					<form:input path="missContact.mcontactLastname" id="mcontactLastname" cssStyle="width:120px"/>
+    					<form:input path="missContact.mcontactLastname" id="mcontactLastname" cssStyle="width:120px"/><font color="red">*</font>
     					</td>
     					<%--  <td width="25%"  align="right"  rowspan="8">
     					 <c:if test="${not empty contactForm.missContact.mcontactPictureHotlink}"> 
@@ -211,43 +229,51 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<td width="25%">Gender:</td>
     					<td width="50%" colspan="2">
     					<form:radiobutton path="missContact.mcontactGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missContact.mcontactGender" value="1"/>Male
+    					<font color="red">*</font>
     					</td>
     				</tr>
     				  <tr valign="top">
     					<td width="25%">Birth Date:</td>
-    					<td width="50%" colspan="2">
-    					<form:input path="mcontactBirthDate" id="mcontactBirthDate" cssStyle="width: 85px"/>
-    					</td>
+    					<td width="50%" colspan="2"> 
+    					<div class="picker" id="picker2"></div> 
+    					<form:hidden path="mcontactBirthDate"  id="mcontactBirthDate"/>
+    					</td> 
     				</tr>  
     				<tr valign="top">
     					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactPostion" id="mcontactPostion"/>
+    					<form:input path="missContact.mcontactPostion" id="mcontactPostion"/><font color="red">*</font>
     					</td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Department:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactDepartment" id="mcontactDepartment"/>
+    					<form:input path="missContact.mcontactDepartment" id="mcontactDepartment"/><font color="red">*</font>
+    					</td>
+    				</tr>
+    				 <tr valign="top">
+    					<td width="25%">Mobile Phone:</td>
+    					<td width="50%" colspan="2">
+    					<form:input path="missContact.mcontactMobilePhone" id="mcontactMobilePhone"/><font color="red">*</font>
     					</td>
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Phone:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactPhone" id="mcontactPhone"/>
+    					<form:input path="missContact.mcontactPhone" id="mcontactPhone"/> <font color="red">*</font>&nbsp;&nbsp;<span>สามารถใส่ Ext. ได้ (เบอร์ต่อ)</span>
     					</td>
     				</tr>
     				 <tr valign="top">
     					<td width="25%">Fax:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactFax" id="mcontactFax"/>
+    					<form:input path="missContact.mcontactFax" id="mcontactFax"/><font color="red">*</font>
     					</td>
     				</tr>
     		<%-- 	<c:if test="${contactForm.missContact.mcontactType=='1'}"> --%>
     				<tr valign="top">
     					<td width="25%">Email 1:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactEmail" id="mcontactEmail"/>
+    					<form:input path="missContact.mcontactEmail" id="mcontactEmail"/><font color="red">*</font>
     					</td>
     					<td width="25%">&nbsp;</td>
     				</tr>

@@ -166,7 +166,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</table> 
 	    					
 	    					 
-		<table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+		<table id="table_list"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
             		<!-- <th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th> -->

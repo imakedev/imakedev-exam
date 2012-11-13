@@ -231,7 +231,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody>
-        	
+           <c:if test="${not empty missSeries}"> 
         	 <c:forEach items="${missSeries}" var="missSery" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" name="msIdCheckbox" value="${missSery.msId}"/></td>
@@ -246,6 +246,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	</td> 
           	</tr>
           	</c:forEach>
+          	</c:if>
+          	<c:if test="${empty missSeries}"> 
+          	<tr> 
+          		<td colspan="5" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
+          	</tr>
+          </c:if> 
         	</tbody>
       </table>
       
