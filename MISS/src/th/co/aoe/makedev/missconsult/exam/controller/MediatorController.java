@@ -38,7 +38,7 @@ public class MediatorController {
 	@RequestMapping( method={org.springframework.web.bind.annotation.RequestMethod.GET})
 	public String getCandidateInfo(Model model,HttpServletRequest request,HttpServletResponse response) {
 		String language=request.getParameter("language");
-		//System.out.println("language1="+language);
+		logger.info("language1="+language);
 		if(language!=null && language.length()>0){
 	    	 LocaleEditor localeEditor = new LocaleEditor();
 	         localeEditor.setAsText(language);
@@ -47,7 +47,7 @@ public class MediatorController {
 	         localeResolver.setLocale(request, response,
 	             (Locale) localeEditor.getValue());
 	    	}
-	//	System.out.println("into init local1 "+LocaleContextHolder.getLocale().getDisplayLanguage());
+		logger.info("into init local1 "+LocaleContextHolder.getLocale().getDisplayLanguage());
 		String userid=SecurityContextHolder.getContext().getAuthentication().getName();
 		//0=not yet test finish, 1=  test finish
 			MissExamForm missExamForm = null;
