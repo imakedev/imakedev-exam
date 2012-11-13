@@ -14,7 +14,14 @@ $(document).ready(function() {
 		buttonImage: _path+"resources/images/calendar.gif",
 		buttonImageOnly: true,
 		dateFormat:"dd/mm/yy" 
-	});
+	}); 
+	$("input[id=mcaUsername],[id=mcaFirstName],[id=mcaLastName],[id=mcaPosition],[id=mcaDepartment],[id=mcaCompanyName]").keypress(function(event) {
+		// $(document).keypress(function(event) {
+		 	  if ( event.which == 13 ) {
+		 	     event.preventDefault();
+		 	    	doAction('search','0');
+		 	   }
+		 }); 
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -142,7 +149,9 @@ function setIgnore(){
 <style>
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
-}
+ 
+} 
+/* tr:nth-child(odd) {background: #e0e0e0} */
 </style>
 <div id="dialog-confirmIgnore" title="Ignore Result" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to ignore Result ?
@@ -263,6 +272,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody>
+        	<c:if test="${not empty missTestResults}">  
         	 <c:forEach items="${missTestResults}" var="missTestResult" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" name="mtrIdCheckbox" value="${missTestResult.mtrId}"/></td>
@@ -313,6 +323,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	</td>
           	</tr>
           	</c:forEach>
+          </c:if>
+           <c:if test="${empty missTestResults}"> 
+          	<tr> 
+          		<td colspan="${fn:length(axisHeaders)+10}" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
+          	</tr>
+          </c:if> 
         	</tbody>
       </table>
       </div>

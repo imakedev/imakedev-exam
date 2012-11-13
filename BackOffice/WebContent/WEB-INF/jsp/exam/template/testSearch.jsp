@@ -279,6 +279,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody>
+          <c:if test="${not empty missExams}"> 
         	 <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" name="meIdCheckbox" value="${missExam.meId}"/></td> 
@@ -290,21 +291,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	</td> 
           	</tr>
           	</c:forEach>
-          <!-- 	<tr>
-            	<td><input type="checkbox" /></td>
-            	<td>EPT</td> 
-            	<td><a onclick="loadDynamicPage('test/exam/1')">Edit</a> Delete</td> 
+          </c:if>
+          <c:if test="${empty missExams}"> 
+          	<tr> 
+          		<td colspan="3" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
           	</tr>
-          		<tr>
-            	<td><input type="checkbox" /></td>
-            	<td>MCCT</td> 
-            	<td><a onclick="loadDynamicPage('test/exam/1')">Edit</a> Delete</td> 
-          	</tr>
-          		<tr>
-            	<td><input type="checkbox" /></td>
-            	<td>Survey <a href="#">Send to User</a></td> 
-            	<td><a onclick="loadDynamicPage('test/exam/1')">Edit</a> Delete</td> 
-          	</tr> -->
+          </c:if> 
         	</tbody>
       </table>
       

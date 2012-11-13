@@ -50,7 +50,7 @@ function doRefill(){
 		 	var obj = jQuery.parseJSON(data);
 			 $("#maTotalUnitElement").html(obj.maTotalUnit);
 			 $("#maUsedUnitElement").html(obj.maUsedUnit);
-			 $("#maAvailableUnitElement").html(obj.maAvailableUnit);
+			 $("#maAvailableCandidateElement").html(obj.maAvailableCandidate);
 			 $("#refill").val("");
 				 
 		 //  alert(data.updateRecord);
@@ -80,26 +80,27 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				</tr> -->
    		 			<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="12%">Total (unit): </td>
-    					<td width="48%"><span id="maTotalUnitElement">${companyForm.missAccount.maTotalUnit}</span></td>
+    					<td width="15%">Total (unit): </td>
+    					<td width="45%"><span id="maTotalUnitElement">${companyForm.missAccount.maTotalUnit}</span></td>
     					 <td width="20%">&nbsp;</td> 
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="12%">Used (unit): </td>
-    					<td width="48%"><span id="maUsedUnitElement">${companyForm.missAccount.maUsedUnit}</span></td>
+    					<td width="15%">Used (unit): </td>
+    					<td width="45%"><span id="maUsedUnitElement">${companyForm.missAccount.maUsedUnit}</span></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="12%">Balance (unit): </td>
-    					<td width="48%"><span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td>
+    					<td width="15%">Balance (Available): </td>
+    					<%-- <td width="48%"><span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td> --%>
+    					<td width="45%"><span id="maAvailableCandidateElement">${companyForm.missAccount.maAvailableCandidate}</span>&nbsp;&nbsp;candidate</td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="12%">Re-fill </td>
-    					<td width="48%"><form:input path="refill"/><input type="button" value="Re-fill" onclick="doRefill()"></td>
+    					<td width="15%">Re-fill </td>
+    					<td width="45%"><form:input path="refill"/><input type="button" value="Re-fill" onclick="doRefill()"></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
     				
@@ -117,7 +118,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             		<th width="10%"><div class="th_class">Group</div></th>
             		<th width="45%"><div class="th_class">Test</div></th>
             		<th width="5%"><div class="th_class">Unit</div></th> 
-            		<th width="5%"><div class="th_class">Available</div></th>
+            		<th width="5%"><div class="th_class">Available (Candidate)</div></th>
             		<th width="15%"><div class="th_class">Order</div></th> 
           		</tr>
         	</thead>
@@ -130,7 +131,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	<td>&nbsp;${missAccountSeriesMap.msUnitCost}
             	<input type="hidden" id="_unitCost_${missAccountSeriesMap.msId}" value="${missAccountSeriesMap.msUnitCost}" />
             	</td>
-            	<td>&nbsp;${missAccountSeriesMap.masmAvailable}</td>
+            	<%-- <td>&nbsp;${missAccountSeriesMap.masmAvailable}</td>  --%>
+            	<td>&nbsp;${missAccountSeriesMap.masmCandidateAvailable}</td> 
             	<td><div><input type="text" id="_order_${missAccountSeriesMap.msId}" style="width:40px">&nbsp;&nbsp;<a class="btn btn-primary" onclick="doOrder('${missAccountSeriesMap.msId}');"><span style="color: white;font-weight: bold;">Order</span></a></div></td> 
           	</tr>
         	 </c:forEach>
