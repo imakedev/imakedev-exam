@@ -2,6 +2,7 @@ package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
@@ -26,6 +27,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maBackgroundPicture;
 	
 	private String maGrade;
+	
+	private String maContactName;
 	/*@XStreamAlias("maContactBirthDate")
 	private Date maContactBirthDate;
 
@@ -39,7 +42,7 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	private String maContactLastname;
 
-	private String maContactName;
+	
 
 	private String maContactPhone;
 
@@ -88,6 +91,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private Long maUsedUnit;
 	
 	private Long maAvailableUnit;
+	
+	private Long maAvailableCandidate;
 
 	private String maUsername;
 
@@ -97,11 +102,17 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	private String maRegisterNo;
 	
-	@XStreamAlias("maRegisterTo")
+	 @XStreamAlias("maRegisterTo")
 	private Timestamp maRegisterTo;
 	
 	@XStreamAlias("maRegisterFrom")
 	private Timestamp maRegisterFrom;
+/*	
+	@XStreamAlias("maRegisterTo")
+	private Date maRegisterTo;
+	
+	@XStreamAlias("maRegisterFrom")
+	private Date maRegisterFrom;*/
 	
 	@XStreamAlias("maRegisterDate")
 	private Timestamp maRegisterDate;
@@ -364,24 +375,28 @@ public class MissAccount extends VServiceXML implements Serializable {
 		this.maRegisterNo = maRegisterNo;
 	}
 
-	public Timestamp getMaRegisterTo() {
-		return maRegisterTo;
-	}
-
-	public void setMaRegisterTo(Timestamp maRegisterTo) {
-		this.maRegisterTo = maRegisterTo;
-	}
-
-	public Timestamp getMaRegisterFrom() {
-		return maRegisterFrom;
-	}
-
+  
 	public void setMaRegisterFrom(Timestamp maRegisterFrom) {
 		this.maRegisterFrom = maRegisterFrom;
 	}
-
+ 
 	public Timestamp getMaRegisterDate() {
 		return maRegisterDate;
+	}
+
+	public Date getMaRegisterTo() {
+		return maRegisterTo;
+	}
+
+	 
+
+	public Date getMaRegisterFrom() {
+		return maRegisterFrom;
+	}
+
+	 
+	public void setMaRegisterTo(Timestamp maRegisterTo) {
+		this.maRegisterTo = maRegisterTo;
 	}
 
 	public void setMaRegisterDate(Timestamp maRegisterDate) {
@@ -450,6 +465,22 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMissTheme(MissTheme missTheme) {
 		this.missTheme = missTheme;
+	}
+
+	public Long getMaAvailableCandidate() {
+		return maAvailableCandidate;
+	}
+
+	public void setMaAvailableCandidate(Long maAvailableCandidate) {
+		this.maAvailableCandidate = maAvailableCandidate;
+	}
+
+	public String getMaContactName() {
+		return maContactName;
+	}
+
+	public void setMaContactName(String maContactName) {
+		this.maContactName = maContactName;
 	}
 	
 }

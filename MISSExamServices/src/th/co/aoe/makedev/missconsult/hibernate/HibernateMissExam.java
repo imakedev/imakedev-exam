@@ -348,7 +348,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 	public List listMissExam() throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missExam from MissExam missExam ");
+		Query query=session.createQuery(" select missExam from MissExam missExam order by missExam.meName asc ");
 		return query.list(); 	 
 	}
 	 

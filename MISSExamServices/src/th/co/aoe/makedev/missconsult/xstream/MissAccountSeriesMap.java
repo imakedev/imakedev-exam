@@ -29,6 +29,8 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 
 	private String masmAvailable;
 	
+	private String masmCandidateAvailable;
+	
 	@XStreamAlias("missAccount")
 	private MissAccount missAccount;
 
@@ -153,6 +155,18 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 
 	public void setSeryUnit(String seryUnit) {
 		this.seryUnit = seryUnit;
+	}
+
+
+
+	public String getMasmCandidateAvailable() {
+		return masmCandidateAvailable;
+	}
+
+
+
+	public void setMasmCandidateAvailable(String masmCandidateAvailable) {
+		this.masmCandidateAvailable = masmCandidateAvailable;
 	}
 	
 }

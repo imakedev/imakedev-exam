@@ -61,6 +61,9 @@ public class MissContact implements Serializable {
 
 	@Column(name="MCONTACT_PHONE")
 	private String mcontactPhone;
+	
+	@Column(name="MCONTACT_MOBILE_PHONE")
+	private String mcontactMobilePhone;
 
 	@Column(name="MCONTACT_PICTURE_FILE_NAME")
 	private String mcontactPictureFileName;
@@ -293,6 +296,14 @@ public class MissContact implements Serializable {
 
 	public void setMcontactPassword(String mcontactPassword) {
 		this.mcontactPassword = mcontactPassword;
+	}
+
+	public String getMcontactMobilePhone() {
+		return mcontactMobilePhone;
+	}
+
+	public void setMcontactMobilePhone(String mcontactMobilePhone) {
+		this.mcontactMobilePhone = mcontactMobilePhone;
 	}
 
 }

@@ -36,6 +36,8 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	private String mcontactName;
 
+	private String mcontactMobilePhone;
+	
 	private String mcontactPhone;
 
 	private String mcontactPictureFileName;
@@ -352,6 +354,14 @@ public class MissContact  extends VServiceXML implements Serializable {
 
 	public void setMcontactUpdatedTime(Timestamp mcontactUpdatedTime) {
 		this.mcontactUpdatedTime = mcontactUpdatedTime;
+	}
+
+	public String getMcontactMobilePhone() {
+		return mcontactMobilePhone;
+	}
+
+	public void setMcontactMobilePhone(String mcontactMobilePhone) {
+		this.mcontactMobilePhone = mcontactMobilePhone;
 	}
 
 }

@@ -70,8 +70,11 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 						session = null;
 					} 
 			}
-		} 
-		return returnId; 
+		}else{
+			returnId= new Long(0);	
+		}
+		return returnId;
+		 
 	}
 	
 	
