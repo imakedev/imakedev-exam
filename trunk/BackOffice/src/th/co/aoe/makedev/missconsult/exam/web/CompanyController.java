@@ -5,6 +5,7 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -78,9 +79,30 @@ public class CompanyController
         companyForm.getMissAccount().setMaRegisterType("Company");
         
         companyForm.getMissAccount().setMaRegisterNo(companyForm.getMaRegisterNo());
-      //  companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
+         companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
         companyForm.getMissAccount().setMaName(companyForm.getMaName());
         companyForm.getMissAccount().setMaPhone(companyForm.getMaDayTimePhone());
+        companyForm.getMissAccount().setMaRegisterFrom(null);
+        companyForm.getMissAccount().setMaRegisterTo(null);
+        if(companyForm.getMaRegisterFrom() != null && companyForm.getMaRegisterFrom().trim().length() > 0)
+            try
+            {
+            	companyForm.getMissAccount().setMaRegisterFrom(new Timestamp(format1.parse(companyForm.getMaRegisterFrom()).getTime()));
+            }
+            catch(ParseException e)
+            {
+                e.printStackTrace();
+            }
+        if(companyForm.getMaRegisterTo() != null && companyForm.getMaRegisterTo().trim().length() > 0)
+            try
+            {
+            	companyForm.getMissAccount().setMaRegisterTo(new Timestamp(format1.parse(companyForm.getMaRegisterTo()).getTime()));
+            }
+            catch(ParseException e)
+            {
+                e.printStackTrace();
+            }
+        
         if(mode != null && mode.equals("deleteItems"))
         {
             companyForm.getMissAccount().setMaIds(companyForm.getMaIdArray());
@@ -195,6 +217,17 @@ public class CompanyController
       String message="Order success !";
       if(returnRecord!=null && returnRecord.intValue()==0){
     	  message="Can't Order ";
+      }else{
+    	  MissCandidate missCandidate = new MissCandidate();
+          MissSery missSery = new MissSery();
+          MissAccount missAccount = new MissAccount();
+          missAccount.setMaId(Long.valueOf(maId));
+          missSery.setMsId(Long.valueOf(msId));
+          missCandidate.setMissAccount(missAccount);
+          missCandidate.setMissSery(missSery);
+          missCandidate.setAmount(amount);
+          missCandidate = missExamService.saveMissCandidate(missCandidate);
+         // Long updateRecord = missCandidate.getMcaId();
       }
         //missAccount = missExamService.refillMissAccount(missAccount);
         MissAccount missAccount= missExamService.findMissAccountById(Long.valueOf(maId));
@@ -329,8 +362,9 @@ public class CompanyController
     }
 
     @RequestMapping(value={"/candidate/create"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    @ResponseBody
-    public String doCreateCandidate(HttpServletRequest request, Model model)
+   // @ResponseBody
+   // public String doCreateCandidate(HttpServletRequest request, Model model)
+    public @ResponseBody MissCandidate doCreateCandidate(HttpServletRequest request, Model model) 
  //   public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
     {
         //System.out.println((new StringBuilder(" xxxxxxxx ")).append(request.getParameter("amount")).toString());
@@ -342,11 +376,13 @@ public class CompanyController
         missCandidate.setMissAccount(missAccount);
         missCandidate.setMissSery(missSery);
         missCandidate.setAmount(request.getParameter("amount"));
-        Long updateRecord = missExamService.saveMissCandidate(missCandidate);
+        //Long updateRecord = missExamService.saveMissCandidate(missCandidate);
+        missCandidate = missExamService.saveMissCandidate(missCandidate);
       //  logger.debug((new StringBuilder(" updateRecord=")).append(updateRecord).toString());
-        missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
-        Gson gson=new Gson();
-		return gson.toJson(missCandidate);
+        missCandidate.setUpdateRecord(Integer.valueOf(missCandidate.getMcaId().intValue()));
+       // Gson gson=new Gson();
+		//return gson.toJson(missCandidate);
+        return missCandidate;
        // return missCandidate;
     }
 
@@ -415,13 +451,14 @@ public class CompanyController
         	 contactForm = new ContactForm();
          contactForm.setMode("edit");
          MissContact missContact=null;
+         contactForm.setMcontactBirthDate("");
     //	if(meId!=null && !meId.equals("0")){
     		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
     //	} 
     		if(missContact != null && missContact.getMcontactBirthDate() != null)
-    			contactForm.setMcontactBirthDate(format1.format(missContact.getMcontactBirthDate()));
+    			contactForm.setMcontactBirthDate(format11.format(missContact.getMcontactBirthDate()));
     		else
-    			contactForm.setMcontactBirthDate(null);
+    			contactForm.setMcontactBirthDate("");
     		model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
     		model.addAttribute("display", "display: none");
       //  model.addAttribute("missContacts", missContacts);
@@ -460,7 +497,7 @@ public class CompanyController
         	if(contactForm.getMcontactBirthDate() != null && contactForm.getMcontactBirthDate().trim().length() > 0)
                 try
                 {
-                	contactForm.getMissContact().setMcontactBirthDate(format1.parse(contactForm.getMcontactBirthDate()));
+                	contactForm.getMissContact().setMcontactBirthDate(format2.parse(contactForm.getMcontactBirthDate()));
                 }
                 catch(ParseException e)
                 {
@@ -502,6 +539,8 @@ public class CompanyController
 		return gson.toJson(missTheme);
     }
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+    private static SimpleDateFormat format11 = new SimpleDateFormat("MM-dd-yyyy");
+    private static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
