@@ -35,9 +35,15 @@ function goToDynamicPage(pageId,formID,navi){
 	    					 <td align="left" width="100%" colspan="6"><strong>Question No. ${missExamForm.questionIndex+1}</strong></td>
 	    					</tr>
 	    					<tr>
+	    					 <td align="left" width="100%" colspan="6">&nbsp;<br/><br/></td>
+	    					</tr>
+	    					<tr>
 	    					<%--  <td align="left" width="100%"><pre>&nbsp;${missQuestion.mqNameTh1}</pre></td>  --%>
 	    					 <td align="left" width="100%">&nbsp;${missQuestion.mqNameTh1}</td> 
 	    					</tr> 
+	    					<tr>
+	    					 <td align="left" width="100%" colspan="6">&nbsp;<br/></td>
+	    					</tr>
 	    					<%-- <tr>
 	    					 <td align="left" width="100%">&nbsp;
 	    					 <c:forEach items="${missQuestion.missChoices}" var="missChoice" varStatus="loop"> 
