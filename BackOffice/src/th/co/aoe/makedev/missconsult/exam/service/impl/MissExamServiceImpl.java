@@ -176,12 +176,13 @@ public class MissExamServiceImpl extends PostCommon
         return postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
     }
 
-    public Long saveMissCandidate(MissCandidate missCandidate)
+    public MissCandidate saveMissCandidate(MissCandidate missCandidate)
     {
         missCandidate.setServiceName("saveMissCandidate");
         VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
         missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
-        return missCandidate.getMcaId();
+        //return missCandidate.getMcaId(); 
+        return missCandidate;
     }
 
     public int updateMissCandidate(MissCandidate missCandidate)

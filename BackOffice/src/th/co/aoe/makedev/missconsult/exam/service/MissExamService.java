@@ -88,7 +88,7 @@ public interface MissExamService {
 	public abstract VResultMessage searchMissAccountSeriesMap(
 			MissAccountSeriesMap missaccountseriesmap);
 
-	public abstract Long saveMissCandidate(MissCandidate misscandidate);
+	public abstract MissCandidate saveMissCandidate(MissCandidate misscandidate);
 
 	public abstract int updateMissCandidate(MissCandidate misscandidate);
 

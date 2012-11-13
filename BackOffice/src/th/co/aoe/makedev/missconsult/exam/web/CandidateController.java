@@ -146,6 +146,7 @@ public class CandidateController
             candidateForm = (CandidateForm)model.asMap().get("candidateForm");
         else
             candidateForm = new CandidateForm();
+        candidateForm.setMcaBirthDate("");
         candidateForm.setMode("edit");
         MissCandidate missCandidate = missExamService.findMissCandidateById(Long.valueOf(Long.parseLong(mcaId)));
         if(missCandidate != null && missCandidate.getMcaBirthDate() != null)
@@ -186,7 +187,7 @@ public class CandidateController
         if(candidateForm.getMcaBirthDate() != null && candidateForm.getMcaBirthDate().trim().length() > 0)
             try
             {
-                candidateForm.getMissCandidate().setMcaBirthDate(format1.parse(candidateForm.getMcaBirthDate()));
+                candidateForm.getMissCandidate().setMcaBirthDate(format2.parse(candidateForm.getMcaBirthDate()));
             }
             catch(ParseException e)
             {
@@ -195,7 +196,9 @@ public class CandidateController
         if(mode != null)
             if(mode.equals("new"))
             {
-                id = missExamService.saveMissCandidate(candidateForm.getMissCandidate());
+            	MissCandidate missCandidate  = missExamService.saveMissCandidate(candidateForm.getMissCandidate());
+            //    id = missExamService.saveMissCandidate(candidateForm.getMissCandidate());
+            	id=missCandidate.getMcaId();
                 candidateForm.getMissCandidate().setMcaId(id);
                 candidateForm.setMode("edit");
                 message = "Save success !";
@@ -342,7 +345,10 @@ public class CandidateController
         }
     }
 
-    private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+    //private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+    //04-17-1983
+    private static SimpleDateFormat format1 = new SimpleDateFormat("MM-dd-yyyy");
+    private static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;

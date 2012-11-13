@@ -174,7 +174,7 @@ public class MissController
     		missContact = missExamService.findMissContactById(Long.parseLong(mcontactId));
     //	}
     		if(missContact != null && missContact.getMcontactBirthDate() != null)
-    			contactForm.setMcontactBirthDate(format1.format(missContact.getMcontactBirthDate()));
+    			contactForm.setMcontactBirthDate(format11.format(missContact.getMcontactBirthDate()));
     		else
     			contactForm.setMcontactBirthDate(null);
     		model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(maId)));
@@ -215,7 +215,7 @@ public class MissController
         	if(contactForm.getMcontactBirthDate() != null && contactForm.getMcontactBirthDate().trim().length() > 0)
                 try
                 {
-                	contactForm.getMissContact().setMcontactBirthDate(format1.parse(contactForm.getMcontactBirthDate()));
+                	contactForm.getMissContact().setMcontactBirthDate(format2.parse(contactForm.getMcontactBirthDate()));
                 }
                 catch(ParseException e)
                 {
@@ -256,7 +256,10 @@ public class MissController
         Gson gson=new Gson();
 		return gson.toJson(missTheme);
     }
+   // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+    private static SimpleDateFormat format11 = new SimpleDateFormat("MM-dd-yyyy");
+    private static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
