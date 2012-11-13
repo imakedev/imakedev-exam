@@ -67,6 +67,7 @@
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree_51c0096a278d6381f2055339948db37e.js'/>"></script>
  --%>
  <script type="text/javascript" src="<c:url value='/resources/ckeditorV2/ckeditor.js'/>"></script>
+ <script type="text/javascript" src="<c:url value='/resources/js/bday-picker.min.js'/>"></script> 
  
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
 <%-- <sec:authorize access="hasAnyRole('ROLE_MANAGE_MISSCONSULT')">
@@ -184,6 +185,7 @@ a{cursor: pointer;}
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
+
 input[type="text"],[type="password"]{height:30px}
 img.ui-datepicker-trigger{cursor: pointer;}
  .span8 {
@@ -201,6 +203,7 @@ left padding is 20px */
 .stable-striped{
    background-color: #F9F9F9;
 }
+table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
 </style>
 <c:set var="aoeTest">
   <spring:message code='navigation_home'/>
@@ -620,7 +623,14 @@ function openMailDialog(todo_id,todo_ref){
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	   <!--   <fieldset style="font-family: sans-serif;">    -->
-	     <h3><strong>MC - Home</strong>
+	     <h3><strong>
+	     <c:if test="${UserMissContact.isMC=='1'}">
+	      	MC - Home
+	      </c:if>
+	       <c:if test="${UserMissContact.isMC=='0'}">
+	      	Company - Home
+	      </c:if>
+	      </strong>
 	      
 	      <!--  <form id="fileupload" action="server/php/" method="POST" enctype="multipart/form-data">
 	        <span class="btn btn-success fileinput-button">
@@ -657,21 +667,23 @@ function openMailDialog(todo_id,todo_ref){
 	    					</td>
 	    					</tr>
 	    					</table> 
-			 <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
+			 <table id="table_list"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
 			 <!-- <table class="table table-striped table-bordered" border="1" style="font-size: 12px">  -->
 		<!-- 	<table class="simply" border="1" style="font-size: 12px"> 
 			 -->
         <thead>
           <tr>
-            <th width="80%"><div class="th_class"><spring:message code="home_task"/></div></th>
-            <th width="20%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
+            <th width="70%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="15%"><div class="th_class">Status</div></th>
+            <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th>  
           </tr>
         </thead>
         <tbody>
          <c:forEach items="${todolists}" var="todolist" varStatus="loop">  
             <tr>
-             <td><div class="th_class"><c:out value="${todolist.mtodoTask}"/>
-              <c:if test="${todolist.mtodoResponse=='1'}">
+             <td><div class="th_class"  style="text-align: left;"><c:out value="${todolist.mtodoTask}"/></div>
+              </td> 
+               <td><div class="th_class"><c:if test="${todolist.mtodoResponse=='1'}">
               &nbsp;<span style="color: green;">Completed</span>
              </c:if>
               <c:if test="${todolist.mtodoResponse!='1'}">
