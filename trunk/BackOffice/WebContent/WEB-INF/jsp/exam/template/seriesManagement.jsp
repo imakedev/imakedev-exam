@@ -9,10 +9,11 @@ $(document).ready(function() {
 	   //alert("size="+missSeriesMapArray.length);
 	    // meid|filename|hotlink|module|path
 	   for(var i=0;i<missSeriesMapArray.length;i++){
-		   var missSeriesMapArrayValues=missSeriesMapArray[i].split("|");
+		  //  var missSeriesMapArrayValues=missSeriesMapArray[i].split("|");
 		   var indexStr=(i+1)+"_";
 		   //document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArray[i];
-		   document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArrayValues[0];
+		  // document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArrayValues[0];
+		   document.getElementsByName("missExam_mapping")[i].value=indexStr+missSeriesMapArray[i];
 		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
 		   //document.getElementsByName("eval_file_attached_"(i+1)).value=indexStr+missSeriesMapArrayValues[0];
 		  /*  if(missSeriesMapArrayValues[1]!='noFile'){
@@ -309,17 +310,36 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    						<!-- <input type="text"/>  -->
 	    						<form:input path="missSery.msSeriesName" id="msSeriesName"/>
 	    					 </td>
-	    					<td align="left" width="17%">Unit Cost:</td>
+	    					<td align="left" width="17%"></td>
 	    					<td align="left" width="17%">
 	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
-	    					<form:input path="missSery.msUnitCost" id="msUnitCost" cssStyle="width:50px"/>
+	    					
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Unit Cost:</td>
+	    					 <td align="left" width="17%">    					
+	    						<!-- <input type="text"/>  -->
+	    						<form:input path="missSery.msUnitCost" id="msUnitCost" cssStyle="width:50px"/>
+	    					 </td>
+	    					<td align="left" width="17%"></td>
+	    					<td align="left" width="17%">
+	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
+	    					
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Template File:</td>
-	    					 <td align="left" width="51%" colspan="3">    					
+	    					 <td align="left" width="51%" colspan="3">   
+	    					  <c:if test="${seriesForm.mode=='new'}">					
+		    					<a class="btn" id="template_file" disabled><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
+		    					(You must save before)
+		    				  </c:if> 
+		    				   <c:if test="${seriesForm.mode=='edit'}">					
 		    					<a class="btn" id="template_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
+		    				  </c:if>
 		    					<%--
 		    					<span id="template_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/template/${seriesForm.missSery.msId}/${seriesForm.missSery.templateFileHotlink}')">
 	    				${seriesForm.missSery.templateFile}</span>
@@ -332,8 +352,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Evaluation File:</td>
-	    					 <td align="left" width="51%" colspan="3">    			
+	    					 <td align="left" width="51%" colspan="3">    	
+	    					 <c:if test="${seriesForm.mode=='new'}">		
 	    						<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+	    					 	(You must save before)
+	    					 </c:if>
+	    					  <c:if test="${seriesForm.mode=='edit'}">					
+		    					<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+		    				  </c:if>
 	    						<span id="eval_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/evaluation/${seriesForm.missSery.msId}/${seriesForm.missSery.evalFileHotlink}')">
 	    						${seriesForm.missSery.evalFile}</span>
 	    					 </td>
@@ -342,8 +368,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Manual File:</td>
-	    					 <td align="left" width="51%" colspan="3">    			
+	    					 <td align="left" width="51%" colspan="3">    	
+	    					 <c:if test="${seriesForm.mode=='new'}">		
 	    						<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
+	    					 	(You must save before)
+	    					 </c:if>		
+	    					 <c:if test="${seriesForm.mode=='edit'}">					
+		    					<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
+		    				  </c:if>
 	    						<span id="manual_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/attachManual/${seriesForm.missSery.msId}/${seriesForm.missSery.manualFileHotlink}')">
 	    						${seriesForm.missSery.manualFile}</span>
 	    					 </td>
