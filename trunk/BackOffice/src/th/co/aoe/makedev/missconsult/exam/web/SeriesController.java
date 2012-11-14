@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.SeriesForm;
@@ -151,17 +152,14 @@ public class SeriesController
         if(missSeriesMaps != null && missSeriesMaps.size() > 0)
         {
             int size = missSeriesMaps.size();
-            for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
+           /* for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
             {
             String msatFileName="noFile";
             String msatHotlink="noHotlink";
             String msatModule="noModule";
             String msatPath="noPath";
                 MissSeriesMap entry = (MissSeriesMap)iterator.next();
-               /* if(index != size - 1)
-                    sb.append((new StringBuilder()).append(entry.getMeId()).append(",").toString());
-                else
-                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());*/
+                
                if(entry.getMsatFileName()!=null && entry.getMsatFileName().length()>0)
             	   msatFileName=entry.getMsatFileName();
                if(entry.getMsatHotlink()!=null && entry.getMsatHotlink().length()>0)
@@ -176,8 +174,21 @@ public class SeriesController
                 else
                     sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath);
                 index++;
-            }
-
+            }*/
+            for (int i = 0; i < size; i++) {
+        		//int size = missSeriesMaps.size(); 
+               /* String msatFileName="noFile";
+                String msatHotlink="noHotlink";
+                String msatModule="noModule";
+                String msatPath="noPath";*/
+                    MissSeriesMap entry = (MissSeriesMap)missSeriesMaps.get(i);  
+                    if(index != (size - 1))
+                        sb.append(entry.getMeId()+",");
+                    else
+                        sb.append(entry.getMeId());
+                    index++;
+                
+			}
         }
         model.addAttribute("missSeriesMap", sb);
         model.addAttribute("missExams", missExamService.listMissExam());
@@ -210,6 +221,7 @@ public class SeriesController
        // logger.debug((new StringBuilder("missExam_mapping=")).append(missExam_mapping).toString());
         String missSeriesMap = request.getParameter("missSeriesMap");
         //logger.debug((new StringBuilder("missSeriesMap=")).append(missSeriesMap).toString());
+        logger.info("into action with mode="+mode+",missSeriesMap="+missSeriesMap);
         Map checkDuplicate = new HashMap();
         List list = new ArrayList();
         if(missSeriesMap != null && missSeriesMap.length() > 0)
@@ -256,7 +268,24 @@ public class SeriesController
                 id=seriesForm.getMissSery().getMsId();
                 message = "Update success !";
             }
-        
+        logger.info("into findMissSeryById="+id);
+        MissSery missSery = missExamService.findMissSeryById(id);
+        MissManual missManual=missExamService.findMissManualById(id);
+        if(missManual!=null){
+        	missSery.setManualFile(missManual.getMmFileName());
+        	missSery.setManualFileHotlink(missManual.getMmHotlink());
+        }
+        MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch("template",id,null,null);
+        if(missSeriesAttach!=null){
+        	missSery.setTemplateFile(missSeriesAttach.getMsatFileName());
+        	missSery.setTemplateFileHotlink(missSeriesAttach.getMsatHotlink());
+        }
+        MissSeriesAttach missSeriesEval =missExamService.findMissSeriesAttachSearch("evaluation",id,null,null);
+        if(missSeriesEval!=null){
+        	missSery.setEvalFile(missSeriesEval.getMsatFileName());
+        	missSery.setEvalFileHotlink(missSeriesEval.getMsatHotlink());
+        }
+        seriesForm.setMissSery(missSery);
         MissSeriesMap missSeriesMapObj = new MissSeriesMap();
         missSeriesMapObj.setMsId(id);
         VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMapObj);
@@ -270,18 +299,15 @@ public class SeriesController
       
         if(missSeriesMaps != null && missSeriesMaps.size() > 0)
         {
-            int size = missSeriesMaps.size();
+        	int size = missSeriesMaps.size();
+            /*
             for(Iterator iterator = missSeriesMaps.iterator(); iterator.hasNext();)
             {
             String msatFileName="noFile";
             String msatHotlink="noHotlink";
             String msatModule="noModule";
             String msatPath="noPath";
-                MissSeriesMap entry = (MissSeriesMap)iterator.next();
-               /* if(index != size - 1)
-                    sb.append((new StringBuilder()).append(entry.getMeId()).append(",").toString());
-                else
-                    sb.append((new StringBuilder()).append(entry.getMeId()).toString());*/
+                MissSeriesMap entry = (MissSeriesMap)iterator.next(); 
                if(entry.getMsatFileName()!=null && entry.getMsatFileName().length()>0)
             	   msatFileName=entry.getMsatFileName();
                if(entry.getMsatHotlink()!=null && entry.getMsatHotlink().length()>0)
@@ -296,17 +322,50 @@ public class SeriesController
                 else
                     sb.append(entry.getMeId()+"|"+msatFileName+"|"+msatHotlink+"|"+msatModule+"|"+msatPath);
                 index++;
-            }
+            }*/
 
+        	for (int i = 0; i < size; i++) {
+        		//int size = missSeriesMaps.size(); 
+               /* String msatFileName="noFile";
+                String msatHotlink="noHotlink";
+                String msatModule="noModule";
+                String msatPath="noPath";*/
+                    MissSeriesMap entry = (MissSeriesMap)missSeriesMaps.get(i); 
+                  /* if(entry.getMsatFileName()!=null && entry.getMsatFileName().length()>0)
+                	   msatFileName=entry.getMsatFileName();
+                   if(entry.getMsatHotlink()!=null && entry.getMsatHotlink().length()>0)
+                	   msatHotlink=entry.getMsatHotlink();
+                   if(entry.getMsatModule()!=null && entry.getMsatModule().length()>0)
+                	   msatModule=entry.getMsatModule();
+                   if(entry.getMsatPath()!=null && entry.getMsatPath().length()>0)
+                	   msatPath=entry.getMsatPath();*/
+                    // meid|filename|hotlink|module|path
+                    if(index != (size - 1))
+                        sb.append(entry.getMeId()+",");
+                    else
+                        sb.append(entry.getMeId());
+                    index++;
+                
+			}
         }
         model.addAttribute("missSeriesMap", sb);
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");
         model.addAttribute("missExams", missExamService.listMissExam());
         model.addAttribute("seriesForm", seriesForm);
+        logger.info("message="+message+",sb="+sb);
         return "exam/template/seriesManagement";
     }
-
+    @RequestMapping(value={"/listexams"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public @ResponseBody List<String> listExams(Model model)
+	    {
+		 //Gson gson=new Gson();
+		/* EPTNormReport eptNormReport = new EPTNormReport();d
+		 eptNormReport.setMode(ServiceConstant.MANAGE_REPORT_MODE_SECTION);
+		 eptNormReport.setQuery("");
+		 return missExamService.findCompanies(eptNormReport);*/
+    	return null;
+	    }
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
