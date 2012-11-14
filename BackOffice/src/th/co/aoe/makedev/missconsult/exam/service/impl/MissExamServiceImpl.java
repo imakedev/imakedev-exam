@@ -532,7 +532,8 @@ public class MissExamServiceImpl extends PostCommon
         missSery.setServiceName("saveMissSery");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         missSery = (MissSery)resultMessage.getResultListObj().get(0);
-        return missSery.getMsId();
+        return Long.valueOf(missSery.getUpdateRecord());
+        //return missSery.getMsId();
     }
 
     public int updateMissSery(MissSery missSery)
