@@ -46,7 +46,7 @@ $(document).ready(function() {
 </div>
 <div id="wrapper">
 <div align="left" style="padding-top:5px;"><a href="#" title="Miss Consult"><img src="<c:url value='/resources/images/logowebmc.png'/>"  border="0"/></a></div>
-<div align="right" class="language" style="padding-top:10px; padding-right:10px;"><a href="#">TH</a> | <a href="#">EN</a></div>
+<div align="right" class="language" style="padding-top:10px; padding-right:10px;"><a href="?language=th_TH">TH</a> | <a href="?language=en">EN</a></div>
  <div class="content_box_top"></div>
         <div class="content_box">
           <div style="border-bottom:1px dashed #999; padding-bottom:3px;"><h2>Welcome to MissConsult</h2></div>                   
