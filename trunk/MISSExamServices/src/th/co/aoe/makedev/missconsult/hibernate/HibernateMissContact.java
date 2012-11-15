@@ -89,6 +89,7 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 			userContact.setUsername(transientInstance.getMcontactUsername());
 			userContact.setMcontactUsername(transientInstance.getMcontactUsername());
 			userContact.setPassword(password);
+			userContact.setMcontactId(returnId);
 			session.save(userContact);
 		} finally {
 				if (session != null) {
@@ -223,11 +224,29 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		int canUpdate = 0;
 			try{
+				//session.createQuery("select userContact UserContact userContact")
+				/*  Query query =session.createQuery("select userContact from UserContact userContact  " +
+					 		"where userContact.mcontactId=:mcontactId "); 
+				  query.setParameter("mcontactId",transientInstance.getMcontactId());
+				  Object obj =query.uniqueResult();
+				  UserContact contact=null;
+				  if(obj!=null)
+					  contact=(UserContact)obj;
+				  //contact.getId()
+				    List<MissExam> missExams= (List<MissExam>)query.qlist();*/
+					 
+				    
+				
 				session.update(transientInstance);
-				Query query=session.createQuery("update UserContact userContact " +
+				 Query query=session.createQuery("update UserContact userContact " +
 						" set userContact.password =:password " +
-						" where userContact.username =:username");
+						//" where userContact.username =:username");
+						" , userContact.mcontactUsername =:mcontactUsername " +
+						" , userContact.username =:username " +
+						 " where userContact.mcontactId =:mcontactId");
 				query.setParameter("username",transientInstance.getMcontactUsername());
+				query.setParameter("mcontactUsername",transientInstance.getMcontactUsername());
+				  query.setParameter("mcontactId",transientInstance.getMcontactId());
 				String password = transientInstance.getMcontactPassword();
 
 				MessageDigest mda=null;
@@ -369,6 +388,20 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 			xntcCalendarReturn.setIsMC(isMC);
 		}
 	  return xntcCalendarReturn;
+	}
+	@Override
+	public int countMissContactByUsername(String username,Long id)
+			throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery("select count(missContact) from MissContact missContact " +
+				" where missContact.mcontactUsername=:mcontactUsername " +
+				((id!=null)?"and missContact.mcontactId!=:mcontactId":"")+
+				""); 
+		query.setParameter("mcontactUsername", username);
+		if(id!=null)
+			query.setParameter("mcontactId", id);
+		return ((Long)query.uniqueResult()).intValue();
 	}
 	 
 

@@ -24,6 +24,7 @@ public class UserContact extends VServiceXML implements Serializable {
 	private String lastName;
 
 	private String mcontactUsername;
+	private Long mcontactId;
 
 	private String password;
 
@@ -95,6 +96,14 @@ public class UserContact extends VServiceXML implements Serializable {
 
 	public String getUsername() {
 		return this.username;
+	}
+
+	public Long getMcontactId() {
+		return mcontactId;
+	}
+
+	public void setMcontactId(Long mcontactId) {
+		this.mcontactId = mcontactId;
 	}
 
 	public void setUsername(String username) {

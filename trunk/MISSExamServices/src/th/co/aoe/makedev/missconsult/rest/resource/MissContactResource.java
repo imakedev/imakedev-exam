@@ -117,6 +117,10 @@ public class MissContactResource extends BaseResource {
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						} 
+						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_COUNT_BY_USERNAME)){
+							int updateRecord= missContactService.countMissContactByUsername(bpsTerm.getMcontactUsername(),bpsTerm.getMcontactId()); 
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						} 
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mcontactId=0l;
