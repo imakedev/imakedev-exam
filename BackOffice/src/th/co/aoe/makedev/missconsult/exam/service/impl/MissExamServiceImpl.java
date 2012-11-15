@@ -1722,4 +1722,16 @@ public class MissExamServiceImpl extends PostCommon
 	    return missSurveySend.getUpdateRecord().intValue();
 	}
 
+	@Override
+	public int countMissContactByUsername(String username,Long id) {
+		// TODO Auto-generated method stub
+		 MissContact missContact = new MissContact();
+		 missContact.setMcontactUsername(username);
+		 missContact.setMcontactId(id);
+		 missContact.setServiceName(ServiceConstant.MISS_CONTACT_COUNT_BY_USERNAME);
+	    VResultMessage resultMessage = postMessage(missContact, missContact.getClass().getName(), "missContact", true);
+	    missContact = (MissContact)resultMessage.getResultListObj().get(0);
+	    return missContact.getUpdateRecord().intValue();
+	}
+
 }
