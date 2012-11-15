@@ -1,7 +1,15 @@
 package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -25,7 +33,9 @@ public class UserContact implements Serializable {
 
 	@Column(name="MCONTACT_USERNAME")
 	private String mcontactUsername;
-
+	
+	@Column(name="MCONTACT_ID")
+	private Long mcontactId;
 	private String password;
 
 	private String type;
@@ -43,6 +53,14 @@ public class UserContact implements Serializable {
 
 	public Long getId() {
 		return this.id;
+	}
+
+	public Long getMcontactId() {
+		return mcontactId;
+	}
+
+	public void setMcontactId(Long mcontactId) {
+		this.mcontactId = mcontactId;
 	}
 
 	public void setId(Long id) {
