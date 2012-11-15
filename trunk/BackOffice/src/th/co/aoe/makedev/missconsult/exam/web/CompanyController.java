@@ -503,8 +503,14 @@ public class CompanyController
                 {
                     e.printStackTrace();
                 }
-            if(mode.equals("new"))
-            {
+        	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxx"+contactForm.getMissContact().getMcontactId());
+        	int count=missExamService.countMissContactByUsername(contactForm.getMissContact().getMcontactUsername(),contactForm.getMissContact().getMcontactId());
+        	
+        if(count>0){
+        	 message = "Duplicate Username !";
+        }else{
+        	if(mode.equals("new"))
+        			{
             	contactForm.getMissContact().setMcontactType(account_type);
                 id = missExamService.saveMissContact(contactForm.getMissContact());
                 contactForm.getMissContact().setMcontactId(id);
@@ -517,7 +523,9 @@ public class CompanyController
                 id = contactForm.getMissContact().getMcontactId();
                 message = "Update success !";
             }
-        }
+         }
+       
+       }
         model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(contactForm.getMaId())));
         model.addAttribute("message", message);
         model.addAttribute("display", "display: block");

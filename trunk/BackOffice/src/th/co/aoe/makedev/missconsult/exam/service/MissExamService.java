@@ -268,6 +268,8 @@ public interface MissExamService {
 	public abstract MissContact findMissContactById(Long long1);
 
 	public abstract MissContact findMissContactByUsername(String username);
+	
+	public abstract int countMissContactByUsername(String username,Long id); 
 
 	public abstract VResultMessage searchMissContact(MissContact missContact);
 
