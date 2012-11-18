@@ -8,6 +8,7 @@ package th.co.aoe.makedev.missconsult.exam.form;
 import java.io.Serializable;
 
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.form:
 //            CommonForm
@@ -16,8 +17,10 @@ public class CompanyForm extends CommonForm
     implements Serializable
 {
 
+	private Pagging paging;
     public CompanyForm()
     {
+    	 paging = new Pagging();
         missAccount = new MissAccount();
     }
 
@@ -155,6 +158,14 @@ public class CompanyForm extends CommonForm
 		this.rcActionId = rcActionId;
 	}
 
+	public Pagging getPaging() {
+		return paging;
+	}
+
+	public void setPaging(Pagging paging) {
+		this.paging = paging;
+	}
+
 	private static final long serialVersionUID = 1L;
     private MissAccount missAccount;
     private String maContactBirthDate;
@@ -171,4 +182,5 @@ public class CompanyForm extends CommonForm
     private String refill;
     private Long rcId;
     private String rcActionId;
+    
 }

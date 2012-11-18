@@ -23,6 +23,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
@@ -1439,6 +1440,7 @@ public class MissExamServiceImpl extends PostCommon
 		 roleType.setMaId(maId);
 		 roleType.setServiceName(ServiceConstant.ROLE_TYPE_LIST);
 	        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
+	      
 	       return resultMessage.getResultListObj();
 	}
 
@@ -1734,4 +1736,66 @@ public class MissExamServiceImpl extends PostCommon
 	    return missContact.getUpdateRecord().intValue();
 	}
 
+	@Override
+	public MissCandidate findMissCandidateByCitizendIdAndEmail(
+			String citizendId, String email) {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = new MissCandidate();
+		missCandidate.setMcaCitizenId(citizendId);
+		missCandidate.setMcaEmail(email);
+		missCandidate.setServiceName(ServiceConstant.MISS_CONTACT_FIND_BY_CITIZENID_AND_EMAIL);
+	    VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
+	    if(resultMessage!=null && resultMessage.getResultListObj()!=null){
+	    	  missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
+	    } 
+	  
+	    return missCandidate;
+		
+	}
+
+	@Override
+	public Long saveMissDoc(MissDoc missDoc) {
+		// TODO Auto-generated method stub
+		missDoc.setServiceName(ServiceConstant.MISS_DOC_SAVE);
+	    VResultMessage resultMessage = postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+	    missDoc = (MissDoc)resultMessage.getResultListObj().get(0);
+	    return missDoc.getMdId();
+	}
+
+	@Override
+	public int updateMissDoc(MissDoc missDoc) {
+		// TODO Auto-generated method stub
+		missDoc.setServiceName(ServiceConstant.MISS_DOC_UPDATE);
+        VResultMessage resultMessage = postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+        missDoc = (MissDoc)resultMessage.getResultListObj().get(0);
+        return missDoc.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteMissDoc(MissDoc missDoc) {
+		// TODO Auto-generated method stub
+		missDoc.setServiceName(ServiceConstant.MISS_DOC_DELETE);
+        VResultMessage resultMessage = postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+        missDoc = (MissDoc)resultMessage.getResultListObj().get(0);
+        return missDoc.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissDoc findMissDocById(Long mdId) {
+		// TODO Auto-generated method stub
+		 MissDoc missDoc = new MissDoc();
+	        missDoc.setMdId(mdId);
+	        missDoc.setServiceName(ServiceConstant.MISS_DOC_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (MissDoc)resultMessage.getResultListObj().get(0);
+	        return null;
+	}
+
+	@Override
+	public VResultMessage searchMissDoc(MissDoc missDoc) {
+		// TODO Auto-generated method stub
+		missDoc.setServiceName(ServiceConstant.MISS_DOC_SEARCH);
+        return postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+	} 
 }

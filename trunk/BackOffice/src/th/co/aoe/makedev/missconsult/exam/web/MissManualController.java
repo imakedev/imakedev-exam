@@ -7,16 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import th.co.aoe.makedev.missconsult.exam.form.DocForm;
 import th.co.aoe.makedev.missconsult.exam.form.ManualForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
-import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/manual"})
-@SessionAttributes(value={"manualForm","UserMissContact"})
+@SessionAttributes(value={"manualForm","UserMissContact","docForm"})
 public class MissManualController {
 	   private static Logger logger = Logger.getRootLogger();
 	   private static int PAGE_SIZE=100;
@@ -56,5 +56,19 @@ public class MissManualController {
 	       
 	        model.addAttribute("manualForm", manualForm);
 	        return "exam/template/manual";
+	    }
+	    @RequestMapping(value={"/doc"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public String doc(Model model)
+	    {
+	    	DocForm docForm = new DocForm();
+	    	docForm.getMissDoc().getPagging().setPageSize(PAGE_SIZE);
+	    	 
+	         VResultMessage vresultMessage = missExamService.searchMissDoc(docForm.getMissDoc());
+	         model.addAttribute("missDocs", vresultMessage.getResultListObj());
+	         docForm.getPaging().setPageSize(PAGE_SIZE);
+	         docForm.setPageCount(IMakeDevUtils.calculatePage(docForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
+	       
+	        model.addAttribute("docForm", docForm);
+	        return "exam/template/doc";
 	    }
 }
