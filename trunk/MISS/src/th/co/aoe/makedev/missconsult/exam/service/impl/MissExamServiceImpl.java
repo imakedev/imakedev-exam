@@ -259,4 +259,21 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		
 	}
 
+	@Override
+	public MissCandidate findMissCandidateByCitizendIdAndEmail(
+			String citizendId, String email) {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = new MissCandidate();
+		missCandidate.setMcaCitizenId(citizendId);
+		missCandidate.setMcaEmail(email);
+		missCandidate.setServiceName(ServiceConstant.MISS_CONTACT_FIND_BY_CITIZENID_AND_EMAIL);
+	    VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
+	    if(resultMessage!=null && resultMessage.getResultListObj()!=null){
+	    	  missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
+	    } 
+	  
+	    return missCandidate;
+		
+	}
+
 }
