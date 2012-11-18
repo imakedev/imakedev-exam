@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.MessageSourceResourceBundle;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,26 @@ import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 @RequestMapping
 public class AccessController {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
+	
+	/*@Autowired
+	private MessageSource messageSource;
+ 
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	public MissExamService getMissExamService() {
+		return missExamService;
+	}
+
+	public void setMissExamService(MissExamService missExamService) {
+		this.missExamService = missExamService;
+	}*/
+
 	@Autowired
 	private MissExamService missExamService;
 	@RequestMapping("/login")
@@ -56,7 +78,7 @@ public class AccessController {
  	public String checking(Model model,HttpServletRequest request,HttpServletResponse response) {
 		//request.get 
 		logger.info(" into checking");
-	 
+		
 	String	useragent = request.getHeader("User-Agent");
 		String user = useragent.toLowerCase();
 		 
@@ -99,7 +121,26 @@ public class AccessController {
 		missExamService.saveMissSystemUse(missSystemUse);
 		//0=not yet test finish, 1=  test finish
 		if(result==1){ 
-			model.addAttribute("message", "You test finish"); 
+			/*String message = "Invalid User or Password.";
+			logger.info("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
+			if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
+				message="ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง.";*/
+		//	ApplicationServicesAccessor.
+		//	System.out.println("sssssssssssss="+);
+			//model.addAttribute("message", messageSource.getMessage("final_message", new Object[0],LocaleContextHolder.getLocale())); 
+			String language=request.getParameter("language");
+			String message=MessageSourceResourceBundle.getBundle("messages", LocaleContextHolder.getLocale()).getString("duplicate_login_message");
+			logger.info("language1="+language);
+			if(language!=null && language.length()>0){
+		    	 LocaleEditor localeEditor = new LocaleEditor();
+		         localeEditor.setAsText(language);
+	 
+		         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+		         localeResolver.setLocale(request, response,
+		             (Locale) localeEditor.getValue());
+		         message="";
+		    	}
+			model.addAttribute("message",message);
 			return "access/login";
 		}else
 			return "redirect:/";

@@ -18,11 +18,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.MissExamForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissTest;
@@ -349,4 +351,9 @@ public class MissExamController {
 		System.out.println("aoee==>"+missExamService);*/
         return "exam/examMessage";
     } 
+	  @RequestMapping(value={"/exam/getcandidateinfo"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+		 public  @ResponseBody MissCandidate getcandidateinfo(Model model,HttpServletRequest request)
+		    {
+			 return missExamService.findMissCandidateByCitizendIdAndEmail(request.getParameter("citizendID"), request.getParameter("email"));
+		    }
 }
