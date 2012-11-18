@@ -458,16 +458,18 @@ public class ResultController
 			newList.add(report);
 			newList.add(report2);*/
 		// JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
-		
+		 
 		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
 		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
 		 Map p =new HashMap();
 		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
+		 System.out.println("missTestShows="+missTestShows);
 		 if(missTestShows!=null && missTestShows.size()>0){
 			 for (MissTestShow missTestShow : missTestShows) {
 				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
+				System.out.println("(missTestShow.getMtsColumn()=="+missTestShow.getMtsColumn()+", missTestShow.getMtsValue()==>"+ missTestShow.getMtsValue());
 			}
 		 }
 		/* p.put("SubDataSource", beanCollectionDataSource);

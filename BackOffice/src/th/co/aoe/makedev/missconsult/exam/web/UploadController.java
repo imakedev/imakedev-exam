@@ -30,6 +30,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissFile;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
@@ -261,6 +262,14 @@ public class UploadController {
 			 content_type="application/vnd.ms-excel";
 			 content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
 		}
+		else if(module.equals("doc")){
+			//	String[] ids=id.split("_");
+			MissDoc missDoc =missExamService.findMissDocById(Long.parseLong(id));
+				//MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
+				 ndPathFileGen=path+missDoc.getMdDocPath();
+				 content_type="application/pdf";
+				 content_disposition="attachment; filename="+missDoc.getMdDocFileName();
+			}
     	//String filePath =  bundle.getString(module+"Path")+hotlink+".jpg";
 		//	String fileName = null;
 			  

@@ -28,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
@@ -226,7 +227,12 @@ public class CandidateController
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
     }
-
+    
+    @RequestMapping(value={"/getcandidateinfo"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public  @ResponseBody MissCandidate getcandidateinfo(Model model,HttpServletRequest request)
+	    {
+		 return missExamService.findMissCandidateByCitizendIdAndEmail(request.getParameter("citizendID"), request.getParameter("email"));
+	    }
     @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void export(HttpServletRequest request, HttpServletResponse response)
     {

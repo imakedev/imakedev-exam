@@ -126,8 +126,8 @@ public class CompanyController
         companyForm.setMissExam_selectbox(missExam_selectboxes);
         companyForm.getMissAccount().setMeIds(missExam_selectboxes);
         companyForm.getPaging().setPageSize(PAGE_SIZE);
-        logger.debug((new StringBuilder("xxxx=companyForm.getMissAccount().getPagging()=")).append(companyForm.getMissAccount().getPagging()).toString());
-        logger.debug((new StringBuilder("xxxx=companyForm.getPaging()=")).append(companyForm.getPaging()).toString());
+     /*   logger.debug((new StringBuilder("xxxx=companyForm.getMissAccount().getPagging()=")).append(companyForm.getMissAccount().getPagging()).toString());
+        logger.debug((new StringBuilder("xxxx=companyForm.getPaging()=")).append(companyForm.getPaging()).toString());*/
         companyForm.getMissAccount().setPagging(companyForm.getPaging());
         VResultMessage vresultMessage = missExamService.searchMissAccount(companyForm.getMissAccount());
         String meIdArray = "";

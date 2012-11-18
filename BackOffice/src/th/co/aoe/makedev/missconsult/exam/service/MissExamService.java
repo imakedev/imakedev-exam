@@ -19,6 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
@@ -98,6 +99,10 @@ public interface MissExamService {
 			String s);
 
 	public abstract MissCandidate findMissCandidateById(Long long1);
+	
+	public abstract MissCandidate findMissCandidateByCitizendIdAndEmail(
+			String citizendId, String email);
+	
 
 	public abstract VResultMessage searchMissCandidate(
 			MissCandidate misscandidate);
@@ -284,6 +289,14 @@ public interface MissExamService {
 	public abstract MissManual findMissManualById(Long long1);
 
 	public abstract VResultMessage searchMissManual(MissManual missManual);
+	
+	public abstract Long saveMissDoc(MissDoc missDoc);
+	public abstract int updateMissDoc(MissDoc missDoc) ;
+	public abstract int deleteMissDoc(MissDoc missDoc) ;	
+	public abstract MissDoc findMissDocById(Long mdId)  ;
+	public abstract  VResultMessage searchMissDoc(MissDoc missDoc)  ;
+	
+	
 
 	public abstract int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach);
 
