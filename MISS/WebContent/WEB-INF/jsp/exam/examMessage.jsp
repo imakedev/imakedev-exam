@@ -161,7 +161,7 @@ function logoutExam(){
         <%-- <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> --%>       
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
             </div>
            </div>
            </div>

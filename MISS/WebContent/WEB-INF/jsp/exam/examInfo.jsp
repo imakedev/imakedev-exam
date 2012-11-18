@@ -160,7 +160,7 @@ function appendContent(data){
         <sec:authentication var="myUser" property="principal.myUser"/>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
              <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;
-              <%-- <a href="${logoutUrl}">Logout</a> --%>
+              <a href="${logoutUrl}">Logout</a>
             </div>
            </div>
            </div>

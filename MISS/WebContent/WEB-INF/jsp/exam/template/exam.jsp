@@ -3,7 +3,7 @@
 <c:url value="/exam/template" var="finishUrl"/>
 <script type="text/javascript">
 $(document).ready(function() { 
-	markQuestion($("#answered").val()); 
+	markQuestion($("#answered").val());  
 });
 function goToDynamicPage(pageId,formID,navi){
 	/* if(navi=='prev'){
@@ -15,10 +15,34 @@ function goToDynamicPage(pageId,formID,navi){
 	$("#mode").val(navi);
 	if(navi!='finish')
 		postDynamicPage(pageId,formID);
-	else
-		document.forms["missExamForm"].submit();
+	else{
+		if('${missExamForm.examIndex}'=='${fn:length(missExamForm.missCandidate.missSery.missExams)-1}'){
+			$("#_message_show").html('<spring:message code="final_message"/>');
+			$( "#dialog-final-Message" ).dialog({
+				/* height: 140, */
+				modal: true,
+				buttons: {
+					"Ok": function() { 
+						$( this ).dialog( "close" );
+						//submitExam();
+					}
+				},
+			beforeClose:function( event, ui ){
+				submitExam();
+			}
+		  });
+		}else
+			submitExam();
+	}
+}
+function submitExam(){
+	document.forms["missExamForm"].submit();
+	//$( "#dialog-final-Message" ).dialog("close");
 }
 </script>
+<div id="dialog-final-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	<span id="_message_show">${message}</span>
+</div>
 <fieldset style="font-family: sans-serif;">  
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
@@ -26,6 +50,7 @@ function goToDynamicPage(pageId,formID,navi){
           <form:form  id="missExamForm" name="missExamForm" modelAttribute="missExamForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="${finishUrl}">
           <div> 
           <form:hidden path="examIndex" id="examIndex"/>
+         
           <form:hidden path="questionIndex" id="questionIndex"/>
            <form:hidden path="oldQuestionIndex" id="oldQuestionIndex"/>
           <form:hidden path="mode" id="mode"/>
@@ -77,8 +102,10 @@ function goToDynamicPage(pageId,formID,navi){
               				<tr>
               				
 	    					 <td align="left" width="50%"> 
-	    					 <c:if test="${missExamForm.questionIndex!=0}">
-	    					  <a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','prev')" ><span style="color: white;font-weight: bold;"><i class="icon-chevron-left icon-white"></i>&nbsp;Previous</span></a>
+	    					 <c:if test="${missExamForm.questionIndex!=0}"> 
+	    					  	<c:if test="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder!='1'}">	   					 	
+	    					  		<a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','prev')" ><span style="color: white;font-weight: bold;"><i class="icon-chevron-left icon-white"></i>&nbsp;Previous  </span></a>
+	    					  	  </c:if> 
 	    					 </c:if>
 	    					</td>	    					
 	    					 <td align="right" width="50%">

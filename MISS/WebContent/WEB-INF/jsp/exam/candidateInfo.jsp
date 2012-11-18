@@ -159,12 +159,100 @@ function appendContent(data){
 	appendContentWithId(data,"_content");
 	
 }
-
+function checkID(id) 
+{ 
+	if(id.length != 13)
+		return false; 
+		for(i=0, sum=0; i < 12; i++) 
+			sum += parseFloat(id.charAt(i))*(13-i); 
+		if((11-sum%11)%10!=parseFloat(id.charAt(12))) 
+	 		return false; 
+	return true;
+} 
+function getCandidateInfo(){ 
+	//
+	//
+	var mcaCitizenId=jQuery.trim($("#missCandidate\\.mcaCitizenId").val());
+	var mcaEmail=jQuery.trim($("#missCandidate\\.mcaEmail").val());
+	var haveError=false;
+	var message="";
+	if(!checkID(mcaCitizenId) && mcaCitizenId.length>0){
+		message="รหัสประชาชนไม่ถูกต้อง";	
+		haveError=true;		
+	}else if(mcaEmail.length==0 && mcaCitizenId.length==0){
+		message="กรุณากรอก รหัสประชาชน และ Email";
+		haveError=true;
+	}
+	if(haveError){
+		$("#_message_show").html(message);
+		$( "#dialog-Message" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+					 
+				}
+			}
+		  });
+	}else{ 
+		//alert("xxx")
+		$.ajax({
+			  type: "get",
+			  url: "exam/getcandidateinfo?citizendID="+mcaCitizenId+"&email="+mcaEmail,
+			  cache: false
+			}).done(function( data ) {
+				//alert(data)
+				if(data!=null){  
+					if(data.mcaId!=null){
+						$("#missCandidate\\.mcaTitleType").val(data.mcaTitleType);
+						$("#missCandidate\\.mcaFirstName").val(data.mcaFirstName);
+						$("#missCandidate\\.mcaLastName").val(data.mcaLastName);
+						//$("#missCandidate\\.mcaGender").val(data.mcaGender);
+						 var mcaGenders=document.getElementsByName("missCandidate.mcaGender");
+						for(var i=0;i<mcaGenders.length;i++){
+							if(mcaGenders[i].value==data.mcaGender)
+								mcaGenders[i].checked=true;
+							else
+								mcaGenders[i].checked=false;
+						} 
+						//alert(data.mcaBirthDate);
+						if(data.mcaBirthDate!=null){
+							//1983-04-17
+							var birthDate=data.mcaBirthDate.split("-");
+							$("select[name='birth\[day\]']").val(parseInt(birthDate[2]));
+							$("select[name='birth\[month\]']").val(parseInt(birthDate[1]));
+							$("select[name='birth\[year\]']").val(birthDate[0]);
+						}
+						/* $("select[name='birth\[day\]']").val(data.mcaTitleType);
+						$("select[name='birth\[day\]']").val(data.mcaTitleType);
+						$("select[name='birth\[day\]']").val(data.mcaTitleType); */
+						if(data.missCareerMaster.mcmId!=null)
+							$("#missCandidate\\.missCareerMaster\\.mcmId").val(data.missCareerMaster.mcmId);
+						$("#missCandidate\\.mcaPosition").val(data.mcaPosition);
+						$("#missCandidate\\.mcaDepartment").val(data.mcaDepartment);
+						$("#missCandidate\\.mcaPhone").val(data.mcaPhone);
+						//alert(data.missIndustryMaster.mimId)
+						/* if(data.missIndustryMaster.mimId!=null)
+							$("#missCandidate\\.missIndustryMaster\\.mimId").val(data.missIndustryMaster.mimId);  */
+						//alert(data.mcaPictureHotlink)
+						 
+						
+					}
+					else
+						alert("not have data");
+				} 
+			});
+	}
+}
 </script>
 </head>
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
+ <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	<span id="_message_show"></span>
+</div>
  <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
  <div class="container-fluid">
     <div class="row-fluid">
@@ -183,7 +271,7 @@ function appendContent(data){
         <%-- <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> --%>      
         </div>
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
             </div>
            </div>
            </div>
@@ -204,6 +292,26 @@ function appendContent(data){
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Infomation</strong></td>
+	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="10%">Citizen ID:</td>
+	    					 <td align="left" width="24%">
+	    					<form:input path="missCandidate.mcaCitizenId" cssStyle="width:105px"/>  
+	    					 </td>  
+	    					 <td align="left" width="10%">Email:</td>
+	    					<td align="left" width="24%">
+	    					 <form:input path="missCandidate.mcaEmail"/>
+	    					</td>
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr> 
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="10%"></td>
+	    					 <td align="left" width="58%" colspan="3">
+	    							<a class="btn"  onclick="getCandidateInfo()"><i class="icon-search"></i>&nbsp;<spring:message code='button_search'/></a><br></br>
+	    					 </td>  
+	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
@@ -246,24 +354,23 @@ function appendContent(data){
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="10%">Email:</td>
-	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaEmail"/>  
+	    					 <td align="left" width="10%">Phone:</td>
+	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaPhone"/>  
 	    					 </td>
-	    					<td align="left" width="10%">Phone:</td>
-	    					<td align="left" width="24%"><form:input path="missCandidate.mcaPhone"/></td>
+	    					<td align="left" width="10%">Birth date:</td>
+	    					<td align="left" width="24%"><div class="picker" id="picker2"></div> 
+    						<form:hidden path="mcaBirthDate"  id="mcaBirthDate"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="10%">Birth date:</td>
-	    					 <td align="left" width="24%"> 
-	    					 <div class="picker" id="picker2"></div> 
-    						<form:hidden path="mcaBirthDate"  id="mcaBirthDate"/>
-	    				<%-- 	 <form:input path="mcaBirthDate" cssStyle="width:85px"/> --%>
+	    					 <td align="left" width="10%">Gender:</td>
+	    					 <td align="left" width="24%">  
+	    					 <form:radiobutton path="missCandidate.mcaGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaGender" value="1"/>Male 
 	    					 </td>
-	    					<td align="left" width="10%">Gender:</td>
+	    					<td align="left" width="10%"></td>
 	    					<td align="left" width="24%">
-	    					<form:radiobutton path="missCandidate.mcaGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaGender" value="1"/>Male
+	    					
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
