@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY_ROLE_CONTACT')" var="isManageCompanyRoleContact"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT_ROLE_CONTACT')" var="isManageMCRoleContact"/>
 <script type="text/javascript">
 $(document).ready(function() {
 //	$('#tabs').tabs();
@@ -105,6 +106,20 @@ function goBackContacts(){
 		});
 }
 function doContactAction(action,mode,id){
+	//http://eisabainyo.net/weblog/2009/04/30/10-examples-of-basic-input-validation-in-javascript/ 
+	/*
+	var input = "hello222";
+var ok = false;
+
+var dob_regex = /^([0-9]){2}(\/){1}([0-9]){2}(\/)([0-9]){4}$/;   // DD/MM/YYYY
+var email_regex = /^[a-zA-Z0-9._-]+@([a-zA-Z0-9.-]+\.)+[a-zA-Z0-9.-]{2,4}$/;  // email address
+var username_regex = /^[\w.-]+$/;  // allowed characters: any word . -, ( \w ) represents any word character (letters, digits, and the underscore _ ), equivalent to [a-zA-Z0-9_]
+var num_regex = /^\d+$/; // numeric digits only
+var search_regex = "/hello/"; 
+var password_regex = /^[A-Za-z\d]{6,8}$/;  // any upper/lowercase characters and digits, between 6 to 8 characters in total
+var phone_regex = /^\(\d{3]\) \d{3}-\d{4}$/;  // (xxx) xxx-xxxx  
+var question_regex = /\?$/; // ends with a question mark
+	*/
 	//alert(id)
 /* 	 
 	$("#modeQuestion").val(mode);
@@ -114,7 +129,28 @@ function doContactAction(action,mode,id){
 		$("#mqId").val("0");
 	}
  */	
-	 
+ var username_regex = /^[\w.-]+$/;  // allowed characters:
+	 // /^[\w!@#%&/(){}[\]=?+*^~\-.:,;]{1,32}$/.test(password)
+ //var password_regex = /^[A-Za-z\d]$/; 
+ //var password_regex = /^[\w.-\d!#$%&?@]+$/; 
+ var password_regex=/\s/g;
+ //var password_regex=/^.*(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&?]).*$/;
+  if ( username_regex.test($("#mcontactUsername").val()) ) {
+		 //alert("username ok")
+	}else{
+		alert("Invalid Username");
+		return false;
+    }
+//return false;
+//if ( $("#mcontactPassword").val().match(password_regex) ) {
+	if ( !password_regex.test($("#mcontactPassword").val())) {
+		//alert("password ok")
+	}else{
+		alert("Invalid Password");
+		return false;
+	}
+	
+//return false;		
 		$("#mcontactBirthDate").val($("#birthdate").val());
  
 	var target="miss";
@@ -158,13 +194,14 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 			 <!--  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
-    					<td width="100%" colspan="4"><strong>Contct Point Profile</strong></td>
+    					<td width="100%" colspan="4"><strong>Contact Point Profile</strong></td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Username:</td>
     					<td width="50%" colspan="2">
     					<c:if test="${contactForm.mode=='edit'}">    					
-    						<form:input path="missContact.mcontactUsername" id="mcontactUsername" readonly="true"/>
+    						<%-- <form:input path="missContact.mcontactUsername" id="mcontactUsername" readonly="true"/> --%>
+    						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
     					</c:if>
     					<c:if test="${contactForm.mode!='edit'}">    					
     						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
@@ -190,16 +227,25 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<font color="red">*</font>
     					</td>
     				</tr>
+    				<c:if test="${isManageCompanyRoleContact || isManageMCRoleContact}">	
     				<tr valign="top">
     					<td width="25%">Role:</td>
-    					<td width="50%" colspan="2">
+    					<td width="50%" colspan="2"> 
+					
     					<form:select path="missContact.rcId">
-    						 <form:option value="-1">-- Select Role --</form:option> 
+    					<form:option value="-1">-- Select Role --</form:option> 
     						 <form:options items="${roleContacts}" itemLabel="rcName" itemValue="rcId"></form:options>
 	    					     
     					</form:select><font color="red">*</font>
+    				
+    				<%--  <c:if test="${not (isManageCompanyRoleContact || isManageMCRoleContact)}">
+    					<form:select path="missContact.rcId" disabled>
+    				</c:if>   --%>
+    						 
+    				
     					</td>
     				</tr>
+    				</c:if> 
    		 			<tr valign="top">
     					<td width="25%">First-Lastname:</td>
     					<td width="50%" colspan="2">

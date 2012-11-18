@@ -5,10 +5,11 @@
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY')" var="isManageCompany"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_CANDIDATE')" var="isManageCandidate"/>
-<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_REPORT')" var="isManageSearchReport"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_SEARCH_REPORT')" var="isManageSearchReport"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_SERIES')" var="isManageSeries"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_TEST')" var="isManageTest"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_DOWNLOAD')" var="isManageDownload"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT_REPORT_MANAGEMENT')" var="isManageReportManagement"/> 
 <sec:authentication var="myUser" property="principal.myUser"/> 
 <html>
 <head>
@@ -255,7 +256,9 @@ $(document).ready(function() {
 					"data" : {title:"<spring:message code='navigation_home'/>",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
 					"metadata" : { id : "child_23" ,"link":"template/todolist"},
 					"attr" : { "id" : "home_node" }, 
-				},
+				}
+				, 
+				<c:if test="${isManageMC || isManageCompany || isManageCandidate}">	
 				{ 
 					"attr" : { "id" : "account_node" }, 
 					"data" : { 
@@ -279,6 +282,7 @@ $(document).ready(function() {
 						] 
 					
 				},
+				</c:if>
 				/* { 
 					"attr" : { "id" : "report_node" }, 
 					"data" : { 
@@ -302,6 +306,7 @@ $(document).ready(function() {
 					
 				},
 				</c:if>
+				<c:if test="${isManageMC || isManageSeries || isManageTest}">	
 				{ 
 					"attr" : { "id" : "management_node" }, 
 					"data" : { 
@@ -319,7 +324,9 @@ $(document).ready(function() {
 						] 
 					
 				}
-				,				
+				,	
+				</c:if>
+				<c:if test="${isManageMC || isManageDownload}">	
 				{ 
 					"attr" : { "id" : "etc_node" }, 
 					"data" : { 
@@ -327,14 +334,21 @@ $(document).ready(function() {
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
-							<c:if test="${isManageTest}">	
+							<c:if test="${isManageDownload}">	
 								{ 							
 									attributes: { id : "pjson_5" }, data: { title : "<spring:message code='navigation_download'/>",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/search"} 
+								},
+							</c:if>
+							<c:if test="${isManageDownload}">	
+								{ 							
+									attributes: { id : "pjson_55" }, data: { title : "<spring:message code='navigation_doc'/>",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"manual/doc"} 
 								}
 							</c:if>
 					          ] 					
 				}
-				,				
+				,	
+				</c:if>
+				<c:if test="${isManageMC || isManageReportManagement}">	
 				{ 
 					"attr" : { "id" : "manage_report_node" }, 
 					"data" : { 
@@ -342,7 +356,7 @@ $(document).ready(function() {
 						"attr" : { "href" : "www.google.com" } 
 					},
 					"children" : [
-							<c:if test="${isManageTest}">	
+							<c:if test="${isManageReportManagement}">	
 								{ 							
 									attributes: { id : "pjson_7" }, data: { title : "EPT Norm Report",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "child_28" ,"link":"reportmanagement/eptNormReport"} 
 								},
@@ -362,6 +376,7 @@ $(document).ready(function() {
 							</c:if>
 					          ] 					
 				}
+				</c:if>
 			]
 		},
 		"plugins" : [ "themes", "json_data", "ui" ],
