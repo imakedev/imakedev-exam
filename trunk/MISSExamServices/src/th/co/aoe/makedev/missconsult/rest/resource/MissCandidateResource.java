@@ -151,7 +151,62 @@ public class MissCandidateResource extends BaseResource {
 								 
 								
 							}
-						} else 
+						}
+						
+						else 
+							if(serviceName.equals(ServiceConstant.MISS_CONTACT_FIND_BY_CITIZENID_AND_EMAIL)){
+								th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate ntcCalendarReturn = missCandidateService.findMissCandidateByCitizendIdAndEmail(xbpsTerm.getMcaCitizenId(), xbpsTerm.getMcaEmail());
+							logger.debug(" object return ="+ntcCalendarReturn);
+							VResultMessage vresultMessage = new VResultMessage();
+								if(ntcCalendarReturn!=null){
+									
+									List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(1);
+									th.co.aoe.makedev.missconsult.xstream.MissCandidate xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
+									BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
+									xntcCalendarReturn.setPagging(null);
+									if(ntcCalendarReturn.getMissSery()!=null && ntcCalendarReturn.getMissSery().getMsId()!=null && ntcCalendarReturn.getMissSery().getMsId().intValue()!=0){
+										th.co.aoe.makedev.missconsult.xstream.MissSery missSery=new th.co.aoe.makedev.missconsult.xstream.MissSery();
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissSery(), missSery);
+										missSery.setPagging(null);
+										List<th.co.aoe.makedev.missconsult.xstream.MissExam> missExams=missCandidateService.findMissExambySery(missSery.getMsId());
+									//	logger.debug("missExams  list ====>"+missExams);
+										missSery.setMissExams(missExams);
+										xntcCalendarReturn.setMissSery(missSery);
+									}
+									if(ntcCalendarReturn.getMissCareerMaster()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId()!=null && ntcCalendarReturn.getMissCareerMaster().getMcmId().intValue()!=0){
+										th.co.aoe.makedev.missconsult.xstream.MissCareerMaster missCareerMaster=new th.co.aoe.makedev.missconsult.xstream.MissCareerMaster();
+										missCareerMaster.setMcmId(ntcCalendarReturn.getMissCareerMaster().getMcmId());
+										xntcCalendarReturn.setMissCareerMaster(missCareerMaster);
+									}
+									if(ntcCalendarReturn.getMissIndustryMaster()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId()!=null && ntcCalendarReturn.getMissIndustryMaster().getMimId().intValue()!=0){
+										th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster=new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();
+										missIndustryMaster.setMimId(ntcCalendarReturn.getMissIndustryMaster().getMimId());
+										xntcCalendarReturn.setMissIndustryMaster(missIndustryMaster);
+									}
+									if(ntcCalendarReturn.getMissAccount()!=null && ntcCalendarReturn.getMissAccount().getMaId()!=null && ntcCalendarReturn.getMissAccount().getMaId().intValue()!=0){
+										th.co.aoe.makedev.missconsult.xstream.MissAccount missAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
+										BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount(), missAccount,id_ignore_theme);
+										if(ntcCalendarReturn.getMissAccount().getMissTheme()!=null && ntcCalendarReturn.getMissAccount().getMissTheme().getMtId()!=null){
+											th.co.aoe.makedev.missconsult.xstream.MissTheme missTheme = new th.co.aoe.makedev.missconsult.xstream.MissTheme();						
+											BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissTheme(),missTheme); 
+											missAccount.setMissTheme(missTheme);
+										}
+										if(ntcCalendarReturn.getMissAccount().getMissIndustryMaster()!=null && ntcCalendarReturn.getMissAccount().getMissIndustryMaster().getMimId()!=null){
+											th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster missIndustryMaster = new th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster();						
+											BeanUtils.copyProperties(ntcCalendarReturn.getMissAccount().getMissIndustryMaster(),missIndustryMaster); 
+											missAccount.setMissIndustryMaster(missIndustryMaster);
+										}
+										 missAccount.setPagging(null);
+										xntcCalendarReturn.setMissAccount(missAccount);
+									}
+									
+									xntcCalendars.add(xntcCalendarReturn);
+									vresultMessage.setResultListObj(xntcCalendars);
+									//System.out.println("xntcCalendars=="+xntcCalendars);
+								}
+								return getRepresentation(entity, vresultMessage, xstream);
+							} 
+						else 
 						if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_FIND_BY_NAME)){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate ntcCalendarReturn = missCandidateService.findMissCandidateByName(bpsTerm.getMcaUsername());
 						logger.debug(" object return ="+ntcCalendarReturn);

@@ -138,6 +138,12 @@
 		scope="prototype"> 
 		<property name="missManualService" ref="missManualService"></property> 
 		<property name="xstream" ref="xstream"></property>
+	</bean>  
+	<bean id="missDocResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissDocResource"
+		scope="prototype"> 
+		<property name="missDocService" ref="missDocService"></property> 
+		<property name="xstream" ref="xstream"></property>
 	</bean> 
 	<bean id="missSeriesAttachResource"
 		class="th.co.aoe.makedev.missconsult.rest.resource.MissSeriesAttachResource"

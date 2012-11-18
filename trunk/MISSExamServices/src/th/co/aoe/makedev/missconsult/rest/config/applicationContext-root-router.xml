@@ -121,6 +121,12 @@
 							bean="missManualResource" />
 					</bean>
 				</entry>
+				<entry key="/missDoc">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missDocResource" />
+					</bean>
+				</entry>
 				<entry key="/missSeriesAttach">
 					<bean class="org.restlet.ext.spring.SpringFinder">
 						<lookup-method name="create"

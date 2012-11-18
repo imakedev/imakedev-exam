@@ -66,7 +66,10 @@ public class MissCandidate implements Serializable {
 	
 	@Column(name="MCA_PICTURE_PATH")
 	private String mcaPicturePath;
-
+	
+	@Column(name="MCA_PICTURE_HOTLINK")
+	private String mcaPictureHotlink;
+	
 	@Column(name="MCA_STATUS")
 	private String mcaStatus;
 
@@ -99,11 +102,7 @@ public class MissCandidate implements Serializable {
  	private MissIndustryMaster missIndustryMaster;
      
     @Column(name="MIM_EXT")
-  	private String mimExt;
-     
-	@Column(name="MCA_PICTURE_HOTLINK")
-	private String mcaPictureHotlink;
-  
+  	private String mimExt; 
 
 	@Column(name="MCA_POSITION")
 	private String mcaPosition;
@@ -111,8 +110,13 @@ public class MissCandidate implements Serializable {
 	@Column(name="MCA_TITLE_TYPE")
 	private String mcaTitleType;
 	
-
+	@Column(name="MCA_CREATED_DATE")
+	private Timestamp mcaCreatedDate;
 	
+	@Column(name="MCA_UPDATED_DATE")
+	private Timestamp mcaUpdatedDate;
+	
+	 
 	
 	
 	 
@@ -126,6 +130,22 @@ public class MissCandidate implements Serializable {
 	private Set<MissTestResult> missTestResults;*/
 
     
+
+	public Timestamp getMcaCreatedDate() {
+		return mcaCreatedDate;
+	}
+
+	public void setMcaCreatedDate(Timestamp mcaCreatedDate) {
+		this.mcaCreatedDate = mcaCreatedDate;
+	}
+
+	public Timestamp getMcaUpdatedDate() {
+		return mcaUpdatedDate;
+	}
+
+	public void setMcaUpdatedDate(Timestamp mcaUpdatedDate) {
+		this.mcaUpdatedDate = mcaUpdatedDate;
+	}
 
 	public MissCandidate() {
     }

@@ -71,7 +71,8 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String mcaPosition;
 	private String mcaTitleType;
  	private String mimExt;
-	
+	private Timestamp mcaCreatedDate;
+	private Timestamp mcaUpdatedDate;
 	
 	
 	public String getMimExt() {
@@ -335,6 +336,22 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+
+	public Timestamp getMcaCreatedDate() {
+		return mcaCreatedDate;
+	}
+
+	public void setMcaCreatedDate(Timestamp mcaCreatedDate) {
+		this.mcaCreatedDate = mcaCreatedDate;
+	}
+
+	public Timestamp getMcaUpdatedDate() {
+		return mcaUpdatedDate;
+	}
+
+	public void setMcaUpdatedDate(Timestamp mcaUpdatedDate) {
+		this.mcaUpdatedDate = mcaUpdatedDate;
 	}
 
  

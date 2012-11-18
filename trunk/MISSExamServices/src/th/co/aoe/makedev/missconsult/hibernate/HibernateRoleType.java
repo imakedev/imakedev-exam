@@ -229,11 +229,13 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 	@Override
 	public List listRoleTypes(Long maId) throws DataAccessException {
 		// TODO Auto-generated method stub
-		String exclude="where roleType.rtId !=1 ";
+		//String exclude="where roleType.rtId !=1 ";
+		String exclude="where roleType.type !=1 ";
+		//String exclude="";
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=null;
 		if(maId!=null && maId.intValue()!=0){
-			  query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId");
+			  query=session.createQuery(" select missAccount from MissAccount missAccount where missAccount.maId=:maId ");
 			  query.setParameter("maId",maId);
 			 Object obj= query.uniqueResult();
 			 th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=null;
@@ -246,7 +248,7 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 			// if()
 		}
 		 logger.debug("exclude="+exclude);
-			  query=session.createQuery(" select roleType from RoleType roleType "+exclude);
+			  query=session.createQuery(" select roleType from RoleType roleType "+exclude +" order by roleType.order ");
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleType> list=query.list();
 			List<th.co.aoe.makedev.missconsult.xstream.RoleType> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleType>(list.size());
 			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleType type : list) {

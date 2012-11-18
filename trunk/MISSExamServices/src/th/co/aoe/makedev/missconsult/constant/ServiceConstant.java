@@ -186,6 +186,8 @@ public class ServiceConstant {
 	public static final String MISS_CONTACT_FIND_BY_USERNAME = "findMissContactByUsername";
 	public static final String MISS_CONTACT_COUNT_BY_USERNAME = "countMissContactByUsername";
 	
+	public static final String MISS_CONTACT_FIND_BY_CITIZENID_AND_EMAIL = "findMissContactByCitizenIdAndEmail";
+	
 	public static final String MISS_CONTACT_ITEMS_DELETE ="deleteMissAccountItems";
 	public static final String MISS_CONTACT_LIST = "listContacts";
 	public static final String MISS_CONTACT_UPDATE_PHOTO = "updatePhotoMissContact"; 
@@ -273,4 +275,11 @@ public class ServiceConstant {
 		public static final String PRODUCT_REPORT_FIND= "findProductReport";
 		public static final String CONSULTANT_REPORT_FIND= "findConsultantReport";
 		public static final String CONSULTANT_REPORT_GET_SALES= "getSalesConsultantReport";
+		
+		// MISS_DOC
+		public static final String MISS_DOC_SAVE = "saveMissDoc";
+		public static final String MISS_DOC_UPDATE = "updateMissDoc";
+		public static final String MISS_DOC_DELETE = "deleteMissDoc";
+		public static final String MISS_DOC_SEARCH = "searchMissDoc";
+		public static final String MISS_DOC_FIND_BY_ID = "findMissDocById";  
 }
