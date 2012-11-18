@@ -215,7 +215,7 @@ function appendContent(data){
          <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
         <sec:authentication var="myUser" property="principal.myUser"/> 
        <%--  ${myUser.fullName} --%>
-            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<%-- <a href="${logoutUrl}">Logout</a> --%>
+            <span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span> &nbsp;&nbsp;<a href="${logoutUrl}">Logout</a>
             </div>
            </div>
            </div>
@@ -250,7 +250,16 @@ function appendContent(data){
     	    	 <c:if test="${loop.index%4==0}">
     	    		<tr>
     	    	</c:if>
-    	    	<td><input id="question_number_checkbox_${missQuestions.mqId}" type="checkbox" disabled="disabled"><span style="cursor: pointer;" onclick="goToQuestion('${loop.index}')">${loop.index+1}</span></td>
+    	    	<td><input id="question_number_checkbox_${missQuestions.mqId}" type="checkbox" disabled="disabled">
+    	    	<c:if test="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder=='1'}">
+    	    		<span >${loop.index+1}</span>
+    	    	</c:if>
+    	    	<c:if test="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder!='1'}">
+    	    		<span style="cursor: pointer;" onclick="goToQuestion('${loop.index}')">${loop.index+1}</span>
+    	    	</c:if>
+    	    	
+    	    	</td>
+    	    	
     	    	<c:if test="${loop.index%4==3}">
     	    		</tr>
     	    	</c:if>  
