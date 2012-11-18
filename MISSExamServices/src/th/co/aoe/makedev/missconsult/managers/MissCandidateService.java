@@ -16,7 +16,8 @@ public interface MissCandidateService {
 		public int updateMissCandidatePhoto(MissCandidate transientInstance,String section) throws DataAccessException ;
 		public int deleteMissCandidate(MissCandidate persistentInstance) throws DataAccessException ;	
 		public MissCandidate findMissCandidateById(Long mcaId)throws DataAccessException  ;
-		public MissCandidate findMissCandidateByName(String name)throws DataAccessException  ;
+		public MissCandidate findMissCandidateByName(String name)throws DataAccessException  ; 
+		public MissCandidate findMissCandidateByCitizendIdAndEmail(String citizendId,String email)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissCandidate(MissCandidate persistentInstance,	Pagging pagging)throws DataAccessException  ;
 		

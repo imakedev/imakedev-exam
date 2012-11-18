@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -771,6 +773,38 @@ int result = query.executeUpdate();*/
 		}
 	  return missSery;
 	}
+	@Override
+	public MissCandidate findMissCandidateByCitizendIdAndEmail(
+			String citizendId, String email) throws DataAccessException {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = null;
+				
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
+		boolean iscriteria = false; 
+		if(citizendId !=null && citizendId.length()>0){  
+			//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
+			 sb.append(iscriteria?(" and missCandidate.mcaCitizenId='"+citizendId+"'"):(" where missCandidate.mcaCitizenId='"+citizendId+"'"));
+			  iscriteria = true;
+		}
+		if(email !=null && email.length()>0){  
+			//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
+			 sb.append(iscriteria?(" and missCandidate.mcaEmail='"+email+"'"):(" where missCandidate.mcaEmail='"+email+"'"));
+			  iscriteria = true;
+		}
+		sb.append(" order by missCandidate.mcaId desc ");
+		//System.out.println(sb.toString());
+		Query query=session.createQuery(sb.toString());
+		 
+		 query.setFirstResult(0);
+		 query.setMaxResults(1);
+		Object obj=query.uniqueResult(); 	 
+		//System.out.println("obj="+obj);
+		if(obj!=null){
+			missCandidate=(MissCandidate)obj;
+		}
+	  return missCandidate;
+	} 
 	 
 
 }

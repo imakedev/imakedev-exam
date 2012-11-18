@@ -29,6 +29,11 @@ public class RoleType implements Serializable {
 	@Column(name="role_desc")
 	private String roleDesc;
 
+	@Column(name="type")
+	private String type;
+	
+	@Column(name="order")
+	private int order;
 	/*//bi-directional many-to-many association to RoleContact
 	@ManyToMany(mappedBy="roleTypes")
 	private Set<RoleContact> roleContacts;*/
@@ -58,6 +63,22 @@ public class RoleType implements Serializable {
 
 	public void setRoleDesc(String roleDesc) {
 		this.roleDesc = roleDesc;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	/*public Set<RoleContact> getRoleContacts() {

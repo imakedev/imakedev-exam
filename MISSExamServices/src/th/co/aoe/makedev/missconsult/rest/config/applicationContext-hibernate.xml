@@ -48,15 +48,15 @@
 		for the required JAR files. Alternatively you can use another connection pool
 		such as C3P0, similarly configured using Spring.
 	-->
-	<!-- 	 
+	<!--  	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			p:password="${jdbc.password}"/>
 		 --> 
-	<!-- 
+	<!--  
 	       --> 
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
-     
+    
 	<!-- JNDI DataSource for JEE environments -->
        <!--
          
@@ -150,7 +150,9 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptPlusWorkWheelMessage</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptDominance</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptAttitudeDetectorReport</value> 
-			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector</value> 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc</value>  
+			 
 			</list>
    		</property>
    		<!-- 
@@ -301,6 +303,9 @@
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	<bean id="missManualService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissManual">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean> 
+	<bean id="missDocService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissDoc">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	<bean id="missSeriesAttachService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissSeriesAttach">
