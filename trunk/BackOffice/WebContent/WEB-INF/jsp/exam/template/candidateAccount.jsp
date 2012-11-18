@@ -86,7 +86,106 @@ function checkIndustryMaster(obj){
 	}else
 		$("#mimExt").css("display","none");
 }
+function checkID(id) 
+{ 
+	if(id.length != 13)
+		return false; 
+		for(i=0, sum=0; i < 12; i++) 
+			sum += parseFloat(id.charAt(i))*(13-i); 
+		if((11-sum%11)%10!=parseFloat(id.charAt(12))) 
+	 		return false; 
+	return true;
+} 
+function getCandidateInfo(){ 
+	//
+	//
+	var mcaCitizenId=jQuery.trim($("#missCandidate\\.mcaCitizenId").val());
+	var mcaEmail=jQuery.trim($("#missCandidate\\.mcaEmail").val());
+	var haveError=false;
+	var message="";
+	if(!checkID(mcaCitizenId) && mcaCitizenId.length>0){
+		message="รหัสประชาชนไม่ถูกต้อง";	
+		haveError=true;		
+	}else if(mcaEmail.length==0 && mcaCitizenId.length==0){
+		message="กรุณากรอก รหัสประชาชน และ Email";
+		haveError=true;
+	}
+	if(haveError){
+		$("#_message_show").html(message);
+		$( "#dialog-Message" ).dialog({
+			/* height: 140, */
+			modal: true,
+			buttons: {
+				"Ok": function() { 
+					$( this ).dialog( "close" );
+					 
+				}
+			}
+		  });
+	}else{ 
+		//alert("xxx")
+		$.ajax({
+			  type: "get",
+			  url: "candidate/getcandidateinfo?citizendID="+mcaCitizenId+"&email="+mcaEmail,
+			  cache: false
+			}).done(function( data ) {
+				//alert(data)
+				if(data!=null){  
+					if(data.mcaId!=null){
+						$("#missCandidate\\.mcaTitleType").val(data.mcaTitleType);
+						$("#missCandidate\\.mcaFirstName").val(data.mcaFirstName);
+						$("#missCandidate\\.mcaLastName").val(data.mcaLastName);
+						//$("#missCandidate\\.mcaGender").val(data.mcaGender);
+						 var mcaGenders=document.getElementsByName("missCandidate.mcaGender");
+						for(var i=0;i<mcaGenders.length;i++){
+							if(mcaGenders[i].value==data.mcaGender)
+								mcaGenders[i].checked=true;
+							else
+								mcaGenders[i].checked=false;
+						} 
+						//alert(data.mcaBirthDate);
+						if(data.mcaBirthDate!=null){
+							//1983-04-17
+							var birthDate=data.mcaBirthDate.split("-");
+							$("select[name='birth\[day\]']").val(parseInt(birthDate[2]));
+							$("select[name='birth\[month\]']").val(parseInt(birthDate[1]));
+							$("select[name='birth\[year\]']").val(birthDate[0]);
+						}
+						/* $("select[name='birth\[day\]']").val(data.mcaTitleType);
+						$("select[name='birth\[day\]']").val(data.mcaTitleType);
+						$("select[name='birth\[day\]']").val(data.mcaTitleType); */
+						$("#missCandidate\\.missCareerMaster\\.mcmId").val(data.missCareerMaster.mcmId);
+						$("#missCandidate\\.mcaPosition").val(data.mcaPosition);
+						$("#missCandidate\\.mcaDepartment").val(data.mcaDepartment);
+						$("#missCandidate\\.mcaPhone").val(data.mcaPhone);
+						//alert(data.missIndustryMaster.mimId)
+						if(data.missIndustryMaster.mimId!=null)
+							$("#missCandidate\\.missIndustryMaster\\.mimId").val(data.missIndustryMaster.mimId); 
+						//alert(data.mcaPictureHotlink)
+						if(data.mcaPictureHotlink!=null && data.mcaPictureHotlink.length>0) {
+							$("#candidate_photo").attr("src","getfile/candidateImg/"+data.mcaId+"/"+data.mcaPictureHotlink);
+							// update picture again 
+							/* private String mcaPictureFileName; 
+							private String mcaPicturePath; 
+							private String mcaPictureHotlink; */							
+						}
+						
+					}
+					else
+						alert("not have data");
+				} 
+			});
+	}
+}
+/* function checkForm() 
+{ if(!checkID(document.form1.txtID.value)) 
+alert('รหัสประชาชนไม่ถูกต้อง'); 
+else alert('รหัสประชาชนถูกต้อง เชิญผ่านได้');} 
+*/
 </script> 
+<div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	<span id="_message_show"></span>
+</div>
  <div class="alert alert-success" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
@@ -200,7 +299,7 @@ function checkIndustryMaster(obj){
     					<td width="25%">Citizen ID:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" width="100%" /> -->
-    					 <form:input path="missCandidate.mcaCitizenId"/>
+    					<form:input path="missCandidate.mcaCitizenId"/>
     					</td>
     					 <td width="25%" align="right" rowspan="9">
     					  <c:if test="${not empty candidateForm.missCandidate.mcaPictureHotlink}"> 
@@ -227,7 +326,10 @@ function checkIndustryMaster(obj){
     				</tr>
     				<tr valign="top">
     					<td width="25%">&nbsp;</td>
-    					<td width="50%" colspan="2" align="left"><input type="button" value="<spring:message code='button_search'/>" /></td>
+    					<td width="50%" colspan="2" align="left">
+    					 <a class="btn"  onclick="getCandidateInfo()"><i class="icon-search"></i>&nbsp;<spring:message code='button_search'/></a>
+    					<!-- <input type="button" value="" /> -->
+    					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
@@ -288,7 +390,7 @@ function checkIndustryMaster(obj){
     					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" width="100%" /> -->
-    					<form:input path="missCandidate.mcaTitle"/>
+    					<form:input path="missCandidate.mcaPosition"/>
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>

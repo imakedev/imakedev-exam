@@ -22,7 +22,8 @@ $(document).ready(function() {
         action: 'upload/questionImg/${testForm.missQuestion.mqId}',
 		onSubmit : function(file , ext){
             // Allow only images. You should add security check on the server-side.
-			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+			//if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+			if (ext && /^(jpg|png|jpeg|gif|JPG|GIF)$/.test(ext)){
 				/* Setting data */
 				this.setData({
 					'key': 'This string will be send with the file',

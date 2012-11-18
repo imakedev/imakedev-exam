@@ -43,8 +43,11 @@ function doAction(action,formID,sectionID){
 	$("#maCustomizeRetestMessage").val(CKEDITOR.instances["maCustomizeRetestMessage"].getData()); */
 	//alert($("#maCustomizePassMessage").val());
 	//$("#_miss_section").val(sectionID);
+	//alert(formID)
 	$.post("test/"+action+"/"+sectionID,$("#"+formID).serialize(), function(data) {
 		    appendContent(data);
+		    if(formID=='testForm_fixanswer')
+		    	$('#tabs').tabs('select', 1);
 		});
   }
 </script>

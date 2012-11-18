@@ -44,7 +44,9 @@ $(document).ready(function() {
 			 	    	doAction('search','0');
 			 	   }
 	});
-	 
+	 //alert($("#sortBy").val());
+	$("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val());  
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -74,6 +76,7 @@ function renderPageSelect(){
 	}
 	pageStr=pageStr+"</select>"; 
 	$("#pageElement").html(pageStr);
+	//alert(pageStr)
 	document.getElementById("companyPageSelect").value=$("#pageNo").val();
 }
 function toggleCheckbox(){
@@ -196,7 +199,11 @@ function doAction(mode,id){
 		$("#maId").val(id);
 	}else {
 		$("#maId").val("0");
-	}
+	} 
+	
+	 $("#orderBy").val($("#sortItemSelect").val());
+	$("#sortBy").val($("#sortOrderSelect").val()); 
+	
 	$.post("company/search",$("#companyForm").serialize(), function(data) {
 		  // alert(data);
 		    appendContent(data);
@@ -240,7 +247,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="missAccount.maId" id="maId"/>
             <form:hidden path="maIdArray" id="maIdArray"/>
             <form:hidden path="paging.pageNo" id="pageNo"/>
-            <form:hidden path="paging.pageSize" id="pageSize"/> 
+            <form:hidden path="paging.pageSize" id="pageSize"/>
+            <form:hidden path="paging.orderBy" id="orderBy"/> 
+            <form:hidden path="paging.sortBy" id="sortBy"/>
             <form:hidden path="pageCount" id="pageCount"/> 
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
@@ -358,13 +367,38 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</form:form>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
+	    					<td align="right" width="100%">
+	    					<span id="sortElement"> 
+	    					Sort By:&nbsp; 
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    						<option value="maName">Name</option>
+	    						<option value="maRegisterNo">Register No</option>
+	    						<option value="maRegisterDate">Register Date</option>
+	    					 
+	    					  </select> 
+	    					&nbsp;
+	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
+	    						<option value="asc">asc</option>
+	    						<option value="desc">desc</option>
+	    					</select>
+	    					</span>
+	    					</td>
+	    					</tr>
+	    					</table>
+	    					<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
 	    					<td align="left" width="50%">
 	    					
 	    					<a class="btn btn-primary" onclick="loadDynamicPage('company/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;Create</a>&nbsp;
 	    					<a class="btn btn-danger"  onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a></td>
 	    					<td align="right" width="50%">
 	    					
-	    					<a  onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a  onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary"  onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a></td>
+	    					<a  onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;
+	    					<span id="pageElement"></span>
+	    					&nbsp;|&nbsp;<a  onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;
+	    					&nbsp;
+	    					
+	    					<a  class="btn btn-primary"  onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a></td>
 	    					</tr>
 	    					</table> 
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px">
