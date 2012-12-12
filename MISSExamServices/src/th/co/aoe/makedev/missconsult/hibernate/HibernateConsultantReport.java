@@ -1,9 +1,18 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
+import th.co.aoe.makedev.missconsult.hibernate.bean.Xls;
 import th.co.aoe.makedev.missconsult.managers.ConsultantReportService;
 import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
 
@@ -158,6 +168,9 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 					" group by exam.me_id");
 			consultantReport.setSaleStat(getResult(session,sb));
 			//System.out.println("xxxxxx="+consultantReport);
+			
+			
+			
 		 }catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -202,6 +215,15 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 		}
 		//System.out.println(results.size());
 		consultantReport.setSalesList(results);
+		
+		// test XLS
+				//	setAnswer(session,"/root/Desktop/test_sort.xls"); 
+					/*Query query_x= session.createQuery("select xls  from Xls xls ");
+					List list_x=query_x.list();
+					if(list_x!=null && list_x.size()>0){
+						Xls xls = (Xls)list_x.get(0);
+						getCode(xls.getDataXls());
+					}*/
 	}catch (Exception e) {
 		// TODO: handle exception
 		e.printStackTrace();
@@ -212,4 +234,109 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 	} 
 	return consultantReport;
   } 
+	private void getCode(byte[] byteArray){
+		System.out.println("byte size="+byteArray.length);
+		ByteArrayInputStream bais = 
+		         new ByteArrayInputStream(byteArray);
+		HSSFWorkbook wb =null;
+		try {
+			wb= new HSSFWorkbook(bais);
+			Sheet sheet1_0 = wb.getSheetAt(0);
+			System.out.println("xxxxxxxxxxxx"+sheet1_0.getSheetName());
+			Row r = sheet1_0.getRow(1);
+			System.out.println(r.getCell(1).getStringCellValue());			 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				if(bais!=null)
+					bais.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	private String setAnswer(Session session, String filePath) {
+		FileInputStream fileIn = null;
+		//FileOutputStream fileOut = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	//	String[] extensions = filePath.split("\\.");
+		String outPut = "";
+		try {
+			try {
+				fileIn = new FileInputStream(filePath);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			POIFSFileSystem fs = null;
+			try {
+				fs = new POIFSFileSystem(fileIn);
+				 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HSSFWorkbook wb = null;
+			try {
+				wb = new HSSFWorkbook(fs);
+			 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//byte[] bytes = fs.toByteArray();
+			/*
+			 * Workbook wb=null; try { wb = WorkbookFactory.create(fs); } catch
+			 * (IOException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 */
+			 
+			// Write the output to a file
+			// outPut=extensions[0]+"_"+msId.intValue()+"_"+meId.intValue()+"_"+mcaId.intValue()+"."+extensions[1];
+			/*outPut = extensions[0] + "_" + msId.intValue() + "_"
+					+ mcaId.intValue() + "." + extensions[1];
+			try {
+				fileOut = new FileOutputStream(outPut);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			/*try {
+				wb.write(fileOut);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			try {
+				wb.write(bos);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			byte[] bytes=	bos.toByteArray();
+			Xls xls =new Xls();
+			xls.setDataXls(bytes);
+			session.save(xls);
+		} finally {
+			 if (bos != null)
+				try {
+					bos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			if (fileIn != null)
+				try {
+					fileIn.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return outPut;
+	}
 }
