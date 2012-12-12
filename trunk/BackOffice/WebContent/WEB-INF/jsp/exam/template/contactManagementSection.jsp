@@ -304,9 +304,9 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					</td>
     				</tr>
     				 <tr valign="top">
-    					<td width="25%">Phone:</td>
+    					<td width="25%"> Phone / Ext.:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missContact.mcontactPhone" id="mcontactPhone"/> <font color="red">*</font>&nbsp;&nbsp;<span>สามารถใส่ Ext. ได้ (เบอร์ต่อ)</span>
+    					<form:input path="missContact.mcontactPhone" id="mcontactPhone"/> <font color="red">*</font>&nbsp;&nbsp;<span></span>
     					</td>
     				</tr>
     				 <tr valign="top">

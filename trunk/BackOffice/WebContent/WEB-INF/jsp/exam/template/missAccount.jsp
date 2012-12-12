@@ -218,7 +218,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
    		 			<tr valign="top">
     					<td width="25%">Name:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missAccount.maName" id="maName"/>
+    					<form:input path="missAccount.maName" id="maName"/><font color="red">*</font>
     				<!-- 	<input type="text" width="100%" /> -->
     					</td>
     					 <td width="25%" align="right" rowspan="2">
@@ -230,12 +230,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					<td width="50%" colspan="2">
     					 <form:select path="missAccount.missIndustryMaster.mimId" cssStyle="background:#FFFFFF">    					 
     						<form:options items="${missIndustryMasterList}" itemLabel="mimName" itemValue="mimId"></form:options>
-    					</form:select>
+    					</form:select><font color="red">*</font>
     					</td>
     				</tr>
     				<tr valign="top">
     					<td width="25%">Address:</td>
-    					<td width="50%" colspan="2"><form:textarea path="missAccount.maAddress" cols="4" rows="4" id="maAddress"/>
+    					<td width="50%" colspan="2"><form:textarea path="missAccount.maAddress" cols="4" rows="4" id="maAddress"/><font color="red">*</font>
     					<script>
     					if (CKEDITOR.instances['maAddress']) {
     			            CKEDITOR.remove(CKEDITOR.instances['maAddress']);
@@ -252,7 +252,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				<tr valign="top">
     					<td width="25%">Phone:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missAccount.maPhone" id="maPhone"/>
+    					<form:input path="missAccount.maPhone" id="maPhone"/><font color="red">*</font>
+    					<!-- <input type="text" width="100%" /> -->
+    					</td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%">Phone / Ext.:</td>
+    					<td width="50%" colspan="2">
+    					<form:input path="missAccount.maPhoneExt" id="maPhoneExt"/><font color="red">*</font>
     					<!-- <input type="text" width="100%" /> -->
     					</td>
     					 <td width="25%">&nbsp;</td>
@@ -260,7 +268,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				<tr valign="top">
     					<td width="25%">Fax:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missAccount.maFax" id="maFax"/>
+    					<form:input path="missAccount.maFax" id="maFax"/><font color="red">*</font>
     					<!-- <input type="text" width="100%" /> -->
     					</td>
     					 <td width="25%">&nbsp;</td>
@@ -268,7 +276,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				<tr valign="top">
     					<td width="25%">Email:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missAccount.maEmail" id="maEmail"/>
+    					<form:input path="missAccount.maEmail" id="maEmail"/><font color="red">*</font>
+    					<!-- <input type="text" width="100%" /> -->
+    					</td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="25%">Email2:</td>
+    					<td width="50%" colspan="2">
+    					<form:input path="missAccount.maEmail2" id="maEmail2"/>
     					<!-- <input type="text" width="100%" /> -->
     					</td>
     					 <td width="25%">&nbsp;</td>
