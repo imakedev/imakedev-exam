@@ -70,6 +70,9 @@ public class MissAccount implements Serializable {
 
 	@Column(name="MA_EMAIL")
 	private String maEmail;
+	
+	@Column(name="MA_EMAIL2")
+	private String maEmail2;
 
 	@Column(name="MA_EXPIRE")
 	private Timestamp maExpire;
@@ -90,6 +93,9 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_PHONE")
 	private String maPhone;
 
+	@Column(name="MA_PHONE_EXT")
+	private String maPhoneExt;
+	
 	@Column(name="MA_TOTAL_UNIT")
 	private Long maTotalUnit;
 
@@ -424,6 +430,22 @@ public class MissAccount implements Serializable {
 
 	public void setMissTheme(MissTheme missTheme) {
 		this.missTheme = missTheme;
+	}
+
+	public String getMaPhoneExt() {
+		return maPhoneExt;
+	}
+
+	public void setMaPhoneExt(String maPhoneExt) {
+		this.maPhoneExt = maPhoneExt;
+	}
+
+	public String getMaEmail2() {
+		return maEmail2;
+	}
+
+	public void setMaEmail2(String maEmail2) {
+		this.maEmail2 = maEmail2;
 	}
 
 	

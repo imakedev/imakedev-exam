@@ -70,6 +70,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maCustomizeRetestMessage;
 
 	private String maEmail;
+	
+	private String maEmail2;
 
 	@XStreamAlias("maExpire")
 	private Timestamp maExpire;
@@ -83,6 +85,8 @@ public class MissAccount extends VServiceXML implements Serializable {
 	private String maPassword;
 
 	private String maPhone;
+	
+	private String maPhoneExt;
 
 	private Long maTotalUnit;
 
@@ -481,6 +485,22 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaContactName(String maContactName) {
 		this.maContactName = maContactName;
+	}
+
+	public String getMaPhoneExt() {
+		return maPhoneExt;
+	}
+
+	public void setMaPhoneExt(String maPhoneExt) {
+		this.maPhoneExt = maPhoneExt;
+	}
+
+	public String getMaEmail2() {
+		return maEmail2;
+	}
+
+	public void setMaEmail2(String maEmail2) {
+		this.maEmail2 = maEmail2;
 	}
 	
 }
