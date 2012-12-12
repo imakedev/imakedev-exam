@@ -110,7 +110,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     			 </fieldset>
     			 </form:form>
     			<div>
-    			 <div align="right"><a class="btn btn-primary" onclick="doSurvey();"><span style="color: white;font-weight: bold;">Survey</span></a></div>
+    			 <div align="right"><a class="btn btn-primary" onclick="doSurvey();"><span style="color: white;font-weight: bold;">180/360 Assessment</span></a></div>
     			 <table class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>
