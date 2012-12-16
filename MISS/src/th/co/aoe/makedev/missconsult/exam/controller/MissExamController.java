@@ -322,7 +322,7 @@ public class MissExamController {
 			 missExamService.processMissTestResult(missTestResult);
 			// MissTestResult
 			 int ref=missExamService.saveOrUpdateMissTestResult(missTestResult);
-			 
+			 missExamForm.getMissCandidate().setMtrId(Long.valueOf(ref));
 			 // save To do List
 			 MissTodo missTodo =new MissTodo();
 			 missTodo.setMissAccount(missExamForm.getMissCandidate().getMissAccount());
@@ -331,6 +331,7 @@ public class MissExamController {
 			 
 			 missTodo.setMtodoTask(missExamForm.getMissCandidate().getMissSery().getMsSeriesName()+" ("+missExamForm.getMissCandidate().getMcaFirstName() +" "+missExamForm.getMissCandidate().getMcaLastName()+")"); // sery (username)
 			 missExamService.saveOrUpdateMissTodo(missTodo);
+			 model.addAttribute("missExamForm", missExamForm);
 			// return "exam/examMessage";
 			 return "redirect:/logout";
 		 }
