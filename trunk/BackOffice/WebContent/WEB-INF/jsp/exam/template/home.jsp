@@ -11,6 +11,7 @@ $(document).ready(function() {
 	mail_subjectG= $( "#mail_subject" );
 	mail_messageG= $( "#mail_message" );
 	mail_attachG= $( "#mail_attach" );
+	renderTodoPageSelect();
 });
 function testAlert(){
 	alert("ok")
@@ -89,6 +90,9 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
     <button class="close" data-dismiss="alert">×</button>
     <strong>Heads up!</strong> Best check yo self, you're not looking too good.2
     </div> -->
+    <div id="dialog-confirmIgnore" title="Ignore Item" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+				Are you sure you want to Ignore Item ?
+		</div>
     <div id="dialog-modal" title="Send Email Form" style="display: none">
 	<!-- <p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p> -->
 	<form id="mailApproveForm" name="mailApproveForm"  method="post" action="">
@@ -108,7 +112,8 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
   <fieldset style="font-family: sans-serif;"> 
 	   <!--  <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
 	  <!--  <form   class="well" style="border:2px solid #DDD;background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)" > -->
-	   <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+	   <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+	   <%-- <form  class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">  --%>
 	   <!--   <fieldset style="font-family: sans-serif;">  -->  
 	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>
 	      <c:if test="${UserMissContact.isMC=='1'}">
@@ -134,20 +139,35 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
 												
 	    					</select>&nbsp;|&nbsp;<a href="#">Next</a>
 	    					 --%>
-	    					<input type="hidden" value="${totals}" id="totals"/>
+	    						<input type="hidden" value="${totals}" id="totals"/>
 	    					<input type="hidden" value="${pageObj.pageNo}" id="pageNo"/>
 	    					<input type="hidden" value="${pageObj.pageSize}" id="pageSize"/>
+	    					<input type="hidden" value="${pageCount}" id="pageCount"/> 
 	    					</td>
 	    					</tr>
 	    					</table>  
- 
+ <table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="left" width="50%">
+	    					
+	    					<!-- <a class="btn btn-primary" onclick="loadDynamicPage('candidate/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;Create</a>&nbsp; -->
+	    					<%-- 
+	    					<a class="btn btn-info" onclick="exportCandidat()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;Export</a>&nbsp;
+	    					<a class="btn btn-danger" onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a>&nbsp;
+	    					 --%>
+	    					<td align="right" width="50%">
+	    					
+	    					<a onclick="goTodoPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageTodoElement"></span>&nbsp;|&nbsp;<a onclick="goTodoNext()"><spring:message code='page_next'/></a></td>
+	    					</tr>
+	    					</table>
   <table id="table_list"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
 <!-- <table   border="1" style="font-size: 12px;width:100%" > -->
         <thead>
           <tr>
-            <th width="70%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="65%"><div class="th_class"><spring:message code="home_task"/></div></th>
             <th width="15%"><div class="th_class">Status</div></th> 
             <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th> 
+             <th width="5%"><div class="th_class">Ignore</div></th>  
           </tr>
         </thead>
         <tbody>
@@ -161,7 +181,8 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
               <c:if test="${todolist.mtodoResponse!='1'}">
                &nbsp;<span style="color: orange;">Pending</span>
               </c:if></div></td>
-            <td><div class="th_class"><a onclick="doSendMail('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td> 
+            <td><div class="th_class"><a onclick="doSendMail('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td>
+            <td align="center"><i title="Delete" onclick="confirmIgnore('delete','${todolist.mtodoId}')" style="cursor: pointer;" class="icon-trash"></i></td> 
           </tr>
           </c:forEach>
         </tbody>

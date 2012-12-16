@@ -87,6 +87,11 @@ $(document).ready(function() {
 		
 		}		
 	});
+	
+	if($("#message_element_contact").attr("style").indexOf("block")!=-1){ 
+		 $('html, body').animate({ scrollTop: 0 }, 'slow');
+	 	setTimeout(function(){$("#message_element_contact").slideUp(300)},5000);
+	 }
 });
 function goBackContacts(){
 	var target="miss";
@@ -176,8 +181,8 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 	// CKEDITOR.dialog.getCurrent().hide();
 }
 </script>
- <div class="alert alert-success" style="${display}">
-    <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
+ <div  id="message_element_contact"  class="alert alert-${message_class}" style="${display}">
+    <button  class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
     </div>
  <fieldset style="font-family: sans-serif;"> 

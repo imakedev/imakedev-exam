@@ -436,7 +436,45 @@ $(document).ready(function() {
 		}		
 	});
 	*/
+	renderTodoPageSelect();
 });
+function renderTodoPageSelect(){
+	var pageStr="<select name=\"todoPageSelect\" id=\"todoPageSelect\" onchange=\"goToTodoPage()\" style=\"width: 50px\">";
+//	var pageCount=parseInt($("#pageCount").val());
+	var pageCount=$("#pageCount").val();
+	for(var i=1;i<=pageCount;i++){
+		pageStr=pageStr+"<option value=\""+i+"\">"+i+"</option>";
+	}
+	pageStr=pageStr+"</select>"; 
+	$("#pageTodoElement").html(pageStr);
+	document.getElementById("todoPageSelect").value=$("#pageNo").val();
+}
+function goTodoPrev(){
+	if($("#pageNo").val()!='1'){
+		var prev=parseInt($("#pageNo").val())-1;
+		$("#pageNo").val(prev);
+		doIgnoreAction('search','0');
+	}
+}
+function goTodoNext(){
+	var next=parseInt($("#pageNo").val());
+	if(next<parseInt($("#pageCount").val())){
+		next=next+1;
+		$("#pageNo").val(next);
+		doIgnoreAction('search','0');
+	}
+} 
+function doIgnoreAction(mode,id){ 
+	$.post("doTodoAction/"+$("#pageNo").val(),$("#formTodoList").serialize(), function(data) {
+		  // alert(data);
+		    appendContent(data);
+		  // alert($("#_content").html());
+		});
+}
+function goToTodoPage(){ 
+	$("#pageNo").val(document.getElementById("todoPageSelect").value);
+	doIgnoreAction('search','0');
+}
 function loadDynamicPage(pageId){
 	//	var id="1";
 		//$.get('ajax/search', function(data) {
@@ -479,6 +517,41 @@ function appendContent(data){
 	appendContentWithId(data,"_content");
 	
 }
+function confirmIgnore(mode,id){
+	$( "#dialog-confirmIgnore" ).dialog({
+		/* height: 140, */
+		modal: true,
+		buttons: {
+			"Yes": function() { 
+				$( this ).dialog( "close" );
+				doIgnore('delete',id);
+			},
+			"No": function() {
+				$( this ).dialog( "close" );
+				return false;
+			}
+		}
+	});
+}
+function doIgnore(mode,id){
+	$("#ignore_id").val(id);	 
+	/* $.get("todoList/ignore/"+id, function(data) {
+		  // alert(data);
+		     appendContent(data);
+		  // alert($("#_content").html());
+		}); */
+	$.ajax({
+		  type: "get",
+		  url: "todoList/ignore/"+id,
+		  cache: false
+		 // data: { name: "John", location: "Boston" }
+		}).done(function( data ) {
+			if(data!=null){
+				  appendContent(data);
+			  }
+		});
+}
+
 function doSendMailToApprove(mail_todo_idG,mail_todo_refG){
 	loadDynamicPage("getmailToApprove/"+mail_todo_idG+"/"+mail_todo_refG);
 	/* //alert(action)
@@ -607,6 +680,9 @@ function openMailDialog(todo_id,todo_ref){
 	   <!--  </pre> -->
 	    </div>
 	    <div class="span8" id="_content">
+	    <div id="dialog-confirmIgnore" title="Ignore Item" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+				Are you sure you want to Ignore Item ?
+		</div>
 	     <div id="dialog-modal" title="Send Email Form" style="display: none">
 	<!-- <p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p> -->
 	<form id="mailApproveForm" name="mailApproveForm"  method="post" action="">
@@ -634,9 +710,10 @@ function openMailDialog(todo_id,todo_ref){
     <%--
      <form   class="well" style="border: 2px solid #DDD;background-color: ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
       --%>
-    <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+    <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
+      <input type="hidden" id="ignore_id"/> 
 	   <!--   <fieldset style="font-family: sans-serif;">    -->
 	     <h3><strong>
 	     <c:if test="${UserMissContact.isMC=='1'}">
@@ -679,18 +756,34 @@ function openMailDialog(todo_id,todo_ref){
 	    					<input type="hidden" value="${totals}" id="totals"/>
 	    					<input type="hidden" value="${pageObj.pageNo}" id="pageNo"/>
 	    					<input type="hidden" value="${pageObj.pageSize}" id="pageSize"/>
+	    					<input type="hidden" value="${pageCount}" id="pageCount"/> 
 	    					</td>
 	    					</tr>
 	    					</table> 
+	    	<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="left" width="50%">
+	    					
+	    					<!-- <a class="btn btn-primary" onclick="loadDynamicPage('candidate/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;Create</a>&nbsp; -->
+	    					<%-- 
+	    					<a class="btn btn-info" onclick="exportCandidat()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;Export</a>&nbsp;
+	    					<a class="btn btn-danger" onclick="doDeleteItems()"><i class="icon-trash icon-white"></i>&nbsp;Delete</a>&nbsp;
+	    					 --%>
+	    					<td align="right" width="50%">
+	    					
+	    					<a onclick="goTodoPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageTodoElement"></span>&nbsp;|&nbsp;<a onclick="goTodoNext()"><spring:message code='page_next'/></a></td>
+	    					</tr>
+	    					</table>
 			 <table id="table_list"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px"> 
 			 <!-- <table class="table table-striped table-bordered" border="1" style="font-size: 12px">  -->
 		<!-- 	<table class="simply" border="1" style="font-size: 12px"> 
 			 -->
         <thead>
           <tr>
-            <th width="70%"><div class="th_class"><spring:message code="home_task"/></div></th>
+            <th width="65%"><div class="th_class"><spring:message code="home_task"/></div></th>
             <th width="15%"><div class="th_class">Status</div></th>
-            <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th>  
+            <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th>
+            <th width="5%"><div class="th_class">Ignore</div></th>    
           </tr>
         </thead>
         <tbody>
@@ -704,7 +797,9 @@ function openMailDialog(todo_id,todo_ref){
               <c:if test="${todolist.mtodoResponse!='1'}">
                &nbsp;<span style="color: orange;">Pending</span>
               </c:if></div></td>
-            <td><div class="th_class"><a onclick="doSendMailToApprove('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td> 
+            <td><div class="th_class"><a onclick="doSendMailToApprove('${todolist.mtodoId}','${todolist.mtodoRef}')">Send Email</a></div></td>
+            
+            <td align="center"><i title="Delete" onclick="confirmIgnore('delete','${todolist.mtodoId}')" style="cursor: pointer;" class="icon-trash"></i></td> 
           </tr>
           </c:forEach>
         </tbody>

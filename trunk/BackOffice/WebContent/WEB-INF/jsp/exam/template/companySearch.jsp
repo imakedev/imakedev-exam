@@ -134,12 +134,30 @@ function doCreateCandidate(company_id){
 		var obj = data;//jQuery.parseJSON(data);
 		   if(obj.updateRecord!=0 && obj.updateRecord!=-1){
 			   $("#message_candidate_create").html("<strong>Add Candidate Success</strong>");
-			   $("#dialog-create-candidate-alert").css("display","block");
+			  // $("#dialog-create-candidate-alert").css("display","block");
+			   $("#message_candidate_create").attr("class","alert alert-success"); 
 		   }else{
 			   //Can't Create Candidate. / Company: ประเทศไทย / Series: EPT, Customer Mind
 			   $("#message_candidate_create").html("<strong>Can't Create Candidate / Company: "+obj.missAccount.maName+" / Series: "+obj.missSery.msSeriesName+"</strong>");
-			   $("#dialog-create-candidate-alert").css("display","block");
+			 //  $("#dialog-create-candidate-alert").css("display","block");
+			   $("#message_candidate_create").attr("class","alert alert-error"); 
 		   }
+		   $( "#dialog-create-candidate-alert" ).dialog({
+				/* height: 140, */
+				modal: true,
+				title:"Messages",
+				buttons: {
+					"Ok": function() { 
+						$( this ).dialog( "close" );
+						//return false;
+						//doAction("deleteItems",maIds);
+					}/* ,
+					"No": function() {
+						$( this ).dialog( "close" );
+						//return false;
+					} */
+				}
+			});
 		 //  alert(data.updateRecord);
 		 /*   var myJSONText = JSON.stringify(data, replacer);
 		   alert(myJSONText)  */
@@ -176,6 +194,8 @@ function createCandidate(company_id){
 // 	$("div[class='ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix']").css("background:url","http://www.elementalsurface.com/beech-wood.jpg");
 }
 function confirmDelete(mode,id){
+    //alert($("#dialog-confirmDelete > div").css(""));
+    $("#dialog-confirmDelete > div").attr("class","alert alert-error");
 	$( "#dialog-confirmDelete" ).dialog({
 		/* height: 140, */
 		modal: true,
@@ -217,11 +237,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 }
 </style>
  <div id="dialog-confirmDelete" title="Delete Company" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
-	Are you sure you want to delete Company ?
+	 <div class="alert alert-error">Are you sure you want to delete Company ?</div>
 </div>
- <div id="dialog-create-candidate-alert"class="alert alert-success" style="display: none;">
-    <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
-    <span id="message_candidate_create"></span> 
+ <!-- <div id="dialog-create-candidate-alert" class="alert alert-success" style="display: none;"> -->
+ <div id="dialog-create-candidate-alert"  title="Message" style="display: none;">
+    <!-- <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button> -->
+    <div id="message_candidate_create"></div> 
   </div>
  <!-- <div id="dialog-create-candidate" title="Create Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)"> -->
  <div id="dialog-create-candidate" title="Create Candidate" style="display: none;background:'')" class="ui-dialog-titlebar2">
@@ -437,7 +458,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	</c:if>
             <c:if test="${empty missAccounts}"> 
           	  <tr>
-            	<td colspan="9" style="text-align: center;">&nbsp;Not Found&nbsp;
+            	<td colspan="9" style="text-align: center;">&nbsp;<spring:message code="searh_result_not_found"/>&nbsp;
             	</td>
               </tr>
           	</c:if> 

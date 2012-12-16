@@ -326,7 +326,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           </c:if>
            <c:if test="${empty missTestResults}"> 
           	<tr> 
-          		<td colspan="${fn:length(axisHeaders)+10}" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
+          		<td colspan="${fn:length(axisHeaders)+10}" style="text-align: center;">&nbsp;<spring:message code="searh_result_not_found"/>&nbsp;</td>
           	</tr>
           </c:if> 
         	</tbody>

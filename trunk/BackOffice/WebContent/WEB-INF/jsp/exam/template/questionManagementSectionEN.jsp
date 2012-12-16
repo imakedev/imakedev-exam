@@ -39,6 +39,9 @@ $(document).ready(function() {
 				 */
 		}		
 	});
+	 if($("#message_element_en").attr("style").indexOf("block")!=-1){
+		 setTimeout(function(){$("#message_element_en").slideUp(300)},5000);
+	 }
 });
 function clearImage(){
 	$("#_upload_image").html("");
@@ -147,7 +150,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
 </style>
- <div class="alert alert-success" style="${display}">
+ <div id="message_element_en" class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
     </div>
