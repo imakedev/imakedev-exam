@@ -13,6 +13,7 @@ public interface MissTodoService {
 		public int updateMissTodo(MissTodo transientInstance) throws DataAccessException ;
 		public int deleteMissTodo(MissTodo persistentInstance) throws DataAccessException ;	
 		public MissTodo findMissTodoById(Long mtodoId)throws DataAccessException  ;
+		public String findCandidateEmailFrom(MissTodo missTodo);
 		@SuppressWarnings("rawtypes")
 		public  List searchMissTodo(MissTodo persistentInstance,	Pagging pagging)throws DataAccessException  ;
 }

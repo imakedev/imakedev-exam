@@ -21,4 +21,6 @@ public interface MissTestResultService {
 		public int checkMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
 		public int updateStatus(Long mtrId,String column,String value) throws DataAccessException;
 		public int updateStatus(String mtrId,String column,String value) throws DataAccessException;
+		public int updateTimeOut(Long mcaId,Long msId) throws DataAccessException;
+		
 }

@@ -25,6 +25,7 @@ public class MissTodo extends VServiceXML implements Serializable {
 	
 	private Long mtodoRef;
 
+	private String candidateEmail;
 	public Long getMtodoRef() {
 		return mtodoRef;
 	}
@@ -77,6 +78,14 @@ public class MissTodo extends VServiceXML implements Serializable {
 
 	public void setMissAccount(MissAccount missAccount) {
 		this.missAccount = missAccount;
+	}
+
+	public String getCandidateEmail() {
+		return candidateEmail;
+	}
+
+	public void setCandidateEmail(String candidateEmail) {
+		this.candidateEmail = candidateEmail;
 	}
 	
 }

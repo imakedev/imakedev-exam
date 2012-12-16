@@ -1910,6 +1910,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			List<MissTestResult> list = (List<MissTestResult>) query.list();
 			if (list != null && list.size() > 0) {// check all exam tested
 				for (MissTestResult result : list) {
+					//check time out
+					if(result.getMtrStatus()!=null && result.getMtrStatus().equals("3")){
+						tested = 3;
+						break;
+					}
 					if (result.getMtrEndTime() == null) {
 						tested = 0;
 						break;
@@ -1951,5 +1956,30 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return query.executeUpdate();
 		// }
 		// return 0;
+	}
+
+	@Override
+	public int updateTimeOut(Long mcaId, Long msId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		int updateRecord=0;
+		Query query = session
+				.createQuery(" select missTestResult from MissTestResult missTestResult " +
+						" where missTestResult.missCandidate.mcaId=:mcaId and missTestResult.msId=:msId order by missTestResult.mtrId desc ");
+		query.setParameter("mcaId", mcaId);
+		query.setParameter("msId", msId);
+		List list = query.list();  
+		Long mtrId=null;
+		if(list!=null && list.size()>0){
+			mtrId= ((MissTestResult)list.get(0)).getMtrId();;
+		}
+		if(mtrId!=null){
+			query = session.createQuery("update MissTestResult missTestResult "
+					+ " set missTestResult.mtrStatus='3' "
+					+ " where missTestResult.mtrId in (" + mtrId + ")");
+			updateRecord=query.executeUpdate();
+		}
+		  
+		return updateRecord;
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo;
 import th.co.aoe.makedev.missconsult.managers.MissTodoService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -44,6 +45,24 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 			missTodo=(MissTodo)obj;
 		}
 	  return missTodo;
+	}
+	@Transactional(readOnly=true)
+	public String findCandidateEmailFrom(MissTodo missTodo)
+			throws DataAccessException {
+		String email=null;
+		// TODO Auto-generated method stub
+		MissTestResult missTestResult=null;
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.mtrId=:mtrId");
+	//	System.out.println("missTodo.getMtodoRef()="+missTodo.getMtodoRef());
+		query.setParameter("mtrId", missTodo.getMtodoRef());
+		Object obj=query.uniqueResult(); 	 
+		if(obj!=null){
+			missTestResult=(MissTestResult)obj;
+			email=missTestResult.getMissCandidate().getMcaEmail();
+		}
+		//System.out.println("email="+email);
+	  return email;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	public Long saveMissTodo(MissTodo transientInstance)
@@ -86,9 +105,10 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 			if(account!=null)
 				maId=account.getMaId();
 		//	String megName = instance.getMegName();
+			 
 		
-		
-			StringBuffer sb =new StringBuffer(" select count(missTodo) from MissTodo missTodo ");
+			StringBuffer sb =new StringBuffer(" select count(missTodo) from MissTodo missTodo where missTodo.mtodoResponse!='1'" +
+					" or  missTodo.mtodoResponse is null or missTodo.mtodoResponse='0'");
 			
 			boolean iscriteria = false;
 			if(maId !=null && maId > 0){  
@@ -124,9 +144,10 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 			//	String megName = instance.getMegName();
 			
 			
-				StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo ");
+				StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo where missTodo.mtodoResponse!='1'" +
+						" or  missTodo.mtodoResponse is null  or missTodo.mtodoResponse='0' ");
 				
-				boolean iscriteria = false;
+				boolean iscriteria = true;
 				//System.out.println(" maId="+maId+",pageSize="+pagging.getPageSize()+",pageNo="+pagging.getPageNo());
 				if(maId !=null && maId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	

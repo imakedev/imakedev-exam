@@ -85,7 +85,19 @@ public class MissTodoResource extends BaseResource {
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
 						} 
-						if(serviceName.equals(ServiceConstant.MISS_TODO_SAVE)){
+						else if(serviceName.equals(ServiceConstant.MISS_TODO_FIND_MAIL)){
+							String email= missTodoService.findCandidateEmailFrom(bpsTerm); 
+								VResultMessage vresultMessage = new VResultMessage();
+								List<th.co.aoe.makedev.missconsult.xstream.MissTodo> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTodo>(1);
+								//th.co.aoe.makedev.missconsult.xstream.MissTodo xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissTodo();
+								xbpsTerm.setPagging(null);
+								xbpsTerm.setCandidateEmail(email);
+								xntcCalendars.add(xbpsTerm); 
+								vresultMessage.setResultListObj(xntcCalendars);
+								return getRepresentation(entity, vresultMessage, xstream);
+							 
+						} 
+						else if(serviceName.equals(ServiceConstant.MISS_TODO_SAVE)){
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							//System.out.println("xxxxxxxxxxxx="+bpsTerm);
 							int updateRecord=(missTodoService.saveMissTodo(bpsTerm)).intValue();

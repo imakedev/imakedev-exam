@@ -26,6 +26,10 @@ public class MissCareerMaster implements Serializable {
 
 	@Column(name="MCM_NAME")
 	private String mcmName;
+	
+	@Column(name="MCM_REF")
+	private Long mcmRef;
+	
 /*
 	//bi-directional many-to-one association to MissCandidate
 	@OneToMany(mappedBy="missCareerMaster")
@@ -48,6 +52,14 @@ public class MissCareerMaster implements Serializable {
 
 	public void setMcmName(String mcmName) {
 		this.mcmName = mcmName;
+	}
+
+	public Long getMcmRef() {
+		return mcmRef;
+	}
+
+	public void setMcmRef(Long mcmRef) {
+		this.mcmRef = mcmRef;
 	}
 
 	/*public Set<MissCandidate> getMissCandidates() {
