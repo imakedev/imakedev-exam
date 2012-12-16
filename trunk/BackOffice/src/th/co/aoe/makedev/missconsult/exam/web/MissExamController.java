@@ -112,6 +112,7 @@ public class MissExamController
     {
         String mode = missExamForm.getMode();
         String message = "";
+        String message_class="";
         missExamForm.getMissExam().setSection(section);
         Long id = null;
         if(mode != null)
@@ -121,16 +122,19 @@ public class MissExamController
                 missExamForm.getMissExam().setMeId(id);
                 missExamForm.setMode("edit");
                 message = "Save success !";
+                message_class="success";
             } else
             if(mode.equals("edit"))
             {
                 missExamService.updateMissExam(missExamForm.getMissExam());
                 id = missExamForm.getMissExam().getMeId();
                 message = "Update success !";
+                message_class="success";
             }
         MissExam missExam = missExamService.findMissExamById(id);
         missExamForm.setMissExam(missExam);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         missExamForm.getMissExam().setSection(section);
         model.addAttribute("missExamForm", missExamForm);

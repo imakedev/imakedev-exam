@@ -386,6 +386,7 @@ public class TestController
     {
         String mode = testForm.getMode();
         String message = "";
+        String message_class = "";
         testForm.getMissExam().setSection(section);
   
         Long id = null;
@@ -396,6 +397,7 @@ public class TestController
                 testForm.getMissExam().setMeId(id);
                 testForm.setMode("edit");
                 message = "Save success !";
+                message_class="success";
             } else
             if(mode.equals("edit"))
             {
@@ -403,12 +405,14 @@ public class TestController
                 id = testForm.getMissExam().getMeId();
                // logger.debug("idxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx="+id);
                 message = "Update success !";
+                message_class="success";
             }
       
         MissExam missExam = missExamService.findMissExamById(id);
         logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx==>"+missExam);
         testForm.setMissExam(missExam);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class); 
         model.addAttribute("display", "display: block");
         testForm.getMissExam().setSection(section);
         model.addAttribute("missExamGroups", getGroup());
@@ -421,6 +425,7 @@ public class TestController
     {
         String mode = testForm.getModeQuestion();
         String message = ""; 
+        String message_class="";
         logger.debug("xxxxxxxxxxxxxxxxxxxxxxx doQuestionAction mode="+mode);
         Long id = null;
         testForm.getMissQuestion().setLang(testForm.getLang());
@@ -431,6 +436,7 @@ public class TestController
                 testForm.getMissQuestion().setMqId(id);
                 testForm.setModeQuestion("edit");
                 message = "Save success !";
+                message_class="success";
             } else
             if(mode.equals("edit"))
             {
@@ -438,6 +444,7 @@ public class TestController
                 missExamService.updateMissQuestion(testForm.getMissQuestion(),ServiceConstant.MISS_QUESTION_UPDATE);
                 id = testForm.getMissQuestion().getMqId();
                 message = "Update success !";
+                message_class="success";
             }
       
         String mcIdArrayStr = testForm.getMcIdArray();
@@ -532,6 +539,7 @@ public class TestController
 		testForm.setMcIdArray(mcIdArray);
         testForm.setMissQuestion(missQuestion);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         model.addAttribute("testForm", testForm);
         

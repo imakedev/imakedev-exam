@@ -763,7 +763,14 @@ public class MissExamServiceImpl extends PostCommon
         missTodo.setServiceName("searchMissTodo");
         return postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
     }
- 
+    public String getEmailFromMissTodo(MissTodo missTodo)
+    {
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_FIND_MAIL);
+        VResultMessage resultMessage = postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
+        missTodo = (MissTodo)resultMessage.getResultListObj().get(0);
+        return missTodo.getCandidateEmail();
+    }
+
      
     public Long saveMissAttach(MissAttach missAttach)
     {
