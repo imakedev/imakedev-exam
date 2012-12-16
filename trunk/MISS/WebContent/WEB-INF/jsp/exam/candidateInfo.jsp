@@ -118,6 +118,9 @@ function doStart(){
 	   window.location.href='${examInfoUrl}';
 	});
 }
+function changeLangExam(objSelect){
+	$("#selectLang").val(objSelect.value);
+}
 function loadDynamicPage(pageId){
 	//	var id="1";
 		//$.get('ajax/search', function(data) {
@@ -289,6 +292,7 @@ function getCandidateInfo(){
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
         <!--   <form class="well" style="border:2px solid #DDD"> -->
          <form:form  id="missExamForm" name="missExamForm" modelAttribute="missExamForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+         	  <form:hidden path="missCandidate.selectLang" id="selectLang"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Infomation</strong></td>
@@ -301,7 +305,7 @@ function getCandidateInfo(){
 	    					 </td>  
 	    					 <td align="left" width="10%">Email:</td>
 	    					<td align="left" width="24%">
-	    					 <form:input path="missCandidate.mcaEmail"/>
+	    					 <form:input path="missCandidate.mcaEmail"/>&nbsp;<font color="red">*</font>
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr> 
@@ -323,10 +327,10 @@ function getCandidateInfo(){
     						<form:option value="2">นางสาว</form:option>
     						<form:option value="3">ระบุ 	&rarr;</form:option>
     					</form:select>
-    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px"/>
+    					<form:input path="missCandidate.mcaFirstName" cssStyle="width:120px"/>&nbsp;<font color="red">*</font>
 	    					 </td>
 	    					<td align="left" width="10%">Last Name:</td>
-	    					<td align="left" width="24%"><form:input path="missCandidate.mcaLastName"/></td>
+	    					<td align="left" width="24%"><form:input path="missCandidate.mcaLastName"/>&nbsp;<font color="red">*</font></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
@@ -335,7 +339,7 @@ function getCandidateInfo(){
 	    					 <td align="left" width="24%">  
 	    					   <form:select path="missCandidate.missCareerMaster.mcmId" cssStyle="background:#FFFFFF">
     								<form:options items="${missCareerMasterList}" itemLabel="mcmName" itemValue="mcmId"></form:options>
-    						  </form:select>
+    						  </form:select>&nbsp;<font color="red">*</font>
 	    					 </td> 
 	    					<td align="left" width="10%"></td>
 	    					<td align="left" width="24%">
@@ -346,19 +350,19 @@ function getCandidateInfo(){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Position:</td>
-	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPosition"/>
+	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPosition"/>&nbsp;<font color="red">*</font>
 	    					 </td>
 	    					<td align="left" width="10%">Department:</td>
-	    					<td align="left" width="24%"><form:input path="missCandidate.mcaDepartment"/></td>
+	    					<td align="left" width="24%"><form:input path="missCandidate.mcaDepartment"/>&nbsp;<font color="red">*</font></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Phone:</td>
-	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaPhone"/>  
+	    					 <td align="left" width="24%"><form:input path="missCandidate.mcaPhone"/>&nbsp;<font color="red">*</font>
 	    					 </td>
-	    					<td align="left" width="10%">Birth date:</td>
-	    					<td align="left" width="24%"><div class="picker" id="picker2"></div> 
+	    					<td align="left" width="10%">Birth date:&nbsp;<font color="red">*</font></td>
+	    					<td align="left" width="24%"><div class="picker" id="picker2"></div>
     						<form:hidden path="mcaBirthDate"  id="mcaBirthDate"/></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
@@ -367,7 +371,7 @@ function getCandidateInfo(){
 	    					 <td align="left" width="10%">Gender:</td>
 	    					 <td align="left" width="24%">  
 	    					 <form:radiobutton path="missCandidate.mcaGender" value="0"/>Female&nbsp;&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaGender" value="1"/>Male 
-	    					 </td>
+	    					 &nbsp;<font color="red">*</font></td>
 	    					<td align="left" width="10%"></td>
 	    					<td align="left" width="24%">
 	    					
@@ -394,6 +398,20 @@ function getCandidateInfo(){
 	    					</tr> --%>
 	    					</table>  
 	    					</form:form>
+	    					 <div align="center">			
+		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px;width: 20%"> 
+        	<tbody>
+         		 	<tr> 
+            			<td><div align="center">เลือก ภาษา : 
+            				<select onchange="changeLangExam(this)">
+            					<option value="1">ไทย</option>	
+            					<option value="2">English</option>	
+            				</select>
+            				</div></td> 
+          			</tr>
+        	</tbody>
+      </table>
+      </div>
 	     <div align="center">			
 		<table class="table table-striped table-bordered table-condensed" border="1" style="font-size: 12px;width: 20%">
         	<thead>

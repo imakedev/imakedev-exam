@@ -5,13 +5,30 @@
 $(document).ready(function() { 
 	markQuestion($("#answered").val());  
 });
-function goToDynamicPage(pageId,formID,navi){
+function goToDynamicPage(pageId,formID,navi,fixAnswerOrder){
 	/* if(navi=='prev'){
 		//$("#examIndex").val((parseInt($("#examIndex").val())-1)+"");
 		$("#questionIndex").val((parseInt($("#questionIndex").val())-1)+"");
 	}else if(navi=='next'){
 		$("#questionIndex").val((parseInt($("#questionIndex").val())+1)+"");
 	} */
+	
+	//alert(fixAnswerOrder)
+	var mcScoreElement=document.getElementsByName("mcScore");
+	var answered=false; 
+	for(var i=0;i<mcScoreElement.length;i++){
+		//alert("xx "+mcScoreElement[i].checked); 
+		  if( mcScoreElement[i].checked){
+			  answered=true;
+			break;
+		} 
+	}
+	//  alert("answered="+answered);
+	if(!answered){
+		alert("กรุณาเลือกคำตอบ !!! ");
+		return false;
+	}  
+	
 	$("#mode").val(navi);
 	if(navi!='finish')
 		postDynamicPage(pageId,formID);
@@ -89,7 +106,7 @@ function submitExam(){
 	    					 		<input type="radio" name="mcScore" checked="checked" value="${missChoice.mcNo}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
 	    					 	 </c:if>
 	    					 	 <c:if test="${empty missChoice.choiceSelect}"> 
-	    					 	 	<input type="radio" name="mcScore" value="${missChoice.mcNo}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
+	    					 	 	<input type="radio" name="mcScore"   value="${missChoice.mcNo}">&nbsp; ${missChoice.mcName}&nbsp;&nbsp;
 	    					 	 </c:if>
 	    					 
 	    					 </td> 
@@ -104,16 +121,16 @@ function submitExam(){
 	    					 <td align="left" width="50%"> 
 	    					 <c:if test="${missExamForm.questionIndex!=0}"> 
 	    					  	<c:if test="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder!='1'}">	   					 	
-	    					  		<a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','prev')" ><span style="color: white;font-weight: bold;"><i class="icon-chevron-left icon-white"></i>&nbsp;Previous  </span></a>
+	    					  		<a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','prev','${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder}')" ><span style="color: white;font-weight: bold;"><i class="icon-chevron-left icon-white"></i>&nbsp;Previous  </span></a>
 	    					  	  </c:if> 
 	    					 </c:if>
 	    					</td>	    					
 	    					 <td align="right" width="50%">
 	    					  <c:if test="${questionTotal!=(missExamForm.questionIndex+1)}">
-	    					  <a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','next')" ><span style="color: white;font-weight: bold;">Next&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
+	    					  <a class="btn btn-primary" onclick="goToDynamicPage('exam/template','missExamForm','next','${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder}')" ><span style="color: white;font-weight: bold;">Next&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
 	    					 </c:if>
 	    					  <c:if test="${questionTotal==(missExamForm.questionIndex+1)}">
-	    					  <a class="btn btn-success" onclick="goToDynamicPage('exam/template','missExamForm','finish')" ><span style="color: white;font-weight: bold;">Finish&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
+	    					  <a class="btn btn-success" onclick="goToDynamicPage('exam/template','missExamForm','finish','${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meFixAnswerOrder}')" ><span style="color: white;font-weight: bold;">Finish&nbsp;<i class="icon-chevron-right icon-white"></i></span></a>
 	    					 </c:if>
 	    					 </td>
 	    					</tr>
