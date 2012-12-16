@@ -44,7 +44,7 @@ function doSendMail(){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">To:</td>
-	    					 <td align="left" colspan="4"><input type="text" id="mail_to" name="mail_to">  
+	    					 <td align="left" colspan="4"><input type="text" id="mail_to" name="mail_to" value="${mail_todo_to}">  
 	    					 </td>	    					 
 	    					</tr>
 	    					<%--

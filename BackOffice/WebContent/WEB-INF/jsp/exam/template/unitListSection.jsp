@@ -16,6 +16,10 @@ $(document).ready(function() {
 	   }
 
 	}); */
+	 if($("#message_element_unit").attr("style").indexOf("block")!=-1){ 
+		 $('html, body').animate({ scrollTop: 0 }, 'slow');
+	 	setTimeout(function(){$("#message_element_unit").slideUp(300)},5000);
+	 }
 });
 function doSurvey(){ 
 	$.get("survey/init/${companyForm.missAccount.maId}", function(data) {
@@ -48,9 +52,11 @@ function doRefill(){
 	 $.get("company/item/refile/${companyForm.missAccount.maId}/"+$("#refill").val(), function(data) {
 		// alert(data)
 		 	var obj = jQuery.parseJSON(data);
+		 //	 alert(obj.maTotalUnit)
 			 $("#maTotalUnitElement").html(obj.maTotalUnit);
 			 $("#maUsedUnitElement").html(obj.maUsedUnit);
 			 $("#maAvailableCandidateElement").html(obj.maAvailableCandidate);
+			 $("#maBalanceUnitElement").html(obj.maTotalUnit-obj.maUsedUnit);
 			 $("#refill").val("");
 				 
 		 //  alert(data.updateRecord);
@@ -66,7 +72,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
 </style>
- <div class="alert alert-success" style="${display}">
+ <div  id="message_element_unit"  class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>
@@ -92,11 +98,25 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				</tr>
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
-    					<td width="15%">Balance (Available): </td>
+    					<td width="15%"></td>
+    					<%-- <td width="48%"><span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td> --%>
+    					<td width="45%"></td>
+    					 <td width="20%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="20%">&nbsp;</td>
+    					<td width="15%">Balance (unit): </td>
+    					<%-- <td width="48%"><span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td> --%>
+    					<td width="45%"><span id="maBalanceUnitElement">${companyForm.missAccount.maTotalUnit-companyForm.missAccount.maUsedUnit}</span></td>
+    					 <td width="20%">&nbsp;</td>
+    				</tr>
+    				<tr valign="top">
+    					<td width="20%">&nbsp;</td>
+    					<td width="15%"> Total Available: </td>
     					<%-- <td width="48%"><span id="maAvailableUnitElement">${companyForm.missAccount.maAvailableUnit}</span></td> --%>
     					<td width="45%"><span id="maAvailableCandidateElement">${companyForm.missAccount.maAvailableCandidate}</span>&nbsp;&nbsp;candidate</td>
     					 <td width="20%">&nbsp;</td>
-    				</tr>
+    				</tr> 
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
     					<td width="15%">Re-fill </td>
@@ -110,7 +130,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     			 </fieldset>
     			 </form:form>
     			<div>
-    			 <div align="right"><a class="btn btn-primary" onclick="doSurvey();"><span style="color: white;font-weight: bold;">180/360 Assessment</span></a></div>
+    			 <div align="right" style="padding-bottom: 9px"><a class="btn btn-primary" onclick="doSurvey();"><span style="color: white;font-weight: bold;">180/360 Assessment</span></a></div>
+    			 
     			 <table class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         	<thead>
           		<tr>

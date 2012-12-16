@@ -18,6 +18,10 @@ $(document).ready(function() {
 
 	}); */
 	role_name_G=$( "#rolename" );
+	if($("#message_element_role").attr("style").indexOf("block")!=-1){ 
+		 $('html, body').animate({ scrollTop: 0 }, 'slow');
+	 	setTimeout(function(){$("#message_element_role").slideUp(300)},5000);
+	 }
 });
 function toggleCheckbox(){
 	var _check=document.getElementById("rtIdCheckboxAll").checked;
@@ -134,7 +138,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    Role name&nbsp;:&nbsp;<input type="text" name="rolename" id="rolename" /><br/>
 	</form>
 </div>
- <div class="alert alert-success" style="${display}">
+ <div id="message_element_role" class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>

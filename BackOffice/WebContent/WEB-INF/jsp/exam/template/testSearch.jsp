@@ -294,7 +294,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           </c:if>
           <c:if test="${empty missExams}"> 
           	<tr> 
-          		<td colspan="3" style="text-align: center;">&nbsp;Not Found&nbsp;</td>
+          		<td colspan="3" style="text-align: center;">&nbsp;<spring:message code="searh_result_not_found"/>&nbsp;</td>
           	</tr>
           </c:if> 
         	</tbody>

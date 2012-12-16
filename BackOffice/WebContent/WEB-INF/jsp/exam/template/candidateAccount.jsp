@@ -57,7 +57,10 @@ $(document).ready(function() {
 			//alert(response)
 		
 		}		
-	});
+	});   
+	 if($("#message_element").attr("style").indexOf("block")!=-1){
+	 	setTimeout(function(){$("#message_element").slideUp(300)},5000);
+	 }
 });
 function doReactivate(action,formID,sectionID){
 	//$("#mode").val("reactivate");
@@ -185,8 +188,9 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
 </script> 
 <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	<span id="_message_show"></span>
-</div>
- <div class="alert alert-success" style="${display}">
+</div> 
+<!--  alert-success -->
+ <div id="message_element" class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
   </div>

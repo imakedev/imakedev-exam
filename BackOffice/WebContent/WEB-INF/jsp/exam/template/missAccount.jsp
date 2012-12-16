@@ -88,6 +88,9 @@ $(document).ready(function() {
 			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
+	 if($("#message_element").attr("style").indexOf("block")!=-1){
+		 	setTimeout(function(){$("#message_element").slideUp(300)},5000);
+	}
 });
 function getPhoto(_id,_hotlink){
 	if(_id!=null && _id.length>0 
@@ -158,10 +161,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff;
 } 
 </style>
- <div class="alert alert-success" style="${display}">
+ <div id="message_element" class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
     <strong>${message}</strong> 
-    </div>
+    </div> 
 <fieldset style="font-family: sans-serif;">  
 <input type="hidden" id="_miss_section" name="_miss_section" value="${missForm.missAccount.section}"/>
  <input type="hidden" id="_maId" name="_maId" value="${missForm.missAccount.maId}"/>
