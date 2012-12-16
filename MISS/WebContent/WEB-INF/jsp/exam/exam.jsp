@@ -99,7 +99,10 @@ $(document).ready(function() {
 					 
 				}
 			},
-			close: function(event, ui) {  window.location.href="<c:url value='/logout'/>"; }
+			close: function(event, ui) {  
+				<%-- //window.location.href="<c:url value='/logout'/>"; --%>
+				window.location.href="<c:url value='/timeout/${missExamForm.missCandidate.mcaId}/${missExamForm.missCandidate.missSery.msId}'/>";
+			}
 		});
  }else{
 		   var page="exam/template?examIndex="+${missExamForm.examIndex}+"&questionIndex="+${missExamForm.questionIndex};
@@ -119,7 +122,8 @@ function watchCountdown(periods) {
 			}
 		},
 		close: function(event, ui) {  
-			window.location.href="<c:url value='/logout'/>";  
+			<%-- window.location.href="<c:url value='/logout'/>"; --%>
+			window.location.href="<c:url value='/timeout/${missExamForm.missCandidate.mcaId}/${missExamForm.missCandidate.missSery.msId}'/>";
 			}
 	});
 }
@@ -242,8 +246,17 @@ function appendContent(data){
   <c:set var="endLoop" value="${fn:length(searchResults)"/>  
 </c:if> 
     	    --%>
-    	   <div align="right">Time Left <span id="examCountdown"></span></div><br/>
-    	   <strong>${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName}</strong>
+    	   <div align="right">Time Left <span id="examCountdown"></span></div><br/> 
+    	   <strong>
+    	   <c:if test="${fn:length(missExamForm.missCandidate.missSery.missExams)==1}">
+    	   		${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName}
+    	   </c:if>
+    	   <c:if test="${fn:length(missExamForm.missCandidate.missSery.missExams)!=1}">
+    	   		Part ${missExamForm.examIndex+1} --> ${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName}
+    	   </c:if>
+    	   <%-- ${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName} ${fn:length(missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].missQuestions)} --%> 
+    	   </strong>
+    	   ${missExamForm.missCandidate.mtrId}
     	   <div>
     	   <table width="100%" border="0" style="font-size: 12px"> 
     	    <c:forEach items="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].missQuestions}" var="missQuestions" varStatus="loop"> 
