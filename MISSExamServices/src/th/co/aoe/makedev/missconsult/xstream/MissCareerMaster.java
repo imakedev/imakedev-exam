@@ -18,6 +18,7 @@ public class MissCareerMaster extends VServiceXML implements Serializable {
 	private Long mcmId;
 
 	private String mcmName;
+	private Long mcmRef;
 /*
 	//bi-directional many-to-one association to MissCandidate
 	@OneToMany(mappedBy="missCareerMaster")
@@ -40,6 +41,14 @@ public class MissCareerMaster extends VServiceXML implements Serializable {
 
 	public void setMcmName(String mcmName) {
 		this.mcmName = mcmName;
+	}
+
+	public Long getMcmRef() {
+		return mcmRef;
+	}
+
+	public void setMcmRef(Long mcmRef) {
+		this.mcmRef = mcmRef;
 	}
 
 	/*public Set<MissCandidate> getMissCandidates() {

@@ -74,6 +74,9 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private Timestamp mcaCreatedDate;
 	private Timestamp mcaUpdatedDate;
 	
+	private String selectLang;//1=thai,2=eng
+	private Long mtrId;// 
+	
 	
 	public String getMimExt() {
 		return mimExt;
@@ -352,6 +355,22 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setMcaUpdatedDate(Timestamp mcaUpdatedDate) {
 		this.mcaUpdatedDate = mcaUpdatedDate;
+	}
+
+	public String getSelectLang() {
+		return selectLang;
+	}
+
+	public void setSelectLang(String selectLang) {
+		this.selectLang = selectLang;
+	}
+
+	public Long getMtrId() {
+		return mtrId;
+	}
+
+	public void setMtrId(Long mtrId) {
+		this.mtrId = mtrId;
 	}
 
  

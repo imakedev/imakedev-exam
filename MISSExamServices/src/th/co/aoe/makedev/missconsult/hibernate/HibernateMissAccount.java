@@ -441,7 +441,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maTotalUnit", refill_add);
 			query.executeUpdate();
 			missAccount.setMaTotalUnit(refill_add);
-			 
+			xntcCalendarReturn.setMaTotalUnit(refill_add);
 			query=session.createQuery("select count(missCandidate) from MissCandidate missCandidate " +
 					" where missCandidate.mcaStatus ='2' " +
 					" and missCandidate.missAccount.maId ="+maId); 

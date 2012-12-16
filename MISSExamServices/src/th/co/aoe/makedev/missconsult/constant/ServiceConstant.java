@@ -163,12 +163,15 @@ public class ServiceConstant {
 	public static final String MISS_TEST_RESULT_CHECK = "checkMissTestResult"; 
 	public static final String MISS_TEST_RESULT_UPDATE_STATUS = "updateStatusMissTestResult"; 
 	public static final String MISS_TEST_RESULT_UPDATE_STATUS_LIST = "updateStatusMissTestResultList";
+	public static final String MISS_UPDATE_TIME_OUT = "updateTimeOut";
+	
 	// MISS_TODO
 	public static final String MISS_TODO_SAVE = "saveMissTodo";
 	public static final String MISS_TODO_UPDATE = "updateMissTodo";
 	public static final String MISS_TODO_DELETE = "deleteMissTodo";
 	public static final String MISS_TODO_SEARCH = "searchMissTodo";
-	public static final String MISS_TODO_FIND_BY_ID = "findMissTodoById"; 
+	public static final String MISS_TODO_FIND_BY_ID = "findMissTodoById";
+	public static final String MISS_TODO_FIND_MAIL = "findCandidateEmailFromMissTodo"; 
 	
 	// MISS_ATTACH
 	public static final String MISS_ATTACH_SAVE = "saveMissAttach";
