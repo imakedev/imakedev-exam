@@ -215,7 +215,9 @@ public class CompanyController
     	missAccountSeriesMap.setMasmOrderUnit(Long.valueOf(amount));
       Long returnRecord=  missExamService.saveMissAccountSeriesMap(missAccountSeriesMap);
       String message="Order success !";
+     String message_class="success";
       if(returnRecord!=null && returnRecord.intValue()==0){
+    	  message_class="error";
     	  message="Can't Order ";
       }else{
     	  MissCandidate missCandidate = new MissCandidate();
@@ -240,6 +242,8 @@ public class CompanyController
 		return gson.toJson(missAccount);*/
       companyForm.setMissAccount(missAccount);
       model.addAttribute("message",message);
+      model.addAttribute("message_class",message_class);
+      
       model.addAttribute("display", "display: block");
       model.addAttribute("companyForm", companyForm);
     //  model.addAttribute("display", "display: none");
@@ -313,6 +317,7 @@ public class CompanyController
     {
         String mode = companyForm.getMode();
         String message = "";
+        String message_class="";
         logger.debug((new StringBuilder(" aoeeeeeeeeeeee section=")).append(section).append(",mode=").append(mode).toString());
         companyForm.getMissAccount().setSection(section);
         companyForm.getMissAccount().setMaType("0");
@@ -335,6 +340,7 @@ public class CompanyController
                 id = missExamService.saveMissAccount(companyForm.getMissAccount());
                 companyForm.getMissAccount().setMaId(id);
                 companyForm.setMode("edit");
+                message_class="success";
                 message = "Save success !";
             } else
             if(mode.equals("edit"))
@@ -342,6 +348,7 @@ public class CompanyController
             	
                 missExamService.updateMissAccount(companyForm.getMissAccount());
                 id = companyForm.getMissAccount().getMaId();
+                message_class="success";
                 message = "Update success !";
             }
         MissAccount missAccount = missExamService.findMissAccountById(id);
@@ -352,6 +359,7 @@ public class CompanyController
         }
         companyForm.setMissAccount(missAccount);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         companyForm.getMissAccount().setSection(section);
         model.addAttribute("companyForm", companyForm);
@@ -491,6 +499,7 @@ public class CompanyController
     {
         String mode = contactForm.getMode();
         String message = ""; 
+       String message_class="";
         logger.debug("xxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyy doContactAction mode="+mode);
         Long id = null;
         if(mode != null){
@@ -503,10 +512,11 @@ public class CompanyController
                 {
                     e.printStackTrace();
                 }
-        	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxx"+contactForm.getMissContact().getMcontactId());
+        	//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxx"+contactForm.getMissContact().getMcontactId());
         	int count=missExamService.countMissContactByUsername(contactForm.getMissContact().getMcontactUsername(),contactForm.getMissContact().getMcontactId());
         	
         if(count>0){
+        	message_class="error";
         	 message = "Duplicate Username !";
         }else{
         	if(mode.equals("new"))
@@ -515,12 +525,14 @@ public class CompanyController
                 id = missExamService.saveMissContact(contactForm.getMissContact());
                 contactForm.getMissContact().setMcontactId(id);
                 contactForm.setMode("edit");
+                message_class="success";
                 message = "Save success !";
             } else
             if(mode.equals("edit"))
             {
             	missExamService.updateMissContact(contactForm.getMissContact());
                 id = contactForm.getMissContact().getMcontactId();
+                message_class="success";
                 message = "Update success !";
             }
          }
@@ -528,6 +540,7 @@ public class CompanyController
        }
         model.addAttribute("roleContacts", missExamService.listRoleContactBymaId(Long.parseLong(contactForm.getMaId())));
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         model.addAttribute("contactForm", contactForm);
         

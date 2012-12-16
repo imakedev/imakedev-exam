@@ -45,6 +45,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
@@ -53,8 +54,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
-@Controller
-@SessionAttributes(value={"UserMissContact"})
+@Controller 
+@SessionAttributes(value={"UserMissContact","welcomeForm"})
 public class WelcomeController
 {
 	private static int PAGE_SIZE=20;
@@ -113,9 +114,70 @@ public class WelcomeController
         model.addAttribute("todolists", vresult.getResultListObj());
         model.addAttribute("totals", vresult.getMaxRow());
         model.addAttribute("pageObj", page);
+        model.addAttribute("pageCount", IMakeDevUtils.calculatePage(PAGE_SIZE, Integer.parseInt(vresult.getMaxRow())));
+        return "exam/template/home";
+    } 
+    @RequestMapping(value={"/todoList/ignore/{ignore_id}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String ignoreToDolist(Model model, @RequestParam(value="pageNo", required=false) String pageNoStr
+    		,@PathVariable Long ignore_id)
+    {
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      //  String name = auth.getName();
+      //  logger.debug((new StringBuilder(" name  ===>")).append(name).toString());
+       // logger.debug((new StringBuilder(" auth.getAuthorities() ====>")).append(auth.getAuthorities()).toString());
+    	System.out.println("ignore_id="+ignore_id);
+    	MissTodo missTodo =new MissTodo();
+    	missTodo.setMtodoId(ignore_id);
+    	missExamService.deleteMissTodo(missTodo);
+        int pageNo = 1;
+        if(pageNoStr != null && !pageNoStr.equals(""))
+            pageNo = Integer.parseInt(pageNoStr);
+        Pagging page = new Pagging();
+        page.setPageNo(pageNo);
+        page.setPageSize(PAGE_SIZE);
+        missTodo = new MissTodo();
+        missTodo.setPagging(page);
+        if(model.containsAttribute("UserMissContact")){
+        	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+        	if(missContact.getIsMC()!=null && missContact.getIsMC().equals("0")){
+        		 MissAccount missAccount = new MissAccount(); 
+        		 missAccount.setMaId(missContact.getMcontactRef());
+        		 missTodo.setMissAccount(missAccount);
+        		 //candidateForm.getMissCandidate().setMissAccount(missAccount);
+        	}
+        }
+        VResultMessage vresult = missExamService.searchMissTodo(missTodo);
+        model.addAttribute("todolists", vresult.getResultListObj());
+        model.addAttribute("totals", vresult.getMaxRow());
+        model.addAttribute("pageObj", page);
+        return "exam/template/home";
+       // return "redirect:/";
+    }
+    
+    @RequestMapping(value={"/doTodoAction/{pageNo}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String doTodoAction(HttpServletRequest request
+    		//, @ModelAttribute(value="welcomeForm") WelcomeForm welcomeForm, BindingResult result
+    		, @PathVariable int pageNo,Model model)
+    {
+    	 
+    	   Pagging page = new Pagging();
+    	   MissTodo misstodo =new MissTodo();
+    	   page.setPageSize(PAGE_SIZE);
+    	   page.setPageNo(pageNo);
+    	   misstodo.setPagging(page);
+         
+     
+    	   VResultMessage vresult = missExamService.searchMissTodo(misstodo);    
+           model.addAttribute("todolists", vresult.getResultListObj());
+           model.addAttribute("totals", vresult.getMaxRow());
+         //  model.addAttribute("UserMissContact", missContact);
+           model.addAttribute("pageObj", page);
+        model.addAttribute("pageCount", IMakeDevUtils.calculatePage(PAGE_SIZE, Integer.parseInt(vresult.getMaxRow())));
         return "exam/template/home";
     }
 
+    
+   
     @RequestMapping(value={"/"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getNewForm(HttpServletRequest request,HttpServletResponse response,  Model model)
     {
@@ -158,6 +220,8 @@ public class WelcomeController
         model.addAttribute("totals", vresult.getMaxRow());
         model.addAttribute("UserMissContact", missContact);
         model.addAttribute("pageObj", page);
+        model.addAttribute("pageCount", IMakeDevUtils.calculatePage(PAGE_SIZE, Integer.parseInt(vresult.getMaxRow()))); 
+        
         model.addAttribute("systemDate", format1.format(new Date()));
         return "exam/common";
     }
@@ -166,6 +230,13 @@ public class WelcomeController
     { 
     	model.addAttribute("mail_todo_idG", mailTodoId);
     	model.addAttribute("mail_todo_refG", mailTodoRef);
+    	MissTodo missTodo=new  MissTodo();
+    	missTodo.setMtodoId(mailTodoId);
+    	missTodo.setMtodoRef(mailTodoRef);
+    	String mail =missExamService.getEmailFromMissTodo(missTodo);
+    	if(mail!=null)
+    		model.addAttribute("mail_todo_to", mail);
+     
     	  return "exam/template/todoResponse";
     }
     @RequestMapping(value={"/sendmailToApprove"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})

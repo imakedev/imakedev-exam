@@ -76,6 +76,7 @@ public class MissController
     {
         String mode = missForm.getMode();
         String message = "";
+        String message_class="";
         missForm.getMissAccount().setSection(section);
         /*if(missForm.getMaContactBirthDate() != null && missForm.getMaContactBirthDate().trim().length() > 0)
             try
@@ -88,6 +89,7 @@ public class MissController
             }*/
         missExamService.updateMissAccount(missForm.getMissAccount());
         message = "Update success !";
+        message_class="success";
         MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(1L));
         if(missAccount.getMissTheme()==null){
         	MissTheme missTheme =new MissTheme();
@@ -95,8 +97,9 @@ public class MissController
         	missAccount.setMissTheme(missTheme);
         }
         missForm.setMissAccount(missAccount);
-        model.addAttribute("message", message);
+        model.addAttribute("message", message); 
         model.addAttribute("display", "display: block");
+        model.addAttribute("message_class", message_class);
         missForm.getMissAccount().setSection(section);
         model.addAttribute("missForm", missForm);
         List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());

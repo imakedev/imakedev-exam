@@ -124,6 +124,7 @@ public class SurveyController
     	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success !!!"));
     	 model.addAttribute("missSeries", missExamService.listMissSery());
     	 model.addAttribute("surveyForm", surveyForm);
+    	 model.addAttribute("message_class", ((resultReturn==1)?"success":"error"));
     	 return "exam/template/surveySend";
         //return "exam/template/surveySend";
     }

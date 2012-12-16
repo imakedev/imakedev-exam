@@ -36,7 +36,7 @@ public class RoleController {
 		//RoleForm roleForm = null;
 		String display="display: none";
 		String message="";
-				
+		String message_class="";
 		if (model.containsAttribute("roleForm"))
 			roleForm = (RoleForm) model.asMap().get("roleForm");
 		else{
@@ -75,11 +75,13 @@ public class RoleController {
 				roleMapping.setRcId(roleForm.getRcId());
 				missExamService.updateRoleMapping(roleMapping);
 				 message = "Update Role success !";
+				 message_class="success";
 				 display="display: block";
 				}
 			}else if(mode.equals("addRole")){//
 				 message = "Add Role success !";
 				 display="display: block";
+				 message_class="success";
 				 RoleContact roleContact=new RoleContact();
 				 roleContact.setMaId(Long.parseLong(maId));
 				/* private String roleName;
@@ -89,6 +91,7 @@ public class RoleController {
 			}else if(mode.equals("updateRole")){//
 				 message = "Update Role success !";
 				 display="display: block";
+				 message_class="success";
 				 RoleContact roleContact=new RoleContact();
 				 roleContact.setMaId(Long.parseLong(maId)); 
 				 roleContact.setRcId(roleForm.getRcId());
@@ -97,6 +100,7 @@ public class RoleController {
 			}else if(mode.equals("deleteRole")){//
 				 message = "Delete Role success !";
 				 display="display: block";
+				 message_class="success";
 				 RoleContact roleContact=new RoleContact();
 				 roleContact.setRcId(roleForm.getRcId());
 				 roleContact.setMaId(Long.parseLong(maId));  
@@ -134,7 +138,7 @@ public class RoleController {
 		model.addAttribute("roleTypes", roleTypes);
 		 model.addAttribute("message", message);
 		 model.addAttribute("display", display);
-		
+		 model.addAttribute("message_class", message_class); 
 		return "exam/template/roleSection";
 	}
 	@RequestMapping(value = { "/{maId}" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })

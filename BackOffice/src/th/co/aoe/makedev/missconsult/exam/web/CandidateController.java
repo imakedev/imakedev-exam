@@ -156,6 +156,7 @@ public class CandidateController
         model.addAttribute("candidateForm", candidateForm);
         model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("display", "display: none");
+        model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
@@ -172,6 +173,7 @@ public class CandidateController
         candidateForm.setMissCandidate(new MissCandidate());
         candidateForm.setMode("new");
         model.addAttribute("display", "display: none");
+        model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
         return "exam/template/candidateAccount";
@@ -182,6 +184,7 @@ public class CandidateController
     {
         String mode = candidateForm.getMode();
         String message = "";
+        String message_class="";
       //  logger.debug((new StringBuilder(" aoeeeeeeeeeeee =")).append(section).toString());
         candidateForm.getMissCandidate().setSection(section);
         Long id = null;
@@ -202,6 +205,7 @@ public class CandidateController
             	id=missCandidate.getMcaId();
                 candidateForm.getMissCandidate().setMcaId(id);
                 candidateForm.setMode("edit");
+                message_class="success";
                 message = "Save success !";
             } else
             if(mode.equals("edit"))
@@ -209,8 +213,10 @@ public class CandidateController
             	int recordReturn=  missExamService.updateMissCandidate(candidateForm.getMissCandidate());
                 id = candidateForm.getMissCandidate().getMcaId();
                 if(recordReturn!=-1){
+                	message_class="success";
                 	message = "Update success !";
                 }else{
+                	message_class="error";
                 	message = "Can't Update !";
                 }
                 
@@ -219,6 +225,7 @@ public class CandidateController
         MissCandidate missCandidate = missExamService.findMissCandidateById(id);
         candidateForm.setMissCandidate(missCandidate);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         candidateForm.getMissCandidate().setSection(section);
         model.addAttribute("missSeries", missExamService.listMissSery());

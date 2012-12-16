@@ -405,4 +405,5 @@ public interface MissExamService {
 	public abstract ServiceReport findServiceReport(ServiceReport serviceReport);
 	public abstract ConsultantReport findConsultantReport(ConsultantReport consultantReport);
 	public abstract ConsultantReport findSales(ConsultantReport consultantReport);
+	public abstract String getEmailFromMissTodo(MissTodo missTodo);
 }

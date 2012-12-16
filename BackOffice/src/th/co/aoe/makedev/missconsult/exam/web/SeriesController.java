@@ -217,6 +217,7 @@ public class SeriesController
     {
         String mode = seriesForm.getMode();
         String message = "";
+        String message_class="";
         String missExam_mapping[] = request.getParameterValues("missExam_mapping");
        // logger.debug((new StringBuilder("missExam_mapping=")).append(missExam_mapping).toString());
         String missSeriesMap = request.getParameter("missSeriesMap");
@@ -261,12 +262,14 @@ public class SeriesController
                 seriesForm.getMissSery().setMsId(id);
                 seriesForm.setMode("edit");
                 message = "Save success !";
+                message_class="success";
             } else
             if(mode.equals("edit"))
             {
                 missExamService.updateMissSery(seriesForm.getMissSery());
                 id=seriesForm.getMissSery().getMsId();
                 message = "Update success !";
+                message_class="success";
             }
         logger.info("into findMissSeryById="+id);
         MissSery missSery = missExamService.findMissSeryById(id);
@@ -350,6 +353,7 @@ public class SeriesController
         }
         model.addAttribute("missSeriesMap", sb);
         model.addAttribute("message", message);
+        model.addAttribute("message_class", message_class); 
         model.addAttribute("display", "display: block");
         model.addAttribute("missExams", missExamService.listMissExam());
         model.addAttribute("seriesForm", seriesForm);
