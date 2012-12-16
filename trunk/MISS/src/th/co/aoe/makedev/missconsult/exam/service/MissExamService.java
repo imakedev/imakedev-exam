@@ -50,6 +50,8 @@ public interface MissExamService {
 	 public abstract List<MissCareerMaster> listMissCareerMaster() ;
 	 public abstract List<MissIndustryMaster> listMissIndustryMaster() ;
 	 public abstract int saveMissSeryProblem(MissSeryProblem transientInstance);
+	 public abstract int updateTimeOut (MissTestResult missTestResult);
+	 
 	 public abstract int saveMissSystemUse(MissSystemUse missSystemUse);
 	 public abstract MissCandidate findMissCandidateByCitizendIdAndEmail(String citizendId,String email);
 }

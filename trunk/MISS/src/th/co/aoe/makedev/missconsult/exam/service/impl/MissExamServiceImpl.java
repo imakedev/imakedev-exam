@@ -276,4 +276,17 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		
 	}
 
+	@Override
+	public int updateTimeOut(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub
+		missTestResult.setServiceName(ServiceConstant.MISS_UPDATE_TIME_OUT);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null){
+			missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+			return missTestResult.getUpdateRecord().intValue();
+		}else
+			return 0;
+	}
+
 }

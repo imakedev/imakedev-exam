@@ -22,6 +22,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -120,7 +122,7 @@ public class AccessController {
 		missSystemUse.setMsystemBrowserFullVersion(useragent); 
 		missExamService.saveMissSystemUse(missSystemUse);
 		//0=not yet test finish, 1=  test finish
-		if(result==1){ 
+		if(result==1 || result ==3){ 
 			/*String message = "Invalid User or Password.";
 			logger.info("into init local "+LocaleContextHolder.getLocale().getDisplayLanguage());
 			if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
@@ -129,7 +131,13 @@ public class AccessController {
 		//	System.out.println("sssssssssssss="+);
 			//model.addAttribute("message", messageSource.getMessage("final_message", new Object[0],LocaleContextHolder.getLocale())); 
 			String language=request.getParameter("language");
-			String message=MessageSourceResourceBundle.getBundle("messages", LocaleContextHolder.getLocale()).getString("duplicate_login_message");
+			String message="";
+			if(result==1){ 
+				message=MessageSourceResourceBundle.getBundle("messages", LocaleContextHolder.getLocale()).getString("duplicate_login_message");
+			}else if(result==3){
+				message=MessageSourceResourceBundle.getBundle("messages", LocaleContextHolder.getLocale()).getString("timeout_login_message");
+			}
+			
 			logger.info("language1="+language);
 			if(language!=null && language.length()>0){
 		    	 LocaleEditor localeEditor = new LocaleEditor();
@@ -140,6 +148,7 @@ public class AccessController {
 		             (Locale) localeEditor.getValue());
 		         message="";
 		    	}
+			logger.error("message  ===>"+message);
 			model.addAttribute("message",message);
 			return "access/login";
 		}else
@@ -280,6 +289,15 @@ public class AccessController {
 		missSeryProblem.setMspType("0");
 		 
 		missExamService.saveMissSeryProblem(missSeryProblem);
+		
+		MissTestResult missTestResult =new MissTestResult();
+		
+		MissCandidate missCandidate =new MissCandidate();
+		missCandidate.setMcaId(mcaId); 
+		
+		missTestResult.setMissCandidate(missCandidate);
+		missTestResult.setMsId(msId);
+		missExamService.updateTimeOut(missTestResult);
 		//String message = "Logout Success!";
 		/*MissTestResult missTest=new MissTestResult();
 		int result=missExamService.checkMissTestResult(missTest);
