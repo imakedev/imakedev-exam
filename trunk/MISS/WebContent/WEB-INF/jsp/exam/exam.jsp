@@ -67,6 +67,18 @@ left padding is 20px */
 
 <script type="text/javascript">
 var _path="";
+/* window.history.go = function(){
+	alert("aa");
+};
+
+window.history.back = function(){
+	alert("back");
+}; */
+window.history.forward();
+function noBack() { 
+	//alert("can't go Back 1");
+	window.history.forward();
+}
 $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
@@ -200,7 +212,7 @@ function appendContent(data){
  <div id="dialog-timeOut" title="TimeOut" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	You're running out of time
 </div>
- <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
+ <body onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload="" style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
@@ -256,7 +268,7 @@ function appendContent(data){
     	   </c:if>
     	   <%-- ${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].meName} ${fn:length(missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].missQuestions)} --%> 
     	   </strong>
-    	   ${missExamForm.missCandidate.mtrId}
+    	
     	   <div>
     	   <table width="100%" border="0" style="font-size: 12px"> 
     	    <c:forEach items="${missExamForm.missCandidate.missSery.missExams[missExamForm.examIndex].missQuestions}" var="missQuestions" varStatus="loop"> 

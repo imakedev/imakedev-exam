@@ -114,6 +114,7 @@ function doStart(){
 //	$("#a_start").click(); 
 //alert("x");
   $("#mcaBirthDate").val($("#birthdate").val());
+  $("#selectLang").val($('select[id="changeLangExamElement"]').val());
 	$.post("exam/info",$("#missExamForm").serialize(), function(data) {
 	   window.location.href='${examInfoUrl}';
 	});
@@ -403,7 +404,7 @@ function getCandidateInfo(){
         	<tbody>
          		 	<tr> 
             			<td><div align="center">เลือก ภาษา : 
-            				<select onchange="changeLangExam(this)">
+            				<select id="changeLangExamElement" onchange="changeLangExam(this)">
             					<option value="1">ไทย</option>	
             					<option value="2">English</option>	
             				</select>
