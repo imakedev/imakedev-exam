@@ -14,6 +14,7 @@ function goToDynamicPage(pageId,formID,navi,fixAnswerOrder){
 	} */
 	
 	//alert(fixAnswerOrder)
+if(fixAnswerOrder=='1'){
 	var mcScoreElement=document.getElementsByName("mcScore");
 	var answered=false; 
 	for(var i=0;i<mcScoreElement.length;i++){
@@ -28,7 +29,7 @@ function goToDynamicPage(pageId,formID,navi,fixAnswerOrder){
 		alert("กรุณาเลือกคำตอบ !!! ");
 		return false;
 	}  
-	
+}
 	$("#mode").val(navi);
 	if(navi!='finish')
 		postDynamicPage(pageId,formID);

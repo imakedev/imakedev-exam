@@ -65,6 +65,11 @@ left padding is 20px */
 
 <script type="text/javascript">
 var _path="";
+window.history.forward();
+function noBack() { 
+	//alert("can't go Back");
+	window.history.forward();
+}
 $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
@@ -141,7 +146,7 @@ function appendContent(data){
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
- <body style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
+ <body  onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload=""  style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
