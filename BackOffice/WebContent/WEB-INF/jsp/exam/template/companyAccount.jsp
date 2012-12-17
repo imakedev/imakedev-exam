@@ -103,7 +103,12 @@ $(document).ready(function() {
 	 if($("#message_element").attr("style").indexOf("block")!=-1){
 		 setTimeout(function(){$("#message_element").slideUp(300)},5000);
 	 }
-	 
+	 if($("#mode").val()=='new'){
+		 $('a[href="#tabs-3"]').hide('slow');  
+		 $('a[href="#tabs-3_1"]').hide('slow');
+		 $('a[href="#tabs-4"]').hide('slow');
+		 $('a[href="#tabs-5"]').hide('slow');
+	 }
 });
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());
@@ -191,6 +196,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_profile" name="companyForm_profile" modelAttribute="companyForm"  method="post" action="">
+			   <form:hidden path="mode"/>
 			  <fieldset style="font-family: sans-serif;">   
 	     <h6><strong>Company - Profile</strong></h6> 
 	       <!-- <pre style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
@@ -416,11 +422,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
    		 			<tr valign="top">
     					<td width="25%">Logo:</td>
     					<td width="50%" colspan="2">
-    					<c:if test="${not empty companyForm.missAccount.maCustomizeLogoHotlink}">
+    					<c:if test="${(not empty companyForm.missAccount.maCustomizeLogoHotlink) && (not empty companyForm.missAccount.maCustomizeLogoFileName)}">
     						<img id="company_photo"  width="350" height="66" src="getfile/companyLogo/${companyForm.missAccount.maId}/${companyForm.missAccount.maCustomizeLogoHotlink}" />
     					</c:if>
-    					<c:if test="${empty companyForm.missAccount.maCustomizeLogoHotlink}">
-    						<img id="company_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>
+    					<c:if test="${(not empty companyForm.missAccount.maCustomizeLogoHotlink) && (empty companyForm.missAccount.maCustomizeLogoFileName)}">
+    						<%-- <img id="company_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>  --%>
+    						<img id="company_photo"  width="350" height="66" src="getfile/mcLogo/1/${companyForm.missAccount.maCustomizeLogoHotlink}" />
     					</c:if>    					
     					<input  id="company_upload" type="button" value="Upload">(350px × 66px)
     					</td>
