@@ -165,7 +165,7 @@ public class CompanyController
        Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
        Long totalUnit= missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l; 
        missAccount.setMaAvailableUnit(totalUnit - usedUnit);
-       
+       missAccount.setMaUsedUnit(usedUnit);
        if(missAccount.getMissTheme()==null){
        	MissTheme missTheme =new MissTheme();
        	missTheme.setMtId(1l);
@@ -265,6 +265,7 @@ public class CompanyController
        Long usedUnit= missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
        Long totalUnit= missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l; 
        missAccount.setMaAvailableUnit(totalUnit - usedUnit);
+       missAccount.setMaUsedUnit(usedUnit);
         companyForm.setMissAccount(missAccount);
         model.addAttribute("companyForm", companyForm);
         model.addAttribute("display", "display: none");
@@ -283,6 +284,7 @@ public class CompanyController
       Long maTotalUnit=missAccount.getMaTotalUnit()!=null?missAccount.getMaTotalUnit():0l;
       Long maUsedUnit=missAccount.getMaUsedUnit()!=null?missAccount.getMaUsedUnit():0l;
       missAccount.setMaAvailableUnit(maTotalUnit-maUsedUnit);
+      missAccount.setMaUsedUnit(maUsedUnit);
       //  missCandidate.setUpdateRecord(Integer.valueOf(updateRecord.intValue()));
         // return missAccount;
         Gson gson=new Gson();
