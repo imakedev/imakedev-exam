@@ -74,6 +74,7 @@ public class MissExamController {
 		MissExamForm missExamForm =  (MissExamForm)model.asMap().get("missExamForm");
 		/*missExamForm.setExamIndex(0);
 		missExamForm.setQuestionIndex(0);*/
+		 //System.out.println("get select lang="+missExamForm.getMissCandidate().getSelectLang());
 		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
         return "exam/examInfo";
@@ -95,6 +96,7 @@ public class MissExamController {
 	            {
 	                e.printStackTrace();
 	            }
+		// System.out.println("select lang="+missExamForm.getMissCandidate().getSelectLang());
 		missExamService.updateMissCandidate(missExamForm.getMissCandidate());
 		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
