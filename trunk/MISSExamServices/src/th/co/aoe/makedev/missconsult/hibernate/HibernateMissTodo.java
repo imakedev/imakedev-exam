@@ -110,7 +110,7 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 			StringBuffer sb =new StringBuffer(" select count(missTodo) from MissTodo missTodo where missTodo.mtodoResponse!='1'" +
 					" or  missTodo.mtodoResponse is null or missTodo.mtodoResponse='0'");
 			
-			boolean iscriteria = false;
+			boolean iscriteria = true;
 			if(maId !=null && maId > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));

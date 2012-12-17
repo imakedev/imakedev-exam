@@ -568,6 +568,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				persistentInstance);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public int processMissTestResult(MissTestResult persistentInstance,
 			String userid, String rootPath) throws DataAccessException {
@@ -847,6 +848,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 
 	// public String getCode(Session session,String filename,Long mcaId,Long
 	// msId,Long meId){
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	public String getCode(Session session, String filename, Long mcaId,
 			Long msId) {
 		FileInputStream fileIn = null;
@@ -1578,6 +1580,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			e.printStackTrace();
 		}
 	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public Long saveOrUpdateMissTestResult(String userid,
 			MissTestResult missTestResult) throws DataAccessException {
@@ -1772,6 +1775,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public int startMissTestResult(String userid, MissTestResult missTestResult)
 			throws DataAccessException {
@@ -1867,7 +1871,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					seryUse.setId(pk);
 					seryUse.setMsuWeek(Long.valueOf(datetime.weekOfWeekyear()
 							.get()));
-					session.save(seryUse);
+					session.saveOrUpdate(seryUse);
 				}
 			}
 		} finally {
@@ -1928,6 +1932,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return tested;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public int updateStatus(Long mtrId, String column, String value)
 			throws DataAccessException {
@@ -1941,6 +1946,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return query.executeUpdate();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public int updateStatus(String mtrId, String column, String value)
 			throws DataAccessException {

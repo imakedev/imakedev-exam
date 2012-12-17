@@ -78,16 +78,37 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Long returnId  = null;
+		Query query =null;
 		try{
+			query=session.createQuery("select missAccount from MissAccount missAccount " +
+					" where missAccount.maId =1 "
+					); 
+			Object objReturn=query.uniqueResult(); 	 
+			if(objReturn!=null){
+				MissAccount missAccount=(MissAccount)objReturn;
+				transientInstance.setMaCustomizeHeadColor(missAccount.getMaCustomizeHeadColor());
+				transientInstance.setMaCustomizeColor(missAccount.getMaCustomizeColor());				
+				transientInstance.setMaCustomizePassMessage(missAccount.getMaCustomizePassMessage());
+				transientInstance.setMaCustomizeRejectMessage(missAccount.getMaCustomizeRejectMessage());				
+				transientInstance.setMaCustomizeRetestMessage(missAccount.getMaCustomizeRetestMessage());
+				transientInstance.setMaLogo(missAccount.getMaLogo());
+				transientInstance.setMissTheme(missAccount.getMissTheme());
+				transientInstance.setMaBackgroundColor(missAccount.getMaBackgroundColor());
+				transientInstance.setMaBackgroundPicture(missAccount.getMaBackgroundPicture());
+			//	transientInstance.setMaCustomizeLogoFileName(missAccount.getMaCustomizeLogoFileName());
+				transientInstance.setMaCustomizeLogoHotlink(missAccount.getMaCustomizeLogoHotlink());
+				transientInstance.setMaCustomizeLogoPath(missAccount.getMaCustomizeLogoPath());
+				
+			} 
 			transientInstance.setMaGrade("1");
-			transientInstance.setMaCustomizeHeadColor("body.gif");
+		/*	transientInstance.setMaCustomizeHeadColor("body.gif");
 			transientInstance.setMaCustomizeColor("smoothness");
-			transientInstance.setMaBackgroundColor("253,253,253");
+			transientInstance.setMaBackgroundColor("253,253,253");*/
 			Object obj = session.save(transientInstance);
-		
+		 
 			if(obj!=null){
 				returnId =(Long) obj;
-				Query query=session.createQuery("update MissAccount missAccount " +
+				query=session.createQuery("update MissAccount missAccount " +
 						" set missAccount.maRegisterNo =:maRegisterNo " +
 						" where missAccount.maId ="+returnId);
 				query.setParameter("maRegisterNo", "M000000"+returnId);
