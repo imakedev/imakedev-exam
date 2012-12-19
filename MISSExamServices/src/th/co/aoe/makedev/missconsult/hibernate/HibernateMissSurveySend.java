@@ -205,7 +205,7 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 				//returnRecord=-1;
 			} 
 		//System.out.println(persistentInstance.getMissSery().getMsId());
-		
+		//System.out.println(returnRecord);
 		// 1= success , 0 not success
 		return returnRecord;
 	}

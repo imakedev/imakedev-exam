@@ -146,8 +146,8 @@ public class HibernateRoleContact  extends HibernateCommon implements RoleContac
 	public int updateRoleContact(RoleContact transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		logger.error("transientInstance getRcName="+transientInstance.getRcName()+"," +
-				"transientInstance.getRcId()"+transientInstance.getRcId());
+	/*	logger.error("transientInstance getRcName="+transientInstance.getRcName()+"," +
+				"transientInstance.getRcId()"+transientInstance.getRcId());*/
 		/*RoleContact roleContact = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		
