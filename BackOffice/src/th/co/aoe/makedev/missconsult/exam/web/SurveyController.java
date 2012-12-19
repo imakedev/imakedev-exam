@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.SurveyForm;
+import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
@@ -108,8 +109,10 @@ public class SurveyController
     		 resultReturn= missExamService.sendSurvey(missSurveySend);
     		 //System.out.println(" resultReturn="+resultReturn);
     		 int size=map.size();
-    		/* for(int i=0;i<size;i++){
-    			 MailRunnable mailRunnableToTeam = new MailRunnable(
+    		 for(int i=0;i<size;i++){
+    			 List<String> list=userEmail.get(i);
+    			 System.out.println("["+i+"] name="+list.get(0)+",email="+list.get(1));
+    			/* MailRunnable mailRunnableToTeam = new MailRunnable(
      					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
      							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
      					recipientsTo, subject,
@@ -117,7 +120,8 @@ public class SurveyController
      			Thread mailThreadToTeam = new Thread(
      					mailRunnableToTeam);
      			mailThreadToTeam.start();
-    		 }*/
+     			*/
+    		 }
     		/**/ 
     	}
     	model.addAttribute("display", "display: block");

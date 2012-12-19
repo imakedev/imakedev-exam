@@ -37,14 +37,19 @@ public class RoleController {
 		String display="display: none";
 		String message="";
 		String message_class="";
+		/*System.out.println(request.getParameter("mode"));
+		System.out.println(request.getParameter("modeExt"));*/
+		
+		//logger.error("roleForm=====>"+roleForm.getMode());
 		if (model.containsAttribute("roleForm"))
 			roleForm = (RoleForm) model.asMap().get("roleForm");
 		else{
+			//logger.error(" new Form=====>");
 			roleForm = new RoleForm();
 			roleForm.setMode("edit");
 		}
-		String mode=roleForm.getMode();
-		logger.debug(" ooooooooooooooooooooooo mode =>"+mode);
+		String mode=request.getParameter("modeExt");//roleForm.getMode();
+		//logger.error(" ooooooooooooooooooooooo mode =>"+mode);
 		/*Enumeration e_num_header=request.getHeaderNames();
 		while (e_num_header.hasMoreElements()) {
 			String header = (String) e_num_header.nextElement();
@@ -66,7 +71,7 @@ public class RoleController {
 				}
 				String[] rtIdRadio = new String[rtIdsList.size()];
 				rtIdRadio = rtIdsList.toArray(rtIdRadio);
-				//System.out.println("rtIdRadio size="+rtIdRadio.length); 
+				System.out.println("rtIdRadio size="+rtIdRadio.length); 
 				//logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 				RoleMapping roleMapping =new RoleMapping();
