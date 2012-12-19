@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY_ROLE_CONTACT')" var="isManageCompanyRoleContactAccount"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT_ROLE_CONTACT')" var="isManageMCRoleContactAccount"/>
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#tabs').tabs();
@@ -108,7 +110,12 @@ $(document).ready(function() {
 		 $('a[href="#tabs-3_1"]').hide('slow');
 		 $('a[href="#tabs-4"]').hide('slow');
 		 $('a[href="#tabs-5"]').hide('slow');
-	 }
+	 } 
+	 
+	 <c:if test="${!(isManageCompanyRoleContactAccount || isManageMCRoleContactAccount)}">	
+		 $('a[href="#tabs-3_1"]').hide();
+	 </c:if>
+	
 });
 function doAction(action,formID,sectionID){
 	//alert($("#maCustomizePassMessage").val());

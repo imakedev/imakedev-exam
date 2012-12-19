@@ -118,9 +118,16 @@ function goActionRole(_mode){
 		// alert(document.getElementById("rolename").value)
 	//	alert(role_name_G.val())
 	$("#roleName").val(role_name_G.val());
-	
+//	alert(_mode);
 	$("#mode").val(_mode);
-	 $.post("role/"+$("#_maId").val(),$("#roleForm").serialize(), function(data) {
+	$("#modeExt").val(_mode);
+	//$("#mode").val(_mode);
+	//document.getElementById("mode").value=_mode;
+	//alert($("#mode").val())
+	/* if(_mode!='load')
+	  return false; */
+	//  alert($("#_maId").val())
+	 $.post("role/"+$("#_maId").val(),$("#roleFormG").serialize(), function(data) {
 		 appendContentWithId(data,"tabs-3_1");
 		});
 }
@@ -144,10 +151,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
   </div>
   <fieldset style="font-family: sans-serif;">   
            <%-- <form:form  id="roleForm" name="roleForm" modelAttribute="roleForm" cssStyle="border:2px solid #DDD" method="post" action=""> --%>
-           <form:form  id="roleForm" name="roleForm" modelAttribute="roleForm"  method="post" action="">
+           <form:form  id="roleFormG" name="roleFormG" modelAttribute="roleForm"  method="post" action="">
                <form:hidden path="mode"/>
                <form:hidden path="roleName"/>
-	 
+	 		   <input type="hidden" name="modeExt" id="modeExt" />
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Role Setting</strong></td>
@@ -226,6 +233,6 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	</c:forEach>
         </tbody>
       </table>
+      <div align="center"><a class="btn btn-primary"  onclick="goActionRole('updateRoleMapping')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
       </form:form>
 </fieldset>
-<div align="center"><a class="btn btn-primary"  onclick="goActionRole('updateRoleMapping')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
