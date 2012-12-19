@@ -210,21 +210,32 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 	public int updateRoleMapping(Long rcId, String[] rtIds)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
+		 
+		try{
 		Session session=sessionAnnotationFactory.getCurrentSession();
+		//System.out.println("rcId=="+rcId);
 		//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
 		Query query=session.createQuery("delete RoleMapping roleMapping where roleMapping.id.rcId ="+rcId.intValue());
 		int result = query.executeUpdate();
+		//System.out.println(result);
 		if(rtIds!=null && rtIds.length>0)
 		for (String rtid : rtIds) {
+			//System.out.println("		rtid==>"+rtid);
 			RoleMapping mapping =new RoleMapping();
 			RoleMappingPK pk =new RoleMappingPK();
 			pk.setRcId(rcId);
 			pk.setRtId(Long.parseLong(rtid));
 			mapping.setId(pk);
 			session.save(mapping); 
+			
 		}
 		//int canUpdate = 0;
 		return result;
+		}catch(Exception e){
+			//System.out.println("error");
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	 
 
