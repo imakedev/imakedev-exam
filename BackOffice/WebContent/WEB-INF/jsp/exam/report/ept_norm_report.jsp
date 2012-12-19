@@ -1,42 +1,84 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 	    <!--Body content-->
+<html>
+<head>
+<title></title> 
+<script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script> 
+<script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script> 
+<%-- </sec:authorize> --%>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
+<link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
+<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" />
+<link  href="<c:url value='/resources/css/jquery.ui.selectmenu.css'/>" rel="stylesheet" type="text/css">
+
+<link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
+<link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" /> 
+<style>
+.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana,
+ Arial, sans-serif; font-size: 12px; }
+ </style> 
+<style type="text/css"> 
+.th_class{text-align: center;
+}
+a{cursor: pointer;}
+</style>
+<style type="text/css"> 
+th{ font-family:Tahoma; font-size:12px; font-weight:bold;
+ color: #fff;background:url(<c:url value='/resources/images/${missAccount.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${missAccount.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+}
+input[type="text"],[type="password"]{height:30px}
+img.ui-datepicker-trigger{cursor: pointer;}
+ .span8 {
+   padding: 2px;
+}
+.span2 {
+   padding: 2px;
+}  
+.stable-striped{
+   background-color: #F9F9F9;
+}
+table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
 	initCompanyList();
 });
-function exportPDF(){
-	var src = "/MISSProcessImage/export?maId="+document.getElementById("companyListElement").value;
-	//alert(src)
-	var div = document.createElement("div");
-    document.body.appendChild(div);
-    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";
-}
 function initCompanyList(){
+	 //alert('${maId}');
 	$.ajax({
 		  type: "get",
-		  url: "reportmanagement/eptNormReportListCompany",
+		  url: "/MISSExamBackOffice/reportExport/eptNormReportListCompany",
 		  cache: false
 		}).done(function( data ) {
 			if(data!=null){
 				var str="เลือก กลุ่ม : <select id=\"companyListElement\" onchange=\"findEPTNorm('1')\">";
+				var str_new="";
 				var haveSale=false;
 				if(data.companyList.length>0){
 					haveSale=true;
 					for(var i=0;i<data.companyList.length;i++){
+						//alert(data.companyList[i][0]);
 						str=str+"<option value=\""+data.companyList[i][0]+"\">"+data.companyList[i][1]+"</option>";
+						if(data.companyList[i][0]=='${maId}'){
+							//alert("equit")
+							str_new="&nbsp;&nbsp;<b>"+data.companyList[i][1]+"</b><br></br>";
+							break;
+						}
 					}
 				}
 				str=str+"</select>";
-				$("#_companyList").html(str);
+				$("#_companyList").html(str_new);
 				if(haveSale)
 					findEPTNorm("1");
 			}
 		});
 }
 function findEPTNorm(mode){
-	var val = document.getElementById("companyListElement").value;
-	var url= "reportmanagement/eptNormReportFind/"+val;
+	var val = '${maId}';//document.getElementById("companyListElement").value;
+	var url= "/MISSExamBackOffice/reportExport/eptNormReportFind/"+val;
 	//alert(url)
 	$.ajax({
 		  type: "get",
@@ -295,16 +337,17 @@ function findEPTNorm(mode){
 }
 
 </script>
+
 <style>
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
- color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
+ color: #fff;background:url(<c:url value='/resources/images/${missAccount.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${missAccount.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
 }
 </style>
 <div id="dialog-confirmDelete" title="Delete Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Candidate ?
 </div>
 <fieldset style="font-family: sans-serif;">
-  <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+  <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${missAccount.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${missAccount.missTheme.mtBgColor}">
            <strong style="font-family: sans-serif;font-size: 14px">1. EPT Norm Report: อันนี้จะเป็นรายงานที่รวบรวมข้อมูลของผู้ทำข้อสอบในชุด EPT ทั้งหมด โดยรูปแบบของ EPT จะแบ่งออกเป็น 16 ประเภท พี่ต้องการได้ข้อมูลดังนี้คะ</strong><br/>
 - เพิ่ม search criteria แยก company<br/>
 <div id="_companyList">เลือก Company : <select id="companyListElement" onchange="findEPTNorm('1')">
@@ -315,6 +358,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 <option value="">D</option>
  -->
 </select></div>
+
 <!--  
  <div>เลือก Company : <select>
 <option value="">Company A</option>
@@ -351,22 +395,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody> 
-        	<!-- 
-          	<tr>
-            	<td>&nbsp;ABCD</td>
-            	<td>&nbsp;16(90%)</td>
-            	<td>&nbsp;ชาย(90%)</td>
-            	<td>&nbsp;พนักงาน(90%)</td>
-            	<td>&nbsp;ราชการ(90%)</td>
-         	</tr>
-         		<tr>
-            	<td>&nbsp;EFGH</td>
-            	<td>&nbsp;19(90%)</td>
-            	<td>&nbsp;หญิง(90%)</td>
-            	<td>&nbsp;พนักงาน(90%)</td>
-            	<td>&nbsp;ราชการ(90%)</td>
-         	</tr> 
-         	-->
+         
         	</tbody>
       </table>
 </span>
@@ -394,26 +423,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		</tr>
         	</thead>
         	<tbody> 
-        	<!-- 
-          	<tr>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-         	</tr> 
-         	-->
+        	 
         	</tbody>
       </table>
 </span>
@@ -433,41 +443,7 @@ d. แต่ละกลุ่มของ 16 ประเภท มีสาย
           		</tr>
         	</thead>
         	<tbody> 
-        	<!-- 
-          	<tr> 
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td> 
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td> 
-             
-         	</tr>
-         	 <tr> 
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td> 
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td> 
-            	 
-         	</tr>
-         	<tr> 
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td> 
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td> 
-            	 
-         	</tr> 
-         	-->
+        	 
         	</tbody>
       </table>
 
@@ -485,41 +461,7 @@ d. แต่ละกลุ่มของ 16 ประเภท มีสาย
           		</tr>
         	</thead>
         	<tbody> 
-        	<!-- 
-          	<tr> 
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td> 
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td>
-            	<td>&nbsp;อาชีพ 1</td> 
-             
-         	</tr>
-         	 <tr> 
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td> 
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td>
-            	<td>&nbsp;อาชีพ 2</td> 
-            	 
-         	</tr>
-         	<tr> 
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td> 
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3</td>
-            	<td>&nbsp;อาชีพ 3&nbsp;อาชีพ 3&nbsp;อาชีพ 3&nbsp;อาชีพ 3</td> 
-            	 
-         	</tr> 
-         	-->
+        
         	</tbody>
       </table>
 </span>
@@ -548,46 +490,7 @@ e. แต่ละกลุ่มของ 16 ประเภท เพศหญ
           		</tr>
         	</thead>
         	<tbody> 
-        	<!-- 
-          	<tr>
-          	    <td>&nbsp;ชาย</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-         	</tr>
-         	 <tr>
-          	    <td>&nbsp;หญิง</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-         	</tr> 
-         	-->
+         
         	</tbody>
       </table>
 </span>
@@ -606,42 +509,7 @@ f. แต่ละกลุ่มของ 16 ประเภท มี อุ�
             		<th width="12%"><div class="th_class">IJKL</div></th> 
           		</tr>
         	</thead>
-        	<tbody>
-        	<!-- 
-          	<tr> 
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td> 
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td> 
-             
-         	</tr>
-         	 <tr> 
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td> 
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td> 
-            	 
-         	</tr>
-         	<tr> 
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td> 
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td> 
-            	 
-         	</tr>
-         	-->
+        	<tbody> 
         	</tbody>
       </table>
       <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
@@ -657,42 +525,7 @@ f. แต่ละกลุ่มของ 16 ประเภท มี อุ�
             		<th width="12%"><div class="th_class">IJKL</div></th>    
           		</tr>
         	</thead>
-        	<tbody>
-        	<!-- 
-          	<tr> 
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td> 
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td>
-            	<td>&nbsp;อุตสาหกรรม 1</td> 
-             
-         	</tr>
-         	 <tr> 
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td> 
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td>
-            	<td>&nbsp;อุตสาหกรรม 2</td> 
-            	 
-         	</tr>
-         	<tr> 
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td> 
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3</td>
-            	<td>&nbsp;อุตสาหกรรม 3&nbsp;อุตสาหกรรม 3&nbsp;อุตสาหกรรม 3&nbsp;อุตสาหกรรม 3</td> 
-            	 
-         	</tr>
-         	-->
+        	<tbody> 
         	</tbody>
       </table>
 </span>
@@ -720,52 +553,10 @@ f. แต่ละกลุ่มของ 16 ประเภท มี อุ�
             		<th width="6%"><div class="th_class">IJKL</div></th>    
           		</tr>
         	</thead>
-        	<tbody>
-        	<!-- 
-          	<tr>
-          	    <td>&nbsp;15-35</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-         	</tr>
-         	 <tr>
-          	    <td>&nbsp;36-60</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td>
-            	<td>&nbsp;2%</td> 
-         	</tr>
-         	-->
+        	<tbody> 
         	</tbody>
       </table>
 </span>
-<div align="center"><a  class="btn btn-primary" onclick="exportPDF()">&nbsp;Export PDF</a>
-</div>
 </form>
       </fieldset> 
   
