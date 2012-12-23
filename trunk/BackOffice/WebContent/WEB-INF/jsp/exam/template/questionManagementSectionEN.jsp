@@ -40,6 +40,7 @@ $(document).ready(function() {
 		}		
 	});
 	 if($("#message_element_en").attr("style").indexOf("block")!=-1){
+		 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
 		 setTimeout(function(){$("#message_element_en").slideUp(300)},5000);
 	 }
 });

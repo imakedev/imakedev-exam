@@ -46,7 +46,7 @@ function setSample(tableID) {
 }
 
 function doSendMailAction(){
-	 
+	$("#mailMessage").val(CKEDITOR.instances["mailMessage"].getData());
  	$.post("survey/sendmail",$("#surveyForm").serialize(), function(data) {
 		  // alert(data);
 		   appendContentWithId(data,"tabs-4");
@@ -66,19 +66,46 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 <form:form  id="surveyForm" name="surveyForm" modelAttribute="surveyForm"   method="post" action="">
 		<div>
 			    <table border="0" width="100%" style="font-size: 12px">
+			     <%--
    		 			<tr>
     					<td width="20%">&nbsp;</td>
     					<td width="60%">จำนวนสุ่ม <input type="text" style="width: 35px" name="_sample" id="_sample"/>
     					&nbsp;<a class="btn btn-primary"  onclick="setSample('dataTable')"><span style="color: white;font-weight: bold;">Set</span></a></td>
     					<td width="20%">&nbsp;</td> 
+    				</tr> 
+    			 --%>
+    				<tr>
+    					<td width="20%" align="right">Subject :&nbsp;</td>
+    					<td width="60%"><input type="text" style="width: 250px" name="subject" id="subject"/>
+    					</td>
+    					<td width="20%">&nbsp;</td> 
     				</tr>
-    				
+    				<tr>
+    					<td width="20%" align="right" valign="top">Message :&nbsp;</td>
+    					<td width="60%"><textarea name="mailMessage"  id="mailMessage" rows="4" cols="4"></textarea>
+    					<script>
+    					if (CKEDITOR.instances['mailMessage']) {
+    			            CKEDITOR.remove(CKEDITOR.instances['mailMessage']);
+    			         }
+    					CKEDITOR.replace( 'mailMessage',
+    						    {
+    						        toolbar : 'Basic',
+    						      //  uiColor : '#9AB8F3'
+    						    });
+    					</script>
+    					</td>
+    					<td width="20%">&nbsp;</td> 
+    				</tr>
     			</table>
     			 
     			</div>
     			 
     			 <div> 
-    			Series :
+    			 จำนวนสุ่ม : <input type="text" style="width: 35px" name="_sample" id="_sample"/>
+    					&nbsp;<a class="btn btn-primary"  onclick="setSample('dataTable')"><span style="color: white;font-weight: bold;">Set</span></a>    			
+    			 </div>
+    			 <div>
+    			 Series :
     					<form:select path="msId" >
     						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
 	    					     
