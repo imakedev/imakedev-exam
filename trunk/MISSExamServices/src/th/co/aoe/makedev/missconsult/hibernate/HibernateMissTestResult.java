@@ -404,11 +404,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				iscriteria = true;
 			}
 			if (pagging.getSortBy() != null && pagging.getSortBy().length() > 0) {
-				sb.append(" order by missTestResult." + pagging.getOrderBy()
+				sb.append(" order by " + pagging.getOrderBy()
 						+ " " + pagging.getSortBy().toLowerCase());
 			}
-			logger.debug("sb ========================== >" + sb.toString());
-			
+			//logger.debug("sb ========================== >" + sb.toString());
+			//System.out.println("query="+sb.toString());
 			// get header
 			Query 	query = session
 					.createQuery("select issEvaluationConfig from MissEvaluationConfig issEvaluationConfig "
@@ -1107,19 +1107,19 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		Sheet sheet0_Data=null;
 		Row row_code_Data=null;
 		if(msId.intValue()==12){ // EPT
-			System.out.println(" into EPT");
+			//System.out.println(" into EPT");
 			sheet0_Data = wb.getSheetAt(2); // Evaluation of behavioral
 			 row_code_Data = sheet0_Data.getRow(1);
-			 System.out.println(" row_code_Data==>"+row_code_Data);
+			 //System.out.println(" row_code_Data==>"+row_code_Data);
 			if (row_code_Data != null) {
 				Cell cell_code_Data = row_code_Data.getCell(0);
 				//Cell cell_code_Data2 = row_code_Data.getCell(0);
-				System.out.println(" cell_code_Data==>"+cell_code_Data);
+				//System.out.println(" cell_code_Data==>"+cell_code_Data);
 				//System.out.println(" cell_code_Data2==>"+cell_code_Data2);
 				if (cell_code_Data != null) { 
 					String columnReference = cell_code_Data
 							.getStringCellValue();
-					System.out.println(" columnReference==>"+columnReference);
+					//System.out.println(" columnReference==>"+columnReference);
 					if (columnReference != null && columnReference.length() > 0) {
 						String[] sheets = columnReference.split("!");
 						String[] columns = sheets[1].split(":");
@@ -1398,7 +1398,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 								detectors.add(detector);
 							}
 						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector detector : detectors) {
-							System.out.println("metdName==>"+detector.getMetdName());
+							//System.out.println("metdName==>"+detector.getMetdName());
 							session.saveOrUpdate(detector);
 						}
 					}

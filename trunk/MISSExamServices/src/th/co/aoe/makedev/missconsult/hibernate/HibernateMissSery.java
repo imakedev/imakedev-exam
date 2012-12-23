@@ -192,13 +192,14 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(xx.MS_SERIES_NAME) like '%"+msSeriesName.trim().toLowerCase()+"%'"):(" where lcase(xx.MS_SERIES_NAME) like '%"+msSeriesName.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
-				}
-				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-						sb.append( " order by missSery."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-				}			
+				} 
 				//sb.append(" group by missSery.msSeriesName ");
 				sb.append(" group by xx.MS_SERIES_NAME ");
 				
+				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
+					sb.append( " order by xx."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
+			  }
+				//System.out.println(sb.toString());
 				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size= String.valueOf(getSize(session, instance,meIds)); 
