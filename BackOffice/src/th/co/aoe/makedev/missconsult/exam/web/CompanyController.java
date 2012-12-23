@@ -44,7 +44,7 @@ import com.google.gson.Gson;
 public class CompanyController
 {
 	private static int PAGE_SIZE=20;
-  /*  @Autowired
+  /*  @Autowired 
     public CompanyController(MissExamService missExamService)
     {
         logger.debug("########################### @Autowired CompanyController #######################");

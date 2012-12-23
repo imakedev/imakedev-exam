@@ -48,7 +48,7 @@ public class CandidateController
 {
 	private static int PAGE_SIZE=20;
 
-   /* @Autowired
+   /* @Autowired 
     public CandidateController(MissExamService missExamService)
     {
         logger.debug("########################### @Autowired CandidateController #######################");
