@@ -28,11 +28,18 @@ public class MissSurveySend implements Serializable {
 
 	@Column(name="MS_EMAIL")
 	private String msEmail;
+	
+	@Column(name="MS_NAME")
+	private String msName;
 
 	//bi-directional many-to-one association to MissSery
     @ManyToOne
 	@JoinColumn(name="MS_ID")
 	private MissSery missSery;
+    
+    @ManyToOne
+   	@JoinColumn(name="MCA_ID")
+   	private MissCandidate missCandidate;
 
     public MissSurveySend() {
     }
@@ -59,6 +66,22 @@ public class MissSurveySend implements Serializable {
 
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
+	}
+
+	public MissCandidate getMissCandidate() {
+		return missCandidate;
+	}
+
+	public void setMissCandidate(MissCandidate missCandidate) {
+		this.missCandidate = missCandidate;
+	}
+
+	public String getMsName() {
+		return msName;
+	}
+
+	public void setMsName(String msName) {
+		this.msName = msName;
 	}
 	
 }

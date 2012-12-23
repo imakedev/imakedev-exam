@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -683,7 +681,8 @@ int result = query.executeUpdate();*/
 					th.co.aoe.makedev.missconsult.xstream.MissQuestion xmissQuestion=new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
 					BeanUtils.copyProperties(missQuestion, xmissQuestion, idIgnore_question);
 					xmissQuestion.setPagging(null);
-					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId order by missChoice.id.mcNo ");
+					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId " +
+							" and missChoice.id.mcLang='1' order by missChoice.id.mcNo ");
 					query.setParameter("mqId", missQuestion.getMqId());
 					List<MissChoice> choices = query.list();
 					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoices =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choices.size());
@@ -694,8 +693,25 @@ int result = query.executeUpdate();*/
 						xmissChoice.setMcNo(missChoice.getId().getMcNo());
 						xmissChoice.setPagging(null);
 						xmissChoices.add(xmissChoice);
-					}
-					xmissQuestion.setMissChoices(xmissChoices);
+					} 
+					
+					xmissQuestion.setMissChoices(xmissChoices); 
+					
+					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId " +
+							"and missChoice.id.mcLang='2' order by missChoice.id.mcNo ");
+					query.setParameter("mqId", missQuestion.getMqId());
+					List<MissChoice> choicesEng = query.list();
+					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoicesEng =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choicesEng.size());
+					for (MissChoice missChoice : choicesEng) {
+						th.co.aoe.makedev.missconsult.xstream.MissChoice xmissChoice=new th.co.aoe.makedev.missconsult.xstream.MissChoice();
+						BeanUtils.copyProperties(missChoice, xmissChoice, idIgnore_choice);
+						xmissChoice.setMqId(missChoice.getId().getMqId());
+						xmissChoice.setMcNo(missChoice.getId().getMcNo());
+						xmissChoice.setPagging(null);
+						xmissChoicesEng.add(xmissChoice);
+					} 
+					xmissQuestion.setMissChoicesEng(xmissChoicesEng);
+					
 					xmissQuestions.add(xmissQuestion);
 				}
 				xmissExam.setMissQuestions(xmissQuestions);
