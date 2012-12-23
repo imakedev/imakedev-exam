@@ -100,8 +100,17 @@ public class MissSurveySendResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND)){
-							int updateRecord=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
-							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							 List<List<String>> candidateReturn=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
+							//int updateRecord=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
+							 xbpsTerm.setUserEmail(candidateReturn);
+							 VResultMessage vresultMessage = new VResultMessage();
+							 List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>(1);
+								 
+							    xbpsTerm.setPagging(null);
+								xntcCalendars.add(xbpsTerm);
+								vresultMessage.setResultListObj(xntcCalendars);
+								return getRepresentation(entity, vresultMessage, xstream);
+							//return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND_SEARCH)){

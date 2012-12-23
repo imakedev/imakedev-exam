@@ -21,8 +21,13 @@ public class MissSurveySend extends VServiceXML implements Serializable {
 
 	private String msEmail;
 	
+	private String msName;
+	
 	@XStreamAlias("missSery")
 	private MissSery missSery;
+	
+	@XStreamAlias("missCandidate")
+	private MissCandidate missCandidate;
 	
 	// for send 
 	private Long maId;
@@ -72,5 +77,24 @@ public class MissSurveySend extends VServiceXML implements Serializable {
 	public void setMissSery(MissSery missSery) {
 		this.missSery = missSery;
 	}
+
+	public MissCandidate getMissCandidate() {
+		return missCandidate;
+	}
+
+	public void setMissCandidate(MissCandidate missCandidate) {
+		this.missCandidate = missCandidate;
+	}
+
+	public String getMsName() {
+		return msName;
+	}
+
+	public void setMsName(String msName) {
+		this.msName = msName;
+	}
+	 
+	
+	
 	
 }
