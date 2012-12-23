@@ -83,6 +83,7 @@ public class SurveyController
     	System.out.println(surveyForm.getAmountSend());*/
     	int resultReturn=0;
     	if(surveyForm.getSurvey_email().length>=surveyForm.getAmountSend()){
+    		//List recipientsTo=new ArrayList();
     		 Random randomGenerator = new Random();
     		 Map map=new HashMap<String,String >();
     		 while (map.size()<surveyForm.getAmountSend()) {
@@ -97,7 +98,9 @@ public class SurveyController
     			 List<String> email = new ArrayList<String>(2);
     			 email.add(surveyForm.getSurvey_name()[keyInt]);
     			 email.add(surveyForm.getSurvey_email()[keyInt]);
-    			 userEmail.add(email);				
+    			 userEmail.add(email);		
+    			 /* recipientsTo.add(surveyForm.getSurvey_email()[keyInt]);
+    			  recipientsTo.add(surveyForm.getSurvey_name()[keyInt]);*/
 			}
     		 MissSurveySend missSurveySend =new MissSurveySend();
     		
@@ -106,26 +109,56 @@ public class SurveyController
     		 missSery.setMsId(surveyForm.getMsId());
     		 missSurveySend.setMissSery(missSery);
     		 missSurveySend.setUserEmail(userEmail);
-    		 resultReturn= missExamService.sendSurvey(missSurveySend);
+    		 //resultReturn=
+    		 List<List<String>> candidateReturn= missExamService.sendSurvey(missSurveySend);
+    		 if(candidateReturn!=null && candidateReturn.size()>0)
+    			 resultReturn=1;
     		 //System.out.println(" resultReturn="+resultReturn);
     		 int size=map.size();
+    		 List recipientsCC=null;
+    		 List recipientsBCC=null;
+    		 byte[] fileSize=null;
+    		 String subject=surveyForm.getSubject();//"Aoe";
+    		 String mailMessage=surveyForm.getMailMessage();//"Mail Message";
+    		 
     		 for(int i=0;i<size;i++){
     			 List<String> list=userEmail.get(i);
-    			 System.out.println("["+i+"] name="+list.get(0)+",email="+list.get(1));
-    			/* MailRunnable mailRunnableToTeam = new MailRunnable(
-     					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
-     							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
-     					recipientsTo, subject,
-     					resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
-     			Thread mailThreadToTeam = new Thread(
-     					mailRunnableToTeam);
-     			mailThreadToTeam.start();
-     			*/
+    			 System.out.println("["+i+"]  xx name="+list.get(0)+",email="+list.get(1)); 
+    		 }
+    		 List recipients=null;
+    		 String message=null;
+    		 System.out.println("userEmail size="+userEmail.size()); 
+    		 if(candidateReturn!=null && candidateReturn.size()>0){
+    			 for (int i = 0; i < candidateReturn.size(); i++) {
+    				 List<String> list=candidateReturn.get(i);
+    				 System.out.println("candidateReturn size="+candidateReturn.size());
+    				 recipients=new ArrayList(1);    				 
+    				 recipients.add(list.get(3));
+    				 System.out.println(mailMessage);
+    				 message=mailMessage.replaceAll("\\$\\{name\\}", list.get(2));
+    				 message=message.replaceAll("\\$\\{username\\}", list.get(0));
+    				 message=message.replaceAll("\\$\\{password\\}", list.get(1));
+    				 // ${name} , ${candidate} , ${password}
+    				 System.out.println(" xx 0"+list.get(0)); //username of candidate
+    				 System.out.println(" xx 1"+list.get(1)); //password of candidate
+    				 System.out.println(" xx 2"+list.get(2));  // name
+    				 System.out.println(" xx 3"+list.get(3));  // email
+    				 
+    				 MailRunnable mailRunnableToTeam = new MailRunnable(
+    		  					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+    		  							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+    		  							recipients, subject,
+    		  							message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
+    		    			 Thread mailThreadToTeam = new Thread(
+    		  					mailRunnableToTeam);
+    		    			 mailThreadToTeam.start();
+				}
+    			
     		 }
     		/**/ 
     	}
     	model.addAttribute("display", "display: block");
-    	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success !!!"));
+    	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success [ Unit not enough ] !!!"));
     	 model.addAttribute("missSeries", missExamService.listMissSery());
     	 model.addAttribute("surveyForm", surveyForm);
     	 model.addAttribute("message_class", ((resultReturn==1)?"success":"error"));

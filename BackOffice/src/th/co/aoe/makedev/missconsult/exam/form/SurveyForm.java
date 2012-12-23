@@ -14,6 +14,8 @@ public class SurveyForm implements Serializable {
 	public String[] survey_name;
 	public String[] survey_email;
 	public int amountSend;
+	public String subject;
+	public String mailMessage;
 	public SurveyForm() {
 	}
 
@@ -55,6 +57,22 @@ public class SurveyForm implements Serializable {
 
 	public void setSurvey_email(String[] survey_email) {
 		this.survey_email = survey_email;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getMailMessage() {
+		return mailMessage;
+	}
+
+	public void setMailMessage(String mailMessage) {
+		this.mailMessage = mailMessage;
 	}
 	
 }
