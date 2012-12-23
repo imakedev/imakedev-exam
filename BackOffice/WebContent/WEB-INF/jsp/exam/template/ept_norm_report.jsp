@@ -304,7 +304,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	Are you sure you want to delete Candidate ?
 </div>
 <fieldset style="font-family: sans-serif;">
-  <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+  <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
            <strong style="font-family: sans-serif;font-size: 14px">1. EPT Norm Report: อันนี้จะเป็นรายงานที่รวบรวมข้อมูลของผู้ทำข้อสอบในชุด EPT ทั้งหมด โดยรูปแบบของ EPT จะแบ่งออกเป็น 16 ประเภท พี่ต้องการได้ข้อมูลดังนี้คะ</strong><br/>
 - เพิ่ม search criteria แยก company<br/>
 <div id="_companyList">เลือก Company : <select id="companyListElement" onchange="findEPTNorm('1')">

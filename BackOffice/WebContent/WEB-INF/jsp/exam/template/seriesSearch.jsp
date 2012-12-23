@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<script>
+<script> 
 $(document).ready(function() {
 	renderPageSelect();
 	var idArray=$("#meIdArray").val();
@@ -24,6 +24,8 @@ $(document).ready(function() {
 	 	    	doAction('search','0');
 	 	   }
 	 });
+	 $("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val()); 
 	/*  $("input[id=msSeriesName],[id=msUnitCost]").each(function(){
 	        $(this).keypress(function(event) {
 	  	 	  if ( event.which == 13 ) {
@@ -132,6 +134,9 @@ function doAction(mode,id){
 	}else {
 		$("#msId").val("0");
 	}
+	 $("#orderBy").val($("#sortItemSelect").val());
+	$("#sortBy").val($("#sortOrderSelect").val()); 
+		
 	$.post("series/search",$("#seriesForm").serialize(), function(data) {
 		  // alert(data);
 		    appendContent(data);
@@ -162,7 +167,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
       <!--   <form class="well" style="border:2px solid #DDD"> -->
-          <form:form  id="seriesForm" name="seriesForm" modelAttribute="seriesForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
+          <form:form  id="seriesForm" name="seriesForm" modelAttribute="seriesForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
            
             <form:hidden path="mode"/>
             <form:hidden path="missSery.msId" id="msId"/>
@@ -170,7 +175,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/> 
-            
+              <form:hidden path="paging.orderBy" id="orderBy"/> 
+            <form:hidden path="paging.sortBy" id="sortBy"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Series Search</strong></td>
@@ -210,6 +216,26 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</table> 
 	    					</form:form>
 	    				<!-- </form> -->
+	    				<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="right" width="100%">
+	    					<span id="sortElement"> 
+	    					Sort By:&nbsp; 
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    						<option value="MS_SERIES_NAME">Name</option>
+	    						<option value="MS_UNIT_COST">Unit</option>
+	    						<!-- <option value="maRegisterDate">Test</option> -->
+	    					 
+	    					  </select> 
+	    					&nbsp;
+	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
+	    						<option value="asc">asc</option>
+	    						<option value="desc">desc</option>
+	    					</select>
+	    					</span>
+	    					</td>
+	    					</tr>
+	    					</table>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="50%">

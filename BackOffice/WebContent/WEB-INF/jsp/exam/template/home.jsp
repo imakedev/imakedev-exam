@@ -111,9 +111,9 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
 </div>
   <fieldset style="font-family: sans-serif;"> 
 	   <!--  <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
-	  <!--  <form   class="well" style="border:2px solid #DDD;background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)" > -->
-	   <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
-	   <%-- <form  class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">  --%>
+	  <!--  <form   class="well" style="border:2px solid #DDD;background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right bottom rgb(231, 231, 231)" > -->
+	   <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+	   <%-- <form  class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">  --%>
 	   <!--   <fieldset style="font-family: sans-serif;">  -->  
 	      <h3  style="font:Arial,Helvetica,sans-serif"><strong>
 	      <c:if test="${UserMissContact.isMC=='1'}">

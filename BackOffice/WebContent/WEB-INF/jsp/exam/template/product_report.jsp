@@ -35,8 +35,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	Are you sure you want to delete Candidate ?
 </div>
 <fieldset style="font-family: sans-serif;">
-  <%-- <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>
-   <form:form  id="reportManagementForm" name="reportManagementForm" modelAttribute="reportManagementForm"  cssClass="well" method="post" action="" cssStyle="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+  <%-- <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}"> --%>
+   <form:form  id="reportManagementForm" name="reportManagementForm" modelAttribute="reportManagementForm"  cssClass="well" method="post" action="" cssStyle="border:2px solid #DDD;background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
           <strong style="font-family: sans-serif;font-size: 14px">4. Product Report: รายงานสรุปภาพรวมของแบบประเมิน ที่ถูกใช้และซื้อ เข้าใช้งาน</strong><br/><br/>
 <b>a. แสดงรายการใช้ของแต่ละ แบบประเมินจากมากไปน้อย</b><br/>
 <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">

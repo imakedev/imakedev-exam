@@ -142,11 +142,11 @@ function _getTheme(obj){
 		 	$("body").css("background-image", "url("+_path+"resources/images/"+_data.mtLogo+")");
 			$("#s2").attr("src", _path+"resources/images/"+_data.mtSamePlePicture);
 			 
-			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-5").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-5").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
 			 
 			 
 	});
@@ -201,7 +201,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			</form:form>
 			<div align="center"><a class="btn btn-primary"  onclick="doAction('action','companyForm_account','4')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			    </div> --%>
-			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_profile" name="companyForm_profile" modelAttribute="companyForm"  method="post" action="">
 			   <form:hidden path="mode"/>
@@ -360,10 +360,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<!-- <div align="center"><input type="button" class="btn" value="Save"/></div> -->
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','companyForm_profile','5')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
-			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
     		
     			</div>
-    			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+    			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
     		 <%--   <fieldset style="font-family: sans-serif;">   
            <form:form  id="companyForm_role" name="companyForm_role" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
             <form:hidden path="mode"/>
@@ -414,10 +414,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  --%>
     			</div>
     			
-			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 		
 			</div>
-			<div id="tabs-5" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-5" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="companyForm_customize" name="companyForm_customize" modelAttribute="companyForm" 
 			  method="post" action="">

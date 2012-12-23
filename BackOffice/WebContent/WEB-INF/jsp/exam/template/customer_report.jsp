@@ -150,8 +150,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 <div id="dialog-confirmDelete" title="Delete Candidate" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Candidate ?
 </div>
-<fieldset style="font-family: sans-serif;">
-  <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+<fieldset style="font-family: sans-serif;"> 
+  <form   class="well" style="border:2px solid #DDD;background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
             <strong style="font-family: sans-serif;font-size: 14px">2. Customer Report: รายงานสรุปภาพรวมของลูกค้าที่ใช้บริการ</strong><br/><br/>
 a. แบ่งกลุ่มลูกค้า ออกเป็น    4 ประเภท<br/>
 i. กลุ่ม A คือ มีการเข้าใช้ การสั่งซื้อ อย่างสม่ำเสมอ<br/>

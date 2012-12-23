@@ -119,8 +119,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	Are you sure you want to delete Candidate ?
 </div>
 <fieldset style="font-family: sans-serif;">
-  <%-- <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>
-   <form:form  id="reportManagementForm" name="reportManagementForm" modelAttribute="reportManagementForm"  cssClass="well" method="post" action="" cssStyle="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+  <%-- <form   class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}"> --%>
+   <form:form  id="reportManagementForm" name="reportManagementForm" modelAttribute="reportManagementForm"  cssClass="well" method="post" action="" cssStyle="border:2px solid #DDD;background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
            <strong style="font-family: sans-serif;font-size: 14px">3. Service Report: รายงานสรุปภาพรวมของระบบการเข้าใช้งาน</strong><br/><br/>
 a. เปอร์เซนต์ของลูกค้าที่เข้ามาแต่ใช้งานระบบในแต่ละอาทิตย์ เวลาไหน หรือ วันใดที่มีการเข้าใช้งานมากสุด น้อยสุด เลือกเดือน : 
 <form:select path="serviceReport.month" id="serviceReport_month" cssStyle="width: 60px" onchange="callByYear('0')">

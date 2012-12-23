@@ -43,7 +43,7 @@ $(document).ready(function() {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
 		if(keycode == '13'){
 			//alert('You pressed a "enter" key in somewhere');	
-			doSearch('search','0');
+			doSearch('search','0'); 
 		} 
 	}); */
 	 $("input[id=mcaUsername],[id=mcaPassword],[id=mcaCompanyName]").keypress(function(event) {
@@ -53,6 +53,8 @@ $(document).ready(function() {
 	 	    	doAction('search','0');
 	 	   }
 	 });
+	 $("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val());
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -198,11 +200,15 @@ function doAction(mode,id){
 	}else {
 		$("#mcaId").val("0");
 	}
+	$("#orderBy").val($("#sortItemSelect").val());
+	$("#sortBy").val($("#sortOrderSelect").val()); 
 	$.post("candidate/search",$("#candidateForm").serialize(), function(data) {
 		  // alert(data);
 		    appendContent(data);
 		  // alert($("#_content").html());
 		});
+	
+		
 }
 </script>
 <style>
@@ -218,13 +224,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	Please select  Candidate
 </div>
 <fieldset style="font-family: sans-serif;">
-	     <%-- <fieldset style="font-family: sans-serif;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>    
+	     <%-- <fieldset style="font-family: sans-serif;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}"> --%>    
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
-           <%--  <pre  class="prettyprint"  style="font-family: sans-serif;font-size:12px;margin-top: 0px;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"> --%>
+           <%--  <pre  class="prettyprint"  style="font-family: sans-serif;font-size:12px;margin-top: 0px;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}"> --%>
              
             <form:form  id="candidateForm" name="candidateForm" modelAttribute="candidateForm" 
-           cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}"
+           cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url(/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}"
               method="post" action="">
                
              <form:hidden path="mode"/>
@@ -233,6 +239,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/> 
+            <form:hidden path="paging.orderBy" id="orderBy"/> 
+            <form:hidden path="paging.sortBy" id="sortBy"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="17%" colspan="6"><strong>Candidate Search</strong></td>
@@ -312,6 +320,26 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</table> 
 	    					</form:form>
 	    				<!-- 	</fieldset> -->
+	    				<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="right" width="100%">
+	    					<span id="sortElement"> 
+	    					Sort By:&nbsp; 
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    						<option value="mcaUsername">Username</option>
+	    						<option value="missAccount.maName">Company</option>
+	    						<option value="missSery.msSeriesName">Series</option>
+	    					 
+	    					  </select> 
+	    					&nbsp;
+	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
+	    						<option value="asc">asc</option>
+	    						<option value="desc">desc</option>
+	    					</select>
+	    					</span>
+	    					</td>
+	    					</tr>
+	    					</table>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="50%">
