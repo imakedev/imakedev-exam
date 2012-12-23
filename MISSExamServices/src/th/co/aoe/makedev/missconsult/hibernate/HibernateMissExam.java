@@ -135,6 +135,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missExam."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
+				//System.out.println("xxx="+sb.toString());
 				Query query =session.createQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session, instance)); 
