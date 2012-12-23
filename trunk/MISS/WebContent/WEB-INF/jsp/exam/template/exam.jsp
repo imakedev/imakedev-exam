@@ -75,14 +75,26 @@ function submitExam(){
           <input type="hidden"  id="answered" name="answered" value="${answered}">
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="100%" colspan="6"><strong>Question No. ${missExamForm.questionIndex+1}</strong></td>
+	    					 <td align="left" width="100%" colspan="6"><strong>Question No. ${missExamForm.questionIndex+1}</strong>
+	    					 
+	    					 </td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="100%" colspan="6">&nbsp;<br/><br/></td>
 	    					</tr>
 	    					<tr>
-	    					<%--  <td align="left" width="100%"><pre>&nbsp;${missQuestion.mqNameTh1}</pre></td>  --%>
-	    					 <td align="left" width="100%">&nbsp;${missQuestion.mqNameTh1}</td> 
+	    					<%--  <td align="left" width="100%"><pre>&nbsp;${missQuestion.mqNameTh1}</pre></td>  --%>	    					  
+	    					 <td align="left" width="100%">
+	    					  <!--  //1=thai,2=English -->
+	    					 <c:if test="${missExamForm.missCandidate.selectLang=='1'}">
+	    					 	&nbsp;${missQuestion.mqNameTh1}
+	    					 	 <c:set var="missChoices" value="${missQuestion.missChoices}"/>
+	    					 </c:if>
+	    					 <c:if test="${missExamForm.missCandidate.selectLang=='2'}">
+	    					 	&nbsp;${missQuestion.mqNameEng1}
+	    					 	<c:set var="missChoices" value="${missQuestion.missChoicesEng}"/>
+	    					 </c:if>
+	    					 </td> 
 	    					</tr> 
 	    					<tr>
 	    					 <td align="left" width="100%" colspan="6">&nbsp;<br/></td>
@@ -98,8 +110,8 @@ function submitExam(){
 	    					 	 </c:if>
 	    					 </c:forEach>
 	    					 </td> 
-	    					</tr> --%>
-	    					 <c:forEach items="${missQuestion.missChoices}" var="missChoice" varStatus="loop">
+	    					</tr> --%> 
+	    					 <c:forEach items="${missChoices}" var="missChoice" varStatus="loop">
 	    					<tr>
 	    					 <td align="left" width="100%">&nbsp;
 	    					 
