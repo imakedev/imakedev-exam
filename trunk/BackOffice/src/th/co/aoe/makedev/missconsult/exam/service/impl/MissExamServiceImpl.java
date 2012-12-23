@@ -1723,12 +1723,12 @@ public class MissExamServiceImpl extends PostCommon
 	}
 
 	@Override
-	public int sendSurvey(MissSurveySend missSurveySend) {
+	public  List<List<String>>  sendSurvey(MissSurveySend missSurveySend) {
 		// TODO Auto-generated method stub
 		missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND);
 	    VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
 	    missSurveySend = (MissSurveySend)resultMessage.getResultListObj().get(0);
-	    return missSurveySend.getUpdateRecord().intValue();
+	    return missSurveySend.getUserEmail();
 	}
 
 	@Override

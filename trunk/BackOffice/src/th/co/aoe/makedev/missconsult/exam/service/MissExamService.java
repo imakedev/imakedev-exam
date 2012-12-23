@@ -391,7 +391,7 @@ public interface MissExamService {
 	public abstract List searchMissAccountMapping(
 			MissAccountMapping persistentInstance);
 	
-	public abstract int sendSurvey(MissSurveySend misssurveysend);
+	public abstract  List<List<String>> sendSurvey(MissSurveySend misssurveysend);
 	
 	 public abstract VResultMessage exportMissCandidate(MissCandidate missCandidate);
 	    
