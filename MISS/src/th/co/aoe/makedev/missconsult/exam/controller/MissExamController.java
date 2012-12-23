@@ -161,7 +161,13 @@ public class MissExamController {
 			checkTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
 			checkTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
 			List<MissTest> checkTests=missExamService.findMissTest(checkTest);
-			List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+			List<MissChoice> missChoices=null;
+			if(missExamForm.getMissCandidate().getSelectLang().equals("1")){
+				missChoices=missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+			}else if(missExamForm.getMissCandidate().getSelectLang().equals("2")){
+				missChoices=missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoicesEng();
+			}
+			//List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
 			logger.debug(" checkTests is "+checkTests);
 			logger.debug(" missChoices is "+missChoices);
 			String answered="";
@@ -242,7 +248,13 @@ public class MissExamController {
 		checkTest.setMissSery(missExamForm.getMissCandidate().getMissSery());
 		checkTest.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
 		List<MissTest> checkTests=missExamService.findMissTest(checkTest);
-		List<MissChoice> missChoices= missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+		List<MissChoice> missChoices=null;
+		if(missExamForm.getMissCandidate().getSelectLang().equals("1")){
+			missChoices=missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoices();
+		}else if(missExamForm.getMissCandidate().getSelectLang().equals("2")){
+			missChoices=missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMissQuestions().get(missExamForm.getQuestionIndex()).getMissChoicesEng();
+		}
+		 
 		logger.debug(" checkTests is "+checkTests);
 		logger.debug(" missChoices is "+missChoices);
 		String answered="";
