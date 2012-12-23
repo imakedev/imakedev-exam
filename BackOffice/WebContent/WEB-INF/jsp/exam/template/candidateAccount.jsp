@@ -59,6 +59,7 @@ $(document).ready(function() {
 		}		
 	});   
 	 if($("#message_element").attr("style").indexOf("block")!=-1){
+		 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
 	 	setTimeout(function(){$("#message_element").slideUp(300)},5000);
 	 }
 });
