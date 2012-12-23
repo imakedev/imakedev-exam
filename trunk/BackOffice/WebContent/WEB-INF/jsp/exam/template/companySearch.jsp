@@ -262,7 +262,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
          <!--  <form class="well" style="border:2px solid #DDD"> -->
-           <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action=""> 
+           <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" action=""> 
           <%--  <form:form  id="companyForm" name="companyForm" modelAttribute="companyForm" cssClass="well" cssStyle="border:2px solid #DDD;" method="post" action=""> --%>
             <form:hidden path="mode"/>
             <form:hidden path="missAccount.maId" id="maId"/>
@@ -274,7 +274,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="pageCount" id="pageCount"/> 
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="100%" colspan="6"><strong>Company Search</strong></td>
+	    					 <td align="left" width="100%" colspan="6"> <strong>Company Search</strong></td>
 	    					</tr>
 	    					<%-- 
 	    					<tr>

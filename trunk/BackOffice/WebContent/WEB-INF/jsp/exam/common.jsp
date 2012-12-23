@@ -710,7 +710,7 @@ function openMailDialog(todo_id,todo_ref){
     <%--
      <form   class="well" style="border: 2px solid #DDD;background-color: ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
       --%>
-    <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
+    <form   name="formTodoList" class="well" style="border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" enctype="multipart/form-data">
        <!-- <form   class="well" style="background-color:white;border: 2px solid rgba(0, 0, 0, 0.05)" > -->
      <!--  <form   class="well" style=";border: 2px solid rgba(0, 0, 0, 0.05)" > -->
       <input type="hidden" id="ignore_id"/> 

@@ -22,6 +22,8 @@ $(document).ready(function() {
 		 	    	doAction('search','0');
 		 	   }
 		 }); 
+	$("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val()); 
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -63,6 +65,8 @@ function doAction(mode,id){
 	else {
 		$("#mtrId").val("0");
 	}
+   $("#orderBy").val($("#sortItemSelect").val());
+   $("#sortBy").val($("#sortOrderSelect").val()); 
 	$.post("result/search",$("#resultForm").serialize(), function(data) {
 		  // alert(data);
 		    appendContent(data);
@@ -151,7 +155,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
  color: #fff;background:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtTr}'/>) repeat-x scroll 0 0 ${UserMissContact.missTheme.mtTrColor};padding: 5px 8px;border:1px solid #fff; 
  
 } 
-/* tr:nth-child(odd) {background: #e0e0e0} */
+/* tr:nth-child(odd) {background: #e0e0e0} */ 
 </style>
 <div id="dialog-confirmIgnore" title="Ignore Result" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to ignore Result ?
@@ -163,7 +167,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
          <!--  <form class="well" style="border:2px solid #DDD"> -->
-             <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
+             <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
               
              <form:hidden path="mode"/>
             
@@ -171,7 +175,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/>
-          
+            <form:hidden path="paging.orderBy" id="orderBy"/> 
+            <form:hidden path="paging.sortBy" id="sortBy"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong><spring:message code="page_testsearch_title"/></strong></td>
@@ -235,6 +240,28 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					</table> 
 	    					</form:form>
+	    					<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="right" width="100%">
+	    					<span id="sortElement"> 
+	    					Sort By:&nbsp; 
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    						<option value="candidate.MCA_USERNAME">Username</option>
+	    						<option value="candidate.MCA_FIRST_NAME">First Name</option> 
+	    						<option value="candidate.MCA_LAST_NAME">Last Name</option> 
+	    						<option value="candidate.MCA_POSITION">Position</option> 
+	    						<option value="candidate.MCA_DEPARTMENT">Department</option>
+	    						<option value="result.MTR_START_TIME">Test Date</option>   
+	    					  </select> 
+	    					&nbsp;
+	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
+	    						<option value="asc">asc</option>
+	    						<option value="desc">desc</option>
+	    					</select>
+	    					</span>
+	    					</td>
+	    					</tr>
+	    					</table>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="60%">

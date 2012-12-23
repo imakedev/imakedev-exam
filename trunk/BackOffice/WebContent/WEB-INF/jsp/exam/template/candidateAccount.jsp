@@ -201,7 +201,7 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
 				<li><a href="#tabs-1">Account</a></li>
 				<li><a href="#tabs-2">Profile</a></li>
 			</ul>
-			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="candidateForm_account" name="candidateForm_account" modelAttribute="candidateForm"  method="post" action="">
 			 <form:hidden path="mode"></form:hidden>
@@ -270,7 +270,7 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
 			 --%>
 			<a class="btn btn-info"  onclick="doReactivate('action','candidateForm_account','2')"><i class="icon-refresh icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Reactivate</span></a>&nbsp;</div>
 			    </div>
-			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="candidateForm_profile" name="candidateForm_profile" modelAttribute="candidateForm"    method="post" action="">
 			 <!--  <fieldset style="font-family: sans-serif;">    -->

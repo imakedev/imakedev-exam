@@ -72,7 +72,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 				<!-- <li><a href="#tabs-2">Evaluations</a></li> -->
 				<li><a href="#tabs-3">Questions</a></li>
 			</ul>
-			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
 			<form:form  id="testForm_account" name="testForm_account" modelAttribute="testForm"   method="post" action="">
 			     <strong style="font-family: sans-serif;color: rgb(51,51,51)">Test Information</strong>
@@ -200,7 +200,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			
 			</div>
 			 --%>
-			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<%--
 			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm" cssClass="well"  method="post" action="">
 			<strong>Question List</strong>

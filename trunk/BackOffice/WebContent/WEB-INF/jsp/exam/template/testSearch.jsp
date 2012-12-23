@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<script>
+<script> 
 var megEmptyIdG;;
 var meNameG; 
 var questionCountEmptyG;
@@ -19,6 +19,8 @@ $(document).ready(function() {
 	meNameG= $( "#meName" );
 	questionCountEmptyG= $( "#questionCountEmpty" );
 	choiceCountEmptyG= $( "#choiceCountEmpty" );
+	$("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val()); 
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -177,6 +179,8 @@ function doAction(mode,id){
 	}else {
 		$("#meId").val("0");
 	}
+	 $("#orderBy").val($("#sortItemSelect").val());
+		$("#sortBy").val($("#sortOrderSelect").val()); 
 	$.post("test/search",$("#testForm").serialize(), function(data) {
 		  // alert(data);
 		    appendContent(data);
@@ -230,13 +234,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
            <!-- <legend  style="font-size: 13px">Criteria</legend> -->
            <!-- <div style="position:relative;right:-94%;">  </div> --> 
           <!-- <form class="well" style="border:2px solid #DDD"> -->
-           <form:form  id="testForm" name="testForm" modelAttribute="testForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
+           <form:form  id="testForm" name="testForm" modelAttribute="testForm" cssClass="well" cssStyle="border:2px solid ${UserMissContact.missTheme.mtBgColor};background: url('/MISSExamBackOffice/resources/images/${UserMissContact.missTheme.mtWaterWall}') no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}" method="post" action="">
             <form:hidden path="mode"/>
             <form:hidden path="missExam.meId" id="meId"/>
             <form:hidden path="meIdArray" id="meIdArray"/>
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/> 
+             <form:hidden path="paging.orderBy" id="orderBy"/> 
+            <form:hidden path="paging.sortBy" id="sortBy"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Test Search</strong></td>
@@ -257,6 +263,24 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					</table> 
 	    					</form:form>
+	    					<table  border="0" width="100%" style="font-size: 13px">
+	    					<tr>
+	    					<td align="right" width="100%">
+	    					<span id="sortElement"> 
+	    					Sort By:&nbsp; 
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    						<option value="meName">Test</option> 
+	    					 
+	    					  </select> 
+	    					&nbsp;
+	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
+	    						<option value="asc">asc</option>
+	    						<option value="desc">desc</option>
+	    					</select>
+	    					</span>
+	    					</td>
+	    					</tr>
+	    					</table>
 	    					<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="50%">

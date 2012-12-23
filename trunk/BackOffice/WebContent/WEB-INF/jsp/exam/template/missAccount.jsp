@@ -127,10 +127,10 @@ function _getTheme(obj){
 		 $("#_navi_element").css("background-color",_data.mtBgColor );
 			$("body").css("background-image", "url("+_path+"resources/images/"+_data.mtLogo+")");
 			$("#s2").attr("src", _path+"resources/images/"+_data.mtSamePlePicture);
-			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
-			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right top "+_data.mtBgColor);
+			$("#tabs-2").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-3").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-3_1").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
+			$("#tabs-4").attr("style","background: url("+_path+"resources/images/"+_data.mtWaterWall+") no-repeat scroll right bottom "+_data.mtBgColor);
 			
 			 
 	});
@@ -204,7 +204,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			</form:form>
 				<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_account','0')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			  </div> --%>
-			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-2" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 		 <form:form  id="missForm_profile" name="missForm_profile" modelAttribute="missForm" method="post"
 		  action="">
 		 
@@ -213,7 +213,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			  <fieldset style="font-family: sans-serif;">  
 			    <h6><strong>MissConsult - Profile</strong></h6>  
 			   <%-- 
-			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px;margin-top: 0px;border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px;margin-top: 0px;border:2px solid #DDD;background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 	    --%>
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
@@ -378,20 +378,20 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 			<div align="center"><a class="btn btn-primary" onclick="doAction('action','missForm_profile','1')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
 			</div>
 			<!-- <div id="tabs-3"> -->
-			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-3" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 				
 			<!-- <form class="well"> -->
     			
 			
 			</div>
-			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<div id="tabs-3_1" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			<!-- <form class="well"> -->
     			
 			
 			</div>
 			
-			<!-- <div id="tabs-4" style="background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right top rgb(231, 231, 231)"> -->
-			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right top ${UserMissContact.missTheme.mtBgColor}">
+			<!-- <div id="tabs-4" style="background: url('/MISSExamBackOffice/resources/images/bg-water-theme1.gif') no-repeat scroll right bottom rgb(231, 231, 231)"> -->
+			<div id="tabs-4" style="background: url(<c:url value='/resources/images/${UserMissContact.missTheme.mtWaterWall}'/>) no-repeat scroll right bottom ${UserMissContact.missTheme.mtBgColor}">
 			  
 				<!-- <form class="well"> -->
 				<%--  <form:form  id="missForm_customize" name="missForm_customize" modelAttribute="missForm" cssClass="well"  method="post" action=""> --%>
