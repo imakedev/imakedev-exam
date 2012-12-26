@@ -28,11 +28,30 @@ public class HibernateMissCareerMaster  extends HibernateCommon implements MissC
 	}
 	@Transactional(readOnly=true)
 	@Override
-	public List listMissCareerMaster() throws DataAccessException {
+	public List listMissCareerMaster(Long mcmRef) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missCareerMaster from MissCareerMaster missCareerMaster ");
-		return query.list();
+		Query query=null;
+		List list=null;
+		if(mcmRef!=null && mcmRef.intValue()!=0){
+			
+			 query=session.createQuery(" select master from MissCareerMapping mapping , MissCareerMaster master " +
+					" where mapping.id.mcmId = master.mcmId and mapping.id.maId="+mcmRef.intValue());
+			 list=query.list();
+			 if(list.size()==0){
+				 query=session.createQuery(" select missCareerMaster from MissCareerMaster missCareerMaster where " +
+							"( missCareerMaster.mcmRef is null or  missCareerMaster.mcmRef !=1 )");
+					list=query.list();
+			 }
+				// list=null;
+			 //System.out.println(list);
+		}else{ 
+			query=session.createQuery(" select missCareerMaster from MissCareerMaster missCareerMaster where " +
+					"( missCareerMaster.mcmRef is null or  missCareerMaster.mcmRef !=1 )");
+			list=query.list();
+		}
+		
+		return list;
 	}
 
 }

@@ -235,16 +235,16 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 	return consultantReport;
   } 
 	private void getCode(byte[] byteArray){
-		System.out.println("byte size="+byteArray.length);
+		//System.out.println("byte size="+byteArray.length);
 		ByteArrayInputStream bais = 
 		         new ByteArrayInputStream(byteArray);
 		HSSFWorkbook wb =null;
 		try {
 			wb= new HSSFWorkbook(bais);
 			Sheet sheet1_0 = wb.getSheetAt(0);
-			System.out.println("xxxxxxxxxxxx"+sheet1_0.getSheetName());
+			//System.out.println("xxxxxxxxxxxx"+sheet1_0.getSheetName());
 			Row r = sheet1_0.getRow(1);
-			System.out.println(r.getCell(1).getStringCellValue());			 
+			//System.out.println(r.getCell(1).getStringCellValue());			 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

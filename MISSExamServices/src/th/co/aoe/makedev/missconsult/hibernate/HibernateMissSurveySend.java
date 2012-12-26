@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend;
@@ -194,8 +193,8 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 		*/
 		 	int userEmailSize=userEmail.size();
 			int msUnitCostTotal=msUnitCost.intValue()*userEmailSize;
-			System.out.println(" available="+count);
-			System.out.println(" wanted="+msUnitCostTotal);
+			//System.out.println(" available="+count);
+			//System.out.println(" wanted="+msUnitCostTotal);
 			//if(masmAvailable.intValue()>=msUnitCostTotal){
 			if(count.intValue()>=msUnitCostTotal){
 				query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaStatus=2 " +
@@ -263,7 +262,7 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 				//returnRecord=-1;
 			} 
 		//System.out.println(persistentInstance.getMissSery().getMsId());
-		System.out.println(returnRecord);
+		//System.out.println(returnRecord);
 		// 1= success , 0 not success
 		return listUserEmailReturn;
 	}
