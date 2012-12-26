@@ -208,9 +208,10 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 	}
 
 	@Override
-	public List<MissCareerMaster> listMissCareerMaster() {
+	public List<MissCareerMaster> listMissCareerMaster(Long maId) {
 		// TODO Auto-generated method stub
 		MissCareerMaster missCareerMaster =new MissCareerMaster();
+		missCareerMaster.setMcmRef(maId);
 		missCareerMaster.setServiceName(ServiceConstant.CAREER_MASTER_LIST);
 		VResultMessage resultMessage = postMessage(missCareerMaster, missCareerMaster
 				.getClass().getName(), "missCareerMaster", true);
