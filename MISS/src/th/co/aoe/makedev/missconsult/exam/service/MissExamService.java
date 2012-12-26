@@ -47,7 +47,7 @@ public interface MissExamService {
 	 public abstract MissAttach findMissAttachById(String matModule,Long matRef,String hotlink);
 	 public abstract MissSeriesAttach findMissSeriesAttachSearch(String matModule,Long matRef1,Long matRef2,String hotlink);
 	 
-	 public abstract List<MissCareerMaster> listMissCareerMaster() ;
+	 public abstract List<MissCareerMaster> listMissCareerMaster(Long maId) ;
 	 public abstract List<MissIndustryMaster> listMissIndustryMaster() ;
 	 public abstract int saveMissSeryProblem(MissSeryProblem transientInstance);
 	 public abstract int updateTimeOut (MissTestResult missTestResult);
