@@ -125,7 +125,7 @@ public class WelcomeController
       //  String name = auth.getName();
       //  logger.debug((new StringBuilder(" name  ===>")).append(name).toString());
        // logger.debug((new StringBuilder(" auth.getAuthorities() ====>")).append(auth.getAuthorities()).toString());
-    	System.out.println("ignore_id="+ignore_id);
+    	//System.out.println("ignore_id="+ignore_id);
     	MissTodo missTodo =new MissTodo();
     	missTodo.setMtodoId(ignore_id);
     	missExamService.deleteMissTodo(missTodo);

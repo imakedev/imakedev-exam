@@ -234,7 +234,7 @@ public class ResultController
     {
         logger.debug((new StringBuilder("testtttttttttt")).append(missExamService).toString());
         model.addAttribute("aoe", "chatchai");
-        System.out.println("aoee");
+        //System.out.println("aoee");
         return "exam/template/viewTestResult";
     }
 
@@ -465,11 +465,11 @@ public class ResultController
 		 JasperPrint jasperPrint=null;
 		 Map p =new HashMap();
 		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
-		 System.out.println("missTestShows="+missTestShows);
+		// System.out.println("missTestShows="+missTestShows);
 		 if(missTestShows!=null && missTestShows.size()>0){
 			 for (MissTestShow missTestShow : missTestShows) {
 				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
-				System.out.println("(missTestShow.getMtsColumn()=="+missTestShow.getMtsColumn()+", missTestShow.getMtsValue()==>"+ missTestShow.getMtsValue());
+				//System.out.println("(missTestShow.getMtsColumn()=="+missTestShow.getMtsColumn()+", missTestShow.getMtsValue()==>"+ missTestShow.getMtsValue());
 			}
 		 }
 		/* p.put("SubDataSource", beanCollectionDataSource);
@@ -630,7 +630,7 @@ public class ResultController
     	
     	String mtrIds=request.getParameter("id");
     	String msId=request.getParameter("mcaSeries");
-    	System.out.println("request id ="+mtrIds);
+    	//System.out.println("request id ="+mtrIds);
     	MissTestResult missTestResult =new MissTestResult();
     	missTestResult.setMtrIds(mtrIds);
     	missTestResult.setMsId(Long.parseLong(msId));

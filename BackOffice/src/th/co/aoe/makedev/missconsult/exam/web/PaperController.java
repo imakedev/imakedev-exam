@@ -46,7 +46,7 @@ public class PaperController
 			 paperForm.setMissCandidate(missCandidate);*/
 			 //SecurityContextHolder.getContext().getAuthentication().ggetName().get;
 			 model.addAttribute("paperForm", paperForm);
-			 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
+			 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(null));
 			return "exam/candidateInfo";
 	}
 	@RequestMapping(value="/exam/template/{mcaId}/{msId}/{set}", method = RequestMethod.GET)

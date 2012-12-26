@@ -19,24 +19,17 @@ package th.co.aoe.makedev.missconsult.exam.service.impl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 
@@ -150,8 +143,8 @@ public class ReadWriteWorkbook_bk {
 	} 
     public static void main(String[] args) throws IOException {
     	//setAnswer();
-    	 List<MissQuestion> miss=setQuestion();
-    	 System.out.println(miss.size());
+    	/* List<MissQuestion> miss=setQuestion();
+    	 System.out.println(miss.size());*/
     	//getUserFormXLS("");
     	
     }
