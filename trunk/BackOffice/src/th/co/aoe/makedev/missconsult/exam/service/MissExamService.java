@@ -358,7 +358,7 @@ public interface MissExamService {
 
 	public abstract MissTheme findMissThemeById(Long maId, Long mtId);
 
-	public abstract List<MissCareerMaster> listMissCareerMaster();
+	public abstract List<MissCareerMaster> listMissCareerMaster(Long maId);
 
 	public abstract List<MissIndustryMaster> listMissIndustryMaster();
 

@@ -158,7 +158,7 @@ public class CandidateController
         model.addAttribute("display", "display: none");
         model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
-		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
         return "exam/template/candidateAccount";
     }
 
@@ -175,7 +175,7 @@ public class CandidateController
         model.addAttribute("display", "display: none");
         model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
-		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(null));
         return "exam/template/candidateAccount";
     }
 
@@ -231,7 +231,7 @@ public class CandidateController
         model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("candidateForm", candidateForm);
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
-		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster());
+		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
         return "exam/template/candidateAccount";
     }
     
@@ -245,7 +245,7 @@ public class CandidateController
     {
     	
     	String mcaIds=request.getParameter("id");
-    	System.out.println("request id ="+mcaIds);
+    	//System.out.println("request id ="+mcaIds);
     	MissCandidate missCandidate =new MissCandidate();
     	missCandidate.setMcaIds(mcaIds);
     	 VResultMessage vresultMessage = missExamService.exportMissCandidate(missCandidate); 

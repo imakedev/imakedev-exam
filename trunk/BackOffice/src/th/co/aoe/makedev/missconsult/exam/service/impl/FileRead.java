@@ -54,7 +54,7 @@ public class FileRead {
         while ((r = reader.read()) != -1) {
             char ch = (char) r;
             byte bValue = (byte)ch;
-            System.out.println("Byte is:=" + bValue);
+            //System.out.println("Byte is:=" + bValue);
             if(bValue==11){
             	//ch="้";
             	/*ch=11;

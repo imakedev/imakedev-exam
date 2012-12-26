@@ -71,7 +71,7 @@ public class RoleController {
 				}
 				String[] rtIdRadio = new String[rtIdsList.size()];
 				rtIdRadio = rtIdsList.toArray(rtIdRadio);
-				System.out.println("rtIdRadio size="+rtIdRadio.length); 
+				//System.out.println("rtIdRadio size="+rtIdRadio.length); 
 				//logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 				RoleMapping roleMapping =new RoleMapping();

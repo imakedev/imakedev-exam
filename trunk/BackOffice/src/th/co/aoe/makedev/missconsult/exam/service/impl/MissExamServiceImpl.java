@@ -960,7 +960,9 @@ public class MissExamServiceImpl extends PostCommon
     {
     	
 
-        MissExamServiceImpl main = new MissExamServiceImpl();
+     /*  MissExamServiceImpl main = new MissExamServiceImpl();
+       List<MissCareerMaster> missCareerMasters=  main.listMissCareerMaster(2l);
+       System.out.println(missCareerMasters);*/
   /* 	 List<MissQuestion> misses=ReadWriteWorkbook_bk.setQuestion();
         List<MissQuestion> missQuestions = main.listMissQuestions(36l);
         //main.searchMissChoice(missChoice)
@@ -972,7 +974,7 @@ public class MissExamServiceImpl extends PostCommon
         	missQuestion.setMqNameTh1(miss.getMqNameTh1());
         	 main.updateMissQuestion(missQuestion, "updateMissQuestion");
 		}*/
-        main.testMissQuestion();
+       // main.testMissQuestion();
 		/*
         MissQuestion missQuestion =missQuestions.get(0);
         missQuestion.setMqNameTh1(misses.get(0).getMqNameTh1());
@@ -1497,9 +1499,10 @@ public class MissExamServiceImpl extends PostCommon
 	}
 
 	@Override
-	public List<MissCareerMaster> listMissCareerMaster() {
+	public List<MissCareerMaster> listMissCareerMaster(Long maId) {
 		// TODO Auto-generated method stub
 		MissCareerMaster missCareerMaster =new MissCareerMaster();
+		missCareerMaster.setMcmRef(maId);
 		missCareerMaster.setServiceName(ServiceConstant.CAREER_MASTER_LIST);
 		VResultMessage resultMessage = postMessage(missCareerMaster, missCareerMaster
 				.getClass().getName(), "missCareerMaster", true);
