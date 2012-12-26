@@ -60,13 +60,14 @@ public class MissCareerMasterResource extends BaseResource {
 						String serviceName = xbpsTerm.getServiceName();
 						 if(serviceName.equals(ServiceConstant.CAREER_MASTER_LIST)){
 							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missCareerMasterService.listMissCareerMaster();
+							List result = (List) missCareerMasterService.listMissCareerMaster(xbpsTerm.getMcmRef());
+							VResultMessage vresultMessage = new VResultMessage();
 							if (result != null && result.size()>0) {
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster>) result;
 										
 								String faqs_size = result.size()+"";
 //								 
-								VResultMessage vresultMessage = new VResultMessage();
+								
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissCareerMaster> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCareerMaster>();
 								if (faqs_size != null && !faqs_size.equals(""))
@@ -74,9 +75,10 @@ public class MissCareerMasterResource extends BaseResource {
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissCareerMasterObject(ntcCalendars);
 								}
-								vresultMessage.setResultListObj(xntcCalendars);
+								vresultMessage.setResultListObj(xntcCalendars); 
+							} 
 								return getRepresentation(entity, vresultMessage, xstream);
-							}
+							
 						}
 						
 					} else {

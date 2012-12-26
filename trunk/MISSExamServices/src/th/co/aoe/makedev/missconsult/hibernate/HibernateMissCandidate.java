@@ -734,7 +734,7 @@ int result = query.executeUpdate();*/
 				inStr=inStr+((i==(mcaSize-1))?mcaIds[i]:(mcaIds[i]+","));
 			}
 			inStr=inStr+")";
-			System.out.println(inStr);
+			//System.out.println(inStr);
 			StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId in "+inStr+"" +
 					" order by missCandidate.mcaId asc ");
 			  

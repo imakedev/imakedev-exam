@@ -52,9 +52,9 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			p:password="${jdbc.password}"/>
-		--> 
-	<!-- 
-	        --> 
+		 -->
+	<!-- --> 
+	        
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
     
 	<!-- JNDI DataSource for JEE environments -->
@@ -151,8 +151,8 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptDominance</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptAttitudeDetectorReport</value> 
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector</value>
-			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc</value>  
-			 
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMapping</value>   
 			 <!-- Test -->
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.Xls</value>  
 			</list>
