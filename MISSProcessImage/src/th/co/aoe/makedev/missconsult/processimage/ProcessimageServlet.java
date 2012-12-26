@@ -85,7 +85,7 @@ public class ProcessimageServlet extends HttpServlet {
 			  }else{
 				    proc = rt.exec(cmd);
 			  }
-			  System.out.println("cmd\n"+cmd);
+			//  System.out.println("cmd\n"+cmd);
 			// String cmd="/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386 --javascript-delay 1000 --quality 75 --format jpg  http://203.150.20.37:8080/TestFusion/ExportChartSamples/JavaScriptExport/ServerSideSimple.html /tmp/aoe2.jpg";
 	        // ProcessBuilder pb = new ProcessBuilder(cmd);
 	        // Map<String, String> env = pb.environment();
