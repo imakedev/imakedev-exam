@@ -64,11 +64,13 @@ public class ProcessimageServlet extends HttpServlet {
 			  if(mdc_key!=null && mdc_key.length()>0){
 				  if(lang==null)
 					  lang="1";
-				 /* proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay","4000",  
-						  "--quality","75","--crop-w",width,"--crop-h",height,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); */  
-				  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","5000",  
+				//  xvfb-run --server-args="-screen 0, 1024x768x24" ./wkhtmltoimage-amd64 --use-xserver --javascript-delay 2000 --window-status Done --enable-plugins http://www.hulu.com hulu.jpg
+					  
+				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay","5000",  
+						  "--quality","100","--crop-w",width,"--crop-h",height,"--format","jpg","http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});   
+				/*  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","5000",  
 						  "--quality","75","--crop-w",width,"--crop-h",height,"--format","jpg","http://203.150.20.37/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});  
-				 // System.out.println("cmd chart\nhttp://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+" /tmp/"+fileGen+".jpg");
+				 // System.out.println("cmd chart\nhttp://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+" /tmp/"+fileGen+".jpg"); */
 			  }else	  if(page!=null && page.length()>0){
 				  // 1074
 				  String speed="1000";
@@ -77,10 +79,10 @@ public class ProcessimageServlet extends HttpServlet {
 				  if(report!=null && report.length()>0)
 					  servletname=report;
 				  
-				/* proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay",speed,
-						  "--quality","75","--crop-w",width,"--format","jpg","--use-xserver","http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); */ 
-				 proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,  
-						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});  
+				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay",speed,
+						  "--quality","100","--crop-w",width,"--format","jpg","http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); 
+				 /* proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,  
+						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); */  
 				  
 			  }else{
 				    proc = rt.exec(cmd);

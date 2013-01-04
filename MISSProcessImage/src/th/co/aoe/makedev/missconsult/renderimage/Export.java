@@ -61,11 +61,13 @@ public class Export extends HttpServlet {
 	         //String cmd="";
 			  Process proc=null;
 			  if(maId!=null && maId.length()>0){
-				   
-				 /* proc = rt.exec(new String[]{"/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64","--javascript-delay","3000",  
+				   //xvfb-run --server-args="-screen 0, 1024x768x24"
+				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay","3000",  
+						  "--quality","100","--format","jpg","http://localhost:8080/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});
+				/*  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay","3000",  
 						  "--quality","75","--format","jpg","--use-xserver","http://localhost:8080/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});*/ 
-				  proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","3000",  
-						  "--quality","75","--format","jpg","http://203.150.20.37/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});   
+				 /* proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","3000",  
+						  "--quality","75","--format","jpg","http://203.150.20.37/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});   */
 				 // System.out.println("cmd chart\nhttp://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+" /tmp/"+fileGen+".jpg");
 			  }/*else{
 				    proc = rt.exec(cmd);
