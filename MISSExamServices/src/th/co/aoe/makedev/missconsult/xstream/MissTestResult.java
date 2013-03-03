@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
@@ -35,6 +34,7 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private String mtrRespondedStatus;
 
 	private Date mtrTestDate;
+	private String mtrHideStatus;
 	
 	//EXT
 	private String msatPath;
@@ -240,6 +240,14 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	public void setMissTestShows(List<MissTestShow> missTestShows) {
 		this.missTestShows = missTestShows;
+	}
+
+	public String getMtrHideStatus() {
+		return mtrHideStatus;
+	}
+
+	public void setMtrHideStatus(String mtrHideStatus) {
+		this.mtrHideStatus = mtrHideStatus;
 	}
 
 	 
