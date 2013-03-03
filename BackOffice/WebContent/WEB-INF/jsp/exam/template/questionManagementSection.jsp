@@ -195,7 +195,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
              <form:hidden path="mcIdNewArray"/>
 			<strong>Question&nbsp;
 							 <c:if test="${testForm.modeQuestion=='new'}">
-	    					 New
+	    					 New xx
 	    					 </c:if>
 	    					 <c:if test="${testForm.modeQuestion=='edit'}">
 	    					 Edit

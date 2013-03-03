@@ -482,6 +482,18 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
+    				<tr>
+    					<td width="25%">ล้างผลการทดสอบ:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					<form:input path="missAccount.maClearTest" cssStyle="width:30px;text-align:right"/> (เดือน)
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
     				<tr valign="top">
     					<td width="25%"> </td>
     					<td width="50%" colspan="2">
