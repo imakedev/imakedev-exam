@@ -58,6 +58,9 @@ public class MissTestResult implements Serializable {
 	@Column(name="MTR_IGNORED")
 	private String mtrIgnored;
     
+	@Column(name="MTR_HIDE_STATUS")
+	private String mtrHideStatus;
+	
 
 	public String getMtrRespondedStatus() {
 		return mtrRespondedStatus;
@@ -153,6 +156,14 @@ public class MissTestResult implements Serializable {
 
 	public void setMissCandidate(MissCandidate missCandidate) {
 		this.missCandidate = missCandidate;
+	}
+
+	public String getMtrHideStatus() {
+		return mtrHideStatus;
+	}
+
+	public void setMtrHideStatus(String mtrHideStatus) {
+		this.mtrHideStatus = mtrHideStatus;
 	}
 	
 }

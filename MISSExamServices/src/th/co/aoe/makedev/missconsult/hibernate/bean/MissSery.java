@@ -30,6 +30,10 @@ public class MissSery implements Serializable {
 	@Column(name="MS_UNIT_COST")
 	private Long msUnitCost;
 
+	
+	@Column(name="MS_TYPE")
+	private Long msType;
+	
 	/*//bi-directional many-to-one association to MissAccountSeriesMap
 	@OneToMany(mappedBy="missSery")
 	private Set<MissAccountSeriesMap> missAccountSeriesMaps;
@@ -71,6 +75,14 @@ public class MissSery implements Serializable {
 
 	public void setMsUnitCost(Long msUnitCost) {
 		this.msUnitCost = msUnitCost;
+	}
+
+	public Long getMsType() {
+		return msType;
+	}
+
+	public void setMsType(Long msType) {
+		this.msType = msType;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {
