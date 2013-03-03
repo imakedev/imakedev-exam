@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Miss Consult</title>
+<title>MissConsult</title>
 <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
@@ -33,7 +33,7 @@ $(document).ready(function() {
 	}
 });
 </script>
-</head>
+</head> 
 <body>
 <c:url value="/j_spring_security_check" var="security_check"/>
  <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
@@ -41,12 +41,12 @@ $(document).ready(function() {
 </div>
 <div class="bg2">&nbsp;</div>
 <div id="wrapper">
-<div align="left" style="padding-top:25px;"><a href="#" title="Miss Consult"><img src="<c:url value='/resources/images/logowebmc-b.png'/>"  border="0"/></a></div>
+<div align="left" style="padding-top:25px;"><a href="#" title="MissConsult"><img src="<c:url value='/resources/images/logowebmc-b.png'/>"  border="0"/></a></div>
         <div class="content_box">
-        <div align="right" class="language" style="padding-top:50px; padding-right:10px;"><a style="cursor: pointer;" href="?language=th_TH">TH</a> | <a style="cursor: pointer;" href="?language=en">EN</a></div>
+        <div align="right" class="language" style="padding-top:50px; padding-right:10px;"><a title="Thai" style="cursor: pointer;" href="?language=th_TH">TH</a> | <a title="English" style="cursor: pointer;" href="?language=en">EN</a></div>
           <div style="border-bottom:2px dashed #BAC5C8; margin-bottom:8px;">
           			<div style="float:left; width:50%;color:#737C82;font-size:16px;">Welcome to 
-                    <span style=" font-weight:bold; color:#737C82;font-size:16px;">Miss Consult</span>
+                    <span style=" font-weight:bold; color:#737C82;font-size:16px;">MissConsult</span>
                     </div>
                     <div style="float:right; width:50%; text-align:right;">
                     <span style="color:#FF2FA2;font-weight:bold; font-size:24px;">Corporate</span>
@@ -55,7 +55,7 @@ $(document).ready(function() {
           </div>                   
         <div  style="padding-bottom:10px;">                       
            <div id="stylized" class="loginform">
-          <form id="form" name="form" method="post" action='${security_check}'>        
+            <form id="form" name="form" method="post" action='${security_check}'>          
             <div style="border-bottom:2px dashed #BAC5C8; margin-bottom:8px;">
             &nbsp;
             </div>                    
