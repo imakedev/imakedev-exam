@@ -127,8 +127,19 @@ public class MissAccount implements Serializable {
 	@Column(name="MA_REGISTER_DATE")
 	private Timestamp maRegisterDate;
 	
+	public String getMaClearTest() {
+		return maClearTest;
+	}
+
+	public void setMaClearTest(String maClearTest) {
+		this.maClearTest = maClearTest;
+	}
+
 	@Column(name="MA_THEME")
 	private String maTheme;
+	
+	@Column(name="MA_CLEAR_TEST")
+	private String maClearTest;
 	
 	//bi-directional one-to-one association to MissTheme
 	@ManyToOne
