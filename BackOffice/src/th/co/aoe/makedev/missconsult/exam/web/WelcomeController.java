@@ -258,16 +258,25 @@ public class WelcomeController
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
     		fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
     	}
-    	List recipientsTo= new ArrayList(1);
-    	recipientsTo.add(mailTo);
-    	MailRunnable mailRunnableToTeam = new MailRunnable(
-				MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
-						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
-						recipientsTo, subject,
-				message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,null,null,fileSize,MAIL_TLS);
-		Thread mailThreadToTeam = new Thread(
-				mailRunnableToTeam);
-		mailThreadToTeam.start();
+    	String[] mailTos=null;
+    	if(mailTo!=null  && mailTo.length()>0){
+    		 mailTos=mailTo.split(",");
+    		 List recipientsTo= new ArrayList(mailTos.length);
+    		 for (int i = 0; i < mailTos.length; i++) {
+    			 recipientsTo.add(mailTos[i]);
+			}
+    		 MailRunnable mailRunnableToTeam = new MailRunnable(
+    					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+    							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+    							recipientsTo, subject,
+    					message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,null,null,fileSize,MAIL_TLS);
+    			Thread mailThreadToTeam = new Thread(
+    					mailRunnableToTeam);
+    			mailThreadToTeam.start();
+    	}
+    /*	List recipientsTo= new ArrayList(1);
+    	recipientsTo.add(mailTo);*/
+    	
     	// update to do status
 		 MissTodo missTodo = new MissTodo();
 		 missTodo.setMtodoId(Long.valueOf(request.getParameter("mail_todo_id")));
