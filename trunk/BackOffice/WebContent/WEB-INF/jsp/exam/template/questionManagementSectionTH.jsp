@@ -198,12 +198,12 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
              <form:hidden path="missQuestion.mqImgEng1" id="mqImgEng1"/>
             <form:hidden path="missQuestion.mqImgTh1" id="mqImgTh1"/>
              <form:hidden path="mcIdNewArray"/>
-			<strong>Question&nbsp;
+			<strong> 
 							 <c:if test="${testForm.modeQuestion=='new'}">
-	    					 New
+	    					 New &nbsp; Question
 	    					 </c:if>
 	    					 <c:if test="${testForm.modeQuestion=='edit'}">
-	    					 Edit
+	    					 Question&nbsp;&nbsp;${testForm.missQuestion.mqNo}.
 	    					 </c:if>
 			</strong>
     		 <table border="0" width="100%" style="font-size: 12px;">

@@ -322,6 +322,24 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Series Type:</td>
+	    					 <td align="left" width="17%">    					
+	    						<!-- <input type="text"/>  -->
+	    						<form:select path="missSery.msType" cssStyle="width:80px">  
+	    									<form:option value="0">Normal</form:option>
+	    									<form:option value="1">180/360</form:option>
+											 <!-- <option value="1">MCCT</option> -->
+	    						</form:select>
+	    					 </td>
+	    					<td align="left" width="17%"></td>
+	    					<td align="left" width="17%">
+	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
+	    					
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					
+	    		   <tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Unit Cost:</td>
 	    					 <td align="left" width="17%">    					
 	    						<!-- <input type="text"/>  -->

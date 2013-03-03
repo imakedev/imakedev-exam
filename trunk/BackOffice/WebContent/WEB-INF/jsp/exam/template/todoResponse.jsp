@@ -16,7 +16,7 @@ function doSendMail(){
 	  var data_to_server= { 
 			  mail_todo_id:'${mail_todo_idG}',
 			  mail_todo_ref:'${mail_todo_refG}',
-			  mail_to: $("#mail_to").val(),
+			  mail_to: jQuery.trim($("#mail_to").val()),
 			  mail_subject:$("#mail_subject").val(),
 			  mail_message:$("#mail_message").val(),
 			  mail_attach:checked
@@ -38,13 +38,13 @@ function doSendMail(){
           <%-- <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action=""> --%>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="17%" colspan="6"><strong>Send mail</strong></td>
+	    					 <td align="left" width="100%" colspan="6"><strong>Send mail</strong></td>
 	    					</tr>
 	    				 
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">To:</td>
-	    					 <td align="left" colspan="4"><input type="text" id="mail_to" name="mail_to" value="${mail_todo_to}">  
+	    					 <td align="left" width="8%">To:</td>
+	    					 <td align="left" colspan="4"><input  style="width: 500px" type="text" id="mail_to" name="mail_to" value="${mail_todo_to}">  
 	    					 </td>	    					 
 	    					</tr>
 	    					<%--
@@ -63,7 +63,7 @@ function doSendMail(){
 	    					 --%>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Subject:</td>
+	    					 <td align="left" width="8%">Subject:</td>
 	    					 <td align="left" colspan="4"><input type="text" id="mail_subject" name="mail_subject">
 	    					 </td>	    					 
 	    					</tr> 
