@@ -400,7 +400,8 @@ int result = query.executeUpdate();*/
 					"  missAccount.maCustomizeColor =:maCustomizeColor, " +
 					"  missAccount.maCustomizeHeadColor =:maCustomizeHeadColor, " +
 					"  missAccount.maBackgroundColor =:maBackgroundColor ," +
-					"  missAccount.maGrade =:maGrade " +
+					"  missAccount.maGrade =:maGrade, " +
+					"  missAccount.maClearTest =:maClearTest " +
 					
 					" where missAccount.maId ="+transientInstance.getMaId());
 			query.setParameter("maCustomizePassMessage", transientInstance.getMaCustomizePassMessage());
@@ -410,6 +411,7 @@ int result = query.executeUpdate();*/
 			query.setParameter("maCustomizeHeadColor", transientInstance.getMaCustomizeHeadColor());
 			query.setParameter("maBackgroundColor", transientInstance.getMaBackgroundColor());
 			query.setParameter("maGrade", transientInstance.getMaGrade());
+			query.setParameter("maClearTest", transientInstance.getMaClearTest());
 			
 			return query.executeUpdate();
 		}
