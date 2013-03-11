@@ -383,16 +383,19 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 query.setParameter("stockName", "DIALOG1");
 query.setParameter("stockCode", "7277");
 int result = query.executeUpdate();*/
+		java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 		if(section.equals("0") ){
 			int returnRecord=0;
 			
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaUsername =:mcaUsername," +
-					" missCandidate.mcaPassword =:mcaPassword " +
+					" missCandidate.mcaPassword =:mcaPassword ," +
+					" missCandidate.mcaUpdatedDate =:mcaUpdatedDate " +
 				//	" missCandidate.missSery.msId=:msId " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaUsername", transientInstance.getMcaUsername());
 			query.setParameter("mcaPassword", transientInstance.getMcaPassword());
+			query.setParameter("mcaUpdatedDate", timeStampStartDate);
 		//	query.setParameter("msId", transientInstance.getMissSery().getMsId());
 			query.executeUpdate();
 			
@@ -486,7 +489,8 @@ int result = query.executeUpdate();*/
 					" missCandidate.mcaPhone =:mcaPhone  ,  " +
 					" missCandidate.mcaTitleType =:mcaTitleType  ,  " +
 					((mcmId!=null)?(" missCandidate.missIndustryMaster.mimId =:mimId  , missCandidate.mimExt=:mimExt, " ):"")+
-					" missCandidate.missCareerMaster.mcmId =:mcmId    " +
+					" missCandidate.missCareerMaster.mcmId =:mcmId  ,  " +
+					" missCandidate.mcaUpdatedDate =:mcaUpdatedDate " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaType", transientInstance.getMcaType());
 			query.setParameter("mcaCitizenId", transientInstance.getMcaCitizenId());
@@ -505,6 +509,7 @@ int result = query.executeUpdate();*/
 				query.setParameter("mimExt", transientInstance.getMimExt());
 			}
 			query.setParameter("mcmId", transientInstance.getMissCareerMaster().getMcmId());
+			query.setParameter("mcaUpdatedDate", timeStampStartDate);
 			//d
 			return query.executeUpdate();
 		}else if(section.equals("2")){
@@ -518,15 +523,16 @@ int result = query.executeUpdate();*/
 					" and  missTestResult.msId="+transientInstance.getMissSery().getMsId());
 			query.executeUpdate();
 			query=session.createQuery("update MissCandidate missCandidate " +
-					" set missCandidate.mcaStatus ='2' " +
+					" set missCandidate.mcaStatus ='2' ,  " +
+					" missCandidate.mcaUpdatedDate =:mcaUpdatedDate " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
-			
+			query.setParameter("mcaUpdatedDate", timeStampStartDate);
 			// save reactive log
 			MissReactiveLogPK pk = new MissReactiveLogPK();
 			pk.setMcaId(transientInstance.getMcaId());
 			pk.setMsId(transientInstance.getMissSery().getMsId());
 			
-			java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+			//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 			DateTime datetime=new DateTime(timeStampStartDate.getTime());
 			pk.setMrlDateTime(timeStampStartDate);
 			MissReactiveLog reactiveLog=new MissReactiveLog();
@@ -544,16 +550,19 @@ int result = query.executeUpdate();*/
 	public int updateMissCandidatePhoto(MissCandidate transientInstance,String section)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
+		java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query=null;
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaPictureHotlink =:mcaPictureHotlink," +
 					" missCandidate.mcaPictureFileName =:mcaPictureFileName ," +
-					" missCandidate.mcaPicturePath =:mcaPicturePath " +
+					" missCandidate.mcaPicturePath =:mcaPicturePath ," +
+					" missCandidate.mcaUpdatedDate =:mcaUpdatedDate " +
 					" where missCandidate.mcaId ="+transientInstance.getMcaId());
 			query.setParameter("mcaPictureHotlink", transientInstance.getMcaPictureHotlink());
 			query.setParameter("mcaPictureFileName", transientInstance.getMcaPictureFileName());
 			query.setParameter("mcaPicturePath", transientInstance.getMcaPicturePath());
+			query.setParameter("mcaUpdatedDate", timeStampStartDate);
 			return query.executeUpdate();
 	}
 	
