@@ -270,7 +270,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<a class="btn btn-info" onclick="exportTest()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
 	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
 	    					<a class="btn btn-danger" onclick="setIgnore()"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a>
-	    					<a class="btn btn-info"><i class="icon-refresh icon-white"></i>&nbsp;<spring:message code="page_testsearch_compare"/></a>
+	    					<a class="btn btn-info"><i class="icon-tasks icon-white"></i>&nbsp;<spring:message code="page_testsearch_compare"/></a>
 	    					</td>
 	    					<td align="right" width="40%">
 	    					<a onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a>
