@@ -215,6 +215,10 @@ var mail_toG;
 var mail_subjectG;
 var mail_messageG;
 var mail_attachG; 
+var intRegex = /^\d+$/;
+//var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+)|(-\d+(\.\d *)?)|((-\d*\.)?\d+))$/;
+
 $(document).ready(function() {
 	//alert("aa");
 	//$('#tabs').tabs();
