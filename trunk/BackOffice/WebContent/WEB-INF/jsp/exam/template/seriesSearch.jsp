@@ -206,9 +206,20 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 <td align="left" colspan="6">
 	    					   <span style="display: block;">
 	    					<%--  <form:checkboxes path="missExam_selectbox" items="${missExams}" itemValue="meId" itemLabel="meName" cssStyle="display:block" />  --%>
-	    					  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
-	    					 		 <input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+	    					  <table  border="0" width="100%" style="font-size: 13px">  
+	    					  <c:forEach items="${missExams}" var="missExam" varStatus="loop">  
+	    					      <c:if test="${loop.index mod 4 eq 0}">
+	    					      	<tr> 
+	    					      </c:if>
+	    					      	<td>
+	    								<input type="checkbox" value="<c:out value="${missExam.meId}"></c:out>" name="missExam_selectbox"/><c:out value="${missExam.meName}"></c:out>&nbsp;&nbsp;
+	    					 	 	</td>
+	    					 	  <c:if test="${(loop.index+1) mod 4 eq 0 or loop.last}">
+	    					 			</tr>
+	    					 		</c:if>	 
 	    					 </c:forEach>
+	    					 
+	    					    </table>
 	    					  </span>
 	    					  <input type="hidden" id="meIdArray" value="${meIdArray}">
 	    					  </td>

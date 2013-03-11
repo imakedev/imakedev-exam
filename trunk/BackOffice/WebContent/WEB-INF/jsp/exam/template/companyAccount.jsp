@@ -126,6 +126,42 @@ function doAction(action,formID,sectionID){
 	$("#maCustomizeRetestMessage").val(CKEDITOR.instances["maCustomizeRetestMessage"].getData());
 	//alert($("#maCustomizePassMessage").val());
 	//$("#_miss_section").val(sectionID);
+	if(sectionID=='9'){
+		var maClearTest=jQuery.trim($("#missAccount\\.maClearTest").val());
+		var maClearCandidate1=jQuery.trim($("#missAccount\\.maClearCandidate1").val());
+		var maClearCandidate2=jQuery.trim($("#missAccount\\.maClearCandidate2").val());
+		var maClearCandidate3=jQuery.trim($("#missAccount\\.maClearCandidate3").val());
+	//	alert(maClearCandidate1);
+		 
+		 if(maClearTest.length>0 && !(intRegex.test(maClearTest) || floatRegex.test(maClearTest))) {
+			 $('#missAccount\\.maClearTest').focus();
+		        alert('กรุณากรอกตัวเลข ที่ช่อง ล้างผลการทดสอบ !!!');  
+		        
+		        return false;
+		     }
+		 if(maClearCandidate1.length>0 && !(intRegex.test(maClearCandidate1) || floatRegex.test(maClearCandidate1))) {
+			 $('#missAccount\\.maClearCandidate1').focus();
+		        alert('กรุณากรอกตัวเลข ที่ช่อง ซ่อน candidate --> พนักงานสมัครใหม่ !!!');  
+		        
+		        return false;
+		     }
+		 if(maClearCandidate2.length>0 && !(intRegex.test(maClearCandidate2) || floatRegex.test(maClearCandidate2))) {
+			 $('#missAccount\\.maClearCandidate2').focus();
+		        alert('กรุณากรอกตัวเลข ที่ช่อง ซ่อน candidate --> พนักงานปัจจุบัน !!!');  
+		        
+		        return false;
+		     }
+		 if(maClearCandidate3.length>0 && !(intRegex.test(maClearCandidate3) || floatRegex.test(maClearCandidate3))) {
+			 $('#missAccount\\.maClearCandidate3').focus();
+		        alert('กรุณากรอกตัวเลข ที่ช่อง ซ่อน candidate --> ลาออกแล้ว-อื่นๆ !!!');  
+		        
+		        return false;
+		     }
+		 $("#missAccount\\.maClearCandidate1").val(maClearCandidate1)
+		 $("#missAccount\\.maClearCandidate2").val(maClearCandidate2)
+		 $("#missAccount\\.maClearCandidate3").val(maClearCandidate3)
+		 $("#missAccount\\.maClearTest").val(maClearTest);
+	}
 	$.post("company/"+action+"/"+sectionID,$("#"+formID).serialize(), function(data) {
 		    appendContent(data);
 		});
@@ -482,18 +518,6 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
-    				<tr>
-    					<td width="25%">ล้างผลการทดสอบ:</td>
-    					<td width="50%" colspan="2">
-    					<!-- <img src=""/> -->
-    					<!-- <select id="aoe" onchange="testTheme(this)">
-    						<option value="1">theme 1</option>
-    						<option value="2">theme 2</option>
-    					</select> --> 
-    					<form:input path="missAccount.maClearTest" cssStyle="width:30px;text-align:right"/> (เดือน)
-    				 </td>
-    					 <td width="25%">&nbsp;</td>
-    				</tr>
     				<tr valign="top">
     					<td width="25%"> </td>
     					<td width="50%" colspan="2">
@@ -504,6 +528,63 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					 <!-- <input type="button" class="btn" value="Apply"/> -->
     					 </td>
     				</tr>
+    				<tr>
+    					<td width="25%">ล้างผลการทดสอบ:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					ที่เก่ากว่า <form:input path="missAccount.maClearTest" cssStyle="width:30px;text-align:right"/> (เดือน)
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr>
+    					<td width="25%">ซ่อน candidate:</td>
+    					<td width="50%" colspan="2">
+    					 
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr>
+    					<td width="25%" style="padding-left: 20px">- พนักงานสมัครใหม่:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate1" cssStyle="width:30px;text-align:right"/> (เดือน)
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr>
+    					<td width="25%" style="padding-left: 20px">- พนักงานปัจจุบัน:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate2" cssStyle="width:30px;text-align:right"/> (เดือน)
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				<tr>
+    					<td width="25%" style="padding-left: 20px">- ลาออกแล้ว-อื่นๆ:</td>
+    					<td width="50%" colspan="2">
+    					<!-- <img src=""/> -->
+    					<!-- <select id="aoe" onchange="testTheme(this)">
+    						<option value="1">theme 1</option>
+    						<option value="2">theme 2</option>
+    					</select> --> 
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate3" cssStyle="width:30px;text-align:right"/> (เดือน)
+    				 </td>
+    					 <td width="25%">&nbsp;</td>
+    				</tr>
+    				 
+    				
     				<%-- 
     				<tr valign="top">
     					<td width="25%">Theme Color:</td>

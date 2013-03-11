@@ -285,8 +285,8 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="25%">Account Type:</td>
     					<td width="50%" colspan="2">
     					 	<form:radiobutton path="missCandidate.mcaType" value="1"/>New Recruit&nbsp;&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaType" value="2"/>Current Employee
-    					 	&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaType" value="3"/>Retired
-    					 	&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaType" value="4"/>อื่นๆ
+    					 	&nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaType" value="3"/>ลาออกแล้ว-อื่นๆ
+    					 	<%-- &nbsp;&nbsp;<form:radiobutton path="missCandidate.mcaType" value="4"/>อื่นๆ --%>
     				<!-- 	<input type="radio" name="type"/>New Recruit&nbsp;&nbsp;&nbsp;<input type="radio" name="type">Current Employee -->
     				</td>
     					 <td width="25%">&nbsp;</td>
