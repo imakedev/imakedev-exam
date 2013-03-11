@@ -788,7 +788,8 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					// cell_question= row.getCell(0);
 					//System.out.println(row);
 					//System.out.println(column);
-					cell_question = row.getCell(column - 2);
+					//cell_question = row.getCell(column - 2);
+					cell_question = row.getCell(column - 1);
 					cell_answer = row.getCell(column);
 					// System.out.println(""+(format.format(cell_code.getNumericCellValue())));
 					int question_no = (int) cell_question.getNumericCellValue();
