@@ -251,12 +251,15 @@ public class WelcomeController
     	logger.error("request   mail_subject==>"+subject);
     	//send mail to Approver
     	byte [] fileSize=null;
+    	//System.out.println("xxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("mail_attach"));
     	if(request.getParameter("mail_attach")!=null && request.getParameter("mail_attach").equals("1")){
     		/*$("#mail_todo_id").val(todo_id);
     		$("#mail_todo_ref").val(todo_ref);*/ 
     		String todo_ref=request.getParameter("mail_todo_ref");
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
+    		//System.out.println("missTestResult.getMsId()="+missTestResult.getMsId()+",missTestResult.getMtrId()="+missTestResult.getMtrId());
     		fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
+    		//System.out.println("file Sizeeeeeeeeee"+fileSize);
     	}
     	String[] mailTos=null;
     	if(mailTo!=null  && mailTo.length()>0){
@@ -320,8 +323,8 @@ public class WelcomeController
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
 		 
-		 Map p =new HashMap();
-		 p.put("mtrId",mtrId);
+		 Map p =new HashMap<String,String>();
+		 p.put("mtrId",(mtrId+""));
 			try {
 				ctx = new InitialContext();
 			} catch (NamingException e) {
