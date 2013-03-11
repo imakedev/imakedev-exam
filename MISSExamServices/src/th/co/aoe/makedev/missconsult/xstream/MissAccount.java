@@ -114,6 +114,16 @@ public class MissAccount extends VServiceXML implements Serializable {
 	
 	@XStreamAlias("maClearTest")
 	private String maClearTest;
+	
+	@XStreamAlias("maClearCandidate1")
+	private String maClearCandidate1;
+	
+	@XStreamAlias("maClearCandidate2") 
+	private String maClearCandidate2;
+	
+	@XStreamAlias("maClearCandidate3")
+	private String maClearCandidate3;
+	
 /*	
 	@XStreamAlias("maRegisterTo")
 	private Date maRegisterTo;
@@ -512,6 +522,30 @@ public class MissAccount extends VServiceXML implements Serializable {
 
 	public void setMaEmail2(String maEmail2) {
 		this.maEmail2 = maEmail2;
+	}
+
+	public String getMaClearCandidate1() {
+		return maClearCandidate1;
+	}
+
+	public void setMaClearCandidate1(String maClearCandidate1) {
+		this.maClearCandidate1 = maClearCandidate1;
+	}
+
+	public String getMaClearCandidate2() {
+		return maClearCandidate2;
+	}
+
+	public void setMaClearCandidate2(String maClearCandidate2) {
+		this.maClearCandidate2 = maClearCandidate2;
+	}
+
+	public String getMaClearCandidate3() {
+		return maClearCandidate3;
+	}
+
+	public void setMaClearCandidate3(String maClearCandidate3) {
+		this.maClearCandidate3 = maClearCandidate3;
 	}
 	
 }
