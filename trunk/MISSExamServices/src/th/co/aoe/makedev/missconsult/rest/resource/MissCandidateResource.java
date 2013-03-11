@@ -264,6 +264,8 @@ public class MissCandidateResource extends BaseResource {
 							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mcaId=0l;
 							//logger.debug("getAmount  getAmount============================>"+xbpsTerm.getAmount());
+							bpsTerm.setMcaCreatedDate(timeStampStartDate);
+							bpsTerm.setMcaUpdatedDate(timeStampStartDate);
 							if(xbpsTerm.getAmount()!=null && xbpsTerm.getAmount().length()>0){
 								int size= Integer.parseInt(xbpsTerm.getAmount());
 								for(int i=0;i<size;i++){
