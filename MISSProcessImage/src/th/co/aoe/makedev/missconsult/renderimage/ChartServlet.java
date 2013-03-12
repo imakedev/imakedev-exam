@@ -48,6 +48,7 @@ public class ChartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//chart="+chart+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"
+		System.out.println("into doGet");
 		 HttpSession session = request.getSession(true);
 		 //String page=request.getParameter("page");
 			
@@ -56,9 +57,18 @@ public class ChartServlet extends HttpServlet {
 			String width=request.getParameter("width");
 			String height=request.getParameter("height");
 			
-			String lang=request.getParameter("lang");
+			//http://203.150.20.37:8080/MISSProcessImage/chart?key=chart1&width=800&height=400&lang=1&mtrId=144
+				 if(mtrId==null)
+					 mtrId="144";
+				 if(key==null)
+					 key="chart1";
+				 if(width==null)
+					 width="800";
+				 if(height==null)
+					 height="400";
+			/*String lang=request.getParameter("lang");
 			String type=request.getParameter("type");
-			String chart= request.getParameter("chart");
+			String chart= request.getParameter("chart");*/
 			//"http://203.150.20.37/MISSProcessImage/process?mtrId="+$P{mtrId}.toString()+"&key=chart1&w=800&h=400&chart=bar"
 			//"+mtrId+"_"+mdc_key+"_"+chart+"_"+lang+"_"+width+"_"+height+"
 		
