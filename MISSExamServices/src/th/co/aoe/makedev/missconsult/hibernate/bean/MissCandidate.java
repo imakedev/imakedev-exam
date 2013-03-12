@@ -116,7 +116,9 @@ public class MissCandidate implements Serializable {
 	@Column(name="MCA_UPDATED_DATE")
 	private Timestamp mcaUpdatedDate;
 	
-	 
+	
+	@Column(name="MCA_HIDE_STATUS")
+	private String mcaHideStatus;
 	
 	
 	 
@@ -130,6 +132,14 @@ public class MissCandidate implements Serializable {
 	private Set<MissTestResult> missTestResults;*/
 
     
+
+	public String getMcaHideStatus() {
+		return mcaHideStatus;
+	}
+
+	public void setMcaHideStatus(String mcaHideStatus) {
+		this.mcaHideStatus = mcaHideStatus;
+	}
 
 	public Timestamp getMcaCreatedDate() {
 		return mcaCreatedDate;
