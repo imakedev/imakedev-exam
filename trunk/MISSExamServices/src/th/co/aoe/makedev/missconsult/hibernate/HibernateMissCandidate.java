@@ -164,8 +164,8 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 		
 			StringBuffer sb =new StringBuffer(" select count(missCandidate) from MissCandidate missCandidate ");
-			
-			boolean iscriteria = false;
+			sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
+			boolean iscriteria = true;
 			if(mcaStatus !=null && !mcaStatus.equals("-1")){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
 				 sb.append(iscriteria?(" and missCandidate.mcaStatus='"+mcaStatus+"'"):(" where missCandidate.mcaStatus='"+mcaStatus+"'"));
@@ -223,7 +223,8 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
 				Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 				StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
-				boolean iscriteria = false;
+				sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
+				boolean iscriteria = true;
 				if(mcaStatus !=null && !mcaStatus.equals("-1")){  
 					//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
 					 sb.append(iscriteria?(" and missCandidate.mcaStatus='"+mcaStatus+"'"):(" where missCandidate.mcaStatus='"+mcaStatus+"'"));
