@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -72,12 +74,20 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String mcaTitleType;
  	private String mimExt;
 	private Timestamp mcaCreatedDate;
-	private Timestamp mcaUpdatedDate;
-	
+	private Timestamp mcaUpdatedDate; 
+	private String mcaHideStatus;
 	private String selectLang;//1=thai,2=eng
 	private Long mtrId;// 
 	
 	
+	public String getMcaHideStatus() {
+		return mcaHideStatus;
+	}
+
+	public void setMcaHideStatus(String mcaHideStatus) {
+		this.mcaHideStatus = mcaHideStatus;
+	}
+
 	public String getMimExt() {
 		return mimExt;
 	}
