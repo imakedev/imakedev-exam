@@ -324,9 +324,10 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			 * where result.MCA_ID=21 and result.MTR_START_TIME > '2012-06-20'
 			 * and result.MTR_START_TIME < '2012-06-20 23:59:59'
 			 */
+			sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
 			// SimpleDateFormat format = new
 			// SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			boolean iscriteria = false;
+			boolean iscriteria = true;
 			if (msId != null && msId > 0) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MS_ID=" + msId + "")
