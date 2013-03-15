@@ -210,6 +210,7 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
   <spring:message code='navigation_home'/>
 </c:set>
 <script type="text/javascript">
+
 var _path="";
 var mail_toG;
 var mail_subjectG;
@@ -224,6 +225,7 @@ $(document).ready(function() {
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
  //  alert('');
+  //alert('${seriesMaps_menu}')
 	mail_toG= $( "#mail_to" );
 	mail_subjectG= $( "#mail_subject" );
 	mail_messageG= $( "#mail_message" );
@@ -304,9 +306,19 @@ $(document).ready(function() {
 				<c:if test="${isManageSearchReport}">				
 				{ 
 					
-					"data" : {title:"<spring:message code='navigation_search'/>",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
+					"data" : {title:"<spring:message code='navigation_search'/>",icon : "<c:url value='/resources/js/_demo/file.png'/>" }, 
+					<%-- "data" : {title:"<spring:message code='navigation_search'/>" },  --%>
 					"metadata" : { id : "child_288" ,"link":"result/search"},
 					"attr" : { "id" : "tree_288" } 
+					<%-- 
+				  "children" : [
+					 <c:forEach items="${seriesMaps_menu}" var="seriesMaps" varStatus="loop"> 
+						 { attributes: { id : "seriesMaps${seriesMaps.missSery.msId}" }, data: { title : "${seriesMaps.missSery.msSeriesName}",  icon : "<c:url value='/resources/js/_demo/file.png'/>" },"metadata" : { id : "seriesMaps${seriesMaps.missSery.msId}","link":"result/search" } }
+						
+						  ${not loop.last ? ',' : ''}
+					 </c:forEach>
+					 ] 
+					--%>
 					
 				},
 				</c:if>
