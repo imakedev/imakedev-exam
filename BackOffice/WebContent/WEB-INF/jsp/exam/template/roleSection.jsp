@@ -233,6 +233,54 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	</c:forEach>
         </tbody>
       </table>
+      
+      <table id="table_list2"  class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
+        	<thead>
+          		<tr>
+            		<!-- <th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th> -->
+            		<th align="left" colspan="2" width="88"><div style="margin-left: -400px" class="th_class">Series Name</div></th> 
+            		<!-- <th width="58%"><div class="th_class"></div></th> -->
+            		<th width="12%"><div class="th_class">Permission</div></th>              		 
+          		</tr>
+        	</thead>
+        	<tbody>
+        	 <c:forEach items="${missAccountSeriesMaps}" var="missAccountSeriesMap" varStatus="loop"> 
+          	<tr> 
+            	<td colspan="2">&nbsp;${missAccountSeriesMap.missSery.msSeriesName}</td>
+            	<td>
+            	 <c:if test="${not empty roleForm.rcId}"> 
+            	 	<c:if test="${roleForm.rcId!=0}">
+            	 		<c:if test="${missAccountSeriesMap.selected=='1'}">
+            				<input type="radio" value="0"  name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            				<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            				<input type="radio" value="${missAccountSeriesMap.missSery.msId}" checked="checked" name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            				<img src="<c:url value='/resources/images/deSelect.png'/>"/>
+            			</c:if>
+            			<c:if test="${missAccountSeriesMap.selected!='1'}">
+            				<input type="radio" value="0"  checked="checked" name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            				<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            				<input type="radio" value="${missAccountSeriesMap.missSery.msId}"  name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            				<img src="<c:url value='/resources/images/deSelect.png'/>"/>
+            			</c:if>
+            	 	</c:if>   
+            	 	<c:if test="${roleForm.rcId==0}">
+            	 		<input type="radio" value="0"  name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            	 		<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            			<input type="radio" value="${missAccountSeriesMap.missSery.msId}" name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            			<img src="<c:url value='/resources/images/deSelect.png'/>"/>
+            	 	</c:if>         	 	
+            	 </c:if>
+            	 <c:if test="${empty roleForm.rcId}"> 
+            	 		<input type="radio" value="0"   name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            	 		<img src="<c:url value='/resources/images/Select.png'/>"/>&nbsp;
+            			<input type="radio" value="${missAccountSeriesMap.missSery.msId}" name="msIdCheckbox_radio_${missAccountSeriesMap.missSery.msId}">
+            			<img src="<c:url value='/resources/images/deSelect.png'/>"/>
+            	 </c:if>
+            	 </td>
+          	</tr>
+          	</c:forEach>
+        </tbody>
+      </table>
       <div align="center"><a class="btn btn-primary"  onclick="goActionRole('updateRoleMapping')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
       </form:form>
 </fieldset>
