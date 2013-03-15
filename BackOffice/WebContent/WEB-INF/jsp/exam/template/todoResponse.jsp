@@ -12,11 +12,13 @@ function doSendMail(){
 	 //alert(mail_attach.checked);
 	if(!document.getElementById("mail_attach").checked)
 		checked="0";
-	 
+	
 	  var data_to_server= { 
 			  mail_todo_id:'${mail_todo_idG}',
 			  mail_todo_ref:'${mail_todo_refG}',
 			  mail_to: jQuery.trim($("#mail_to").val()),
+			  mail_cc: jQuery.trim($("#mail_cc").val()),
+			  mail_bcc: jQuery.trim($("#mail_bcc").val()),
 			  mail_subject:$("#mail_subject").val(),
 			  mail_message:$("#mail_message").val(),
 			  mail_attach:checked
@@ -29,6 +31,11 @@ function doSendMail(){
 		    appendContent(data);
 		  // alert($("#_content").html());
 		});
+	$("#table_from_send").slideUp("slow");
+	//$("#sent_mail_button").slideUp("slow");  
+	
+	$("#table_from_loading").slideDown("slow");  
+	 
   }
 
   </script>
@@ -36,31 +43,45 @@ function doSendMail(){
 	    <fieldset style="font-family: sans-serif;">  
             <form class="well" method="post" action="">
           <%-- <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action=""> --%>
-              <table border="0" width="100%" style="font-size: 13px">
+              <div id="table_from_loading" style="display: none">
+            <table border="0" width="100%" style="font-size: 13px;"  >
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong>Send mail</strong></td>
 	    					</tr>
 	    				 
+	    					<tr align="center" id="tr_loading">
+	    					 <td align="center" width="100%" colspan="6"> 
+	    					 <img id="photo_loading"  src="<c:url value='/resources/images/loading.gif'/>" />
+	    					 </td>
+	    					</tr>
+	    	 </table>  
+	    	 </div>
+	    	 <div id="table_from_send">
+              <table border="0" width="100%" style="font-size: 13px" >
+              				<tr>
+	    					 <td align="left" width="100%" colspan="6"><strong>Send mail</strong></td>
+	    					</tr>
+	    				    
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="8%">To:</td>
 	    					 <td align="left" colspan="4"><input  style="width: 500px" type="text" id="mail_to" name="mail_to" value="${mail_todo_to}">  
 	    					 </td>	    					 
 	    					</tr>
-	    					<%--
+	    					
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">CC:</td>
-	    					 <td align="left" colspan="4"><input type="text" id="mail_cc" name="mail_cc"> 
+	    					 <td align="left" colspan="4"><input style="width: 500px" type="text" id="mail_cc" name="mail_cc"> 
 	    					 </td>	    					 
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">BCC:</td>
-	    					 <td align="left" colspan="4"><input type="text" id="mail_bcc" name="mail_bcc">
+	    					 <td align="left" colspan="4"><input style="width: 500px" type="text" id="mail_bcc" name="mail_bcc">
 	    					 </td>	    					 
 	    					</tr> 
-	    					 --%>
+	    					
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="8%">Subject:</td>
@@ -90,6 +111,7 @@ function doSendMail(){
 	    			</form>
 	    					<!-- <div align="center"><input type="button" value="Send"></div> -->
 	    					
-	    					<div align="center"><a class="btn btn-primary" onclick="doSendMail();"><i class="icon-envelope icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a></div>
+	    					<div id="sent_mail_button" align="center"><a class="btn btn-primary" onclick="doSendMail();"><i class="icon-envelope icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a></div>
+    </div>
       </fieldset> 
    

@@ -16,7 +16,12 @@ function goBackToSearchReport(){
      
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="center" ><strong>Send mail Success</strong></td>
+              				 <c:if test="${status=='1'}">
+              				 	<td align="center" ><strong>Send mail Success</strong></td>
+              				 </c:if>
+	    					  <c:if test="${status!='1'}">
+              				 	<td align="center" ><strong>Can't send mail</strong></td>
+              				 </c:if>
 	    					</tr> 
 	    					</table> 
 	    					</form>
