@@ -5,6 +5,10 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -14,8 +18,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -28,6 +43,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +59,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
@@ -53,6 +68,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
+
+import com.sun.mail.smtp.SMTPTransport;
 
 @Controller 
 @SessionAttributes(value={"UserMissContact","welcomeForm"})
@@ -222,6 +239,8 @@ public class WelcomeController
         model.addAttribute("pageObj", page);
         model.addAttribute("pageCount", IMakeDevUtils.calculatePage(PAGE_SIZE, Integer.parseInt(vresult.getMaxRow()))); 
         
+    	//List<MissAccountSeriesMap> missAccountSeriesMaps = missExamService.findMissAccountSeriesMapByRole(missContact.getMcontactRef(),missContact.getRcId());
+    	 // model.addAttribute("seriesMaps_menu",missAccountSeriesMaps);
         model.addAttribute("systemDate", format1.format(new Date()));
         return "exam/common";
     }
@@ -247,8 +266,11 @@ public class WelcomeController
     	String message=request.getParameter("mail_message");
     	String subject=request.getParameter("mail_subject");
     	String mailTo=request.getParameter("mail_to");
+    	String mailCC=request.getParameter("mail_cc");
+    	String mailBCC=request.getParameter("mail_bcc");
     	logger.error("request   mail_message==>"+message);
     	logger.error("request   mail_subject==>"+subject);
+    	int status=0;
     	//send mail to Approver
     	byte [] fileSize=null;
     	//System.out.println("xxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("mail_attach"));
@@ -268,25 +290,46 @@ public class WelcomeController
     		 for (int i = 0; i < mailTos.length; i++) {
     			 recipientsTo.add(mailTos[i]);
 			}
-    		 MailRunnable mailRunnableToTeam = new MailRunnable(
-    					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
-    							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
-    							recipientsTo, subject,
-    					message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,null,null,fileSize,MAIL_TLS);
+    			String[] mailCCs=null;
+    			String[] mailBCCs=null;
+    			 List recipientsCC=null;
+    			 List recipientsBCC=null;
+    		 if(mailCC!=null  && mailCC.length()>0){
+    			 mailCCs=mailCC.split(",");
+    			 recipientsCC= new ArrayList(mailCCs.length);
+        		 for (int i = 0; i < mailCCs.length; i++) {
+        			 recipientsCC.add(mailCCs[i]);
+    			}
+    		 }
+    		 if(mailBCC!=null  && mailBCC.length()>0){
+    			 mailBCCs=mailBCC.split(",");
+    			 recipientsBCC= new ArrayList(mailBCCs.length);
+        		 for (int i = 0; i < mailBCCs.length; i++) {
+        			 recipientsBCC.add(mailBCCs[i]);
+    			}
+    		 }
+    		 status= sendMail(MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+						recipientsTo, subject,
+				message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
+    	/*	 MailRunnable mailRunnableToTeam = new MailRunnable(
+    					;
     			Thread mailThreadToTeam = new Thread(
     					mailRunnableToTeam);
-    			mailThreadToTeam.start();
+    			mailThreadToTeam.start();*/
     	}
     /*	List recipientsTo= new ArrayList(1);
     	recipientsTo.add(mailTo);*/
     	
     	// update to do status
-		 MissTodo missTodo = new MissTodo();
+    	 MissTodo missTodo = new MissTodo();
+    	if(status==1){
+		
 		 missTodo.setMtodoId(Long.valueOf(request.getParameter("mail_todo_id")));
 		 missTodo.setMtodoResponse("1");
 		//misstodo misstodo =new misstodo();
 		missExamService.updateMissTodo(missTodo);
-    	
+    	}
     	  int pageNo = 1;
          
           Pagging page = new Pagging();
@@ -309,9 +352,222 @@ public class WelcomeController
           model.addAttribute("todolists", vresult.getResultListObj());
           model.addAttribute("totals", vresult.getMaxRow());
           model.addAttribute("pageObj", page);
+          model.addAttribute("status", status+""); 
     	 //return "exam/template/home";
           return "exam/template/todoTaskComplete";
     }
+    private int sendMail(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
+			List recipients
+			,String subject,String messagebody,String sessionId,String personal_name,String port,
+			List recipients_cc,List recipients_bcc,byte[] fileSize,String tls){
+    	int cansent=0;
+    	File temp  = null;
+		Properties props = new Properties();
+		/*this.subject = subject;
+		this.messagebody = messagebody;
+		this.sessionId = sessionId;
+		this.protocal=protocal_;
+		this. host=host_;
+		this.email =email_;
+		this. password=password_;
+		this. useAuthen=useAuthen_;
+		this.recipients=recipients;
+		this.personal_name=personal_name;
+		this.port=port;
+		this.recipients_cc=recipients_cc;
+		this.recipients_bcc=recipients_bcc;
+		this.fileSize=fileSize;
+		this.tls=tls;*/
+	    boolean isAuthen = false;
+			//props.put("mail.transport.protocol", protocal);//"smtp");
+	    props.put("protocol", protocal_);//"smtp");
+			if(tls!=null && tls.toLowerCase().equals("1"))
+				props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.host", host_);//"smtp.gmail.com");
+			props.put("mail.smtp.port",port);
+			
+			 
+			//props.put("mail.smtp.ssl.enable", "true");
+			if(useAuthen_!=null && useAuthen_.equals("1")){
+				isAuthen = true;
+			}
+			if(isAuthen)
+			  props.put("mail.smtp.auth", "true");
+			// Get a Session object 
+		   
+		//	String[] recipients=null;
+			//if(ntcNewsLetterRecipient!=null && ntcNewsLetterRecipient.size()>0){
+			 	int size = recipients.size();
+				//recipients= new String[1];
+			 	for (int i = 0; i < size; i++) {
+					
+					 //Session session = Session.getInstance(props, null);
+					 Session session = Session.getDefaultInstance(props, null);
+					    session.setDebug(true);
+			MimeMessage msgArray[] = null;// new MimeMessage(session); 
+			try {
+				msgArray = new MimeMessage[1];//recipients.length];  
+		    	InternetAddress[] addressTo = new InternetAddress[1];//recipients.length];
+		    	Date date = new Date();
+		    	StringBuffer sb = new StringBuffer();
+				sb.append("<HTML>\n");
+				sb.append("<HEAD>\n");
+				sb.append("<TITLE>\n");
+				sb.append(" MissConsult " + "\n");
+				sb.append("</TITLE>\n");
+				sb.append("</HEAD>\n");
+				sb.append("<BODY>\n");
+				sb.append(messagebody);
+				sb.append("\n");
+				sb.append("</BODY>\n");
+				sb.append("</HTML>\n");
+				MimeBodyPart mbp1 = new MimeBodyPart(); 
+				String message = StringEscapeUtils.unescapeHtml(sb.toString());
+				mbp1.setContent(message, "text/html; charset=UTF-8");		
+				
+				Multipart mp = new MimeMultipart();
+				mp.addBodyPart(mbp1);				 
+				if(fileSize!=null && fileSize.length>0){
+					FileOutputStream fos = null;
+					
+					try {
+					//	byte []filesize = multipart.getBytes();
+						//if(filesize.length>0){
+						 MimeBodyPart mbp2 = new MimeBodyPart();
+						 temp = File.createTempFile(genToken(),".howto"); 
+						 temp.deleteOnExit();
+						 fos = new FileOutputStream(temp.getAbsolutePath());
+						
+						 fos.write(fileSize); 
+						 
+						 	mbp2.attachFile(temp);
+							mbp2.setFileName("Report.pdf");
+							mp.addBodyPart(mbp2);
+					//	}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}finally{
+						if(fos!=null)
+							try {
+								fos.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						 
+					} 
+				}
+			
+				InternetAddress addressFrom=null;
+				try {
+					if(personal_name!=null && personal_name.length()>0)
+						addressFrom = new InternetAddress(email_,personal_name);
+					else
+						addressFrom = new InternetAddress(email_);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					addressTo[0] = new InternetAddress(((String)recipients.get(i)).trim(),false);
+				
+					msgArray[0] = new MimeMessage(session);
+					msgArray[0].setFrom(addressFrom); 
+					msgArray[0].setRecipient(Message.RecipientType.TO,addressTo[0]);
+					
+					//set CC
+					if(recipients_cc!=null && recipients_cc.size()>0){
+						InternetAddress[] addressCC = new InternetAddress[recipients_cc.size()];
+						for (int j = 0; j < recipients_cc.size(); j++) {
+							InternetAddress	address = new InternetAddress(((String)recipients_cc.get(j)).trim(),false);
+							addressCC[j]=address; 
+						}
+						msgArray[0].setRecipients(Message.RecipientType.CC,addressCC);
+					}
+					//set BCC
+					if(recipients_bcc!=null && recipients_bcc.size()>0){
+						InternetAddress[] addressBCC = new InternetAddress[recipients_bcc.size()];
+						for (int j = 0; j < recipients_bcc.size(); j++) {
+							InternetAddress	address= new InternetAddress(((String)recipients_bcc.get(j)).trim(),false);
+							addressBCC[j]=address;							
+						}
+						msgArray[0].setRecipients(Message.RecipientType.BCC,addressBCC);
+					}
+					
+					msgArray[0].setSentDate(date);
+					 try {
+						 msgArray[0].setSubject(subject,"UTF-8");
+						 msgArray[0].setHeader("Content-Transfert-Encoding","8Bit");
+						 msgArray[0].setContent(mp);
+					 } catch (MessagingException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+					 }
+				//} 
+			} catch (AddressException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (MessagingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	
+			
+		    SMTPTransport t =null;
+			try {
+				t = (SMTPTransport)session.getTransport("smtp");
+			} catch (NoSuchProviderException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		     
+				try {
+					if(isAuthen)
+						t.connect(host_, email_, password_);
+					else
+						t.connect();
+						//for (int i = 0; i < msgArray.length; i++) {
+							//logger.debug("Chatchai Debug==>"+msgArray[0].getAllRecipients().toString());
+						//	t.sendMessage(arg0, arg1)send(msgArray[i]);
+							t.sendMessage(msgArray[0], msgArray[0].getAllRecipients());
+							cansent=1;
+						//}
+						
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					//e.printStackTrace();
+					//e.printStackTrace();
+					//continue;
+					e.printStackTrace();
+				} 
+				  finally {			 
+			    	try {
+						t.close();
+					} catch (MessagingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(temp!=null){
+						/*logger.error(" delete file================= "+temp.getAbsolutePath());
+						logger.error(" recipients_cc.size()="+ recipients_cc.size());
+						logger.error(" recipients_bcc.size()="+ recipients_bcc.size());*/
+						if(temp.exists() && temp.isFile())
+							temp.delete();
+					}
+			    } 
+			}
+		//}
+	
+    	return cansent;
+    }
+    private String genToken(){
+  		StringBuffer sb = new StringBuffer();
+  	    for (int i = 36; i > 0; i -= 12) {
+  	      int n = Math.min(12, Math.abs(i));
+  	      sb.append(org.apache.commons.lang.StringUtils.leftPad(Long.toString(Math.round(Math.random() * Math.pow(36, n)), 36), n, '0'));
+  	    }
+  	    return sb.toString();
+   }
     private byte[] getFileSize(Long msId,Long mtrId){
     	byte [] fileSize=null;
     	Context ctx =null;

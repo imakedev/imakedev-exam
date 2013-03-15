@@ -48,6 +48,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
@@ -1807,5 +1808,90 @@ public class MissExamServiceImpl extends PostCommon
 		// TODO Auto-generated method stub
 		missDoc.setServiceName(ServiceConstant.MISS_DOC_SEARCH);
         return postMessage(missDoc, missDoc.getClass().getName(), "missDoc", true);
+	}
+
+	@Override
+	public Long saveRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping) {
+		// TODO Auto-generated method stub
+		roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_SAVE);
+	    VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+	    roleSeriesMapping = (RoleSeriesMapping)resultMessage.getResultListObj().get(0);
+	    return roleSeriesMapping.getRcId();
+	}
+
+	@Override
+	public int updateRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping) {
+		// TODO Auto-generated method stub
+		roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_UPDATE);
+        VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+        roleSeriesMapping = (RoleSeriesMapping)resultMessage.getResultListObj().get(0);
+        return roleSeriesMapping.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping,
+			String service) {
+		// TODO Auto-generated method stub
+		roleSeriesMapping.setServiceName(service);
+        VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+        roleSeriesMapping = (RoleSeriesMapping)resultMessage.getResultListObj().get(0);
+        return roleSeriesMapping.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public RoleSeriesMapping findRoleSeriesMappingById(Long rcId) {
+		// TODO Auto-generated method stub
+		RoleSeriesMapping roleSeriesMapping = new RoleSeriesMapping();
+		roleSeriesMapping.setRcId(rcId);
+		roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_FIND_BY_ID);
+	        VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+	        if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+	        	return (RoleSeriesMapping)resultMessage.getResultListObj().get(0);
+	        return null;
+	}
+
+	@Override
+	public VResultMessage searchRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping) {
+		// TODO Auto-generated method stub
+		roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_SEARCH);
+        return postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+	}
+
+	@Override
+	public List listRoleSeriesMappingByrcId(Long rcId) {
+		// TODO Auto-generated method stub
+		//return null;
+		 RoleSeriesMapping roleSeriesMapping = new RoleSeriesMapping();
+		 roleSeriesMapping.setRcId(rcId);
+		 roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_LIST_BY_RC_ID);
+	        VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
+	       return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public List findMissAccountSeriesMapByMaId(Long maId) {
+		// TODO Auto-generated method stub
+		MissAccountSeriesMap missAccountSeriesMap = new MissAccountSeriesMap();
+	        missAccountSeriesMap.setMaId(maId);
+	        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_FIND_BY_MA_ID); 
+	        VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
+		      
+  return resultMessage.getResultListObj();
+	        
 	} 
+	@Override
+	public List findMissAccountSeriesMapByRole(Long maId,Long rcId) {
+		// TODO Auto-generated method stub
+		MissAccountSeriesMap missAccountSeriesMap = new MissAccountSeriesMap();
+	        missAccountSeriesMap.setMaId(maId);
+	        missAccountSeriesMap.setRcId(rcId);
+	        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_FIND_BY_ROLE); 
+	        VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
+		      
+  return resultMessage.getResultListObj();
+	        
+	} 
+	
+	 
+
 }

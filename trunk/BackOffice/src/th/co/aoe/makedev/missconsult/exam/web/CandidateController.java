@@ -22,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,7 +57,7 @@ public class CandidateController
     }*/
 
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String init(Model model)
+    public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
         model.addAttribute("missSeries", missExamService.listMissSery());
         CandidateForm candidateForm = new CandidateForm();
@@ -70,6 +71,10 @@ public class CandidateController
         		 candidateForm.getMissCandidate().setMissAccount(missAccount);
         	}
         }
+        int roleMC=0;
+  	  if(srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
+  		  roleMC=1;
+  	  candidateForm.getMissCandidate().setRoleMC(roleMC);
         VResultMessage vresultMessage = missExamService.searchMissCandidate(candidateForm.getMissCandidate());
         model.addAttribute("missCandidates", vresultMessage.getResultListObj());
         candidateForm.getPaging().setPageSize(PAGE_SIZE);
@@ -132,6 +137,10 @@ public class CandidateController
         logger.debug((new StringBuilder("xxxx=candidateForm.getMissCandidate().getPagging()=")).append(candidateForm.getMissCandidate().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=candidateForm.getPaging()=")).append(candidateForm.getPaging()).toString());
         candidateForm.getMissCandidate().setPagging(candidateForm.getPaging());
+        int roleMC=0;
+    	  if(request.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
+    		  roleMC=1;
+    	  candidateForm.getMissCandidate().setRoleMC(roleMC);
         VResultMessage vresultMessage = missExamService.searchMissCandidate(candidateForm.getMissCandidate());
         candidateForm.setPageCount(IMakeDevUtils.calculatePage(candidateForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("missCandidates", vresultMessage.getResultListObj());

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.RoleForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 
 @Controller
@@ -60,6 +62,7 @@ public class RoleController {
 				//String[] rtIdCheckbox=request.getParameterValues("rtIdCheckbox");
 				Enumeration e_num=request.getParameterNames();
 				List<String> rtIdsList=new ArrayList<String>();
+				List<String> msIdsList=new ArrayList<String>();
 				while (e_num.hasMoreElements()) {
 					String param_name = (String) e_num.nextElement();
 					if(param_name.startsWith("rtIdCheckbox_radio_")){
@@ -68,9 +71,20 @@ public class RoleController {
 							rtIdsList.add(request.getParameter(param_name));
 						}
 					}
+					if(param_name.startsWith("msIdCheckbox_radio_")){
+						//System.out.println("object="+param_name+",value="+request.getParameter(param_name)); 
+						if(!request.getParameter(param_name).equals("0")){
+							msIdsList.add(request.getParameter(param_name));
+						}
+					}
 				}
 				String[] rtIdRadio = new String[rtIdsList.size()];
+				String[] msIdRadio = new String[msIdsList.size()];
+				//System.out.println("rtIdRadio="+rtIdRadio[0]);
+				//System.out.println("msIdRadio="+msIdRadio[0]);
+				//System.out.println("roleForm.getRcId()="+roleForm.getRcId());
 				rtIdRadio = rtIdsList.toArray(rtIdRadio);
+				msIdRadio= msIdsList.toArray(msIdRadio);
 				//System.out.println("rtIdRadio size="+rtIdRadio.length); 
 				//logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
@@ -79,6 +93,11 @@ public class RoleController {
 				roleMapping.setRtIds(rtIdRadio);
 				roleMapping.setRcId(roleForm.getRcId());
 				missExamService.updateRoleMapping(roleMapping);
+				
+				RoleSeriesMapping roleSeriesMapping =new RoleSeriesMapping();
+				roleSeriesMapping.setMsIds(msIdRadio);
+				roleSeriesMapping.setRcId(roleForm.getRcId());
+				missExamService.updateRoleSeriesMapping(roleSeriesMapping);
 				 message = "Update Role success !";
 				 message_class="success";
 				 display="display: block";
@@ -121,8 +140,10 @@ public class RoleController {
 				.listRoleContactBymaId(Long.valueOf(Long.parseLong(maId))));
 		// missExamService.listRoleMappingByrcId(rcId)
 		List<RoleMapping> roleMappings= null;
+		List<RoleSeriesMapping> roleSeriesMappings= null;
 		if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 			roleMappings=missExamService.listRoleMappingByrcId(roleForm.getRcId());
+			roleSeriesMappings=missExamService.listRoleSeriesMappingByrcId(roleForm.getRcId());
 		}
 		List<RoleType> roleTypes = missExamService.listRoleTypes(Long.parseLong(maId));
 		if(roleTypes!=null && roleTypes.size()>0){
@@ -140,6 +161,25 @@ public class RoleController {
 				}
 			}
 		}
+		List<MissAccountSeriesMap> missAccountSeriesMaps = missExamService.findMissAccountSeriesMapByMaId(Long.parseLong(maId));
+		if(missAccountSeriesMaps!=null && missAccountSeriesMaps.size()>0){
+			logger.debug(" missAccountSeriesMaps =>"+missAccountSeriesMaps.size());
+			for (MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMaps) {
+				if(roleSeriesMappings!=null && roleSeriesMappings.size()>0){
+					logger.debug(" roleSeriesMappings =>"+roleSeriesMappings.size());
+					 for (RoleSeriesMapping roleSeriesMapping : roleSeriesMappings) {
+					//	 logger.debug("xxxxxxxxxx roleSeriesMapping.getRtId =>"+roleSeriesMapping.getRtId());
+						/* System.out.println("roleSeriesMapping.getMsId()==>"+roleSeriesMapping.getMsId());
+						 System.out.println("missAccountSeriesMap.getMsId()==>"+missAccountSeriesMap.getMissSery().getMsId());*/
+						if(roleSeriesMapping.getMsId().intValue()==missAccountSeriesMap.getMissSery().getMsId()){
+							missAccountSeriesMap.setSelected("1");
+							break;
+						}
+					}
+				}
+			}
+		}
+		model.addAttribute("missAccountSeriesMaps", missAccountSeriesMaps);
 		model.addAttribute("roleTypes", roleTypes);
 		 model.addAttribute("message", message);
 		 model.addAttribute("display", display);
@@ -164,10 +204,18 @@ public class RoleController {
 				.listRoleContactBymaId(Long.valueOf(Long.parseLong(maId))));
 		
 	
-		List<RoleMapping> roleMappings= null;
+		/*List<RoleMapping> roleMappings= null;
 		if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 			roleMappings=missExamService.listRoleMappingByrcId(roleForm.getRcId());
+		}*/
+		
+		List<RoleMapping> roleMappings= null;
+		List<RoleSeriesMapping> roleSeriesMappings= null;
+		if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
+			roleMappings=missExamService.listRoleMappingByrcId(roleForm.getRcId());
+			roleSeriesMappings=missExamService.listRoleSeriesMappingByrcId(roleForm.getRcId());
 		}
+		
 		List<RoleType> roleTypes = missExamService.listRoleTypes(Long.parseLong(maId));
 		if(roleTypes!=null && roleTypes.size()>0){
 			logger.debug(" roleTypes =>"+roleTypes.size());
@@ -184,7 +232,23 @@ public class RoleController {
 				}
 			}
 		}
-		
+		List<MissAccountSeriesMap> missAccountSeriesMaps = missExamService.findMissAccountSeriesMapByMaId(Long.parseLong(maId));
+		if(missAccountSeriesMaps!=null && missAccountSeriesMaps.size()>0){
+			logger.debug(" missAccountSeriesMaps =>"+missAccountSeriesMaps.size());
+			for (MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMaps) {
+				if(roleSeriesMappings!=null && roleSeriesMappings.size()>0){
+					logger.debug(" roleSeriesMappings =>"+roleSeriesMappings.size());
+					 for (RoleSeriesMapping roleSeriesMapping : roleSeriesMappings) {
+					//	 logger.debug("xxxxxxxxxx roleSeriesMapping.getRtId =>"+roleSeriesMapping.getRtId());
+						if(roleSeriesMapping.getMsId().intValue()==missAccountSeriesMap.getMsId().intValue()){
+							missAccountSeriesMap.setSelected("1");
+							break;
+						}
+					}
+				}
+			}
+		}
+		model.addAttribute("missAccountSeriesMaps", missAccountSeriesMaps);
 		model.addAttribute("roleTypes", roleTypes);
 		model.addAttribute("display", "display: none");
 		return "exam/template/roleSection";
