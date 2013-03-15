@@ -111,6 +111,36 @@ function exportTest(){
 	}
 	
 }
+function compareTest(){
+	var mtrIdCheckbox=document.getElementsByName("mtrIdCheckbox");
+	var index=0;
+	var mtrIds="";
+	for(var i=0;i<mtrIdCheckbox.length;i++){
+		 if(mtrIdCheckbox[i].checked){
+			 mtrIds=mtrIds+mtrIdCheckbox[i].value+"_";
+			 index++;
+		 }
+	} 
+	if(index!=2){
+		alert("Candidate must be two.");
+		return false;
+	}
+	$.ajax({
+		  type: "get",
+		  url: "result/compare/"+$("#mcaSeries").val()+"/"+mtrIds,
+		  cache: false
+		}).done(function( data ) {
+			//alert(data)
+			if(data!=null){  
+				/* alert(data[0].missCandidate.mcaFirstName)  
+				alert(data[0].missCandidate.mcaFirstName)  
+				alert(data[0].missCandidate.mcaFirstName) */  
+				/* if(data.mcaId!=null){
+					
+				} */
+			}
+		}); 
+}
 function setIgnore(){
 	var mtrIdCheckbox=document.getElementsByName("mtrIdCheckbox");
 	//alert(mtrIdCheckbox.length);
@@ -188,10 +218,19 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<!--  <select id="mcaSeries">
 	    					      <option value="-1">-- Select Series --</option>
 	    					      
-	    					    </select>	 -->
-	    					     <form:select path="mcaSeries">
-	    					      <form:options itemValue="msId" itemLabel="msSeriesName" items="${missSeries}"/>
-	    					    </form:select>		
+	    					    </select>	 -->  
+	    					   <c:if test="${not empty missSeries}">  
+	    					     	 <form:select path="mcaSeries">
+	    					     		 <form:options itemValue="msId" itemLabel="msSeriesName" items="${missSeries}"/>
+	    					     		<form:options itemValue="missSery.msId" itemLabel="missSery.msSeriesName" items="${missSeries}"/>
+	    					    	</form:select>	
+	    					    </c:if>
+	    					    <c:if test="${empty missSeries}"> 
+	    					    	 <form:select path="mcaSeries"> 
+	    					     		<form:option value="-1" label="---"/>
+	    					    	</form:select>	 
+	    					    </c:if>
+	    					   	
 	    					 </td>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
@@ -270,7 +309,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<a class="btn btn-info" onclick="exportTest()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
 	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
 	    					<a class="btn btn-danger" onclick="setIgnore()"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a>
-	    					<a class="btn btn-info"><i class="icon-tasks icon-white"></i>&nbsp;<spring:message code="page_testsearch_compare"/></a>
+	    					<a class="btn btn-info" onclick="compareTest()"><i class="icon-tasks icon-white"></i>&nbsp;<spring:message code="page_testsearch_compare"/></a>
 	    					</td>
 	    					<td align="right" width="40%">
 	    					<a onclick="goPrev()"><spring:message code='page_prev'/></a>&nbsp;|&nbsp;<span id="pageElement"></span>&nbsp;|&nbsp;<a onclick="goNext()"><spring:message code='page_next'/></a>&nbsp;<a  class="btn btn-primary" onclick="doAction('search','0')"><i class="icon-search icon-white"></i>&nbsp;<spring:message code='button_search'/></a>
