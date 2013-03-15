@@ -44,6 +44,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -85,6 +86,11 @@ public interface MissExamService {
 			MissAccountSeriesMap missaccountseriesmap);
 
 	public abstract MissAccountSeriesMap findMissAccountSeriesMapById(Long long1);
+
+	public abstract List findMissAccountSeriesMapByMaId(
+			Long maId);
+	public abstract List findMissAccountSeriesMapByRole
+			(Long maId,Long rcId); 
 
 	public abstract VResultMessage searchMissAccountSeriesMap(
 			MissAccountSeriesMap missaccountseriesmap);
@@ -333,7 +339,23 @@ public interface MissExamService {
 
 	public abstract VResultMessage searchRoleMapping(RoleMapping roleContact);
 
+
 	public abstract List listRoleMappingByrcId(Long rcId);
+	
+	//Start RoleSeriesMapping
+	public abstract Long saveRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping);
+
+	public abstract int updateRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping);
+
+	public abstract int deleteRoleSeriesMapping(RoleSeriesMapping roleSeriesMapping,
+			String service);
+
+	public abstract RoleSeriesMapping findRoleSeriesMappingById(Long rcId);
+
+	public abstract VResultMessage searchRoleSeriesMapping(RoleSeriesMapping roleContact);
+
+	public abstract List listRoleSeriesMappingByrcId(Long rcId);
+	//End RoleSeriesMapping
 
 	public abstract Long saveRoleType(RoleType roleType);
 

@@ -38,6 +38,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
@@ -52,7 +54,9 @@ import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -60,8 +64,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissTestShow;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
-@RequestMapping(value={"/result"})
-@SessionAttributes(value={"resultForm"})
+@RequestMapping(value={"/result"}) 
+@SessionAttributes(value={"UserMissContact","resultForm"})
 public class ResultController
 {
 	private static int PAGE_SIZE=20;
@@ -102,17 +106,53 @@ public class ResultController
 			MAIL_PERSONAL_NAME=bundle.getString("mail.personal_name");
 			MAIL_TLS=bundle.getString("mail.TLS");
 		}
+   @RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+   public  @ResponseBody MissTestResult[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
+		    {
+			 //Gson gson=new Gson();
+	   MissTestResult[] missTestResults=new MissTestResult[2];
+	   MissTestResult missTestResult1 =null;
+	   MissTestResult missTestResult2  =null;
+	  String[] mtrId_array= mtrIds.split("_");
+	  MissTestResult missTestResult=new MissTestResult();
+	  missTestResult.setMsId(msId);
+	  missTestResult.setMtrIds(mtrId_array[0]);
+	   VResultMessage vresultMessage = missExamService.searchMissTestResult(missTestResult);
+	   missTestResult1 = (MissTestResult)((java.util.ArrayList)vresultMessage.getResultListObj().get(0)).get(0);
+	   
+	   missTestResult.setMtrIds(mtrId_array[1]);
+	   vresultMessage = missExamService.searchMissTestResult(missTestResult);
+	   missTestResult2 = (MissTestResult)((java.util.ArrayList)vresultMessage.getResultListObj().get(0)).get(0);
+	     
+	   
+	   missTestResults[0]=missTestResult1;
+	   missTestResults[1]=missTestResult2;
+	 
+	return missTestResults;
+	}
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public String init(Model model)
+    public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
-    	 List missSeries= missExamService.listMissSery();
+    	 List missSeries=null;// missExamService.listMissSery();
+    	 if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(missContact.getMcontactRef(),missContact.getRcId());
+         }
+    	
     	  model.addAttribute("missSeries",missSeries);
-    	 
+    	 // System.out.println( " ROLE_MANAGE_MISSCONSULT===>"+);
+    	  int roleMC=0;
+    	  if(srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
+    		  roleMC=1;
+    	  
+    	//  SecurityContextHolder.getContext().getAuthentication().getAuthorities().;
     	  ResultForm resultForm = new ResultForm();
     	  resultForm.getMissTestResult().getPagging().setPageSize(PAGE_SIZE);
-    	 
+    	
     	  if(missSeries!=null && missSeries.size()>0){
-          		resultForm.getMissTestResult().setMsId(((MissSery)missSeries.get(0)).getMsId());
+          		resultForm.getMissTestResult().setMsId(((MissAccountSeriesMap)missSeries.get(0)).getMissSery().getMsId());
     	  }
     		MissCandidate missCandidate =new MissCandidate();
         	MissAccount missAccount=new MissAccount();
@@ -126,6 +166,7 @@ public class ResultController
         	missCandidate.setMissAccount(missAccount);
         	
         	resultForm.getMissTestResult().setMissCandidate(missCandidate);
+        	resultForm.getMissTestResult().setRoleMC(roleMC);
          VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
          model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
           resultForm.getPaging().setPageSize(PAGE_SIZE);
@@ -142,7 +183,12 @@ public class ResultController
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doSearch(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
     {
+    	//System.out.println( " ROLE_MANAGE_MISSCONSULT===>"+srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"));
+    	//System.out.println("ROLE_MANAGE_MISSCONSULT==========>"+request.isUserInRole("ROLE_MANAGE_MISSCONSULT"));
         String mode = resultForm.getMode();
+        int roleMC=0;
+  	  if(request.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
+  		  roleMC=1;
        // String missExam_selectboxes[] = request.getParameterValues("missExam_selectbox");
       /*  private Long msId;
         private Timestamp mtrEndTime;
@@ -215,11 +261,18 @@ public class ResultController
        // resultForm.getMissSery().setMeIds(missExam_selectboxes);
         resultForm.getPaging().setPageSize(PAGE_SIZE);
         resultForm.getMissTestResult().setPagging(resultForm.getPaging());
+        resultForm.getMissTestResult().setRoleMC(roleMC);
         VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
       
         resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        List missSeries=null;// missExamService.listMissSery();
+    	// System.out.println("model.containsAttribute(\"UserMissContact\")==>"+model.containsAttribute("UserMissContact"));
+    	 if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(missContact.getMcontactRef(),missContact.getRcId());
+         }
+        model.addAttribute("missSeries", missSeries);
        /* List<String> axisHeaders=new ArrayList<String>(4);
         axisHeaders.add("Fa");
         axisHeaders.add("Im");
