@@ -153,7 +153,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 	
 	
 
-	private int getSize(Session session, MissCandidate instance) throws Exception{
+	private int getSize(Session session,int roleMC, MissCandidate instance) throws Exception{
 		try {
 			String mcaStatus=instance.getMcaStatus();
 			String mcaSeries=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
@@ -164,8 +164,11 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 		
 			StringBuffer sb =new StringBuffer(" select count(missCandidate) from MissCandidate missCandidate ");
-			sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
-			boolean iscriteria = true;
+			boolean iscriteria = false;
+			if(roleMC==1){
+				sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
+				iscriteria=true;
+			}
 			if(mcaStatus !=null && !mcaStatus.equals("-1")){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
 				 sb.append(iscriteria?(" and missCandidate.mcaStatus='"+mcaStatus+"'"):(" where missCandidate.mcaStatus='"+mcaStatus+"'"));
@@ -209,7 +212,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissCandidate(MissCandidate instance,Pagging pagging) throws DataAccessException {
+	 public List searchMissCandidate(MissCandidate instance,int roleMC,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
@@ -222,9 +225,12 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				 
 				String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
 				Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
-				StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
-				sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
-				boolean iscriteria = true;
+				StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate "); 
+				boolean iscriteria = false;
+				if(roleMC==1){
+					sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
+					iscriteria=true;
+				}
 				if(mcaStatus !=null && !mcaStatus.equals("-1")){  
 					//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
 					 sb.append(iscriteria?(" and missCandidate.mcaStatus='"+mcaStatus+"'"):(" where missCandidate.mcaStatus='"+mcaStatus+"'"));
@@ -261,7 +267,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				}			
 				Query query =session.createQuery(sb.toString());
 				// set pagging.
-				 String size = String.valueOf(getSize(session, instance)); 
+				 String size = String.valueOf(getSize(session,roleMC, instance)); 
 				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));

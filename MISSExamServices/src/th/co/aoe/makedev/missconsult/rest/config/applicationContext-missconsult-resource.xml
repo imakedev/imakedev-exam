@@ -45,6 +45,8 @@
 		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountSeriesMapResource"
 		scope="prototype"> 
 		<property name="missAccountSeriesMapService" ref="missAccountSeriesMapService"></property> 
+		<property name="missAccountService" ref="missAccountService"></property>
+		
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
 	<bean id="missCandidateResource"
@@ -171,7 +173,12 @@
 		<property name="roleMappingService" ref="roleMappingService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
-	
+	<bean id="roleSeriesMappingResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.RoleSeriesMappingResource"
+		scope="prototype"> 
+		<property name="roleSeriesMappingService" ref="roleSeriesMappingService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
 	<bean id="missThemeResource"
 		class="th.co.aoe.makedev.missconsult.rest.resource.MissThemeResource"
 		scope="prototype"> 

@@ -14,13 +14,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping;
-import th.co.aoe.makedev.missconsult.hibernate.bean.RoleMappingPK;
-import th.co.aoe.makedev.missconsult.managers.RoleMappingService;
+import th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping;
+import th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMappingPK;
+import th.co.aoe.makedev.missconsult.managers.RoleSeriesMappingService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
+
 @Repository
 @Transactional
-public class HibernateRoleMapping  extends HibernateCommon implements RoleMappingService {
+public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleSeriesMappingService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
@@ -31,22 +32,22 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
 	@Transactional(readOnly=true)
-	public RoleMapping findRoleMappingById(Long mmId)
+	public RoleSeriesMapping findRoleSeriesMappingById(Long mmId)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		RoleMapping roleMapping = null;
+		RoleSeriesMapping roleSeriesMapping = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-	//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
-		Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.missSery.msId=:msId");
+	//	Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.mmId=:mmId");
+		Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.missSery.msId=:msId");
 		query.setParameter("msId", mmId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
-			roleMapping=(RoleMapping)obj;
+			roleSeriesMapping=(RoleSeriesMapping)obj;
 		}
-	  return roleMapping;
+	  return roleSeriesMapping;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public Long saveRoleMapping(RoleMapping transientInstance)
+	public Long saveRoleSeriesMapping(RoleSeriesMapping transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
@@ -73,18 +74,18 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 	
 	
 
-	private int getSize(Session session, RoleMapping instance) throws Exception{
+	private int getSize(Session session, RoleSeriesMapping instance) throws Exception{
 		try {
 			/*Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 		
 		
-			StringBuffer sb =new StringBuffer(" select count(roleMapping) from RoleMapping roleMapping ");
+			StringBuffer sb =new StringBuffer(" select count(roleSeriesMapping) from RoleSeriesMapping roleSeriesMapping ");
 			
 			boolean iscriteria = false;
 			if(msId !=null && msId.intValue()!=0){  
 				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and roleMapping.missSery.msId="+msId.intValue()+""):(" where roleMapping.missSery.msId="+msId.intValue()+""));
+				 sb.append(iscriteria?(" and roleSeriesMapping.missSery.msId="+msId.intValue()+""):(" where roleSeriesMapping.missSery.msId="+msId.intValue()+""));
 				  iscriteria = true;
 			}
 			Query query =session.createQuery(sb.toString());
@@ -102,7 +103,7 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchRoleMapping(RoleMapping instance,Pagging pagging) throws DataAccessException {
+	 public List searchRoleSeriesMapping(RoleSeriesMapping instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			/*Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
@@ -110,18 +111,18 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
 							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
 				
-					StringBuffer sb =new StringBuffer(" select roleMapping from RoleMapping roleMapping ");
+					StringBuffer sb =new StringBuffer(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping ");
 					
 					boolean iscriteria = false;
 					if(msId !=null && msId.intValue()!=0){  
 						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and roleMapping.missSery.msId="+msId.intValue()+""):(" where roleMapping.missSery.msId="+msId.intValue()+""));
+						 sb.append(iscriteria?(" and roleSeriesMapping.missSery.msId="+msId.intValue()+""):(" where roleSeriesMapping.missSery.msId="+msId.intValue()+""));
 						  iscriteria = true;
 					}
 					
 					
 					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by roleMapping."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
+							sb.append( " order by roleSeriesMapping."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 					}			
 					Query query =session.createQuery(sb.toString());
 					// set pagging.
@@ -143,27 +144,27 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int updateRoleMapping(RoleMapping transientInstance)
+	public int updateRoleSeriesMapping(RoleSeriesMapping transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		
-		/*RoleMapping roleMapping = null;
+		/*RoleSeriesMapping roleSeriesMapping = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		
-		Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping " +
-				" where roleMapping.missSery.msId=:msId ");
+		Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping " +
+				" where roleSeriesMapping.missSery.msId=:msId ");
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){
-			 roleMapping=(RoleMapping)list.get(0);
-			 roleMapping.setMmFileName(transientInstance.getMmFileName());
-			 roleMapping.setMmHotlink(transientInstance.getMmHotlink());
-			 roleMapping.setMmPath(transientInstance.getMmPath());
-			 roleMapping.setMatRef(Long.parseLong(id));
-			 roleMapping.setMatModule(module);
+			 roleSeriesMapping=(RoleSeriesMapping)list.get(0);
+			 roleSeriesMapping.setMmFileName(transientInstance.getMmFileName());
+			 roleSeriesMapping.setMmHotlink(transientInstance.getMmHotlink());
+			 roleSeriesMapping.setMmPath(transientInstance.getMmPath());
+			 roleSeriesMapping.setMatRef(Long.parseLong(id));
+			 roleSeriesMapping.setMatModule(module);
 		//	BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);					
-			return update(session, roleMapping);
+			return update(session, roleSeriesMapping);
 		}else{
 			Long returnId  = null;
 			try{
@@ -183,47 +184,49 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	public int deleteRoleMapping(RoleMapping persistentInstance)
+	public int deleteRoleSeriesMapping(RoleSeriesMapping persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
 	@Override
-	public List listRoleMappingByrcId(Long rcId) throws DataAccessException {
+	public List listRoleSeriesMappingByrcId(Long rcId) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-			Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.id.rcId=:rcId");
+			Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.id.rcId=:rcId");
 			query.setParameter("rcId", rcId);
-			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping> list=query.list();
-			List<th.co.aoe.makedev.missconsult.xstream.RoleMapping> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleMapping>(list.size());
-			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping type : list) {
-				th.co.aoe.makedev.missconsult.xstream.RoleMapping xrole=new th.co.aoe.makedev.missconsult.xstream.RoleMapping();
-				th.co.aoe.makedev.missconsult.hibernate.bean.RoleMappingPK pk= type.getId();
+			//System.out.println("rcId="+rcId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping> list=query.list();
+			List<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping>(list.size());
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping type : list) {
+				th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping xrole=new th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping();
+				th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMappingPK pk= type.getId();
 				xrole.setRcId(pk.getRcId());
-				xrole.setRtId(pk.getRtId());
+				xrole.setMsId(pk.getMsId());
+				//System.out.println("getMsId="+pk.getMsId());
 				xrole.setPagging(null);
 				roles.add(xrole);
 			}
 			return roles;
 	}
 	@Override
-	public int updateRoleMapping(Long rcId, String[] rtIds)
+	public int updateRoleSeriesMapping(Long rcId, String[] msIds)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		try{
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		//System.out.println("rcId=="+rcId);
-		//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
-		Query query=session.createQuery("delete RoleMapping roleMapping where roleMapping.id.rcId ="+rcId.intValue());
+		//	Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.mmId=:mmId");
+		Query query=session.createQuery("delete RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.id.rcId ="+rcId.intValue());
 		int result = query.executeUpdate();
 		//System.out.println(result);
-		if(rtIds!=null && rtIds.length>0)
-		for (String rtid : rtIds) {
-			System.out.println("		rtid==>"+rtid);
-			RoleMapping mapping =new RoleMapping();
-			RoleMappingPK pk =new RoleMappingPK();
-			pk.setRcId(rcId);
-			pk.setRtId(Long.parseLong(rtid));
+		if(msIds!=null && msIds.length>0)
+		for (String msid : msIds) {
+			//System.out.println("		rtid==>"+rtid);
+			RoleSeriesMapping mapping =new RoleSeriesMapping();
+			RoleSeriesMappingPK pk =new RoleSeriesMappingPK();
+			 pk.setRcId(rcId);
+			pk.setMsId(Long.parseLong(msid)); 
 			mapping.setId(pk);
 			session.save(mapping); 
 			

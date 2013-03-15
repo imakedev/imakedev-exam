@@ -153,6 +153,12 @@
 							bean="roleMappingResource" />
 					</bean>
 				</entry>
+				<entry key="/roleSeriesMapping">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="roleSeriesMappingResource" />
+					</bean>
+				</entry>
 				
 				<entry key="/missTheme">
 					<bean class="org.restlet.ext.spring.SpringFinder">

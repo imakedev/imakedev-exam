@@ -39,7 +39,9 @@ public class ServiceConstant {
 	public static final String MISS_ACCOUNT_SERIES_MAP_UPDATE = "updateMissAccountSeriesMap";
 	public static final String MISS_ACCOUNT_SERIES_MAP_DELETE = "deleteMissAccountSeriesMap";
 	public static final String MISS_ACCOUNT_SERIES_MAP_SEARCH = "searchMissAccountSeriesMap";
-	public static final String MISS_ACCOUNT_SERIES_MAP_FIND_BY_ID = "findMissAccountSeriesMapById"; 
+	public static final String MISS_ACCOUNT_SERIES_MAP_FIND_BY_ID = "findMissAccountSeriesMapById";
+	public static final String MISS_ACCOUNT_SERIES_MAP_FIND_BY_MA_ID = "findMissAccountSeriesMapByMaId";  
+	public static final String MISS_ACCOUNT_SERIES_MAP_FIND_BY_ROLE = "findMissAccountSeriesMapByRole";  
 	
 	// MISS_CANDIDATE
 	public static final String MISS_CANDIDATE_SAVE = "saveMissCandidate";
@@ -223,6 +225,16 @@ public class ServiceConstant {
 		public static final String ROLE_MAPPING_ITEMS_DELETE ="deleteRoleMappingItems";
 		public static final String ROLE_MAPPING_LIST_BY_RC_ID ="listRoleMappingByRcId";
 		
+		// role_series_mapping
+		public static final String ROLE_SERIES_MAPPING_SAVE = "saveRoleSeriesMapping";
+		public static final String ROLE_SERIES_MAPPING_UPDATE = "updateRoleSeriesMapping";
+		public static final String ROLE_SERIES_MAPPING_DELETE = "deleteRoleSeriesMapping";
+		public static final String ROLE_SERIES_MAPPING_SEARCH = "searchRoleSeriesMapping";
+		public static final String ROLE_SERIES_MAPPING_FIND_BY_ID = "findRoleSeriesMappingById"; 
+		public static final String ROLE_SERIES_MAPPING_ITEMS_DELETE ="deleteRoleSeriesMappingItems";
+		public static final String ROLE_SERIES_MAPPING_LIST_BY_RC_ID ="listRoleSeriesMappingByRcId";
+		
+		
 		// role_type
 		public static final String ROLE_TYPE_SAVE = "saveRoleType";
 		public static final String ROLE_TYPE_UPDATE = "updateRoleType";
@@ -284,5 +296,5 @@ public class ServiceConstant {
 		public static final String MISS_DOC_UPDATE = "updateMissDoc";
 		public static final String MISS_DOC_DELETE = "deleteMissDoc";
 		public static final String MISS_DOC_SEARCH = "searchMissDoc";
-		public static final String MISS_DOC_FIND_BY_ID = "findMissDocById";  
+		public static final String MISS_DOC_FIND_BY_ID = "findMissDocById";
 }

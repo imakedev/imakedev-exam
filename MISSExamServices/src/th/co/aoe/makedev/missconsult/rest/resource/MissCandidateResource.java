@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -344,7 +343,7 @@ public class MissCandidateResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
-							List result = (List) missCandidateService.searchMissCandidate(bpsTerm,page);
+							List result = (List) missCandidateService.searchMissCandidate(bpsTerm,xbpsTerm.getRoleMC(), page);
 							if (result != null && result.size() == 2) {
 								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate>) result
 										.get(0);*/
@@ -389,7 +388,7 @@ public class MissCandidateResource extends BaseResource {
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub
-		logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
+		/*logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
 		logger.debug("into GET MissCandidateResource");
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate();
@@ -407,7 +406,8 @@ public class MissCandidateResource extends BaseResource {
 			}
 		}
 			vresultMessage.setResultListObj(xntcCalendars);
-			return getRepresentation(null, vresultMessage, xstream);
+			return getRepresentation(null, vresultMessage, xstream);*/
+		return null;
 	}
 	private List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> getxMissCandidateObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars) {

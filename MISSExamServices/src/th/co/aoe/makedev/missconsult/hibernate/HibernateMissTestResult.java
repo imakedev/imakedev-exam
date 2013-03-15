@@ -134,7 +134,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return returnId;
 	}
 
-	private int getSize(Session session, MissTestResult instance)
+	private int getSize(Session session, MissTestResult instance,int roleMC)
 			throws Exception {
 		try {
 			Long msId = instance.getMsId();
@@ -180,8 +180,12 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							+ schema
 							+ ".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID"
 							+ "  ");
-
 			boolean iscriteria = false;
+			if(roleMC==1){
+				sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+				iscriteria=true;
+			}
+		
 			if (msId != null && msId > 0) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MS_ID=" + msId + "")
@@ -266,11 +270,13 @@ public class HibernateMissTestResult extends HibernateCommon implements
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly = true)
-	public List searchMissTestResult(MissTestResult instance, String mtrIds,
+	public List searchMissTestResult(MissTestResult instance, String mtrIds,int roleMC,
 			Pagging pagging) throws DataAccessException {
 		ArrayList transList = new ArrayList();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Long msId = instance.getMsId();
+		
+			
 		try {
 			/*
 			 * Long megId = instance.getMegId(); String megName =
@@ -324,10 +330,14 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			 * where result.MCA_ID=21 and result.MTR_START_TIME > '2012-06-20'
 			 * and result.MTR_START_TIME < '2012-06-20 23:59:59'
 			 */
-			sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+			boolean iscriteria = false;
+			if(roleMC==1){
+				sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+				iscriteria=true;
+			}
 			// SimpleDateFormat format = new
 			// SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			boolean iscriteria = true;
+			
 			if (msId != null && msId > 0) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MS_ID=" + msId + "")
@@ -447,7 +457,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			// end get header
 			query = session.createSQLQuery(sb.toString());
 			// set pagging.
-			String size = String.valueOf(getSize(session, instance));
+			String size = String.valueOf(getSize(session, instance,roleMC));
 			logger.debug(" first Result="
 					+ (pagging.getPageSize() * (pagging.getPageNo() - 1)));
 
