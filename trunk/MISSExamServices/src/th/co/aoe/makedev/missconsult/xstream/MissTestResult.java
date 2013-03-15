@@ -42,6 +42,15 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private int totalScore;
 	private String column;
 	private String value;
+	private int roleMC; //0=false, 1 =ture;
+	public int getRoleMC() {
+		return roleMC;
+	}
+
+	public void setRoleMC(int roleMC) {
+		this.roleMC = roleMC;
+	}
+
 	//private Map<String,String> paramMap;
 	private List<MissTestShow> missTestShows;
 	public String getColumn() {

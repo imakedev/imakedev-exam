@@ -98,7 +98,10 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 			//	transientInstance.setMaCustomizeLogoFileName(missAccount.getMaCustomizeLogoFileName());
 				transientInstance.setMaCustomizeLogoHotlink(missAccount.getMaCustomizeLogoHotlink());
 				transientInstance.setMaCustomizeLogoPath(missAccount.getMaCustomizeLogoPath());
-				
+				transientInstance.setMaClearTest("12");
+				transientInstance.setMaClearCandidate1("12");
+				transientInstance.setMaClearCandidate2("12");
+				transientInstance.setMaClearCandidate3("12");
 			} 
 			transientInstance.setMaGrade("1");
 		/*	transientInstance.setMaCustomizeHeadColor("body.gif");

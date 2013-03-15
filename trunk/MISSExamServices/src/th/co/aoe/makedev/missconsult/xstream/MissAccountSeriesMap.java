@@ -40,6 +40,9 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 	private String groupStr;
 	private String seryName;
 	private String seryUnit;
+	
+	private String selected;
+	private Long rcId;
     public MissAccountSeriesMap() {
     }
 
@@ -167,6 +170,30 @@ public class MissAccountSeriesMap extends VServiceXML implements Serializable {
 
 	public void setMasmCandidateAvailable(String masmCandidateAvailable) {
 		this.masmCandidateAvailable = masmCandidateAvailable;
+	}
+
+
+
+	public String getSelected() {
+		return selected;
+	}
+
+
+
+	public Long getRcId() {
+		return rcId;
+	}
+
+
+
+	public void setRcId(Long rcId) {
+		this.rcId = rcId;
+	}
+
+
+
+	public void setSelected(String selected) {
+		this.selected = selected;
 	}
 	
 }

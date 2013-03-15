@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.managers.MissAccountSeriesMapService;
+import th.co.aoe.makedev.missconsult.managers.MissAccountService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -21,6 +22,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 public class MissAccountSeriesMapResource extends BaseResource {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);  
 	private MissAccountSeriesMapService missAccountSeriesMapService;
+	private MissAccountService missAccountService;
 	private com.thoughtworks.xstream.XStream xstream;
 	private static final String[] id_ignore=new String[]{"id","missAccount","missSery"};
 	public MissAccountSeriesMapResource() {
@@ -110,7 +112,53 @@ public class MissAccountSeriesMapResource extends BaseResource {
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
-						}
+						}else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_FIND_BY_MA_ID)){
+							 
+								VResultMessage vresultMessage = new VResultMessage();
+								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xntcCalendars =null;
+								 
+								//xntcCalendarReturn.setPagging(null);
+								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
+								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountSeriesMapService.listMissAccountSeriesMapByMaId(xbpsTerm.getMaId());
+								//System.out.println(missSeryList);
+								if(missSeryList!=null && missSeryList.size()>0){
+									int missSeryList_size=missSeryList.size();
+									 xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missSeryList_size);
+									for (int i = 0; i < missSeryList_size; i++) {
+										th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap xmissAccountSeriesMap=new th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
+										xmissAccountSeriesMap.setMissSery(missSeryList.get(i));
+										xntcCalendars.add(xmissAccountSeriesMap);
+									}
+								}
+								//missAccountSeriesMapList.add(e)
+								//xntcCalendarReturn.setMissAccountSeriesMapList(missAccountSeriesMapList);
+							/*	xntcCalendarReturn.setMissSeryList(missSeryList);
+								xntcCalendars.add(xntcCalendarReturn);*/
+								vresultMessage.setResultListObj(xntcCalendars);
+								return getRepresentation(entity, vresultMessage, xstream);
+							 
+						} else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_FIND_BY_ROLE)){
+							 
+								VResultMessage vresultMessage = new VResultMessage();
+								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xntcCalendars =null;
+								 
+								//xntcCalendarReturn.setPagging(null);
+								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
+								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missSeryList =missAccountSeriesMapService.listMissAccountSeriesMapByRole(xbpsTerm.getMaId(),xbpsTerm.getRcId());
+								//System.out.println(missSeryList);
+							/*	if(missSeryList!=null && missSeryList.size()>0){
+									int missSeryList_size=missSeryList.size();
+									 xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missSeryList_size);
+									for (int i = 0; i < missSeryList_size; i++) {
+										th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap xmissAccountSeriesMap=new th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
+										xmissAccountSeriesMap.setMissSery(missSeryList.get(i));
+										xntcCalendars.add(xmissAccountSeriesMap);
+									}
+								}*/
+								vresultMessage.setResultListObj(missSeryList);
+								return getRepresentation(entity, vresultMessage, xstream);
+							 
+						} 
 						
 					} else {
 					}
@@ -199,6 +247,14 @@ public class MissAccountSeriesMapResource extends BaseResource {
 
 	public void setXstream(com.thoughtworks.xstream.XStream xstream) {
 		this.xstream = xstream;
+	}
+
+	public MissAccountService getMissAccountService() {
+		return missAccountService;
+	}
+
+	public void setMissAccountService(MissAccountService missAccountService) {
+		this.missAccountService = missAccountService;
 	}
 
 	

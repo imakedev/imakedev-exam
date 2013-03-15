@@ -19,7 +19,7 @@ public interface MissCandidateService {
 		public MissCandidate findMissCandidateByName(String name)throws DataAccessException  ; 
 		public MissCandidate findMissCandidateByCitizendIdAndEmail(String citizendId,String email)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
-		public  List searchMissCandidate(MissCandidate persistentInstance,	Pagging pagging)throws DataAccessException  ;
+		public  List searchMissCandidate(MissCandidate persistentInstance,	int roleMC,Pagging pagging)throws DataAccessException  ;
 		
 		public List<th.co.aoe.makedev.missconsult.xstream.MissExam> findMissExambySery(Long msId)throws DataAccessException  ;
 		
