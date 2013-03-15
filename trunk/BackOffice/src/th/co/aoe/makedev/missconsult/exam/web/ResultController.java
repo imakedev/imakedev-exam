@@ -150,10 +150,11 @@ public class ResultController
     	//  SecurityContextHolder.getContext().getAuthentication().getAuthorities().;
     	  ResultForm resultForm = new ResultForm();
     	  resultForm.getMissTestResult().getPagging().setPageSize(PAGE_SIZE);
-    	
+    	 Long msId=-1l;
     	  if(missSeries!=null && missSeries.size()>0){
-          		resultForm.getMissTestResult().setMsId(((MissAccountSeriesMap)missSeries.get(0)).getMissSery().getMsId());
+    		  msId=((MissAccountSeriesMap)missSeries.get(0)).getMissSery().getMsId();
     	  }
+    	  resultForm.getMissTestResult().setMsId(msId);
     		MissCandidate missCandidate =new MissCandidate();
         	MissAccount missAccount=new MissAccount();
         	missAccount.setMaName(resultForm.getMcaCompanyName());
