@@ -53,8 +53,10 @@ $(document).ready(function() {
 	 	    	doAction('search','0');
 	 	   }
 	 });
-	 $("#sortItemSelect").val($("#orderBy").val());
-	$("#sortOrderSelect").val($("#sortBy").val());
+	/*  $("#sortItemSelect").val($("#orderBy").val());
+	$("#sortOrderSelect").val($("#sortBy").val()); */
+	$("#sortItemSelect").val("msuDdateTime");
+	$("#sortOrderSelect").val("desc");
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -329,7 +331,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    						<option value="mcaUsername">Username</option>
 	    						<option value="missAccount.maName">Company</option>
 	    						<option value="missSery.msSeriesName">Series</option>
-	    					 
+	    						<option value="msuDdateTime">Last Login</option> 
 	    					  </select> 
 	    					&nbsp;
 	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
