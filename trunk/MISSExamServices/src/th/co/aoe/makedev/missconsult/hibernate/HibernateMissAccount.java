@@ -238,8 +238,6 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				String maRegisterNo = instance.getMaRegisterNo();
 				Timestamp maRegisterFrom = instance.getMaRegisterFrom();
 				Timestamp maRegisterTo = instance.getMaRegisterTo();
-				// System.out.println("xxxxxxxx="+maRegisterFrom+","+maRegisterTo);
-				//String maContactName = instance.getMaContactName();
 				String maPhone = instance.getMaPhone();
 				String maName = instance.getMaName();
 				Query query = null;
@@ -264,8 +262,6 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 					}
 				}
 				
-				/*System.out.println("xxxxxxxxxx =maId_in"+maId_in);
-				System.out.println("maContactName ="+maContactName);*/
 				
 				StringBuffer sb =new StringBuffer(" select missAccount from MissAccount missAccount ");
 				
@@ -600,8 +596,6 @@ int result = query.executeUpdate();*/
 				 xmissSery.setGroupStr(groupStr.toString());
 				 xmissSeryList.add(xmissSery);
 			}
-			//return xmissAccountSeriesMapList;
-			//System.out.println(xmissSeryList);
 			return xmissSeryList;
 		}catch (Exception e) {
 			// TODO: handle exception

@@ -142,7 +142,6 @@ public class HibernateCommon {
 										if ( !"".equals(obj.toString())
 												&& !" ".equals(obj.toString())) { 
 											boolean haveExtExpression =false;
-											//System.out.println("likeExpression==>"+likeExpression);
 											if(likeExpression!=null){
 												if(likeExpression.containsKey(fieldName)){
 													criteria.add(Expression.like(fieldName, obj.toString(),MatchMode.ANYWHERE).ignoreCase());
@@ -259,7 +258,6 @@ public class HibernateCommon {
 										if ( !"".equals(obj.toString())
 												&& !" ".equals(obj.toString())) { 
 											boolean haveExtExpression =false;
-											//System.out.println("likeExpression==>"+likeExpression);
 											if(likeExpression!=null){
 												if(likeExpression.containsKey(fieldName)){
 													criteria.add(Expression.like(fieldName, obj.toString(),MatchMode.ANYWHERE).ignoreCase());
@@ -344,8 +342,7 @@ public class HibernateCommon {
 			 criteria.setMaxResults(maxResults);*/
 			 criteria.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 			 criteria.setMaxResults(pagging.getPageSize());
- 		 // System.out.println(" getStartIndex ==> "+pagging.getStartIndex());
-		//  System.out.println(" maxResults ==> "+maxResults);
+ 		 
 			List l = criteria.list();
 
 			transList.add(l);

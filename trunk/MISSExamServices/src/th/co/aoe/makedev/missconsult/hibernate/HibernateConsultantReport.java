@@ -167,7 +167,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 					" and month(ordered.mso_date_time)="+month+" " +
 					" group by exam.me_id");
 			consultantReport.setSaleStat(getResult(session,sb));
-			//System.out.println("xxxxxx="+consultantReport);
+		
 			
 			
 			
@@ -196,9 +196,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 	try{
 		for (Object[] objects : list) {
 			List<String> strings =new ArrayList<String>(objects.length);
-			//System.out.println(" object o="+objects[0]+" ,1="+objects[1]+" ,2 ="+objects[2]);
 			for (int i = 0; i < objects.length; i++) {
-				//System.out.println(objects[i].getClass().toString());
 				 if(objects[i] instanceof java.lang.String){ 
 					strings.add((String)objects[i]);
 				 }
@@ -213,7 +211,6 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 			}
 		  results.add(strings);
 		}
-		//System.out.println(results.size());
 		consultantReport.setSalesList(results);
 		
 		// test XLS
@@ -235,16 +232,13 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 	return consultantReport;
   } 
 	private void getCode(byte[] byteArray){
-		//System.out.println("byte size="+byteArray.length);
 		ByteArrayInputStream bais = 
 		         new ByteArrayInputStream(byteArray);
 		HSSFWorkbook wb =null;
 		try {
 			wb= new HSSFWorkbook(bais);
 			Sheet sheet1_0 = wb.getSheetAt(0);
-			//System.out.println("xxxxxxxxxxxx"+sheet1_0.getSheetName());
 			Row r = sheet1_0.getRow(1);
-			//System.out.println(r.getCell(1).getStringCellValue());			 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -363,8 +363,6 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 				 xmissSery.setGroupStr(groupStr.toString());
 				 xmissSeryList.add(xmissSery);
 			}*/
-			//return xmissAccountSeriesMapList;
-			//System.out.println(xmissSeryList);
 			return xmissSeryList;
 		}catch (Exception e) {
 			// TODO: handle exception

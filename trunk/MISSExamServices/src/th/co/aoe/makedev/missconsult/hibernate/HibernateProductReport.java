@@ -39,7 +39,6 @@ public class HibernateProductReport extends HibernateCommon implements ProductRe
 		List<Object[]> list=query.list();
 		List<String> results =new ArrayList<String>(list.size());
 		for (Object[] objects : list) {
-			//System.out.println(" object o="+objects[0]+" ,1="+objects[1]+" ,2 ="+objects[2]);
 			results.add((String)objects[index]);
 		}
 		return results;
@@ -107,7 +106,6 @@ public class HibernateProductReport extends HibernateCommon implements ProductRe
 				seryMaxUses.add(getResultWithYear(session,sb,2));
 		   }  
 		   productReport.setSeryMaxUses(seryMaxUses);
-		   //System.out.println("seryMaxUses="+seryMaxUses);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -38,7 +38,6 @@ public class HibernateCustomerReport  extends HibernateCommon implements Custome
 		List<List<String>> results=new ArrayList<List<String>>(list.size());
 		for (Object[] objects : list) {
 			List<String> strings =new ArrayList<String>(objects.length);
-			//System.out.println("xxxxxxxx "+objects.length);
 			for (int i = 0; i < objects.length; i++) {
 			 if(objects[i]==null)
 				 strings.add(null);

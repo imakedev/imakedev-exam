@@ -55,7 +55,6 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 	//	String password=new BigInteger(40, random).toString(32);
 		//73gqqnghrkvfq202q6696gc35o
 		//String big=new String(130, random).toString(32);
-		//System.out.println(big);
 		try{
 			Object obj = session.save(transientInstance);
 		
@@ -195,7 +194,6 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 		Session session=sessionAnnotationFactory.getCurrentSession();
 			Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.id.rcId=:rcId");
 			query.setParameter("rcId", rcId);
-			//System.out.println("rcId="+rcId);
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping> list=query.list();
 			List<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping> roles=new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping>(list.size());
 			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping type : list) {
@@ -203,7 +201,6 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 				th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMappingPK pk= type.getId();
 				xrole.setRcId(pk.getRcId());
 				xrole.setMsId(pk.getMsId());
-				//System.out.println("getMsId="+pk.getMsId());
 				xrole.setPagging(null);
 				roles.add(xrole);
 			}
@@ -215,14 +212,11 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 		// TODO Auto-generated method stub
 		try{
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		//System.out.println("rcId=="+rcId);
 		//	Query query=session.createQuery(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.mmId=:mmId");
 		Query query=session.createQuery("delete RoleSeriesMapping roleSeriesMapping where roleSeriesMapping.id.rcId ="+rcId.intValue());
 		int result = query.executeUpdate();
-		//System.out.println(result);
 		if(msIds!=null && msIds.length>0)
 		for (String msid : msIds) {
-			//System.out.println("		rtid==>"+rtid);
 			RoleSeriesMapping mapping =new RoleSeriesMapping();
 			RoleSeriesMappingPK pk =new RoleSeriesMappingPK();
 			 pk.setRcId(rcId);
@@ -234,7 +228,6 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 		//int canUpdate = 0;
 		return result;
 		}catch(Exception e){
-			//System.out.println("error");
 			e.printStackTrace();
 		}
 		return 0;

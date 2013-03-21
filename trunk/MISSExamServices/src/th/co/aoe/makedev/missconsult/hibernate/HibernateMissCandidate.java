@@ -75,7 +75,6 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		String password=new BigInteger(40, random).toString(32);
 		//73gqqnghrkvfq202q6696gc35o
 		//String big=new String(130, random).toString(32);
-		//System.out.println(big);
 		Query query=session.createQuery(" select missSery from MissSery missSery where missSery.msId=:msId " +
 				" "); 
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
@@ -276,8 +275,6 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				 List<MissCandidate> l = query.list();   
 				 /*if(l!=null && l.size()>0){
 					 MissCandidate x =(MissCandidate)l.get(0);
-					 System.out.println("dddddddddddddd="+x.getMissAccount().getMaTotalUnit());
-					 System.out.println(x.getMissAccount().getMaUsedUnit());
 				 }*/
 				// StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
 				 List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
@@ -520,7 +517,6 @@ int result = query.executeUpdate();*/
 			//d
 			return query.executeUpdate();
 		}else if(section.equals("2")){
-			// System.out.println("xxxxxxxxxxxxxxxxxxx");
 			query=session.createQuery("delete MissTest missTest " +
 					" where missTest.id.missCandidate.mcaId ="+transientInstance.getMcaId()+
 					" and  missTest.id.missSery.msId="+transientInstance.getMissSery().getMsId());
@@ -750,7 +746,6 @@ int result = query.executeUpdate();*/
 				inStr=inStr+((i==(mcaSize-1))?mcaIds[i]:(mcaIds[i]+","));
 			}
 			inStr=inStr+")";
-			//System.out.println(inStr);
 			StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaId in "+inStr+"" +
 					" order by missCandidate.mcaId asc ");
 			  
@@ -825,13 +820,11 @@ int result = query.executeUpdate();*/
 			  iscriteria = true;
 		}
 		sb.append(" order by missCandidate.mcaId desc ");
-		//System.out.println(sb.toString());
 		Query query=session.createQuery(sb.toString());
 		 
 		 query.setFirstResult(0);
 		 query.setMaxResults(1);
 		Object obj=query.uniqueResult(); 	 
-		//System.out.println("obj="+obj);
 		if(obj!=null){
 			missCandidate=(MissCandidate)obj;
 		}

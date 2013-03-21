@@ -54,7 +54,6 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 	//	String password=new BigInteger(40, random).toString(32);
 		//73gqqnghrkvfq202q6696gc35o
 		//String big=new String(130, random).toString(32);
-		//System.out.println(big);
 		try{
 			Object obj = session.save(transientInstance);
 		
@@ -212,14 +211,11 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 		// TODO Auto-generated method stub
 		try{
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		//System.out.println("rcId=="+rcId);
 		//	Query query=session.createQuery(" select roleMapping from RoleMapping roleMapping where roleMapping.mmId=:mmId");
 		Query query=session.createQuery("delete RoleMapping roleMapping where roleMapping.id.rcId ="+rcId.intValue());
 		int result = query.executeUpdate();
-		//System.out.println(result);
 		if(rtIds!=null && rtIds.length>0)
 		for (String rtid : rtIds) {
-			System.out.println("		rtid==>"+rtid);
 			RoleMapping mapping =new RoleMapping();
 			RoleMappingPK pk =new RoleMappingPK();
 			pk.setRcId(rcId);
@@ -231,7 +227,6 @@ public class HibernateRoleMapping  extends HibernateCommon implements RoleMappin
 		//int canUpdate = 0;
 		return result;
 		}catch(Exception e){
-			//System.out.println("error");
 			e.printStackTrace();
 		}
 		return 0;

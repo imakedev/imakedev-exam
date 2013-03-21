@@ -57,7 +57,6 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 	//	String password=new BigInteger(40, random).toString(32);
 		//73gqqnghrkvfq202q6696gc35o
 		//String big=new String(130, random).toString(32);
-		//System.out.println(big);
 		try{
 			Object obj = session.save(transientInstance);
 		

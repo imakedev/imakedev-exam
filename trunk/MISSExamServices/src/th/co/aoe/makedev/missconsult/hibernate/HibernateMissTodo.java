@@ -54,14 +54,12 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 		MissTestResult missTestResult=null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.mtrId=:mtrId");
-	//	System.out.println("missTodo.getMtodoRef()="+missTodo.getMtodoRef());
 		query.setParameter("mtrId", missTodo.getMtodoRef());
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missTestResult=(MissTestResult)obj;
 			email=missTestResult.getMissCandidate().getMcaEmail();
 		}
-		//System.out.println("email="+email);
 	  return email;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -148,7 +146,6 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 						" or  missTodo.mtodoResponse is null  or missTodo.mtodoResponse='0' ");
 				
 				boolean iscriteria = true;
-				//System.out.println(" maId="+maId+",pageSize="+pagging.getPageSize()+",pageNo="+pagging.getPageNo());
 				if(maId !=null && maId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
