@@ -51,21 +51,17 @@ public class HibernateServiceReport extends HibernateCommon implements ServiceRe
 			//String[] strings =new String[objects.length] ;
 			List<String> strings =new ArrayList<String>(objects.length);
 			for (int i = 0; i < objects.length; i++) {
-			//System.out.println(objects[i].getClass().toString());
 			  if(objects[i]==null)
 					 strings.add(null);
 			  else	if(objects[i] instanceof java.lang.String){
 				//strings[i]=(String)objects[i];
-			//	System.out.println("value="+((String)objects[i]));
 				strings.add((String)objects[i]);
 			 } else if(objects[i] instanceof java.lang.Integer){ 
 					strings.add((java.lang.Integer)objects[i]+"");
 			}else if(objects[i] instanceof java.math.BigInteger){
 					//strings[i]=(java.math.BigInteger)objects[i]+"";
-				//	System.out.println("value="+((java.math.BigInteger)objects[i]+""));
 					strings.add((java.math.BigInteger)objects[i]+"");
 			} else if(objects[i] instanceof java.math.BigDecimal){
-			//	System.out.println("value="+((java.math.BigDecimal)objects[i]+""));
 				strings.add(((java.math.BigDecimal)objects[i]+""));
 			}else if(objects[i] instanceof java.sql.Timestamp){
 				strings.add(format2.format((java.sql.Timestamp)objects[i])); 
@@ -118,7 +114,6 @@ public class HibernateServiceReport extends HibernateCommon implements ServiceRe
 					" "+schema+".MISS_EXAM exam on  map.me_id=exam.me_id left join " +
 					" "+schema+".MISS_EXAM_GROUP _group on exam.meg_id=_group.meg_id" +
 					" group by _group.meg_id order by  COUNT(_group.meg_id) DESC " ); 
-			//System.out.println("dsss");
 			serviceReport.setSeryPercentReactive(getResult(session,sb));
 			
 			// get c.
@@ -148,20 +143,14 @@ public class HibernateServiceReport extends HibernateCommon implements ServiceRe
 		}
 		
 		 DateTime datetime=new DateTime(format1.parse("1/"+month+"/"+year+""));
-		 //System.out.println("year="+year);
-		 //System.out.println("month="+month);
-		 //System.out.println("weekOfWeekyear berore="+datetime.weekOfWeekyear().get());
 		 int startWeek=datetime.weekOfWeekyear().get();
 		 if(month.equals("1"))
 			startWeek=1;
 		 
 		 datetime=datetime.dayOfMonth().setCopy(datetime.dayOfMonth().getMaximumValue());
-		// System.out.println(datetime.weekOfWeekyear().get());
-		// System.out.println("weekOfWeekyear affter="+datetime.weekOfWeekyear().get());
 		 int endWeek=datetime.weekOfWeekyear().get();
 		 if(month.equals("12"))
 			 endWeek=datetime.weekOfWeekyear().getMaximumValue();//startWeek+4;
-		//System.out.println("getMaximumValue="+datetime.dayOfMonth().getMaximumValue());
 		 List<List<String>> serySystemUsed=new ArrayList<List<String>>((endWeek-startWeek)+1);
 		 // get a
 		 for (int i = startWeek; i <= endWeek; i++) {
@@ -203,7 +192,6 @@ order by count(MSYSTEM_WEEK) desc limit 1
 				seryMaxUses.add(getResultWithYear(session,sb,2));
 		   }  */
 		   //productReport.setSeryMaxUses(seryMaxUses);
-		   //System.out.println("seryMaxUses="+seryMaxUses);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

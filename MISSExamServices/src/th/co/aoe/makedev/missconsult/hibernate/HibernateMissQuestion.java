@@ -90,6 +90,14 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query = session.createQuery(" select max(question.mqNo) from MissQuestion question where question.missExam.meId="+transientInstance.getMissExam().getMeId());
+	  //  query.setParameter("", arg1) 
+		Long qhNo=1l;
+		Object objMax=query.uniqueResult();
+		if(objMax!=null){
+			qhNo=(Long)objMax+1;
+		}
+		transientInstance.setMqNo(qhNo);
 		Long returnId  = null;
 		try{
 			Object obj = session.save(transientInstance);
@@ -200,7 +208,7 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 	public List listMissQuestions(Long meId) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue());
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue() +" order by missQuestion.mqNo asc ");
 		return query.list(); 	
 	}
 	@Override
@@ -212,19 +220,45 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		int count=((Long)query.uniqueResult()).intValue();
 		return  count;
 	}
+	private  boolean isNumeric(String str)
+	{
+	  return str.matches("\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
-	@Override
-	public int setOrderItems(Long meId) throws DataAccessException {
+	@Override 
+	public int setOrderItems(Long meId,String[] mqNo_array,String mqId_array[]) throws DataAccessException {
+ 
 		// TODO Auto-generated method stub
 
-		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		//Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId=15 order by missQuestion.mqId asc ");
 		//SELECT * FROM MISS_QUESTION QUESTION WHERE QUESTION.MQ_NO IS NULL ORDER BY QUESTION.MQ_ID ASC 
-		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null " +
+		/*Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.mqNo is null " +
 				" and missQuestion.missExam.meId="+meId.intValue()+"  order by missQuestion.mqId asc ");
-		 List<MissQuestion> list =query.list();
-		 int i=1;
+		 List<MissQuestion> list =query.list();*/
+		Query query=null;
+		 int index=1;
+		if(mqNo_array!=null && mqId_array!=null && mqNo_array.length>0 && mqId_array.length>0){
+			int size=mqId_array.length;
+			for (int i = 0; i < size; i++) {
+				if( isNumeric(mqNo_array[i].trim()) && isNumeric(mqId_array[i].trim()) ){
+						query=session.createQuery("update MissQuestion missQuestion " +
+							" set " +
+							//" missQuestion.mqNameTh1 =:mqNameTh1 ," +
+							//" missQuestion.mqChoose =1," +
+							//" missQuestion.missTemplate.mtId =1 ," +
+							" missQuestion.mqNo =:mqNo " +
+							" where missQuestion.mqId=:mqId" );
+				// query.setParameter("mqNameTh1", i+"");
+						query.setParameter("mqNo",Long.valueOf(mqNo_array[i].trim()));
+				 		query.setParameter("mqId", Long.valueOf(mqId_array[i].trim()));
+				 		query.executeUpdate();
+				 		index++;
+				}
+				 
+			}
+		}
+		/* int i=1;
 		 for (MissQuestion missQuestion : list) {
 			 query=session.createQuery("update MissQuestion missQuestion " +
 						" set " +
@@ -238,8 +272,8 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 			 query.setParameter("mqId", missQuestion.getMqId());
 			 query.executeUpdate();
 			i++;
-		}
-   return i;
+		}*/
+   return index;
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
 	@Override

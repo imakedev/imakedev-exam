@@ -57,6 +57,8 @@ import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUsePK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.managers.MissTestResultService;
+import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
+import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
 @Repository
@@ -161,7 +163,9 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			String maName = (missCandidate != null && missCandidate
 					.getMissAccount() != null) ? missCandidate.getMissAccount()
 					.getMaName() : null;
-
+			Long maId= (missCandidate != null && missCandidate
+							.getMissAccount() != null) ? missCandidate.getMissAccount()
+							.getMaId() : null;
 			// StringBuffer sb =new
 			// StringBuffer(" select count(missTestResult) from MissTestResult missTestResult ");
 
@@ -181,12 +185,19 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							+ ".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID"
 							+ "  ");
 			boolean iscriteria = false;
-			if(roleMC==1){
-				sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+			if(roleMC !=1){ // company
+				//sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  "); 
+				//iscriteria = true;
+				sb.append( " where  ( result.MTR_HIDE_STATUS ='1' or result.MTR_HIDE_STATUS is null )  ");
+				sb.append (" and account.MA_ID ="+ maId+ "");
 				iscriteria=true;
+			}else{ // admin
+				//sb.append( " where  ( result.MTR_HIDE_STATUS ='1' )  ");
+				//sb.append (" and account.MA_ID ="+ maId+ "");
+				//iscriteria=true;
 			}
 		
-			if (msId != null && msId > 0) {
+			if (msId != null && ( msId ==-1 || msId > 0 ) ) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MS_ID=" + msId + "")
 						: (" where result.MS_ID=" + msId + ""));
@@ -306,13 +317,21 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			String maName = (missCandidate != null && missCandidate
 					.getMissAccount() != null) ? missCandidate.getMissAccount()
 					.getMaName() : null;
+			Long maId= (missCandidate != null && missCandidate
+							.getMissAccount() != null) ? missCandidate.getMissAccount()
+							.getMaId() : null;
 
 			StringBuffer sb = new StringBuffer(
 					" select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE,"
 							+ " result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS,"
 							+ " result.MTR_RESULT_CODE,candidate.MCA_USERNAME,candidate.MCA_FIRST_NAME,candidate.MCA_LAST_NAME, "
 							+ " candidate.MCA_POSITION ,candidate.MCA_DEPARTMENT ,account.MA_NAME ,"
-							+ " result.MTR_RESPONDED_STATUS from "
+							+ " result.MTR_RESPONDED_STATUS , " +
+							" candidate.MCA_GENDER,candidate.MCA_EMAIL, candidate.MCA_TITLE ,candidate.MCA_TITLE_TYPE ," +
+							" candidate.MCA_PHONE ,industry.MIM_NAME,career.MCM_NAME ," +
+							" (YEAR(CURDATE())-YEAR(candidate.mca_birth_date))-" +
+							"  (RIGHT(CURDATE(),5)<RIGHT(candidate.mca_birth_date,5)) AS age " +
+							" from "
 							+ " "
 							+ schema
 							+ ".MISS_TEST_RESULT  as result left join "
@@ -322,7 +341,14 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							+ " left join "
 							+ schema
 							+ ".MISS_ACCOUNT  account on candidate.MA_ID=account.MA_ID"
+							+ " left join "
+							+ schema
+							+ ".MISS_INDUSTRY_MASTER  industry on candidate.MIM_ID=industry.MIM_ID"
+							+ " left join "
+							+ schema
+							+ ".MISS_CAREER_MASTER  career on candidate.MCM_ID=career.MCM_ID"
 							+
+							 
 							// " left join "+schema+".MISS_SERIES_ATTACH  attach on (result.MS_ID=attach.MSAT_REF1 AND attach.MSAT_MODULE='template' ) "
 							// +
 							"  ");
@@ -331,14 +357,21 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			 * and result.MTR_START_TIME < '2012-06-20 23:59:59'
 			 */
 			boolean iscriteria = false;
-			if(roleMC==1){
-				sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+			if(roleMC !=1){// company
+				//sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
+				//iscriteria=true;
+				sb.append( " where  ( result.MTR_HIDE_STATUS ='1' or result.MTR_HIDE_STATUS is null )  ");
+				sb.append (" and account.MA_ID ="+ maId+ "");
 				iscriteria=true;
+			}else{ //admin
+				/*sb.append( " where  ( result.MTR_HIDE_STATUS ='1' )  ");
+				sb.append (" and account.MA_ID ="+ maId+ "");
+				iscriteria=true;*/
 			}
 			// SimpleDateFormat format = new
 			// SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			
-			if (msId != null && msId > 0) {
+			if (msId != null && ( msId ==-1 || msId > 0 ) ) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MS_ID=" + msId + "")
 						: (" where result.MS_ID=" + msId + ""));
@@ -419,7 +452,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						+ " " + pagging.getSortBy().toLowerCase());
 			}
 			//logger.debug("sb ========================== >" + sb.toString());
-			//System.out.println("query="+sb.toString());
 			// get header
 			Query 	query = session
 					.createQuery("select issEvaluationConfig from MissEvaluationConfig issEvaluationConfig "
@@ -488,6 +520,25 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				candidate.setMcaLastName(obj[11] != null ? obj[11] + "" : "");
 				candidate.setMcaPosition(obj[12] != null ? obj[12] + "" : "");
 				candidate.setMcaDepartment(obj[13] != null ? obj[13] + "" : "");
+				candidate.setMcaGender(obj[16] != null ? obj[16] + "" : "");
+				candidate.setMcaEmail(obj[17] != null ? obj[17] + "" : "");
+				candidate.setMcaTitle(obj[18] != null ? obj[18] + "" : "");
+				candidate.setMcaTitleType(obj[19] != null ? obj[19] + "" : "");
+				candidate.setMcaPhone(obj[20] != null ? obj[20] + "" : "");
+				MissCareerMaster missCareerMaster =new MissCareerMaster();
+				MissIndustryMaster missIndustryMaster=new MissIndustryMaster();
+				missIndustryMaster.setMimName(obj[21] != null ? obj[21] + "" : "");
+				missCareerMaster.setMcmName(obj[22] != null ? obj[22] + "" : "");
+				candidate.setAge(obj[23] != null ? obj[23] + "" : "");
+				
+				candidate.setMissIndustryMaster(missIndustryMaster);
+				candidate.setMissCareerMaster(missCareerMaster);
+				
+				/*" candidate.MCA_GENDER,candidate.MCA_EMAIL, candidate.MCA_TITLE ,candidate.MCA_TITLE_TYPE ," +
+				" candidate.MCA_PHONE ,industry.MIM_NAME,career.MCM_NAME ," +
+				" (YEAR(CURDATE())-YEAR(candidate.mca_birth_date))-" +
+				"  (RIGHT(CURDATE(),5)<RIGHT(candidate.mca_birth_date,5)) AS age " + */
+ 
 				missTestResult
 						.setMtrTestDate(obj[4] != null ? (java.sql.Date) obj[4]
 								: null);
@@ -607,7 +658,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 								" and missSeriesAttach.msatModule=:msatModule");
 				query.setParameter("msatRef1", msId);
 				// query.setParameter("msatRef2", meId);
-				//System.out.println("xxxxxxxxx=" + msId);
 				query.setParameter("msatModule", "evaluation");
 				obj = query.uniqueResult();
 				if (obj != null) {
@@ -764,12 +814,10 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				sheet_index++;
 				Sheet sheet1_0 = wb.getSheetAt(0);
 				Row row_code = sheet1_0.getRow(4);
-				//System.out.println("sheet_index ===>" + sheet_index);
 				Cell cell_code = row_code.getCell(sheet_index - 2);
 				String columnReference = cell_code.getStringCellValue();
 				String[] sheets = columnReference.split("!");
 				String[] columns = sheets[1].split(":");
-				//System.out.println("getSheetAt ===>" + sheets[0]);
 				HSSFSheet sheet = wb.getSheetAt(Integer.parseInt(sheets[0]));
 				// HSSFCell cell =null;
 				CellReference cr = new CellReference(columns[0]);
@@ -777,14 +825,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				int start = cr.getRow();
 				int end = cr2.getRow();
 				int column = cr.getCol();
-				// System.out.println("start="+start+",end="+end+",column="+column);
-				/*
-				 * System.out.println(cr.getRow()+","+cr.getCol()+","+cr.
-				 * getSheetName()); row_code= sheet.getRow(cr.getRow());
-				 * cell_code =row_code.getCell(cr.getCol());
-				 * columnReference=cell_code.getStringCellValue();
-				 * System.out.println(columnReference);
-				 */
 
 				// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 
@@ -797,12 +837,9 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				for (int i = start; i <= end; i++) {
 					row = sheet.getRow(i);
 					// cell_question= row.getCell(0);
-					//System.out.println(row);
-					//System.out.println(column);
 					//cell_question = row.getCell(column - 2);
 					cell_question = row.getCell(column - 1);
 					cell_answer = row.getCell(column);
-					// System.out.println(""+(format.format(cell_code.getNumericCellValue())));
 					int question_no = (int) cell_question.getNumericCellValue();
 					Object obj_value = answerMap.get(question_no + "");
 					// logger.debug("obj_value xxxxxxxxxxxxxx == "+obj_value);
@@ -914,7 +951,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				/*
 				 * switch (cell.getCellType()) { case Cell.CELL_TYPE_STRING:
 				 * value = cell.getStringCellValue(); //
-				 * System.out.println("		CELL_TYPE_STRING="+value); break; case
 				 * Cell.CELL_TYPE_NUMERIC: }
 				 */
 				logger.debug("  CELL_TYPE_NUMERIC=" + Cell.CELL_TYPE_NUMERIC);
@@ -946,7 +982,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			Sheet sheet1_0 = wb.getSheetAt(0);
 
 			int endRow = sheet1_0.getLastRowNum();
-			// System.out.println("getPhysicalNumberOfRows="+endRow);
 			Row r = null;
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows = new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow>();
 			int index = 1;
@@ -969,15 +1004,12 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				String[] columns = r.getCell(1).getStringCellValue().split("!");
 				Sheet sheet1_1 = wb.getSheetAt(Integer.parseInt(columns[0]));
 				CellReference cr2 = new CellReference(columns[1]);
-				// System.out.println("cr2--"+cr2.getRow()+","+cr2.getCol());
 				row_code = sheet1_1.getRow(cr2.getRow());
-				// System.out.println("row_code="+row_code);
 				cell_code = row_code.getCell(cr2.getCol());
 
 				pk.setMtsColumn(r.getCell(0).getStringCellValue());
 				pk.setMtsType("2");
 				String value = "";
-				// System.out.println(r.getCell(0).getStringCellValue()+",cell_code.getCellType()==>"+cell_code.getCellType());
 				if (cell_code.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 					value = format.format(cell_code.getNumericCellValue());
 				} else if (cell_code.getCellType() == Cell.CELL_TYPE_STRING) {
@@ -987,13 +1019,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							.createFormulaEvaluator();
 					int type = evaluator.evaluateInCell(cell_code)
 							.getCellType();
-					// System.out.println(" inner="+r.getCell(0).getStringCellValue()+",cell_code.getCellType()==>"+type);
 					if (type == Cell.CELL_TYPE_NUMERIC) {
 						value = format.format(cell_code.getNumericCellValue());
 					} else if (type == Cell.CELL_TYPE_STRING) {
 						value = cell_code.getStringCellValue();
 					} else if (type == Cell.CELL_TYPE_ERROR) {
-						// System.out.println("ERROR="+cell_code.getErrorCellValue());
 						// value=cell_code.getErrorCellValue();
 					}
 					// code=cell_code.getNumericCellValue()+"";
@@ -1098,7 +1128,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			}
 			// check EPT && EPT PLUS
 			if(msId.intValue()==12 || msId.intValue()==21){
-				//System.out.println("xxxxxxxxxxxxxxxxxxxxxxx msid="+msId);
 				 setEPTData(session,wb,msId,mtrId);
 			}
 
@@ -1119,19 +1148,14 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		Sheet sheet0_Data=null;
 		Row row_code_Data=null;
 		if(msId.intValue()==12){ // EPT
-			//System.out.println(" into EPT");
 			sheet0_Data = wb.getSheetAt(2); // Evaluation of behavioral
 			 row_code_Data = sheet0_Data.getRow(1);
-			 //System.out.println(" row_code_Data==>"+row_code_Data);
 			if (row_code_Data != null) {
 				Cell cell_code_Data = row_code_Data.getCell(0);
 				//Cell cell_code_Data2 = row_code_Data.getCell(0);
-				//System.out.println(" cell_code_Data==>"+cell_code_Data);
-				//System.out.println(" cell_code_Data2==>"+cell_code_Data2);
 				if (cell_code_Data != null) { 
 					String columnReference = cell_code_Data
 							.getStringCellValue();
-					//System.out.println(" columnReference==>"+columnReference);
 					if (columnReference != null && columnReference.length() > 0) {
 						String[] sheets = columnReference.split("!");
 						String[] columns = sheets[1].split(":");
@@ -1410,7 +1434,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 								detectors.add(detector);
 							}
 						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector detector : detectors) {
-							//System.out.println("metdName==>"+detector.getMetdName());
 							session.saveOrUpdate(detector);
 						}
 					}
@@ -1627,7 +1650,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				 */
 				List list = query.list();
 				if (list != null && list.size() > 0) {// update
-					// System.out.println("updateeee");
 					MissTestResult result = (MissTestResult) list.get(0);
 					logger.debug("size=" + list.size());
 					logger.debug("MCA_ID="
@@ -1678,9 +1700,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						// query.setParameter("meId", missTestResult.getMeId());
 						int missQuestionSize = ((java.lang.Long) query
 								.uniqueResult()).intValue();
-						/*System.out.println("missQuestionSize="
-								+ missQuestionSize);
-						System.out.println("missTestSize=" + missTestSize);*/
 						if ((missTestSize * 100) / missQuestionSize < 90) {
 							missTestResult.setMtrStatus("0");
 							isIncomplete = true;

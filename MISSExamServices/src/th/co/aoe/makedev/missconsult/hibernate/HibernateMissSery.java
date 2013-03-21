@@ -199,7 +199,6 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 					sb.append( " order by xx."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 			  }
-				//System.out.println(sb.toString());
 				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size= String.valueOf(getSize(session, instance,meIds)); 

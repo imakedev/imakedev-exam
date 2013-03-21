@@ -44,7 +44,6 @@ public class HibernateMissCareerMaster  extends HibernateCommon implements MissC
 					list=query.list();
 			 }
 				// list=null;
-			 //System.out.println(list);
 		}else{ 
 			query=session.createQuery(" select missCareerMaster from MissCareerMaster missCareerMaster where " +
 					"( missCareerMaster.mcmRef is null or  missCareerMaster.mcmRef !=1 )");

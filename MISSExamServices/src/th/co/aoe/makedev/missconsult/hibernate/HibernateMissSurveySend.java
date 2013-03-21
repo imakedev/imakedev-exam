@@ -193,9 +193,6 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 		*/
 		 	int userEmailSize=userEmail.size();
 			int msUnitCostTotal=msUnitCost.intValue()*userEmailSize;
-			//System.out.println(" available="+count);
-			//System.out.println(" wanted="+msUnitCostTotal);
-			//if(masmAvailable.intValue()>=msUnitCostTotal){
 			if(count.intValue()>=msUnitCostTotal){
 				query=session.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaStatus=2 " +
 						" and missCandidate.missSery.msId=:msId and missCandidate.missAccount.maId=:maId ");
@@ -209,8 +206,6 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 			   // List<List<String>>  listUserEmailReturn =new ArrayList<List<String>>(userEmailSize);
 			    listUserEmailReturn = new ArrayList<List<String>>(userEmail.size());
 				for (List<String> listUserEmail : userEmail) {
-					/*System.out.println("name="+list.get(0));			
-					System.out.println("email="+list.get(1));*/ 
 					MissCandidate missCandidate=(MissCandidate)missCandidateList.get(index);
 					
 					 List<String> candidates = new ArrayList<String>(4);
@@ -261,9 +256,6 @@ public class HibernateMissSurveySend  extends HibernateCommon implements MissSur
 			}else{
 				//returnRecord=-1;
 			} 
-		//System.out.println(persistentInstance.getMissSery().getMsId());
-		//System.out.println(returnRecord);
-		// 1= success , 0 not success
 		return listUserEmailReturn;
 	}
 	 
