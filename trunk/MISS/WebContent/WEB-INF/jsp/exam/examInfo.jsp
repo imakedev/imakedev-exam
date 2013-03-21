@@ -184,7 +184,7 @@ function appendContent(data){
           <form class="well" style="border:2px solid #DDD">
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="100%" colspan="6"><strong>Exam Infomation</strong></td>
+	    					 <td align="left" width="100%" colspan="6"><strong>Exam Information</strong></td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="100%">&nbsp;${missExam.meIntroduction}</td> 
