@@ -254,7 +254,6 @@ public class CandidateController
     {
     	
     	String mcaIds=request.getParameter("id");
-    	//System.out.println("request id ="+mcaIds);
     	MissCandidate missCandidate =new MissCandidate();
     	missCandidate.setMcaIds(mcaIds);
     	 VResultMessage vresultMessage = missExamService.exportMissCandidate(missCandidate); 

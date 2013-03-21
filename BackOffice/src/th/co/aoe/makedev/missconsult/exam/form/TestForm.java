@@ -47,6 +47,9 @@ public class TestForm extends CommonForm
     private String mcSize="0";
     
     private String megEmptyId;
+    
+    private String[] mqNos;
+    private String[] mqIds;
 
 	public MissExam getMissExam() {
 		return missExam;
@@ -125,6 +128,22 @@ public class TestForm extends CommonForm
 		return megEmptyId;
 	}
 
+	public String[] getMqNos() {
+		return mqNos;
+	}
+
+	public void setMqNos(String[] mqNos) {
+		this.mqNos = mqNos;
+	}
+
+	public String[] getMqIds() {
+		return mqIds;
+	}
+
+	public void setMqIds(String[] mqIds) {
+		this.mqIds = mqIds;
+	}
+
 	public void setMegEmptyId(String megEmptyId) {
 		this.megEmptyId = megEmptyId;
 	}
@@ -136,6 +155,8 @@ public class TestForm extends CommonForm
 	public void setLang(String lang) {
 		this.lang = lang;
 	}
+
+	 
 
 	/*public String getMesIdArray() {
 		return mesIdArray;

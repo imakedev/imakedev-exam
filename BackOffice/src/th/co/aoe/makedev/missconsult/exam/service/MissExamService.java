@@ -169,9 +169,8 @@ public interface MissExamService {
 	public abstract int updateMissQuestion(MissQuestion missquestion,
 			String service);
 
-	public abstract int deleteMissQuestion(MissQuestion missquestion);
-
-	public abstract int setOrderItems(Long meId);
+	public abstract int deleteMissQuestion(MissQuestion missquestion);  
+	public abstract int setOrderItems(Long meId,String[] mqNo_array,String mqId_array[]);
 
 	public abstract MissQuestion findMissQuestionById(Long long1);
 

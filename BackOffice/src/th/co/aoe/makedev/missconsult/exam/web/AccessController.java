@@ -121,7 +121,6 @@ public class AccessController {
 		String version=""; 
 		if(band.length()>0){
 			String[] versions=fullAgent.split(" ");
-			//System.out.println(" size "+versions.length); 
 			if("Chrome".equals(band)){				
 				for (int i = 0; i < versions.length; i++) {
 					if(versions[i].indexOf("chrome")!=-1){
@@ -165,7 +164,6 @@ public class AccessController {
 			//Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)
 
 		}
-		//System.out.println("vvvvvvvvvvvvvv "+version);
 		return version;
 	}
 }

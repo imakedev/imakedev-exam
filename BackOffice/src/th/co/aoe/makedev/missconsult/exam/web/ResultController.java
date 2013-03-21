@@ -107,10 +107,11 @@ public class ResultController
 			MAIL_TLS=bundle.getString("mail.TLS");
 		}
    @RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-   public  @ResponseBody MissTestResult[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
+   public  @ResponseBody Object[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
 		    {
 			 //Gson gson=new Gson();
-	   MissTestResult[] missTestResults=new MissTestResult[2];
+	   //MissTestResult[] missTestResults=new MissTestResult[2];
+	   Object[] missTestResults=new Object[3];
 	   MissTestResult missTestResult1 =null;
 	   MissTestResult missTestResult2  =null;
 	  String[] mtrId_array= mtrIds.split("_");
@@ -124,9 +125,10 @@ public class ResultController
 	   vresultMessage = missExamService.searchMissTestResult(missTestResult);
 	   missTestResult2 = (MissTestResult)((java.util.ArrayList)vresultMessage.getResultListObj().get(0)).get(0);
 	     
-	   
+	  // model.addAttribute("axisHeaders",);
 	   missTestResults[0]=missTestResult1;
 	   missTestResults[1]=missTestResult2;
+	   missTestResults[2]= vresultMessage.getResultListObj().get(1);
 	 
 	return missTestResults;
 	}
@@ -134,15 +136,16 @@ public class ResultController
     public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
     	 List missSeries=null;// missExamService.listMissSery();
+    	 Long maId=null;
     	 if(model.containsAttribute("UserMissContact")){
          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
          //	missSeries=
          	//List<MissAccountSeriesMap> missAccountSeriesMaps
-         	missSeries= missExamService.findMissAccountSeriesMapByRole(missContact.getMcontactRef(),missContact.getRcId());
+         	maId=missContact.getMcontactRef();
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
          }
     	
     	  model.addAttribute("missSeries",missSeries);
-    	 // System.out.println( " ROLE_MANAGE_MISSCONSULT===>"+);
     	  int roleMC=0;
     	  if(srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
     		  roleMC=1;
@@ -158,6 +161,7 @@ public class ResultController
     		MissCandidate missCandidate =new MissCandidate();
         	MissAccount missAccount=new MissAccount();
         	missAccount.setMaName(resultForm.getMcaCompanyName());
+        	missAccount.setMaId(maId);
         	missCandidate.setMissAccount(missAccount);
         	missCandidate.setMcaUsername(resultForm.getMcaUsername());
         	missCandidate.setMcaFirstName(resultForm.getMcaFirstName());
@@ -184,8 +188,14 @@ public class ResultController
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doSearch(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
     {
-    	//System.out.println( " ROLE_MANAGE_MISSCONSULT===>"+srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"));
-    	//System.out.println("ROLE_MANAGE_MISSCONSULT==========>"+request.isUserInRole("ROLE_MANAGE_MISSCONSULT"));
+    	Long maId=null;
+    	 List missSeries=null;// missExamService.listMissSery();
+     	 if(model.containsAttribute("UserMissContact")){
+          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+          	maId=missContact.getMcontactRef();
+          	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
+          }
+         model.addAttribute("missSeries", missSeries);
         String mode = resultForm.getMode();
         int roleMC=0;
   	  if(request.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
@@ -225,6 +235,7 @@ public class ResultController
     	MissCandidate missCandidate =new MissCandidate();
     	MissAccount missAccount=new MissAccount();
     	missAccount.setMaName(resultForm.getMcaCompanyName());
+    	missAccount.setMaId(maId);
     	missCandidate.setMissAccount(missAccount);
     	missCandidate.setMcaUsername(resultForm.getMcaUsername());
     	missCandidate.setMcaFirstName(resultForm.getMcaFirstName());
@@ -267,13 +278,7 @@ public class ResultController
       
         resultForm.setPageCount(IMakeDevUtils.calculatePage(resultForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
-        List missSeries=null;// missExamService.listMissSery();
-    	// System.out.println("model.containsAttribute(\"UserMissContact\")==>"+model.containsAttribute("UserMissContact"));
-    	 if(model.containsAttribute("UserMissContact")){
-         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
-         	missSeries= missExamService.findMissAccountSeriesMapByRole(missContact.getMcontactRef(),missContact.getRcId());
-         }
-        model.addAttribute("missSeries", missSeries);
+       
        /* List<String> axisHeaders=new ArrayList<String>(4);
         axisHeaders.add("Fa");
         axisHeaders.add("Im");
@@ -288,7 +293,6 @@ public class ResultController
     {
         logger.debug((new StringBuilder("testtttttttttt")).append(missExamService).toString());
         model.addAttribute("aoe", "chatchai");
-        //System.out.println("aoee");
         return "exam/template/viewTestResult";
     }
 
@@ -374,7 +378,6 @@ public class ResultController
 			try { 
 				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
 				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
-				//System.out.println("chatchai debug ds="+ds);
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -477,7 +480,6 @@ public class ResultController
 				baos.close(); 
 				}catch(IOException e){
 					e.printStackTrace();
-					//System.out.println(e.getMessage());
 				} 
 			String encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
@@ -497,7 +499,6 @@ public class ResultController
 				baos.close(); 
 				}catch(IOException e){
 					e.printStackTrace();
-					//System.out.println(e.getMessage());
 				} 
 			encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
 					.encodeBase64(imageInByte));
@@ -519,11 +520,9 @@ public class ResultController
 		 JasperPrint jasperPrint=null;
 		 Map p =new HashMap();
 		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
-		// System.out.println("missTestShows="+missTestShows);
 		 if(missTestShows!=null && missTestShows.size()>0){
 			 for (MissTestShow missTestShow : missTestShows) {
 				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
-				//System.out.println("(missTestShow.getMtsColumn()=="+missTestShow.getMtsColumn()+", missTestShow.getMtsValue()==>"+ missTestShow.getMtsValue());
 			}
 		 }
 		/* p.put("SubDataSource", beanCollectionDataSource);
@@ -580,7 +579,6 @@ public class ResultController
 			try { 
 				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
 				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
-				//System.out.println("chatchai debug ds="+ds);
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -684,7 +682,6 @@ public class ResultController
     	
     	String mtrIds=request.getParameter("id");
     	String msId=request.getParameter("mcaSeries");
-    	//System.out.println("request id ="+mtrIds);
     	MissTestResult missTestResult =new MissTestResult();
     	missTestResult.setMtrIds(mtrIds);
     	missTestResult.setMsId(Long.parseLong(msId));
