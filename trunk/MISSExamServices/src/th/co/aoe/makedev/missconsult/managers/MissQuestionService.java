@@ -13,8 +13,8 @@ public interface MissQuestionService {
 		public Long saveMissQuestion(MissQuestion transientInstance) throws DataAccessException;
 		public int updateMissQuestion(MissQuestion transientInstance) throws DataAccessException ;
 		public int deleteMissQuestion(MissQuestion persistentInstance) throws DataAccessException ;	
-		 public int getQuestionOrdered(Long meId)throws DataAccessException ;	
-		   public int setOrderItems(Long meId)throws DataAccessException ;
+		 public int getQuestionOrdered(Long meId)throws DataAccessException ;	 
+		   public int setOrderItems(Long meId,String[] mqNo_array,String mqId_array[])throws DataAccessException ;
 		public  th.co.aoe.makedev.missconsult.xstream.MissQuestion findMissQuestionById(Long mqId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissQuestion(MissQuestion persistentInstance,	Pagging pagging)throws DataAccessException  ;
