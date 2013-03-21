@@ -77,7 +77,7 @@ public class MissCandidate extends VServiceXML implements Serializable {
 	private String selectLang;//1=thai,2=eng
 	private Long mtrId;// 
 	private int roleMC;
-	
+	private String age; 
 	public String getMcaHideStatus() {
 		return mcaHideStatus;
 	}
@@ -387,6 +387,14 @@ public class MissCandidate extends VServiceXML implements Serializable {
 
 	public void setRoleMC(int roleMC) {
 		this.roleMC = roleMC;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
  

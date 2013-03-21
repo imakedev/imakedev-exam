@@ -47,6 +47,8 @@ public class MissExam extends VServiceXML implements Serializable {
 	@XStreamImplicit(itemFieldName="missQuestions")
 	private List<MissQuestion> missQuestions;
 	
+	private String[] mqNos;
+	private String[] mqIds;
 	
 
     public MissExam() {
@@ -170,6 +172,22 @@ public class MissExam extends VServiceXML implements Serializable {
 
 	public void setMissQuestions(List<MissQuestion> missQuestions) {
 		this.missQuestions = missQuestions;
+	}
+
+	public String[] getMqNos() {
+		return mqNos;
+	}
+
+	public void setMqNos(String[] mqNos) {
+		this.mqNos = mqNos;
+	}
+
+	public String[] getMqIds() {
+		return mqIds;
+	}
+
+	public void setMqIds(String[] mqIds) {
+		this.mqIds = mqIds;
 	}
 
 	
