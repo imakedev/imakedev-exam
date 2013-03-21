@@ -391,11 +391,11 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<td align="right" width="100%">
 	    					<span id="sortElement"> 
 	    					Sort By:&nbsp; 
-	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 115px">   
+	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 140px">   
 	    						<option value="maName">Name</option>
 	    						<option value="maRegisterNo">Register No</option>
 	    						<option value="maRegisterDate">Register Date</option>
-	    					 
+	    						<option value="maTotalUnit">Total/Balance Unit</option>
 	    					  </select> 
 	    					&nbsp;
 	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
