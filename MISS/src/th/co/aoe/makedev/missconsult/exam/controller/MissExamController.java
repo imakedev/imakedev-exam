@@ -74,7 +74,6 @@ public class MissExamController {
 		MissExamForm missExamForm =  (MissExamForm)model.asMap().get("missExamForm");
 		/*missExamForm.setExamIndex(0);
 		missExamForm.setQuestionIndex(0);*/
-		 //System.out.println("get select lang="+missExamForm.getMissCandidate().getSelectLang());
 		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
         return "exam/examInfo";
@@ -96,7 +95,6 @@ public class MissExamController {
 	            {
 	                e.printStackTrace();
 	            }
-		// System.out.println("select lang="+missExamForm.getMissCandidate().getSelectLang());
 		missExamService.updateMissCandidate(missExamForm.getMissCandidate());
 		model.addAttribute("missExamForm", missExamForm);
 		model.addAttribute("missExam", missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()));
@@ -313,7 +311,6 @@ public class MissExamController {
 		 missExamService.saveOrUpdateMissTodo(missTodo);*/
 		 //0 
 		 if(missExamForm.getExamIndex()<(missExamForm.getMissCandidate().getMissSery().getMissExams().size()-1)){
-			 //System.out.println(" into loop 1");
 			// logger.debug("before "+missExamForm.getExamIndex());
 			 missExamForm.setExamIndex(missExamForm.getExamIndex()+1);
 			 missExamForm.setQuestionIndex(0);
@@ -321,7 +318,6 @@ public class MissExamController {
 			 model.addAttribute("missExamForm",missExamForm);
 			 return "redirect:/exam/info";
 		 }else {
-			 //System.out.println(" into loop 2");
 			 // new version
 			 MissTestResult missTestResult = new MissTestResult();
 			 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
@@ -353,17 +349,10 @@ public class MissExamController {
     }
 	@RequestMapping(value="/exam", method = RequestMethod.POST)
     public String postExam(Model model) {
-	/*	logger.debug("testtttttttttt"+missExamService);
-		model.addAttribute("aoe", "chatchai");
-		System.out.println("aoee==>"+missExamService);*/
-	
         return "exam/exam";
 	}
 	@RequestMapping(value="/exam/message", method = RequestMethod.GET)
     public String getExamMessage(Model model) {
-	/*	logger.debug("testtttttttttt"+missExamService);
-		model.addAttribute("aoe", "chatchai");
-		System.out.println("aoee==>"+missExamService);*/
         return "exam/examMessage";
     } 
 	  @RequestMapping(value={"/exam/getcandidateinfo"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})

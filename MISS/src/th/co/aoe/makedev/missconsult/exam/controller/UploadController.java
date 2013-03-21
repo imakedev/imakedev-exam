@@ -47,7 +47,6 @@ public class UploadController {
     {
     	//String hotlink = request.getQueryString();
 		//String []adminview = hotlink.split("&mode=");
-		//System.out.println(" adminview size="+adminview);
     	
 		//	String filePath = "/usr/local/Work/TestDownload/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc.jpg";
     	 

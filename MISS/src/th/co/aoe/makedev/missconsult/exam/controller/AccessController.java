@@ -128,7 +128,6 @@ public class AccessController {
 			if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
 				message="ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง.";*/
 		//	ApplicationServicesAccessor.
-		//	System.out.println("sssssssssssss="+);
 			//model.addAttribute("message", messageSource.getMessage("final_message", new Object[0],LocaleContextHolder.getLocale())); 
 			String language=request.getParameter("language");
 			String message="";

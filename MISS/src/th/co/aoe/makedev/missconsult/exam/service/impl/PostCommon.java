@@ -103,7 +103,6 @@ public class PostCommon {
 			/*	xstream.processAnnotations(th.or.ntc.xstream.NtcRadioApprovalGroup.class); 
 				*/ 
 				Object obj = xstream.fromXML(in);
-//				System.out.println("obj : "+obj.getClass());
 				if(obj!=null){
 					vresultMessage = (VResultMessage)obj; 
 					 
