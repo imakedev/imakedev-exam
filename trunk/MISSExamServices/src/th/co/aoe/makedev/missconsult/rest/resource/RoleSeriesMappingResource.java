@@ -112,7 +112,6 @@ public class RoleSeriesMappingResource extends BaseResource {
 						}*/
 						else if(serviceName.equals(ServiceConstant.ROLE_SERIES_MAPPING_LIST_BY_RC_ID)){
 							List<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping> xntcCalendars = roleSeriesMappingService.listRoleSeriesMappingByrcId(xbpsTerm.getRcId());
-							//System.out.println("xntcCalendars====>"+xntcCalendars.size());
 							VResultMessage vresultMessage = new VResultMessage();
 							vresultMessage.setResultListObj(xntcCalendars);
 							return getRepresentation(entity, vresultMessage, xstream);

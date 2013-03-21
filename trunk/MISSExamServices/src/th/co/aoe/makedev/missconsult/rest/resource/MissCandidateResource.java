@@ -201,7 +201,6 @@ public class MissCandidateResource extends BaseResource {
 									
 									xntcCalendars.add(xntcCalendarReturn);
 									vresultMessage.setResultListObj(xntcCalendars);
-									//System.out.println("xntcCalendars=="+xntcCalendars);
 								}
 								return getRepresentation(entity, vresultMessage, xstream);
 							} 

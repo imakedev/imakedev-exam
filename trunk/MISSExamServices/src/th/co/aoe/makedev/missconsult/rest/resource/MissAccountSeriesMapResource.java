@@ -120,7 +120,6 @@ public class MissAccountSeriesMapResource extends BaseResource {
 								//xntcCalendarReturn.setPagging(null);
 								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								List<th.co.aoe.makedev.missconsult.xstream.MissSery> missSeryList =missAccountSeriesMapService.listMissAccountSeriesMapByMaId(xbpsTerm.getMaId());
-								//System.out.println(missSeryList);
 								if(missSeryList!=null && missSeryList.size()>0){
 									int missSeryList_size=missSeryList.size();
 									 xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missSeryList_size);
@@ -145,7 +144,6 @@ public class MissAccountSeriesMapResource extends BaseResource {
 								//xntcCalendarReturn.setPagging(null);
 								//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMapList =missAccountService.listMissAccountSeriesMapByMaId(bpsTerm.getMaId());
 								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missSeryList =missAccountSeriesMapService.listMissAccountSeriesMapByRole(xbpsTerm.getMaId(),xbpsTerm.getRcId());
-								//System.out.println(missSeryList);
 							/*	if(missSeryList!=null && missSeryList.size()>0){
 									int missSeryList_size=missSeryList.size();
 									 xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missSeryList_size);

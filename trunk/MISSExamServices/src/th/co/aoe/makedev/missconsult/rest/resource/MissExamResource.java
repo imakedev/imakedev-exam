@@ -367,7 +367,6 @@ public class MissExamResource extends BaseResource {
 		xbpsTerm.setUpdateRecord(updateRecord);
 		xbpsTerms.add(xbpsTerm);
 		vresultMessage.setResultListObj(xbpsTerms);
-		//System.out.println("vresultMessage==>"+vresultMessage);
 		return getRepresentation(entity, vresultMessage, xstream);
 	}
  
