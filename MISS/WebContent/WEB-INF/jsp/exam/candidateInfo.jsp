@@ -296,7 +296,7 @@ function getCandidateInfo(){
          	  <form:hidden path="missCandidate.selectLang" id="selectLang"/>
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
-	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Infomation</strong></td>
+	    					 <td align="left" width="100%" colspan="6"><strong>Candidate Information</strong></td>
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
