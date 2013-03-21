@@ -224,7 +224,13 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				 
 				String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
 				Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
-				StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate "); 
+				//StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate "); 
+				StringBuffer sb =new StringBuffer(" select missCandidate ," +
+						" (select max(missSeryUse.id.msuDdateTime) from MissSeryUse missSeryUse" +
+						" where missSeryUse.id.mcaId=missCandidate.mcaId) as msuDdateTime from MissCandidate missCandidate ");
+				 /* sb.append("select missSeryUse from MissSeryUse missSeryUse " +
+					  		"where missSeryUse.id.mcaId="+missCandidate.getMcaId().intValue()+" order by missSeryUse.id.msuDdateTime desc "
+					  		 );	*/
 				boolean iscriteria = false;
 				if(roleMC==1){
 					sb.append( " where  ( missCandidate.mcaHideStatus !='0' or missCandidate.mcaHideStatus is null )  ");
@@ -261,9 +267,16 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 					  iscriteria = true;
 				}
 				
+			if(pagging.getOrderBy().equals("msuDdateTime")){
+				sb.append( " order by msuDdateTime "+pagging.getSortBy().toLowerCase());
+			}else
+			{
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-						sb.append( " order by missCandidate."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-				}			
+					sb.append( " order by missCandidate."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
+				}
+			}
+				;
+				
 				Query query =session.createQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session,roleMC, instance)); 
@@ -271,16 +284,22 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
-				 
-				 List<MissCandidate> l = query.list();   
+				 List<java.lang.Object> result=query.list();
+				// if(result!=null && result.size()>0);
+				// List<MissCandidate> l = query.list();   
 				 /*if(l!=null && l.size()>0){
 					 MissCandidate x =(MissCandidate)l.get(0);
 				 }*/
 				// StringBuffer sb =new StringBuffer(" select missCandidate from MissCandidate missCandidate ");
 				 List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
-							l.size());
+						 result.size());
 				  String masmAvailable;
-				  for (MissCandidate missCandidate : l) {
+				  for(int i=0;i<result.size();i++){
+					  java.lang.Object[] objs=(java.lang.Object[])result.get(i);
+					 // System.out.println("xxx"+objs[1].getClass());
+					  MissCandidate missCandidate=(MissCandidate)objs[0];
+				 /* }
+				  for (MissCandidate missCandidate : l) {*/
 					  sb.setLength(0);
 					  sb.append("select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap " +
 					  		"where missAccountSeriesMap.id.maId="+missCandidate.getMissAccount().getMaId().intValue()+" " +
