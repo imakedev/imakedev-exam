@@ -138,7 +138,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             		<th width="20%"><div class="th_class">Series</div></th> 
             		<th width="10%"><div class="th_class">Group</div></th>
             		<th width="45%"><div class="th_class">Test</div></th>
-            		<th width="5%"><div class="th_class">Unit</div></th> 
+            		<th width="5%"><div class="th_class">Prize Unit</div></th> 
             		<th width="5%"><div class="th_class">Available (Candidate)</div></th>
             		<th width="15%"><div class="th_class">Order</div></th> 
           		</tr>

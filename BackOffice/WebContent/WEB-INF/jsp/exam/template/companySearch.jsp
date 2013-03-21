@@ -345,7 +345,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					</tr>
 	    					<tr valign="top">
 	    					 <td align="left" width="17%">&nbsp;</td>
-	    					 <td align="left" width="17%">Purchased Test:</td>
+	    					 <td align="left" width="17%">Purchased series:</td>
 	    					 <td align="left"  colspan="4" width="66%">  
 	    					 <!--  <span style="display: block;">  -->
 	    					    <table width="100%" border="0" style="font-size: 13px;">

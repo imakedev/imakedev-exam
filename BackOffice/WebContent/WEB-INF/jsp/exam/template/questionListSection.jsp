@@ -64,6 +64,10 @@ function loadQuestion(_url){
 <div id="dialog-confirm-Question-Delete" title="Delete Question" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Question ?
 </div>
+<div id="message_element_test" class="alert alert-${message_class}" style="${display}">
+    <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
+    <strong>${message}</strong> 
+    </div>
 			<form:form  id="testForm_question" name="testForm_question" modelAttribute="testForm"  method="post" action="">
 			<strong>Question Listx</strong>
     				<div>${testForm.missExam.meName}</div>
@@ -74,13 +78,13 @@ function loadQuestion(_url){
             <form:hidden path="paging.pageNo" id="pageNo"/>
             <form:hidden path="paging.pageSize" id="pageSize"/> 
             <form:hidden path="pageCount" id="pageCount"/> 
-    		</form:form>	
+    		<%-- </form:form>	 --%>
     		<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="60%">
-	    					<c:if test="${countNotOrdered != 0}">
+	    					<%-- <c:if test="${countNotOrdered != 0}"> --%>
 	    					 <a class="btn btn-danger" onclick="doQuestionAction('setOrderItems','0')"><i class="icon-refresh icon-white" ></i>&nbsp;<span style="font-weight:bold;color:  white;">Set Order No</span></a>
-	    					</c:if>	    					
+	    					<%-- </c:if>	  --%>   					
 	    					</td>
 	    					<td align="right" width="40%">
 	    					<a class="btn btn-primary"  onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/new')"><i class="icon-plus-sign icon-white"></i>&nbsp;<span style="font-weight:bold;color:  white;">Add</span></a>
@@ -100,7 +104,12 @@ function loadQuestion(_url){
         	 <c:forEach items="${missQuestions}" var="missQuestion" varStatus="loop"> 
           	<tr>
             	<%-- <td>${loop.index+1}</td> --%>
-            	 <td>${missQuestion.mqNo}</td> 
+            	 <td> 
+            	 <form:hidden path="mqIds" value="${missQuestion.mqId}" />
+            	 <form:input path="mqNos" value="${missQuestion.mqNo}" cssStyle="width: 30px;height: 20px" />
+            	<%--  <input type="text"  value="${missQuestion.mqNo}" name="mqNo_array" style="width: 30px;height: 20px"/>
+            	 <input type="hidden"  value="${missQuestion.mqId}" name="mqId_array"/> --%>
+            	 </td> 
             	<td>Question ${loop.index+1}</td> 
             	<%--
             	${missQuestion.mqNameTh1}
@@ -130,7 +139,7 @@ function loadQuestion(_url){
           	</tr> --%>
         	</tbody>
       </table>
-			
+			</form:form>	
 			<div>
 			<!-- <input type="checkbox"> -->
 			<form:form  id="testForm_fixanswer" name="testForm_fixanswer" modelAttribute="testForm" cssClass="well"  method="post" action="">
