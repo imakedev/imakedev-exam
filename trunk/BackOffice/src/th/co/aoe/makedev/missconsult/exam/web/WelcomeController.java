@@ -142,7 +142,6 @@ public class WelcomeController
       //  String name = auth.getName();
       //  logger.debug((new StringBuilder(" name  ===>")).append(name).toString());
        // logger.debug((new StringBuilder(" auth.getAuthorities() ====>")).append(auth.getAuthorities()).toString());
-    	//System.out.println("ignore_id="+ignore_id);
     	MissTodo missTodo =new MissTodo();
     	missTodo.setMtodoId(ignore_id);
     	missExamService.deleteMissTodo(missTodo);
@@ -198,10 +197,6 @@ public class WelcomeController
     @RequestMapping(value={"/"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String getNewForm(HttpServletRequest request,HttpServletResponse response,  Model model)
     {
-   
-     	/*System.out.println(" locale="+locale.getDisplayLanguage());
-         LocaleContextHolder.setLocale(locale,true);*/
-    	
     	String language=request.getParameter("language");
     	if(language!=null && language.length()>0){
     	 LocaleEditor localeEditor = new LocaleEditor();
@@ -214,7 +209,6 @@ public class WelcomeController
          localeResolver.setLocale(request, response,
              (Locale) localeEditor.getValue());
     	}
-    	//System.out.println("into getNewForm "+LocaleContextHolder.getLocale().getDisplayLanguage());
     	logger.error("into init local "+LocaleContextHolder.getLocale());
     	//locale.getDisplayLanguage()
         int pageNo = 1;
@@ -273,15 +267,12 @@ public class WelcomeController
     	int status=0;
     	//send mail to Approver
     	byte [] fileSize=null;
-    	//System.out.println("xxxxxxxxxxxxxxxxxxxxxx="+request.getParameter("mail_attach"));
     	if(request.getParameter("mail_attach")!=null && request.getParameter("mail_attach").equals("1")){
     		/*$("#mail_todo_id").val(todo_id);
     		$("#mail_todo_ref").val(todo_ref);*/ 
     		String todo_ref=request.getParameter("mail_todo_ref");
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
-    		//System.out.println("missTestResult.getMsId()="+missTestResult.getMsId()+",missTestResult.getMtrId()="+missTestResult.getMtrId());
     		fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
-    		//System.out.println("file Sizeeeeeeeeee"+fileSize);
     	}
     	String[] mailTos=null;
     	if(mailTo!=null  && mailTo.length()>0){
@@ -591,7 +582,6 @@ public class WelcomeController
 			try { 
 				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
 				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
-				//System.out.println("chatchai debug ds="+ds);
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

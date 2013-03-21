@@ -7,8 +7,6 @@ package th.co.aoe.makedev.missconsult.exam.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
@@ -51,7 +49,6 @@ import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
-import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 // Referenced classes of package th.co.aoe.makedev.missconsult.exam.service.impl:
@@ -315,7 +312,6 @@ public class MissExamServiceImpl extends PostCommon
     {
         missExam.setServiceName("updateMissExam");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
-       // System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx="+resultMessage);
         missExam = (MissExam)resultMessage.getResultListObj().get(0);
         return missExam.getUpdateRecord().intValue();
     }
@@ -479,12 +475,13 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
         missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
         return missQuestion.getUpdateRecord().intValue();
-    }
-    public int setOrderItems(Long meId)
+    } 
+    public int setOrderItems(Long meId,String[] mqNo_array,String mqId_array[])
     {
    	 MissExam missExam = new MissExam();
    	 missExam.setMeId(meId);
-   	 
+   	 missExam.setMqNos(mqNo_array);
+   	 missExam.setMqIds(mqId_array);
    	 MissQuestion missQuestion =new MissQuestion();
    	 missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SET_ORDERED_ITEMS);
         missQuestion.setMissExam(missExam);
@@ -957,286 +954,7 @@ public class MissExamServiceImpl extends PostCommon
 	    VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
         return (MissAccount)resultMessage.getResultListObj().get(0);
 	}
-    public static void main(String args[])
-    {
-    	
-
-     /*  MissExamServiceImpl main = new MissExamServiceImpl();
-       List<MissCareerMaster> missCareerMasters=  main.listMissCareerMaster(2l);
-       System.out.println(missCareerMasters);*/
-  /* 	 List<MissQuestion> misses=ReadWriteWorkbook_bk.setQuestion();
-        List<MissQuestion> missQuestions = main.listMissQuestions(36l);
-        //main.searchMissChoice(missChoice)
-        System.out.println(missQuestions.get(0).getMissChoicesUpdate());
-      
-        // update question 
-        for (MissQuestion miss : misses) {
-        	MissQuestion missQuestion =missQuestions.get(miss.getMqId().intValue()-1);
-        	missQuestion.setMqNameTh1(miss.getMqNameTh1());
-        	 main.updateMissQuestion(missQuestion, "updateMissQuestion");
-		}*/
-       // main.testMissQuestion();
-		/*
-        MissQuestion missQuestion =missQuestions.get(0);
-        missQuestion.setMqNameTh1(misses.get(0).getMqNameTh1());
-        main.updateMissQuestion(missQuestion, "updateMissQuestion");
-   */
-     /*   System.out.println(missQuestion.getMqNameTh1());
-        System.out.println(missQuestions.size());*/
-        //main.testMissQuestion();
-     /*  MissAccount account=main.findMissAccountById(7l);
-       System.out.println(account.getMissAccountSeriesMapList());*/
-        //main.findProductReport("0","2012"); //0=year,1=all
-      //  MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
-      /*  System.out.println(IMakeDevUtils.calculatePage(3, 7));
-        DateTime dt = new DateTime();
-        System.out.println(dt.getDayOfMonth());
-        System.out.println(dt.dayOfMonth().getAsShortText(Locale.US));
-        System.out.println(dt.monthOfYear().getAsShortText(Locale.CANADA));
-        System.out.println(dt.year().get());
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        System.out.println(format.format(dt.toDate()));
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt.toDate());
-        c.add(5, 1);
-        java.util.Date dt2 = c.getTime();
-        System.out.println("xxxxxxxxxxxxxxxxxxxxx");
-        DateTime dt22 = new DateTime(dt2);
-        System.out.println(dt22.getDayOfMonth());
-        System.out.println(dt22.dayOfMonth().getAsShortText(Locale.US));
-        System.out.println(dt22.monthOfYear().getAsShortText(Locale.CANADA));
-        System.out.println(dt22.year().get());
-        System.out.println(format.format(dt22.toDate()));*/
-    }
-
-    private void testMissAccount()
-    {
-        MissAccount missAccount = findMissAccountById(new Long(1L));
-        System.out.println(missAccount);
-        missAccount.setMaAddress((new StringBuilder(String.valueOf(missAccount.getMaAddress()))).append(" update record").toString());
-        updateMissAccount(missAccount);
-        MissAccount missAccountSave = new MissAccount();
-        BeanUtils.copyProperties(missAccount, missAccountSave);
-        missAccountSave.setMaId(null);
-        saveMissAccount(missAccountSave);
-        MissAccount missAccountSearch = new MissAccount();
-        missAccountSearch.setMaName("search");
-        VResultMessage vresult = searchMissAccount(missAccountSearch);
-        System.out.println(vresult);
-        MissAccount missAccountDelete = new MissAccount();
-        missAccountDelete.setMaId(new Long(1L));
-    }
-
-    private void testMissAccountSeriesMap()
-    {
-        MissAccountSeriesMap missAccountSeriesMap = findMissAccountSeriesMapById(new Long(1L));
-        System.out.println(missAccountSeriesMap);
-        missAccountSeriesMap.setMasmOrderUnit(Long.valueOf(missAccountSeriesMap.getMasmOrderUnit().longValue() + 1L));
-        updateMissAccountSeriesMap(missAccountSeriesMap);
-        MissAccountSeriesMap missAccountSeriesMapSave = new MissAccountSeriesMap();
-        BeanUtils.copyProperties(missAccountSeriesMap, missAccountSeriesMapSave);
-        missAccountSeriesMapSave.setMaId(null);
-        saveMissAccountSeriesMap(missAccountSeriesMapSave);
-        MissAccountSeriesMap missAccountSeriesMapSearch = new MissAccountSeriesMap();
-        missAccountSeriesMapSearch.setMasmStatus("1");
-        VResultMessage vresult = searchMissAccountSeriesMap(missAccountSeriesMapSearch);
-        System.out.println(vresult);
-        MissAccountSeriesMap missAccountSeriesMapDelete = new MissAccountSeriesMap();
-        missAccountSeriesMapDelete.setMaId(new Long(1L));
-        deleteMissAccountSeriesMap(missAccountSeriesMapDelete);
-    }
-
-    private void testMissCandidate()
-    {
-        MissCandidate missCandidate = findMissCandidateById(new Long(1L));
-        System.out.println(missCandidate);
-        missCandidate.setMcaDepartment((new StringBuilder(String.valueOf(missCandidate.getMcaDepartment()))).append(" update").toString());
-        updateMissCandidate(missCandidate);
-        MissCandidate missCandidateSave = new MissCandidate();
-        BeanUtils.copyProperties(missCandidate, missCandidateSave);
-        missCandidateSave.setMcaId(null);
-        saveMissCandidate(missCandidateSave);
-        MissCandidate missCandidateSearch = new MissCandidate();
-        VResultMessage vresult = searchMissCandidate(missCandidateSearch);
-        System.out.println(vresult);
-        MissCandidate missCandidateDelete = new MissCandidate();
-    }
-
-    private void testMissChoice()
-    {
-        MissChoice missChoice = findMissChoiceById(new Long(1L));
-        System.out.println(missChoice);
-        updateMissChoice(missChoice);
-        MissChoice missChoiceSave = new MissChoice();
-        saveMissChoice(missChoiceSave);
-        MissChoice missChoiceSearch = new MissChoice();
-        VResultMessage vresult = searchMissChoice(missChoiceSearch);
-        System.out.println(vresult);
-        MissChoice missChoiceDelete = new MissChoice();
-        deleteMissChoice(missChoiceDelete);
-    }
-
-    private void testMissEvaluationTemplate()
-    {
-        MissEvaluationTemplate missEvaluationTemplate = findMissEvaluationTemplateById(new Long(1L));
-        System.out.println(missEvaluationTemplate);
-        updateMissEvaluationTemplate(missEvaluationTemplate);
-        MissEvaluationTemplate missEvaluationTemplateSave = new MissEvaluationTemplate();
-        saveMissEvaluationTemplate(missEvaluationTemplateSave);
-        MissEvaluationTemplate missEvaluationTemplateSearch = new MissEvaluationTemplate();
-        VResultMessage vresult = searchMissEvaluationTemplate(missEvaluationTemplateSearch);
-        System.out.println(vresult);
-        MissEvaluationTemplate missEvaluationTemplateDelete = new MissEvaluationTemplate();
-        deleteMissEvaluationTemplate(missEvaluationTemplateDelete);
-    }
-
-    private void testMissExam()
-    {
-        MissExam missExam = findMissExamById(new Long(1L));
-        System.out.println(missExam);
-        updateMissExam(missExam);
-        MissExam missExamSave = new MissExam();
-        saveMissExam(missExamSave);
-        MissExam missExamSearch = new MissExam();
-        VResultMessage vresult = searchMissExam(missExamSearch);
-        System.out.println(vresult);
-        MissExam missExamDelete = new MissExam();
-    }
-
-    private void testMissExamGroup()
-    {
-        MissExamGroup missExamGroupSearch = new MissExamGroup();
-        VResultMessage vresult = searchMissExamGroup(missExamGroupSearch);
-        System.out.println(vresult.getResultListObj());
-    }
-
-    private void testMissExamType()
-    {
-        MissExamType missExamType = findMissExamTypeById(new Long(1L));
-        System.out.println(missExamType);
-        updateMissExamType(missExamType);
-        MissExamType missExamTypeSave = new MissExamType();
-        saveMissExamType(missExamTypeSave);
-        MissExamType missExamTypeSearch = new MissExamType();
-        VResultMessage vresult = searchMissExamType(missExamTypeSearch);
-        System.out.println(vresult);
-        MissExamType missExamTypeDelete = new MissExamType();
-        deleteMissExamType(missExamTypeDelete);
-    }
-
-    private void testMissQuestion()
-    {
-       /* MissQuestion missQuestion = findMissQuestionById(new Long(1L));
-        System.out.println(missQuestion);
-        //updateMissQuestion(missQuestion);
-        MissQuestion missQuestionSave = new MissQuestion();
-        //saveMissQuestion(missQuestionSave);
-        MissQuestion missQuestionSearch = new MissQuestion();
-        VResultMessage vresult = searchMissQuestion(missQuestionSearch);
-        System.out.println(vresult);
-        MissQuestion missQuestionDelete = new MissQuestion();
-        deleteMissQuestion(missQuestionDelete);*/
-    	 MissQuestion missQuestion = new MissQuestion(); 
-         missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SETUP_TEST);
-         
-         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
-          
-    }
-
-    private void testMissSeriesMap()
-    {
-        MissSeriesMap missSeriesMap = findMissSeriesMapById(new Long(1L));
-        System.out.println(missSeriesMap);
-        updateMissSeriesMap(missSeriesMap);
-        MissSeriesMap missSeriesMapSave = new MissSeriesMap();
-        saveMissSeriesMap(missSeriesMapSave);
-        MissSeriesMap missSeriesMapSearch = new MissSeriesMap();
-        VResultMessage vresult = searchMissSeriesMap(missSeriesMapSearch);
-        System.out.println(vresult);
-        MissSeriesMap missSeriesMapDelete = new MissSeriesMap();
-        deleteMissSeriesMap(missSeriesMapDelete);
-    }
-
-    private void testMissSery()
-    {
-        MissSery missSery = findMissSeryById(new Long(1L));
-        System.out.println(missSery);
-        updateMissSery(missSery);
-        MissSery missSerySave = new MissSery();
-        saveMissSery(missSerySave);
-        MissSery missSerySearch = new MissSery();
-        VResultMessage vresult = searchMissSery(missSerySearch);
-        System.out.println(vresult);
-        MissSery missSeryDelete = new MissSery();
-        deleteMissSery(missSeryDelete, "");
-    }
-
-    private void testMissSurveySend()
-    {
-        MissSurveySend missSurveySend = findMissSurveySendById(new Long(1L));
-        System.out.println(missSurveySend);
-        updateMissSurveySend(missSurveySend);
-        MissSurveySend missSurveySendSave = new MissSurveySend();
-        saveMissSurveySend(missSurveySendSave);
-        MissSurveySend missSurveySendSearch = new MissSurveySend();
-        VResultMessage vresult = searchMissSurveySend(missSurveySendSearch);
-        System.out.println(vresult);
-        MissSurveySend missSurveySendDelete = new MissSurveySend();
-        deleteMissSurveySend(missSurveySendDelete);
-    }
-
-    private void testMissTemplate()
-    {
-        MissTemplate missTemplate = findMissTemplateById(new Long(1L));
-        System.out.println(missTemplate);
-        updateMissTemplate(missTemplate);
-        MissTemplate missTemplateSave = new MissTemplate();
-        saveMissTemplate(missTemplateSave);
-        MissTemplate missTemplateSearch = new MissTemplate();
-        VResultMessage vresult = searchMissTemplate(missTemplateSearch);
-        System.out.println(vresult);
-        MissTemplate missTemplateDelete = new MissTemplate();
-        deleteMissTemplate(missTemplateDelete);
-    }
-
-    private void testMissTest()
-    {
-        MissTest missTest = findMissTestById(new Long(1L));
-        System.out.println(missTest);
-        updateMissTest(missTest);
-        MissTest missTestSave = new MissTest();
-        saveMissTest(missTestSave);
-        MissTest missTestSearch = new MissTest();
-        VResultMessage vresult = searchMissTest(missTestSearch);
-        System.out.println(vresult);
-        MissTest missTestDelete = new MissTest();
-        deleteMissTest(missTestDelete);
-    }
-
-    private void testMissTestResult()
-    {
-        MissTestResult missTestResult = findMissTestResultById(new Long(1L));
-        System.out.println(missTestResult);
-        updateMissTestResult(missTestResult);
-        MissTestResult missTestResultSave = new MissTestResult();
-        saveMissTestResult(missTestResultSave);
-        MissTestResult missTestResultSearch = new MissTestResult();
-        VResultMessage vresult = searchMissTestResult(missTestResultSearch);
-        System.out.println(vresult);
-        MissTestResult missTestResultDelete = new MissTestResult();
-        deleteMissTestResult(missTestResultDelete);
-    }
-
-    private void testMissTodo()
-    {
-        MissTodo missTodoSearch = new MissTodo();
-        Pagging paging = new Pagging();
-        paging.setPageNo(2);
-        paging.setPageSize(2);
-        missTodoSearch.setPagging(paging);
-        VResultMessage vresult = searchMissTodo(missTodoSearch);
-        System.out.println((new StringBuilder("xx")).append(vresult.getResultListObj()).toString());
-    }
+  
 
 	@Override
 	public int updateMissSeriesAttach(MissSeriesAttach missSeriesAttach) {

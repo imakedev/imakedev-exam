@@ -39,8 +39,6 @@ public class RoleController {
 		String display="display: none";
 		String message="";
 		String message_class="";
-		/*System.out.println(request.getParameter("mode"));
-		System.out.println(request.getParameter("modeExt"));*/
 		
 		//logger.error("roleForm=====>"+roleForm.getMode());
 		if (model.containsAttribute("roleForm"))
@@ -66,13 +64,11 @@ public class RoleController {
 				while (e_num.hasMoreElements()) {
 					String param_name = (String) e_num.nextElement();
 					if(param_name.startsWith("rtIdCheckbox_radio_")){
-						//System.out.println("object="+param_name+",value="+request.getParameter(param_name)); 
 						if(!request.getParameter(param_name).equals("0")){
 							rtIdsList.add(request.getParameter(param_name));
 						}
 					}
 					if(param_name.startsWith("msIdCheckbox_radio_")){
-						//System.out.println("object="+param_name+",value="+request.getParameter(param_name)); 
 						if(!request.getParameter(param_name).equals("0")){
 							msIdsList.add(request.getParameter(param_name));
 						}
@@ -80,12 +76,8 @@ public class RoleController {
 				}
 				String[] rtIdRadio = new String[rtIdsList.size()];
 				String[] msIdRadio = new String[msIdsList.size()];
-				//System.out.println("rtIdRadio="+rtIdRadio[0]);
-				//System.out.println("msIdRadio="+msIdRadio[0]);
-				//System.out.println("roleForm.getRcId()="+roleForm.getRcId());
 				rtIdRadio = rtIdsList.toArray(rtIdRadio);
 				msIdRadio= msIdsList.toArray(msIdRadio);
-				//System.out.println("rtIdRadio size="+rtIdRadio.length); 
 				//logger.debug(" rtIdCheckbox length="+rtIdCheckbox);
 				if(roleForm.getRcId()!=null && roleForm.getRcId().intValue()!=0){
 				RoleMapping roleMapping =new RoleMapping();
@@ -169,8 +161,6 @@ public class RoleController {
 					logger.debug(" roleSeriesMappings =>"+roleSeriesMappings.size());
 					 for (RoleSeriesMapping roleSeriesMapping : roleSeriesMappings) {
 					//	 logger.debug("xxxxxxxxxx roleSeriesMapping.getRtId =>"+roleSeriesMapping.getRtId());
-						/* System.out.println("roleSeriesMapping.getMsId()==>"+roleSeriesMapping.getMsId());
-						 System.out.println("missAccountSeriesMap.getMsId()==>"+missAccountSeriesMap.getMissSery().getMsId());*/
 						if(roleSeriesMapping.getMsId().intValue()==missAccountSeriesMap.getMissSery().getMsId()){
 							missAccountSeriesMap.setSelected("1");
 							break;

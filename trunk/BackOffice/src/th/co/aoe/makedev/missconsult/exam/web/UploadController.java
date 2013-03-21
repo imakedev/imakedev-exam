@@ -70,9 +70,7 @@ public class UploadController {
         for (Iterator iterator = m.keySet().iterator(); iterator.hasNext();) {
 			String type = (String) iterator.next();
 			String[] key=(String[])m.get(type);
-			System.out.println("key="+type+",value="+m.get(type));
 			for (int i = 0; i < key.length; i++) {
-				System.out.println(" xxxxxxxxxxx ="+key[i]);
 			}
 		}*/
     	  MultipartHttpServletRequest multipartRequest =(MultipartHttpServletRequest)request;
@@ -219,7 +217,6 @@ public class UploadController {
     {
     	//String hotlink = request.getQueryString();
 		//String []adminview = hotlink.split("&mode=");
-		//System.out.println(" adminview size="+adminview);
     	
 		//	String filePath = "/usr/local/Work/TestDownload/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc.jpg";
     	 

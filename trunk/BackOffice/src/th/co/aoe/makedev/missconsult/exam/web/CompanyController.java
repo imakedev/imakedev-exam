@@ -377,7 +377,6 @@ public class CompanyController
     public @ResponseBody MissCandidate doCreateCandidate(HttpServletRequest request, Model model) 
  //   public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
     {
-        //System.out.println((new StringBuilder(" xxxxxxxx ")).append(request.getParameter("amount")).toString());
         MissCandidate missCandidate = new MissCandidate();
         MissSery missSery = new MissSery();
         MissAccount missAccount = new MissAccount();
@@ -514,7 +513,6 @@ public class CompanyController
                 {
                     e.printStackTrace();
                 }
-        	//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxx"+contactForm.getMissContact().getMcontactId());
         	int count=missExamService.countMissContactByUsername(contactForm.getMissContact().getMcontactUsername(),contactForm.getMissContact().getMcontactId());
         	
         if(count>0){

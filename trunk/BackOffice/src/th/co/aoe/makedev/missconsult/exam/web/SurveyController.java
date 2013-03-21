@@ -78,9 +78,6 @@ public class SurveyController
     public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
     {
       
-    	/*System.out.println(surveyForm.getMaId());
-    	System.out.println(surveyForm.getSurvey_email().length);
-    	System.out.println(surveyForm.getAmountSend());*/
     	int resultReturn=0;
     	if(surveyForm.getSurvey_email().length>=surveyForm.getAmountSend()){
     		//List recipientsTo=new ArrayList();
@@ -113,7 +110,6 @@ public class SurveyController
     		 List<List<String>> candidateReturn= missExamService.sendSurvey(missSurveySend);
     		 if(candidateReturn!=null && candidateReturn.size()>0)
     			 resultReturn=1;
-    		 //System.out.println(" resultReturn="+resultReturn);
     		 int size=map.size();
     		 List recipientsCC=null;
     		 List recipientsBCC=null;
@@ -121,29 +117,17 @@ public class SurveyController
     		 String subject=surveyForm.getSubject();//"Aoe";
     		 String mailMessage=surveyForm.getMailMessage();//"Mail Message";
     		 
-    		/* for(int i=0;i<size;i++){
-    			 List<String> list=userEmail.get(i);
-    			 System.out.println("["+i+"]  xx name="+list.get(0)+",email="+list.get(1)); 
-    		 }*/
     		 List recipients=null;
     		 String message=null;
-    		// System.out.println("userEmail size="+userEmail.size()); 
     		 if(candidateReturn!=null && candidateReturn.size()>0){
     			 for (int i = 0; i < candidateReturn.size(); i++) {
     				 List<String> list=candidateReturn.get(i);
-    				// System.out.println("candidateReturn size="+candidateReturn.size());
     				 recipients=new ArrayList(1);    				 
     				 recipients.add(list.get(3));
-    				// System.out.println(mailMessage);
     				 message=mailMessage.replaceAll("\\$\\{name\\}", list.get(2));
     				 message=message.replaceAll("\\$\\{username\\}", list.get(0));
     				 message=message.replaceAll("\\$\\{password\\}", list.get(1));
     				 // ${name} , ${candidate} , ${password}
-    				/* System.out.println(" xx 0"+list.get(0)); //username of candidate
-    				 System.out.println(" xx 1"+list.get(1)); //password of candidate
-    				 System.out.println(" xx 2"+list.get(2));  // name
-    				 System.out.println(" xx 3"+list.get(3));  // email
-*/    				 
     				 MailRunnable mailRunnableToTeam = new MailRunnable(
     		  					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
     		  							, MAIL_PASSWORD, MAIL_USE_AUTHEN,

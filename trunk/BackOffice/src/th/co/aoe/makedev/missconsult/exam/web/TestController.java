@@ -273,7 +273,7 @@ public class TestController
     }*/
 
     @RequestMapping(value={"/exam/{meId}/questions"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public String questionListAction(@PathVariable String meId, @ModelAttribute(value="testForm") TestForm testForm, Model model)
+    public String questionListAction(HttpServletRequest request,@PathVariable String meId, @ModelAttribute(value="testForm") TestForm testForm, Model model)
     {
     	
     	/* TestForm testForm = null;
@@ -290,13 +290,25 @@ public class TestController
              missExamService.deleteMissQuestion(testForm.getMissExam(), "deleteMissExamItems");
              testForm.getPaging().setPageNo(1);
          } else*/
-         if(mode != null){ 
+     //    setOrderItems 
+        /* String mqNo_array[] = request.getParameterValues("mqNo_array");
+         String mqId_array[] = request.getParameterValues("mqId_array");*/
+         
+         String mqNo_array[] = testForm.getMqNos();
+         String mqId_array[] = testForm.getMqIds();
+
+        if(mode != null){ 
           if(mode.equals("delete")){
              missExamService.deleteMissQuestion(testForm.getMissQuestion());//, "deleteMissExam");
              testForm.getPaging().setPageNo(1);
+             model.addAttribute("display", "display: none");
          }else if(mode.equals("setOrderItems")){
-        	 missExamService.setOrderItems(Long.parseLong(meId));//setOrderItems
-        	 testForm.getPaging().setPageNo(1);
+        	 
+        	 missExamService.setOrderItems(Long.parseLong(meId),mqNo_array,mqId_array);//setOrderItems
+        	 testForm.getPaging().setPageNo(1); 
+        	  model.addAttribute("message","Order Item success !");
+              model.addAttribute("message_class", "success"); 
+              model.addAttribute("display", "display: block");
          }
       }
     	List missQuestions=null;
@@ -331,6 +343,7 @@ public class TestController
     	 model.addAttribute("countNotOrdered", countNotOrdered);
         model.addAttribute("missQuestions", missQuestions);
         model.addAttribute("testForm", testForm);
+        model.addAttribute("display", "display: none");
         return "exam/template/questionListSection";
     }
     @RequestMapping(value={"/exam/{meId}/question/{mqId}/{lang}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
@@ -388,7 +401,6 @@ public class TestController
         String message = "";
         String message_class = "";
         testForm.getMissExam().setSection(section);
-  
         Long id = null;
         if(mode != null)
             if(mode.equals("new"))

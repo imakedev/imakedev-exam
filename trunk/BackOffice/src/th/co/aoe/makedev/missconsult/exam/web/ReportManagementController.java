@@ -140,7 +140,6 @@ public class ReportManagementController {
 		 serviceReport.setMode(mode);
 		 ServiceReport report=missExamService.findServiceReport(serviceReport);
 		// String value= gson.toJson(report);
-		// System.out.println("value="+value);
 		// model.addAttribute("value", value);
 		// return "exam/report/data";
 		 return report;

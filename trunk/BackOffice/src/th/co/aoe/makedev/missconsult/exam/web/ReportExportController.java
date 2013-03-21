@@ -7,14 +7,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.EPTNormReport;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
+import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
 @RequestMapping(value={"/reportExport"})
+@SessionAttributes(value={"UserMissContact"})
 public class ReportExportController {
 	private static Logger logger = Logger.getRootLogger();
 	@Autowired
@@ -45,4 +50,44 @@ public class ReportExportController {
 		 eptNormReport.setMaId(maId);
 		 return missExamService.findEPTNormReport(eptNormReport);
 	    }
+	 @RequestMapping(value={"/compareTest/{mcaSeries}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public String compareTest(Model model,@PathVariable String mcaSeries,@PathVariable String mtrIds)
+	    {  
+		 Long maId=1l;
+		 if(model.containsAttribute("UserMissContact")){
+	         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact"); 
+	         	maId= missContact.getMcontactRef();
+		 }
+		 MissAccount missAccount= missExamService.findMissAccountById(maId);
+		 model.addAttribute("missAccount",missAccount);
+		 model.addAttribute("mcaSeries",mcaSeries);
+		 model.addAttribute("mtrIds",mtrIds);
+	        return "exam/report/compare_report";
+	    }
+	 @RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	   public  @ResponseBody Object[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
+			    {
+				 //Gson gson=new Gson();
+		   //MissTestResult[] missTestResults=new MissTestResult[2];
+		   Object[] missTestResults=new Object[3];
+		   MissTestResult missTestResult1 =null;
+		   MissTestResult missTestResult2  =null;
+		  String[] mtrId_array= mtrIds.split("_");
+		  MissTestResult missTestResult=new MissTestResult();
+		  missTestResult.setMsId(msId);
+		  missTestResult.setMtrIds(mtrId_array[0]);
+		   VResultMessage vresultMessage = missExamService.searchMissTestResult(missTestResult);
+		   missTestResult1 = (MissTestResult)((java.util.ArrayList)vresultMessage.getResultListObj().get(0)).get(0);
+		   
+		   missTestResult.setMtrIds(mtrId_array[1]);
+		   vresultMessage = missExamService.searchMissTestResult(missTestResult);
+		   missTestResult2 = (MissTestResult)((java.util.ArrayList)vresultMessage.getResultListObj().get(0)).get(0);
+		     
+		  // model.addAttribute("axisHeaders",);
+		   missTestResults[0]=missTestResult1;
+		   missTestResults[1]=missTestResult2;
+		   missTestResults[2]= vresultMessage.getResultListObj().get(1);
+		 
+		return missTestResults;
+		}
 }
