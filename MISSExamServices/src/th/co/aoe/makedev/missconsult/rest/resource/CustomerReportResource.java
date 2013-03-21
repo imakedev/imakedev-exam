@@ -55,7 +55,6 @@ public class CustomerReportResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.CUSTOMER_REPORT_FIND)){
 							xbpsTerm = customerReportService.findCustomerReport(xbpsTerm.getMode(),xbpsTerm.getMagId());
 						//logger.debug(" object return ="+ntcCalendarReturn);
-							//System.out.println(xbpsTerm);
 						VResultMessage vresultMessage = new VResultMessage();
 							if(xbpsTerm!=null){
 								List<th.co.aoe.makedev.missconsult.xstream.CustomerReport> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.CustomerReport>(1);
@@ -67,7 +66,6 @@ public class CustomerReportResource extends BaseResource {
 						}else if(serviceName.equals(ServiceConstant.CUSTOMER_REPORT_GET_GROUPS)){
 							xbpsTerm = customerReportService.findGroups(xbpsTerm.getQuery());
 						//logger.debug(" object return ="+ntcCalendarReturn);
-							//System.out.println(xbpsTerm);
 						VResultMessage vresultMessage = new VResultMessage();
 							if(xbpsTerm!=null){
 								List<th.co.aoe.makedev.missconsult.xstream.CustomerReport> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.CustomerReport>(1);

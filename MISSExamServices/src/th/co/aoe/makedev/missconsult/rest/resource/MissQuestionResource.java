@@ -193,7 +193,7 @@ public class MissQuestionResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SET_ORDERED_ITEMS)){
 							
-							int updateRecord=missQuestionService.setOrderItems(xbpsTerm.getMissExam().getMeId());
+							int updateRecord=missQuestionService.setOrderItems(xbpsTerm.getMissExam().getMeId(),xbpsTerm.getMissExam().getMqNos(),xbpsTerm.getMissExam().getMqIds());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						

@@ -55,7 +55,6 @@ public class ServiceReportResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.SERVICE_REPORT_FIND)){
 							xbpsTerm = serviceReportService.findServiceReport(xbpsTerm.getMode(),xbpsTerm.getMonth(),xbpsTerm.getYear());
 						//logger.debug(" object return ="+ntcCalendarReturn);
-							//System.out.println(xbpsTerm);
 						VResultMessage vresultMessage = new VResultMessage();
 							if(xbpsTerm!=null){
 								List<th.co.aoe.makedev.missconsult.xstream.ServiceReport> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.ServiceReport>(1);

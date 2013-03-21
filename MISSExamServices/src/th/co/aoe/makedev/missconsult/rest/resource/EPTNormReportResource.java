@@ -55,7 +55,6 @@ public class EPTNormReportResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.EPT_NORM_REPORT_FIND)){
 							xbpsTerm = eptNormReportService.findEPTNormReport(xbpsTerm.getMode(),xbpsTerm.getMaId());
 						//logger.debug(" object return ="+ntcCalendarReturn);
-							//System.out.println(xbpsTerm);
 						VResultMessage vresultMessage = new VResultMessage();
 							if(xbpsTerm!=null){
 								List<th.co.aoe.makedev.missconsult.xstream.EPTNormReport> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.EPTNormReport>(1);
@@ -67,7 +66,6 @@ public class EPTNormReportResource extends BaseResource {
 						}else if(serviceName.equals(ServiceConstant.EPT_NORM_REPORT_GET_COMPANIES)){
 							xbpsTerm = eptNormReportService.findCompanies(xbpsTerm.getQuery());
 						//logger.debug(" object return ="+ntcCalendarReturn);
-							//System.out.println(xbpsTerm);
 						VResultMessage vresultMessage = new VResultMessage();
 							if(xbpsTerm!=null){
 								List<th.co.aoe.makedev.missconsult.xstream.EPTNormReport> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.EPTNormReport>(1);
