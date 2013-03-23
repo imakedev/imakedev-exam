@@ -1,8 +1,19 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -11,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -180,5 +192,63 @@ public class ReportManagementController {
 		 consultantReport.setMonth(month);
 		 consultantReport.setYear(year);
 		 return  missExamService.findConsultantReport(consultantReport);
+	    }
+	 @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public void export(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long maId){
+	    		//@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
+	    	try{
+			 String  reportPath= "/opt/attach/ept_norm/export_ept_norm.jasper"; 
+			 JasperPrint jasperPrint=null;
+			 Map p =new HashMap();
+			 p.put("URL", "http://203.150.20.37/MISSProcessImage/export?maId="+maId);
+				 
+			try {
+				
+				jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
+				//jasperPrint = JasperFillManager.fillReport(reportPath, p, con);
+				/*jasperPrint.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+				jasperPrint.setProperty("net.sf.jasperreports.default.font.name", defaultPDFFont);*/
+				 
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		   //  String fileName="เทส.pdf";
+			 response.addHeader("Content-disposition", "attachment; filename=ept_norm.pdf");  
+			/* response.setHeader("Content-Disposition", "inline; filename="
+						+ fileName);*/
+		       ServletOutputStream servletOutputStream=null;
+			try {
+				servletOutputStream = response.getOutputStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		       try {
+				JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+			} catch (JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		    try {
+				servletOutputStream.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		       try {
+				servletOutputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		       
+	    	}catch (Exception e) {
+				// TODO: handle exception
+	    		e.printStackTrace();
+			}finally{
+				 
+			}
+		   
 	    }
 }
