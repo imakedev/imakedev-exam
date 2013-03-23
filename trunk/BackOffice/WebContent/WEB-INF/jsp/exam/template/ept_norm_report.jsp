@@ -6,7 +6,8 @@ $(document).ready(function() {
 	initCompanyList();
 });
 function exportPDF(){
-	var src = "/MISSProcessImage/export?maId="+document.getElementById("companyListElement").value;
+//	var src = "/MISSProcessImage/export?maId="+document.getElementById("companyListElement").value;
+		var src = "reportmanagement/export?maId="+document.getElementById("companyListElement").value;
 	//alert(src)
 	var div = document.createElement("div");
     document.body.appendChild(div);
