@@ -357,12 +357,16 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			 * and result.MTR_START_TIME < '2012-06-20 23:59:59'
 			 */
 			boolean iscriteria = false;
+			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx roleMC => "+roleMC+",maId="+maId);
 			if(roleMC !=1){// company
 				//sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
 				//iscriteria=true;
-				sb.append( " where  ( result.MTR_HIDE_STATUS ='1' or result.MTR_HIDE_STATUS is null )  ");
-				sb.append (" and account.MA_ID ="+ maId+ "");
-				iscriteria=true;
+				if(!(mtrIds!=null && mtrIds.length()>0)){
+					sb.append( " where  ( result.MTR_HIDE_STATUS ='1' or result.MTR_HIDE_STATUS is null )  ");
+					sb.append (" and account.MA_ID ="+ maId+ "");
+					iscriteria=true;
+				}
+				
 			}else{ //admin
 				/*sb.append( " where  ( result.MTR_HIDE_STATUS ='1' )  ");
 				sb.append (" and account.MA_ID ="+ maId+ "");
@@ -600,7 +604,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			}
 			// List l = query.list();
 			
-
+            //System.out.println("result="+result.size());
 			transList.add(result);
 			transList.add(size);
 			transList.add(axisHeaders);
