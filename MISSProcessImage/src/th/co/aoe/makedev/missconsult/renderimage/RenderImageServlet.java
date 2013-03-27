@@ -65,23 +65,16 @@ public class RenderImageServlet extends HttpServlet {
 			/*try { 
 				ds = (datasource)ctx.lookup("java:/comp/env/jdbc/missdb");
 				//ds = (datasource)ctx.lookup("jdbc/localoracle");
-				//system.out.println("chatchai debug ds="+ds);
 			} catch (namingexception e) {
 				// todo auto-generated catch block
 				e.printstacktrace();
 			}*/               
 			
 			try {
-				//System.out.println(this.getClass());
-				//System.out.println("ds=="+ds);
-			 
 				basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
 				con = basicDs.getConnection();//("oracle", "password");//Connection();
 				//con = ds.getConnection();//("oracle", "password");//Connection();
-				//System.out.println("basicDs="+basicDs);
-				//System.out.println("con="+con);
 				String sql="SELECT * FROM "+SCHEMA+".MISS_DATA_CHART where mtr_id="+mtrId+" and mdc_key='"+mdc_key+"'";
-				//System.out.println("sql\n"+sql);
 				 pst = con.prepareStatement(sql);
 				 result = pst.executeQuery();
 					if(result!=null)					
@@ -109,27 +102,21 @@ public class RenderImageServlet extends HttpServlet {
 				if (con != null) {
 					try {
 						if(result!=null){
-							//System.out.println("result is Closed="+result.isClosed());
 							if(!result.isClosed()){
 								result.close();
-								//System.out.println("result is Closed affter close="+result.isClosed());
 								result=null;
 							}
 							
 						}
 						if (pst != null) {
-							//System.out.println("pst is Closed="+pst.isClosed());
 							if(!pst.isClosed()){
 								pst.close();			
-								//System.out.println("pst is Closed affter close="+pst.isClosed());
 								pst = null;
 							} 
 							
 						}
-						//System.out.println("connection is Closed="+con.isClosed());
 						if(!con.isClosed());
 							con.close();
-						//System.out.println("connection is Closed affter close="+con.isClosed());
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
