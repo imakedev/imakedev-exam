@@ -234,7 +234,7 @@ public class AccessController {
 		model.addAttribute("message", message);
 		return "access/login";
 	}
-	@RequestMapping(value = "/login/duplicate")
+	@RequestMapping(value = "/login/duplicate") 
  	public String loginDuplicate(Model model,HttpServletRequest request,HttpServletResponse response) {
 		logger.info(" into loginDuplicate");
 		/*String message = "Login Failure!";
