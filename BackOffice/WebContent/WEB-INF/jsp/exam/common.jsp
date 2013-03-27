@@ -209,6 +209,7 @@ table[id=table_list] tr:nth-child(even) {background: #FFFFFF}
 <c:set var="aoeTest">
   <spring:message code='navigation_home'/>
 </c:set>
+
 <script type="text/javascript">
 
 var _path="";
@@ -219,8 +220,9 @@ var mail_attachG;
 var intRegex = /^\d+$/;
 //var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+)|(-\d+(\.\d *)?)|((-\d*\.)?\d+))$/;
-
+ 
 $(document).ready(function() {
+	 
 	//alert("aa");
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
@@ -453,7 +455,7 @@ $(document).ready(function() {
 	});
 	*/
 	renderTodoPageSelect();
-});
+}); 
 function renderTodoPageSelect(){
 	var pageStr="<select name=\"todoPageSelect\" id=\"todoPageSelect\" onchange=\"goToTodoPage()\" style=\"width: 50px\">";
 //	var pageCount=parseInt($("#pageCount").val());
@@ -632,7 +634,7 @@ function openMailDialog(todo_id,todo_ref){
 	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-o.gif'/>); "> 
 </c:if> 
    --%>
-<body style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
+<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="" style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
  <div class="container-fluid">
     <div class="row-fluid" >
     	<div class="span12" align="center"> 
