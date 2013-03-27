@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,10 +90,32 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/login/failure")
- 	public String loginFailure(Model model) {
+ 	public String loginFailure(Model model,HttpServletRequest request,HttpServletResponse response) { 
+		/*String message = "Login Failure!"; 
+		model.addAttribute("message", message);
+		return "access/login";*/
+		 
 		/*String message = "Login Failure!";
 		return "redirect:/login?message="+message;*/
-		String message = "Login Failure!";
+		//logger.info(ae.getMessage()+"xxxxxx");
+	//	UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken)ae.getAuthentication();
+		   
+		String message = "Invalid User or Password.";
+		 
+		if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
+			message="ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง.";
+		String language=request.getParameter("language");
+		
+		if(language!=null && language.length()>0){
+	    	 LocaleEditor localeEditor = new LocaleEditor();
+	         localeEditor.setAsText(language);
+ 
+	         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+	         localeResolver.setLocale(request, response,
+	             (Locale) localeEditor.getValue());
+	         message="";
+	    	}
+		
 	//	String message = "Login เออเร่อ!";
 	/*	MissTestResult missTest=new MissTestResult();
 		missTest.setMtrResultCode(message);
@@ -165,5 +188,32 @@ public class AccessController {
 
 		}
 		return version;
+	}
+	@RequestMapping(value = "/login/duplicate") 
+ 	public String loginDuplicate(Model model,HttpServletRequest request,HttpServletResponse response) {
+		
+		/*String message = "Login Failure!";
+		return "redirect:/login?message="+message;*/
+		String message = "This Account already been used."; 
+		if(!LocaleContextHolder.getLocale().getDisplayLanguage().equals("English"))
+			message="บัญชีนี้ได้ถูกใช้ไปแล้ว.";
+		String language=request.getParameter("language");
+		
+		if(language!=null && language.length()>0){
+	    	 LocaleEditor localeEditor = new LocaleEditor();
+	         localeEditor.setAsText(language);
+ 
+	         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+	         localeResolver.setLocale(request, response,
+	             (Locale) localeEditor.getValue());
+	         message="";
+	    	}
+		
+	//	String message = "Login เออเร่อ!";
+	/*	MissTestResult missTest=new MissTestResult();
+		missTest.setMtrResultCode(message);
+		model.addAttribute("missTest", missTest);*/
+		model.addAttribute("message", message);
+		return "access/login";
 	}
 }

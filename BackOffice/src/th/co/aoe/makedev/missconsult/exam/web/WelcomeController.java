@@ -209,7 +209,7 @@ public class WelcomeController
          localeResolver.setLocale(request, response,
              (Locale) localeEditor.getValue());
     	}
-    	logger.error("into init local "+LocaleContextHolder.getLocale());
+    	//logger.error("into init local "+LocaleContextHolder.getLocale());
     	//locale.getDisplayLanguage()
         int pageNo = 1;
         DateTime dt = new DateTime();
