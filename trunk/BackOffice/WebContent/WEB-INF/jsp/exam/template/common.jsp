@@ -43,7 +43,9 @@
 select { width: 55px;}
 /*.ui-widget{font-family: Tahoma;font-size: 12px; }*/
 </style>
+ 
 <script type="text/javascript">
+
 $(document).ready(function() {
 	//$('#tabs').tabs();
   //   $("fieldset.collapsibleClosed").collapse( { closed : true } );
