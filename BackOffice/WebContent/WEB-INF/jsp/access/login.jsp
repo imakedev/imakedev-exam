@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -45,7 +46,7 @@ $(document).ready(function() {
         <div class="content_box">
         <div align="right" class="language" style="padding-top:50px; padding-right:10px;"><a title="Thai" style="cursor: pointer;" href="?language=th_TH">TH</a> | <a title="English" style="cursor: pointer;" href="?language=en">EN</a></div>
           <div style="border-bottom:2px dashed #BAC5C8; margin-bottom:8px;">
-          			<div style="float:left; width:50%;color:#737C82;font-size:16px;">Welcome to 
+          			<div style="float:left; width:50%;color:#737C82;font-size:16px;">Welcome to   
                     <span style=" font-weight:bold; color:#737C82;font-size:16px;">MissConsult</span>
                     </div>
                     <div style="float:right; width:50%; text-align:right;">
