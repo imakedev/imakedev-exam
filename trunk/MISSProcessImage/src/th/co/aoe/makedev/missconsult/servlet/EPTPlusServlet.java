@@ -67,7 +67,6 @@ public class EPTPlusServlet extends HttpServlet {
 		 HttpSession session = request.getSession(true);
 		if(page.indexOf("evalOfbehavioral")!=-1){
 			List<MissEptEvalBehavioralGroup> groups= getMissEptEvalBehavioralGroups(mtrId,page,lang);
-			//System.out.println("groups size="+groups.size());
 			session.setAttribute("groups", groups);
 			page="evalOfbehavioral";
 		}else if(page.indexOf("workwheel")!=-1){
