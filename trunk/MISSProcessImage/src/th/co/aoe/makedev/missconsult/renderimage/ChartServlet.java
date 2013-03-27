@@ -48,7 +48,6 @@ public class ChartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//chart="+chart+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"
-		System.out.println("into doGet");
 		 HttpSession session = request.getSession(true);
 		 //String page=request.getParameter("page");
 			

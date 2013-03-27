@@ -8,23 +8,25 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+ 
+
 /**
  * Servlet implementation class Export
  */
-@WebServlet("/export")
-public class Export extends HttpServlet {
+@WebServlet("/compareTest")
+public class CompareTest  extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Export() {
+    public CompareTest() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,7 +50,8 @@ public class Export extends HttpServlet {
 		// TODO Auto-generated method stub
 		//"http://203.150.20.37/MISSProcessImage/process?mtrId="+$P{mtrId}.toString()+"&key=chart1&w=800&h=400&chart=bar"
 		
-		 String maId= request.getParameter("maId");  
+		 String mcaSeries= request.getParameter("mcaSeries");  
+		 String mtrIds= request.getParameter("mtrIds");  
 		/* mtrId="20";
 		 mdc_key="chart1";*/
 		 try {
@@ -57,16 +60,13 @@ public class Export extends HttpServlet {
 			 Runtime rt = Runtime.getRuntime(); 
 	       
 			// String cmd="/usr/local/data/HttpServer/apache2/htdocs/wkhtmltoimage-amd64 --javascript-delay 3000 --quality 75 --crop-w "+width+" --crop-h "+height+" --format jpg  --use-xserver http://localhost:8080/MISSProcessImage/render?mtrId="+mtrId+"_"+mdc_key+"_"+chart+"_"+lang+"_"+width+"_"+height+" /tmp/"+fileGen+".jpg";
-	         //String cmd="";
+	         //String cmd=""; 
 			  Process proc=null;
-			  if(maId!=null && maId.length()>0){
+			  if(mcaSeries!=null && mcaSeries.length()>0 && mtrIds!=null && mtrIds.length()>0){
 				   //xvfb-run --server-args="-screen 0, 1024x768x24"
-				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay","3000",  
-						  "--quality","100","--format","jpg","http://localhost:8080/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});
-				/*  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--javascript-delay","3000",  
-						  "--quality","75","--format","jpg","--use-xserver","http://localhost:8080/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});*/ 
-				 /* proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay","3000",  
-						  "--quality","75","--format","jpg","http://203.150.20.37/MISSExamBackOffice/reportExport/eptNormReport/"+maId+"","/tmp/"+fileGen+".jpg"});   */
+				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--use-xserver","--javascript-delay","5000",  
+						  "--quality","100","--format","jpg","http://localhost:8080/MISSExamBackOffice/reportExport/compareTest/"+mcaSeries+"/"+mtrIds+"","/tmp/"+fileGen+".jpg"});
+				
 			  }/*else{
 				    proc = rt.exec(cmd);
 			  }*/
@@ -92,7 +92,7 @@ public class Export extends HttpServlet {
 				InputStream in = null;
 			      OutputStream out=null;
 			      response.setHeader("Content-Type", "application/octet-stream; charset=UTF-8");
-			      response.setHeader("Content-disposition", "attachment; filename=report.jpg");
+			      response.setHeader("Content-disposition", "attachment; filename=compareTest.jpg");
 			        
 			        
 				try {
@@ -158,4 +158,6 @@ public class Export extends HttpServlet {
 	  	    }
 	  	    return sb.toString();
 	   }
+
+
 }
