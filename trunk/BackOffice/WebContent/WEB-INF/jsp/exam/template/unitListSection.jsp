@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
 <script type="text/javascript">
 $(document).ready(function() { 
 //	$('#tabs').tabs();
@@ -117,13 +118,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					<td width="45%"><span id="maAvailableCandidateElement">${companyForm.missAccount.maAvailableCandidate}</span>&nbsp;&nbsp;candidate</td>
     					 <td width="20%">&nbsp;</td>
     				</tr> 
+    				<c:if test="${isManageMC}">	
     				<tr valign="top">
     					<td width="20%">&nbsp;</td>
     					<td width="15%">Re-fill </td>
     					<td width="45%"><form:input path="refill"/><input type="button" value="Re-fill" onclick="doRefill()"></td>
     					 <td width="20%">&nbsp;</td>
     				</tr>
-    				
+    				</c:if>
     			</table>
     			 
     			</div>
