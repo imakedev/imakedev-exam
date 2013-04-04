@@ -392,10 +392,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<span id="sortElement"> 
 	    					Sort By:&nbsp; 
 	    					  <select name="sortItemSelect" id="sortItemSelect"  style="width: 140px">   
-	    						<option value="maName">Name</option>
-	    						<option value="maRegisterNo">Register No</option>
-	    						<option value="maRegisterDate">Register Date</option>
-	    						<option value="maTotalUnit">Total/Balance Unit</option>
+	    						<option value="MA_NAME">Name</option>
+	    						<option value="MA_REGISTER_NO">Register No</option>
+	    						<option value="MA_REGISTER_DATE">Register Date</option>
+	    						<option value="MA_TOTAL_UNIT">Total/Balance Unit</option>
 	    					  </select> 
 	    					&nbsp;
 	    					Order By:&nbsp;<select name="sortOrderSelect" id="sortOrderSelect"  style="width: 59px">
