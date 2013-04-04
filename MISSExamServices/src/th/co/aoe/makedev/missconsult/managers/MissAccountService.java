@@ -19,5 +19,5 @@ public interface MissAccountService  {
 		public th.co.aoe.makedev.missconsult.xstream.MissAccount findMissAccountById(Long maId)throws DataAccessException  ;
 		public List<th.co.aoe.makedev.missconsult.xstream.MissSery> listMissAccountSeriesMapByMaId(Long maId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
-		public  List searchMissAccount(MissAccount persistentInstance,String maContactName,	Pagging pagging)throws DataAccessException  ;
+		public  List searchMissAccount(MissAccount persistentInstance,String maContactName,String[] meIds,	Pagging pagging)throws DataAccessException  ;
 }

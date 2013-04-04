@@ -127,8 +127,20 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 	
 	
 
-	private int getSize(Session session, MissAccount instance,String maContactName) throws Exception{
+	private int getSize(Session session, MissAccount instance,String maContactName,String[] meIds) throws Exception{
 		try {
+			 String me_id_in="";
+				if(meIds!=null && meIds.length>0){
+					me_id_in="(";
+				 for (int i = 0; i < meIds.length; i++) {
+						//MissContact contact=(MissContact)l.get(i); 
+						if(i==(meIds.length-1)){
+							me_id_in=me_id_in+""+meIds[i]+")";
+						}else
+							me_id_in=me_id_in+""+meIds[i]+",";
+						
+					}
+				} 
 			String maType=instance.getMaType();
 			String maRegisterType = instance.getMaRegisterType();
 			String maRegisterNo = instance.getMaRegisterNo();
@@ -159,59 +171,89 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 					
 				}
 			}
-			StringBuffer sb =new StringBuffer(" select count(missAccount) from MissAccount missAccount ");
-			
 			boolean iscriteria = false;
+			//StringBuffer sb =new StringBuffer(" select count(missAccount) from MissAccount missAccount ");
+			StringBuffer sb =new StringBuffer(" SELECT count(*) FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT missAccount " );
+			if(meIds!=null && meIds.length>0){
+				sb.append(" where  exists ( select account_map.ma_id from "+ServiceConstant.SCHEMA+".MISS_ACCOUNT_SERIES_MAP account_map" +
+						"  inner join  "+ServiceConstant.SCHEMA+".MISS_SERIES_MAP series_map on" +
+						"  (account_map.ms_id=series_map.ms_id)" +
+						" where missAccount.ma_id=account_map.ma_id and series_map.me_id in "+me_id_in+" )");
+				iscriteria=true;
+			}
+			
+			
 			if(maId_in.length()>0){
-				 sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+				// sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+				 sb.append(iscriteria?(" and missAccount.ma_id in "+maId_in):(" where missAccount.ma_id in "+maId_in+""));
 				  iscriteria = true;
 			}
 			if(maType !=null && maType.length()> 0 ){  
 				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
+				// sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
+				 sb.append(iscriteria?(" and missAccount.ma_type='"+maType+"'"):(" where missAccount.ma_type='"+maType+"'"));
 				  iscriteria = true;
 			}
+			  
 			if(maRegisterType !=null && maRegisterType.length()> 0 && !maRegisterType.equals("-1")){  
 				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missAccount.maRegisterType='"+maRegisterType+"'"):(" where missAccount.maRegisterType='"+maRegisterType+"'"));
-				  iscriteria = true;
+				 //sb.append(iscriteria?(" and missAccount.maRegisterType='"+maRegisterType+"'"):(" where missAccount.maRegisterType='"+maRegisterType+"'"));
+				 sb.append(iscriteria?(" and missAccount.MA_REGISTER_TYPE='"+maRegisterType+"'"):(" where missAccount.MA_REGISTER_TYPE='"+maRegisterType+"'"));
+				 
+				 iscriteria = true;
 			}
 			if(maRegisterNo !=null && maRegisterNo.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
+			//	sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
+				sb.append(iscriteria?(" and lower(missAccount.MA_REGISTER_NO) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_REGISTER_NO) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
+				
+				iscriteria = true;
+			} 
 			if(maRegisterTo !=null && maRegisterFrom!=null){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
-				  iscriteria = true;
+			//	sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
+				sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.MA_REGISTER_DATE between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
+				
+				iscriteria = true;
 				  //2012-05-21 23:59:59.0 
 			}else if(maRegisterTo !=null && maRegisterFrom==null){ 
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
-					  iscriteria = true; 
+				//	sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+				sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.MA_REGISTER_DATE  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+					
+					iscriteria = true; 
 			}else if(maRegisterTo ==null && maRegisterFrom!=null){ 
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
-				  iscriteria = true; 
+				//sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
+				sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE >=  '"+maRegisterFrom+"'"):(" where missAccount.MA_REGISTER_DATE  >= '"+maRegisterFrom+"'"));
+				
+				iscriteria = true; 
 		    }
+			 
 			if(maPhone !=null && maPhone.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
+				//sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
+				sb.append(iscriteria?(" and lower(missAccount.MA_PHONE) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_PHONE) like '%"+maPhone.trim().toLowerCase()+"%'"));
+				
+				iscriteria = true;
 			}
 			if(maName !=null && maName.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
+				//sb.append(iscriteria?(" and lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"));
+				sb.append(iscriteria?(" and lower(missAccount.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"));
+				
+				iscriteria = true;
 			}
 			 
 		
 			
 			
-			  query =session.createQuery(sb.toString());
+			  //query =session.createQuery(sb.toString());
+			  query =session.createSQLQuery(sb.toString());
 			 
-				 return ((Long)query.uniqueResult()).intValue(); 
+				// return ((Long)query.uniqueResult()).intValue();
+			  return ((java.math.BigInteger)query.uniqueResult()).intValue();
+			  
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
 			throw re;
@@ -222,7 +264,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 	}
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 @Transactional(readOnly=true)
-	 public List searchMissAccount(MissAccount instance,String maContactName,Pagging pagging) throws DataAccessException {
+	 public List searchMissAccount(MissAccount instance,String maContactName,String[] meIds,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
 			Session session = sessionAnnotationFactory.getCurrentSession();
 			try {
@@ -233,6 +275,20 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 				private String maContactName;
 				private String maDayTimePhone;
 				private String maName;*/
+			//System.out.println("meIds="+meIds);
+			 String me_id_in="";
+			if(meIds!=null && meIds.length>0){
+				me_id_in="(";
+			 for (int i = 0; i < meIds.length; i++) {
+					//MissContact contact=(MissContact)l.get(i); 
+					if(i==(meIds.length-1)){
+						me_id_in=me_id_in+""+meIds[i]+")";
+					}else
+						me_id_in=me_id_in+""+meIds[i]+",";
+					
+				}
+			}
+		//	System.out.println("me_id_in="+me_id_in);
 				String maType=instance.getMaType();
 				String maRegisterType = instance.getMaRegisterType();
 				String maRegisterNo = instance.getMaRegisterNo();
@@ -261,68 +317,131 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 						
 					}
 				}
-				
-				
-				StringBuffer sb =new StringBuffer(" select missAccount from MissAccount missAccount ");
-				
 				boolean iscriteria = false;
+				//System.out.println("maId_in="+maId_in);
+				 //session.createSQLQuery(queryStr);
+				//StringBuffer sb =new StringBuffer(" select missAccount from MissAccount missAccount ");
+				StringBuffer sb =new StringBuffer(" SELECT MA_ID , MA_NAME,MA_PHONE,MA_REGISTER_NO,MA_REGISTER_DATE,MA_TOTAL_UNIT,MA_USED_UNIT FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT missAccount " );
+				if(meIds!=null && meIds.length>0){
+					sb.append(" where  exists ( select account_map.ma_id from "+ServiceConstant.SCHEMA+".MISS_ACCOUNT_SERIES_MAP account_map" +
+							"  inner join  "+ServiceConstant.SCHEMA+".MISS_SERIES_MAP series_map on" +
+							"  (account_map.ms_id=series_map.ms_id)" +
+							" where missAccount.ma_id=account_map.ma_id and series_map.me_id in "+me_id_in+" )");
+					iscriteria=true;
+				}
+						
+				
+			/*	sb.append(" where exists (from MissAccountSeriesMap account_map   " +
+						" where   missAccount.ma_id=account_map.id.maId   )");
+				 */
+			/*	sb.append(" where exists ( select account_map.missAccount MissAccountSeriesMap account_map , MissSeriesMap  series_map " +
+						" where account_map.id.msId=series_map.id.msId and missAccount.ma_id=account_map.id.maId and  series_map.id.meId=15 )");
+				 */
+				//if(meIds!=null && meIds.length>0){
+				
+				
 				if(maId_in.length()>0){
-					 sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+					// sb.append(iscriteria?(" and missAccount.maId in "+maId_in):(" where missAccount.maId in "+maId_in+""));
+					 sb.append(iscriteria?(" and missAccount.ma_id in "+maId_in):(" where missAccount.ma_id in "+maId_in+""));
 					  iscriteria = true;
 				}
 				if(maType !=null && maType.length()> 0 ){  
 					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
+					// sb.append(iscriteria?(" and missAccount.maType='"+maType+"'"):(" where missAccount.maType='"+maType+"'"));
+					 sb.append(iscriteria?(" and missAccount.ma_type='"+maType+"'"):(" where missAccount.ma_type='"+maType+"'"));
 					  iscriteria = true;
 				}
+				  
 				if(maRegisterType !=null && maRegisterType.length()> 0 && !maRegisterType.equals("-1")){  
 					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missAccount.maRegisterType='"+maRegisterType+"'"):(" where missAccount.maRegisterType='"+maRegisterType+"'"));
-					  iscriteria = true;
+					 //sb.append(iscriteria?(" and missAccount.maRegisterType='"+maRegisterType+"'"):(" where missAccount.maRegisterType='"+maRegisterType+"'"));
+					 sb.append(iscriteria?(" and missAccount.MA_REGISTER_TYPE='"+maRegisterType+"'"):(" where missAccount.MA_REGISTER_TYPE='"+maRegisterType+"'"));
+					 
+					 iscriteria = true;
 				}
 				if(maRegisterNo !=null && maRegisterNo.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
+				//	sb.append(iscriteria?(" and lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maRegisterNo) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
+					sb.append(iscriteria?(" and lower(missAccount.MA_REGISTER_NO) like '%"+maRegisterNo.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_REGISTER_NO) like '%"+maRegisterNo.trim().toLowerCase()+"%'"));
+					
+					iscriteria = true;
 				} 
 				if(maRegisterTo !=null && maRegisterFrom!=null){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
-					  iscriteria = true;
+				//	sb.append(iscriteria?(" and missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
+					sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.MA_REGISTER_DATE between '"+maRegisterFrom+"' and '"+format1.format(maRegisterTo.getTime())+"'"));
+					
+					iscriteria = true;
 					  //2012-05-21 23:59:59.0 
 				}else if(maRegisterTo !=null && maRegisterFrom==null){ 
 						//criteria.add(Expression.eq("megId", megId));	
-						sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
-						  iscriteria = true; 
+					//	sb.append(iscriteria?(" and missAccount.maRegisterDate <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.maRegisterDate  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+					sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE <=  '"+format1.format(maRegisterTo.getTime())+" 23:59:59.0'"):(" where missAccount.MA_REGISTER_DATE  <= '"+format1.format(maRegisterTo.getTime())+"'"));
+						
+						iscriteria = true; 
 				}else if(maRegisterTo ==null && maRegisterFrom!=null){ 
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
-					  iscriteria = true; 
+					//sb.append(iscriteria?(" and missAccount.maRegisterDate >=  '"+maRegisterFrom+"'"):(" where missAccount.maRegisterDate  >= '"+maRegisterFrom+"'"));
+					sb.append(iscriteria?(" and missAccount.MA_REGISTER_DATE >=  '"+maRegisterFrom+"'"):(" where missAccount.MA_REGISTER_DATE  >= '"+maRegisterFrom+"'"));
+					
+					iscriteria = true; 
 			    }
 				 
 				if(maPhone !=null && maPhone.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
+					//sb.append(iscriteria?(" and lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maPhone) like '%"+maPhone.trim().toLowerCase()+"%'"));
+					sb.append(iscriteria?(" and lower(missAccount.MA_PHONE) like '%"+maPhone.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_PHONE) like '%"+maPhone.trim().toLowerCase()+"%'"));
+					
+					iscriteria = true;
 				}
 				if(maName !=null && maName.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
+					//sb.append(iscriteria?(" and lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"):(" where lcase(missAccount.maName) like '%"+maName.trim().toLowerCase()+"%'"));
+					sb.append(iscriteria?(" and lower(missAccount.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"):(" where lower(missAccount.MA_NAME) like '%"+maName.trim().toLowerCase()+"%'"));
+					
+					iscriteria = true;
 				}
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missAccount."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
-				 query =session.createQuery(sb.toString());
+				 //query =session.createQuery(sb.toString());
+				query =session.createSQLQuery(sb.toString());
+				//System.out.println(sb.toString());
 				// set pagging.
-				 String size = String.valueOf(getSize(session, instance,maContactName)); 
+				 String size = String.valueOf(getSize(session, instance,maContactName,meIds)); 
 				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
 				 
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
 				 
-				 List l = query.list();   
-				 transList.add(l); 
+				 //List l = query.list();
+				 List<Object[]> l = query.list();
+				 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount> missAccounts =new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount>(l.size());
+				 for (Object[] objects : l) {
+					 th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
+						//th.co.aoe.makedev.missconsult.xstream.MissSery missSery=new th.co.aoe.makedev.missconsult.xstream.MissSery();
+						//missSery.setMsId(Long.valueOf((java.lang.Integer)objects[0]));
+					 
+					 //MA_ID , MA_NAME,MA_PHONE,MA_REGISTER_NO,MA_REGISTER_DATE,MA_TOTAL_UNIT,MA_USED_UNIT FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT missAccount " );" +
+					        if(objects[0]!=null)
+							 missAccount.setMaId(Long.valueOf((java.lang.Integer)objects[0])); 
+					        if(objects[1]!=null)
+							 missAccount.setMaName((java.lang.String)objects[1]); 
+					        if(objects[2]!=null)
+							 missAccount.setMaPhone((java.lang.String)objects[2]);
+					        if(objects[3]!=null)
+							 missAccount.setMaRegisterNo((java.lang.String)objects[3]);
+					        if(objects[4]!=null)
+							 missAccount.setMaRegisterDate((java.sql.Timestamp)objects[4]);
+					        if(objects[5]!=null)
+							 missAccount.setMaTotalUnit(Long.valueOf((java.lang.Integer)objects[5]));
+					        if(objects[6]!=null)
+							 missAccount.setMaUsedUnit(Long.valueOf((java.lang.Integer)objects[6]));
+					 missAccounts.add(missAccount);
+					
+				 }
+				 //transList.add(l);
+				 transList.add(missAccounts);
 			 	 transList.add(size); 
 				return transList;
 			} catch (Exception re) {
