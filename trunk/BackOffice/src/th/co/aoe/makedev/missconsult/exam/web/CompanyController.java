@@ -77,9 +77,9 @@ public class CompanyController
         String missExam_selectboxes[] = request.getParameterValues("missExam_selectbox");
        // companyForm.getMissAccount().setMaRegisterType(companyForm.getMaRegisterType());
         companyForm.getMissAccount().setMaRegisterType("Company");
-        
+         
         companyForm.getMissAccount().setMaRegisterNo(companyForm.getMaRegisterNo());
-         companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
+        companyForm.getMissAccount().setMaContactName(companyForm.getMaContactName());
         companyForm.getMissAccount().setMaName(companyForm.getMaName());
         companyForm.getMissAccount().setMaPhone(companyForm.getMaDayTimePhone());
         companyForm.getMissAccount().setMaRegisterFrom(null);
