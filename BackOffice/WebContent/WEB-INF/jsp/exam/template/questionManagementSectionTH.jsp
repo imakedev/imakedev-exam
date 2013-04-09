@@ -130,8 +130,24 @@ function goBackQuestions(){
 			  }
 		});
 }
+function removeP(vale_text){ 
+		 	var size_text=vale_text.length;  
+		 	if(size_text>=7){ 
+				 var value_start=	vale_text.substring(0, 3);
+				 var value_end=    vale_text.substring(size_text-5, size_text); 
+	    var count = vale_text.match(/<p>/g);    
+		 if(count.length==1){
+		    if( ( value_start=='<p>' || value_start=='<P>') && ( value_end.indexOf('</p>')!=-1 || value_end.indexOf('</p>')!=-1)){ 
+		    //	alert("remove P") 
+		    	vale_text=vale_text.substring(3,size_text-5);
+		    } 
+		 }
+		 }
+	return vale_text; 
+}
 function doQuestionAction(action,mode,id){
-	$("#mqNameTh1").val(CKEDITOR.instances["mqNameTh1"].getData());
+	//$("#mqNameTh1").val(CKEDITOR.instances["mqNameTh1"].getData());
+	$("#mqNameTh1").val(removeP(CKEDITOR.instances["mqNameTh1"].getData()));
 	 
 	$("#modeQuestion").val(mode);
 	if(mode!='search'){

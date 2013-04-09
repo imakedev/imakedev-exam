@@ -1,5 +1,18 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
+<style>
+div.inner {
+    width: 647px;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+ 
+   /*  color: red; */
+    border: 1px dashed #333;
+    margin: 5px;
+    padding: 10px;
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
 //	$('#tabs').tabs();
@@ -16,7 +29,38 @@ $(document).ready(function() {
 	   }
 
 	}); */
+	//removeP();
 });
+function removeP(){
+	 $( ".inner" ).each(function(index){
+	
+		 	var size_text=$( this ).html().length;
+		 	var vale_text=$( this ).html();
+		 	//alert("index->"+index+",size_text="+size_text)
+		 	if(size_text>=7){ 
+				 var value_start=	vale_text.substring(0, 3);
+				 var value_end=    vale_text.substring(size_text-5, size_text);
+				// alert("end->"+value_end);
+				// alert( ( value_start=='<p>' || value_start=='<P>'))
+				// alert( )
+		    if( ( value_start=='<p>' || value_start=='<P>') && ( value_end.indexOf('</p>')!=-1 || value_end.indexOf('</p>')!=-1)){
+		    	alert("remove <p>");
+		    	//alert(vale_text.substring(3,size_text-5));
+		    	$( this ).html(vale_text.substring(3,size_text-5));
+		    	$( this ).removeClass('inner')
+
+		    	alert($( this ).hasClass('inner'));
+		    	$( this ).addClass('inner')
+		    	/* alert("start->"+value_start)
+			 	alert("end->"+value_end)
+		        alert("html->"+$( this ).html());
+		        alert("text->"+$( this ).text()); */ 
+		    }
+		 //	alert("xx->"+$( this ).html().split(0,3))
+		 	
+		 }
+	      });
+}
 function confirmDelete(mode,id){
 	$( "#dialog-confirm-Question-Delete" ).dialog({
 		/* height: 140, */
@@ -110,10 +154,13 @@ function loadQuestion(_url){
             	<%--  <input type="text"  value="${missQuestion.mqNo}" name="mqNo_array" style="width: 30px;height: 20px"/>
             	 <input type="hidden"  value="${missQuestion.mqId}" name="mqId_array"/> --%>
             	 </td> 
-            	<td>Question ${loop.index+1}</td> 
-            	<%--
-            	${missQuestion.mqNameTh1}
-            	 --%>
+            	<td>
+            	<div class="inner">${missQuestion.mqNameTh1}</div>
+            	<div class="inner">${missQuestion.mqNameEng1}</div>
+            	</td> 
+            	 
+            	
+            	 
             	<td  style="text-align: center;">
             	<i title="Edit TH" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}/TH')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
             	<i title="Edit EN" onclick="loadQuestion('test/exam/${testForm.missExam.meId}/question/${missQuestion.mqId}/EN')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
