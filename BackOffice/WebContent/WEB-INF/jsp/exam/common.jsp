@@ -609,6 +609,18 @@ function openMailDialog(todo_id,todo_ref){
 		}
 	});
 }
+document.onHistoryGo = function() { return false; }
+window.onbeforeunload = function() {
+	/* alert("ss");
+	return false;
+	noBack(); */
+	}
+
+function noBack() { 
+	//alert("can't go Back 1");
+	window.history.forward();
+}
+
 </script>
 </head>
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
@@ -634,7 +646,8 @@ function openMailDialog(todo_id,todo_ref){
 	<body style="background-color:rgb(${myUser.missContact.maBackgroundColor});background-image:url(<c:url value='/resources/images/body-o.gif'/>); "> 
 </c:if> 
    --%>
-<body  style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
+  
+<body  onload="noBack();" onpageshow="if(event.persisted)noBack();" onunload="" style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
  <div class="container-fluid">
     <div class="row-fluid" >
     	<div class="span12" align="center"> 
