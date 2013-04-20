@@ -64,7 +64,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public Long saveMissExamGroup(MissExamGroup missExamGroup)
     {
-        missExamGroup.setServiceName("saveMissExamGroup");
+        missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_SAVE);//"saveMissExamGroup");
         VResultMessage resultMessage = postMessage(missExamGroup, missExamGroup.getClass().getName(), "missExamGroup", true);
         missExamGroup = (MissExamGroup)resultMessage.getResultListObj().get(0);
         return missExamGroup.getMegId();
@@ -72,7 +72,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissExamGroup(MissExamGroup missExamGroup)
     {
-        missExamGroup.setServiceName("updateMissExamGroup");
+        missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_UPDATE);//"updateMissExamGroup");
         VResultMessage resultMessage = postMessage(missExamGroup, missExamGroup.getClass().getName(), "missExamGroup", true);
         missExamGroup = (MissExamGroup)resultMessage.getResultListObj().get(0);
         return missExamGroup.getUpdateRecord().intValue();
@@ -80,7 +80,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissExamGroup(MissExamGroup missExamGroup)
     {
-        missExamGroup.setServiceName("deleteMissExamGroup");
+        missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_DELETE);//"deleteMissExamGroup");
         VResultMessage resultMessage = postMessage(missExamGroup, missExamGroup.getClass().getName(), "missExamGroup", true);
         missExamGroup = (MissExamGroup)resultMessage.getResultListObj().get(0);
         return missExamGroup.getUpdateRecord().intValue();
@@ -90,20 +90,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissExamGroup missExamGroup = new MissExamGroup();
         missExamGroup.setMegId(megId);
-        missExamGroup.setServiceName("findMissExamGroupById");
+        missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_FIND_BY_ID);//"findMissExamGroupById");
         VResultMessage resultMessage = postMessage(missExamGroup, missExamGroup.getClass().getName(), "missExamGroup", true);
         return (MissExamGroup)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissExamGroup(MissExamGroup missExamGroup)
     {
-        missExamGroup.setServiceName("searchMissExamGroup");
+        missExamGroup.setServiceName(ServiceConstant.MISS_EXAM_GROUP_SEARCH);//"searchMissExamGroup");
         return postMessage(missExamGroup, missExamGroup.getClass().getName(), "missExamGroup", true);
     }
 
     public Long saveMissAccount(MissAccount missAccount)
     {
-        missAccount.setServiceName("saveMissAccount");
+        missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_SAVE);//"saveMissAccount");
         VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
         missAccount = (MissAccount)resultMessage.getResultListObj().get(0);
         return missAccount.getMaId();
@@ -111,7 +111,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissAccount(MissAccount missAccount)
     {
-        missAccount.setServiceName("updateMissAccount");
+        missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_UPDATE);//"updateMissAccount");
         VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
         missAccount = (MissAccount)resultMessage.getResultListObj().get(0);
         return missAccount.getUpdateRecord().intValue();
@@ -129,20 +129,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissAccount missAccount = new MissAccount();
         missAccount.setMaId(megId);
-        missAccount.setServiceName("findMissAccountById");
+        missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_FIND_BY_ID);//"findMissAccountById");
         VResultMessage resultMessage = postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
         return (MissAccount)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissAccount(MissAccount missAccount)
     {
-        missAccount.setServiceName("searchMissAccount");
+        missAccount.setServiceName(ServiceConstant.MISS_ACCOUNT_SEARCH);//"searchMissAccount");
         return postMessage(missAccount, missAccount.getClass().getName(), "missAccount", true);
     }
 
     public Long saveMissAccountSeriesMap(MissAccountSeriesMap missAccountSeriesMap)
     {
-        missAccountSeriesMap.setServiceName("saveMissAccountSeriesMap");
+        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_SAVE);
         VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
         missAccountSeriesMap = (MissAccountSeriesMap)resultMessage.getResultListObj().get(0);
         return Long.valueOf(missAccountSeriesMap.getUpdateRecord());
@@ -150,7 +150,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissAccountSeriesMap(MissAccountSeriesMap missAccountSeriesMap)
     {
-        missAccountSeriesMap.setServiceName("updateMissAccountSeriesMap");
+        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_UPDATE);//"updateMissAccountSeriesMap");
         VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
         missAccountSeriesMap = (MissAccountSeriesMap)resultMessage.getResultListObj().get(0);
         return missAccountSeriesMap.getUpdateRecord().intValue();
@@ -158,7 +158,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissAccountSeriesMap(MissAccountSeriesMap missAccountSeriesMap)
     {
-        missAccountSeriesMap.setServiceName("deleteMissAccountSeriesMap");
+        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_DELETE);//"deleteMissAccountSeriesMap");
         VResultMessage resultMessage = postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
         missAccountSeriesMap = (MissAccountSeriesMap)resultMessage.getResultListObj().get(0);
         return missAccountSeriesMap.getUpdateRecord().intValue();
@@ -171,13 +171,13 @@ public class MissExamServiceImpl extends PostCommon
 
     public VResultMessage searchMissAccountSeriesMap(MissAccountSeriesMap missAccountSeriesMap)
     {
-        missAccountSeriesMap.setServiceName("searchMissAccountSeriesMap");
+        missAccountSeriesMap.setServiceName(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_SEARCH);//"searchMissAccountSeriesMap");
         return postMessage(missAccountSeriesMap, missAccountSeriesMap.getClass().getName(), "missAccountSeriesMap", true);
     }
 
     public MissCandidate saveMissCandidate(MissCandidate missCandidate)
     {
-        missCandidate.setServiceName("saveMissCandidate");
+        missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_SAVE);//"saveMissCandidate");
         VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
         missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
         //return missCandidate.getMcaId(); 
@@ -186,7 +186,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissCandidate(MissCandidate missCandidate)
     {
-        missCandidate.setServiceName("updateMissCandidate");
+        missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_UPDATE);//"updateMissCandidate");
         VResultMessage resultMessage = postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
         missCandidate = (MissCandidate)resultMessage.getResultListObj().get(0);
         return missCandidate.getUpdateRecord().intValue();
@@ -211,7 +211,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public VResultMessage searchMissCandidate(MissCandidate missCandidate)
     {
-        missCandidate.setServiceName("searchMissCandidate");
+        missCandidate.setServiceName(ServiceConstant.MISS_CANDIDATE_SEARCH);//"searchMissCandidate");
         return postMessage(missCandidate, missCandidate.getClass().getName(), "missCandidate", true);
     }
     public VResultMessage exportMissCandidate(MissCandidate missCandidate)
@@ -222,7 +222,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public Long saveMissChoice(MissChoice missChoice)
     {
-        missChoice.setServiceName("saveMissChoice");
+        missChoice.setServiceName(ServiceConstant.MISS_CHOICE_SAVE);//"saveMissChoice");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         missChoice = (MissChoice)resultMessage.getResultListObj().get(0);
         return 1l;
@@ -231,7 +231,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissChoice(MissChoice missChoice)
     {
-        missChoice.setServiceName("updateMissChoice");
+        missChoice.setServiceName(ServiceConstant.MISS_CHOICE_UPDATE);//"updateMissChoice");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         missChoice = (MissChoice)resultMessage.getResultListObj().get(0);
         return missChoice.getUpdateRecord().intValue();
@@ -239,7 +239,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissChoice(MissChoice missChoice)
     {
-        missChoice.setServiceName("deleteMissChoice");
+        missChoice.setServiceName(ServiceConstant.MISS_CHOICE_DELETE);//"deleteMissChoice");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         missChoice = (MissChoice)resultMessage.getResultListObj().get(0);
         return missChoice.getUpdateRecord().intValue();
@@ -249,20 +249,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissChoice missChoice = new MissChoice();
        // missChoice.setMcId(megId);
-        missChoice.setServiceName("findMissChoiceById");
+        missChoice.setServiceName(ServiceConstant.MISS_CHOICE_FIND_BY_ID);//"findMissChoiceById");
         VResultMessage resultMessage = postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
         return (MissChoice)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissChoice(MissChoice missChoice)
     {
-        missChoice.setServiceName("searchMissChoice");
+        missChoice.setServiceName(ServiceConstant.MISS_CHOICE_SEARCH);//"searchMissChoice");
         return postMessage(missChoice, missChoice.getClass().getName(), "missChoice", true);
     }
 
     public Long saveMissEvaluationTemplate(MissEvaluationTemplate missEvaluationTemplate)
     {
-        missEvaluationTemplate.setServiceName("saveMissEvaluationTemplate");
+        missEvaluationTemplate.setServiceName(ServiceConstant.MISS_EVALUATION_TEMPLATE_SAVE);//"saveMissEvaluationTemplate");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         missEvaluationTemplate = (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
        // return missEvaluationTemplate.getMetId();
@@ -271,7 +271,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissEvaluationTemplate(MissEvaluationTemplate missEvaluationTemplate)
     {
-        missEvaluationTemplate.setServiceName("updateMissEvaluationTemplate");
+        missEvaluationTemplate.setServiceName(ServiceConstant.MISS_EVALUATION_TEMPLATE_UPDATE);//"updateMissEvaluationTemplate");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         missEvaluationTemplate = (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
         return missEvaluationTemplate.getUpdateRecord().intValue();
@@ -279,7 +279,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissEvaluationTemplate(MissEvaluationTemplate missEvaluationTemplate)
     {
-        missEvaluationTemplate.setServiceName("deleteMissEvaluationTemplate");
+        missEvaluationTemplate.setServiceName(ServiceConstant.MISS_EVALUATION_TEMPLATE_DELETE);//"deleteMissEvaluationTemplate");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         missEvaluationTemplate = (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
         return missEvaluationTemplate.getUpdateRecord().intValue();
@@ -289,20 +289,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissEvaluationTemplate missEvaluationTemplate = new MissEvaluationTemplate();
        // missEvaluationTemplate.setMetId(megId);
-        missEvaluationTemplate.setServiceName("findMissEvaluationTemplateById");
+        missEvaluationTemplate.setServiceName(ServiceConstant.MISS_EVALUATION_TEMPLATE_FIND_BY_ID);//"findMissEvaluationTemplateById");
         VResultMessage resultMessage = postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
         return (MissEvaluationTemplate)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissEvaluationTemplate(MissEvaluationTemplate missEvaluationTemplate)
     {
-        missEvaluationTemplate.setServiceName("searchMissEvaluationTemplate");
+        missEvaluationTemplate.setServiceName(ServiceConstant.MISS_EVALUATION_TEMPLATE_SEARCH);//"searchMissEvaluationTemplate");
         return postMessage(missEvaluationTemplate, missEvaluationTemplate.getClass().getName(), "missEvaluationTemplate", true);
     }
 
     public Long saveMissExam(MissExam missExam)
     {
-        missExam.setServiceName("saveMissExam");
+        missExam.setServiceName(ServiceConstant.MISS_EXAM_SAVE);//"saveMissExam");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
         missExam = (MissExam)resultMessage.getResultListObj().get(0);
         return missExam.getMeId();
@@ -310,7 +310,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissExam(MissExam missExam)
     {
-        missExam.setServiceName("updateMissExam");
+        missExam.setServiceName(ServiceConstant.MISS_EXAM_UPDATE);//"updateMissExam");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
         missExam = (MissExam)resultMessage.getResultListObj().get(0);
         return missExam.getUpdateRecord().intValue();
@@ -344,21 +344,21 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissExam missExam = new MissExam();
         missExam.setMeId(megId);
-        missExam.setServiceName("findMissExamById");
+        missExam.setServiceName(ServiceConstant.MISS_EXAM_FIND_BY_ID);//"findMissExamById");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
         return (MissExam)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissExam(MissExam missExam)
     {
-        missExam.setServiceName("searchMissExam");
+        missExam.setServiceName(ServiceConstant.MISS_EXAM_SEARCH);//"searchMissExam");
         return postMessage(missExam, missExam.getClass().getName(), "missExam", true);
     }
 
     public List listMissExam()
     {
         MissExam missExam = new MissExam();
-        missExam.setServiceName("listMissExam");
+        missExam.setServiceName(ServiceConstant.MISS_EXAM_LIST);//"listMissExam");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
         return resultMessage.getResultListObj();
     }
@@ -366,14 +366,14 @@ public class MissExamServiceImpl extends PostCommon
     public List listMissSery()
     {
         MissSery missSery = new MissSery();
-        missSery.setServiceName("listMissSeries");
+        missSery.setServiceName(ServiceConstant.MISS_SERIES_LIST);//"listMissSeries");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         return resultMessage.getResultListObj();
     }
 
     public Long saveMissExamType(MissExamType missExamType)
     {
-        missExamType.setServiceName("saveMissExamType");
+        missExamType.setServiceName(ServiceConstant.MISS_EXAM_TYPE_SAVE);//"saveMissExamType");
         VResultMessage resultMessage = postMessage(missExamType, missExamType.getClass().getName(), "missExamType", true);
         missExamType = (MissExamType)resultMessage.getResultListObj().get(0);
         return missExamType.getMetId();
@@ -381,7 +381,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissExamType(MissExamType missExamType)
     {
-        missExamType.setServiceName("updateMissExamType");
+        missExamType.setServiceName(ServiceConstant.MISS_EXAM_TYPE_UPDATE);//"updateMissExamType");
         VResultMessage resultMessage = postMessage(missExamType, missExamType.getClass().getName(), "missExamType", true);
       
         missExamType = (MissExamType)resultMessage.getResultListObj().get(0);
@@ -390,7 +390,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissExamType(MissExamType missExamType)
     {
-        missExamType.setServiceName("deleteMissExamType");
+        missExamType.setServiceName(ServiceConstant.MISS_EXAM_TYPE_DELETE);//"deleteMissExamType");
         VResultMessage resultMessage = postMessage(missExamType, missExamType.getClass().getName(), "missExamType", true);
         missExamType = (MissExamType)resultMessage.getResultListObj().get(0);
         return missExamType.getUpdateRecord().intValue();
@@ -400,14 +400,14 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissExamType missExamType = new MissExamType();
         missExamType.setMetId(megId);
-        missExamType.setServiceName("findMissExamTypeById");
+        missExamType.setServiceName(ServiceConstant.MISS_EXAM_TYPE_FIND_BY_ID);//"findMissExamTypeById");
         VResultMessage resultMessage = postMessage(missExamType, missExamType.getClass().getName(), "missExamType", true);
         return (MissExamType)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissExamType(MissExamType missExamType)
     {
-        missExamType.setServiceName("searchMissExamType");
+        missExamType.setServiceName(ServiceConstant.MISS_EXAM_TYPE_SEARCH);//"searchMissExamType");
         return postMessage(missExamType, missExamType.getClass().getName(), "missExamType", true);
     }
 
@@ -431,7 +431,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissQuestion(MissQuestion missQuestion)
     {
-        missQuestion.setServiceName("deleteMissQuestion");
+        missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_DELETE);//"deleteMissQuestion");
         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
         missQuestion = (MissQuestion)resultMessage.getResultListObj().get(0);
         return missQuestion.getUpdateRecord().intValue();
@@ -441,14 +441,14 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissQuestion missQuestion = new MissQuestion();
         missQuestion.setMqId(megId);
-        missQuestion.setServiceName("findMissQuestionById");
+        missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_FIND_BY_ID);//"findMissQuestionById");
         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
         return (MissQuestion)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissQuestion(MissQuestion missQuestion)
     {
-        missQuestion.setServiceName("searchMissQuestion");
+        missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SEARCH);//"searchMissQuestion");
         return postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
     }
     
@@ -497,7 +497,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissSeriesMap(MissSeriesMap missSeriesMap)
     {
-        missSeriesMap.setServiceName("updateMissSeriesMap");
+        missSeriesMap.setServiceName(ServiceConstant.MISS_SERIES_MAP_UPDATE);//"updateMissSeriesMap");
         VResultMessage resultMessage = postMessage(missSeriesMap, missSeriesMap.getClass().getName(), "missSeriesMap", true);
         missSeriesMap = (MissSeriesMap)resultMessage.getResultListObj().get(0);
         return missSeriesMap.getUpdateRecord().intValue();
@@ -505,7 +505,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissSeriesMap(MissSeriesMap missSeriesMap)
     {
-        missSeriesMap.setServiceName("deleteMissSeriesMap");
+        missSeriesMap.setServiceName(ServiceConstant.MISS_SERIES_MAP_DELETE);//"deleteMissSeriesMap");
         VResultMessage resultMessage = postMessage(missSeriesMap, missSeriesMap.getClass().getName(), "missSeriesMap", true);
         missSeriesMap = (MissSeriesMap)resultMessage.getResultListObj().get(0);
         return missSeriesMap.getUpdateRecord().intValue();
@@ -515,20 +515,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissSeriesMap missSeriesMap = new MissSeriesMap();
         missSeriesMap.setMsId(megId);
-        missSeriesMap.setServiceName("findMissSeriesMapById");
+        missSeriesMap.setServiceName(ServiceConstant.MISS_SERIES_MAP_FIND_BY_ID);//"findMissSeriesMapById");
         VResultMessage resultMessage = postMessage(missSeriesMap, missSeriesMap.getClass().getName(), "missSeriesMap", true);
         return (MissSeriesMap)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissSeriesMap(MissSeriesMap missSeriesMap)
     {
-        missSeriesMap.setServiceName("searchMissSeriesMap");
+        missSeriesMap.setServiceName(ServiceConstant.MISS_SERIES_MAP_SEARCH);//"searchMissSeriesMap");
         return postMessage(missSeriesMap, missSeriesMap.getClass().getName(), "missSeriesMap", true);
     }
 
     public Long saveMissSery(MissSery missSery)
     {
-        missSery.setServiceName("saveMissSery");
+        missSery.setServiceName(ServiceConstant.MISS_SERIES_SAVE);//"saveMissSery");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         missSery = (MissSery)resultMessage.getResultListObj().get(0);
         return Long.valueOf(missSery.getUpdateRecord());
@@ -537,7 +537,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissSery(MissSery missSery)
     {
-        missSery.setServiceName("updateMissSery");
+        missSery.setServiceName(ServiceConstant.MISS_SERIES_UPDATE);//"updateMissSery");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         missSery = (MissSery)resultMessage.getResultListObj().get(0);
         return missSery.getUpdateRecord().intValue();
@@ -555,20 +555,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissSery missSery = new MissSery();
         missSery.setMsId(megId);
-        missSery.setServiceName("findMissSeryById");
+        missSery.setServiceName(ServiceConstant.MISS_SERIES_FIND_BY_ID);//"findMissSeryById");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         return (MissSery)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissSery(MissSery missSery)
     {
-        missSery.setServiceName("searchMissSery");
+        missSery.setServiceName(ServiceConstant.MISS_SERIES_SEARCH);//"searchMissSery");
         return postMessage(missSery, missSery.getClass().getName(), "missSery", true);
     }
 
     public Long saveMissSurveySend(MissSurveySend missSurveySend)
     {
-        missSurveySend.setServiceName("saveMissSurveySend");
+        missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND_SAVE);//"saveMissSurveySend");
         VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
         missSurveySend = (MissSurveySend)resultMessage.getResultListObj().get(0);
         return missSurveySend.getMssId();
@@ -576,7 +576,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissSurveySend(MissSurveySend missSurveySend)
     {
-        missSurveySend.setServiceName("updateMissSurveySend");
+        missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND_UPDATE);//"updateMissSurveySend");
         VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
         missSurveySend = (MissSurveySend)resultMessage.getResultListObj().get(0);
         return missSurveySend.getUpdateRecord().intValue();
@@ -584,7 +584,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissSurveySend(MissSurveySend missSurveySend)
     {
-        missSurveySend.setServiceName("deleteMissSurveySend");
+        missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND_DELETE);//"deleteMissSurveySend");
         VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
         missSurveySend = (MissSurveySend)resultMessage.getResultListObj().get(0);
         return missSurveySend.getUpdateRecord().intValue();
@@ -594,20 +594,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissSurveySend missSurveySend = new MissSurveySend();
         missSurveySend.setMssId(megId);
-        missSurveySend.setServiceName("findMissSurveySendById");
+        missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND_FIND_BY_ID);//"findMissSurveySendById");
         VResultMessage resultMessage = postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
         return (MissSurveySend)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissSurveySend(MissSurveySend missSurveySend)
     {
-        missSurveySend.setServiceName("searchMissSurveySend");
+        missSurveySend.setServiceName(ServiceConstant.MISS_SURVEY_SEND_SEARCH);//"searchMissSurveySend");
         return postMessage(missSurveySend, missSurveySend.getClass().getName(), "missSurveySend", true);
     }
 
     public Long saveMissTemplate(MissTemplate missTemplate)
     {
-        missTemplate.setServiceName("saveMissTemplate");
+        missTemplate.setServiceName(ServiceConstant.MISS_TEMPLATE_SAVE);//"saveMissTemplate");
         VResultMessage resultMessage = postMessage(missTemplate, missTemplate.getClass().getName(), "missTemplate", true);
         missTemplate = (MissTemplate)resultMessage.getResultListObj().get(0);
         return missTemplate.getMtId();
@@ -615,7 +615,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissTemplate(MissTemplate missTemplate)
     {
-        missTemplate.setServiceName("updateMissTemplate");
+        missTemplate.setServiceName(ServiceConstant.MISS_TEMPLATE_UPDATE);//"updateMissTemplate");
         VResultMessage resultMessage = postMessage(missTemplate, missTemplate.getClass().getName(), "missTemplate", true);
         missTemplate = (MissTemplate)resultMessage.getResultListObj().get(0);
         return missTemplate.getUpdateRecord().intValue();
@@ -623,7 +623,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissTemplate(MissTemplate missTemplate)
     {
-        missTemplate.setServiceName("deleteMissTemplate");
+        missTemplate.setServiceName(ServiceConstant.MISS_TEMPLATE_DELETE);//"deleteMissTemplate");
         VResultMessage resultMessage = postMessage(missTemplate, missTemplate.getClass().getName(), "missTemplate", true);
         missTemplate = (MissTemplate)resultMessage.getResultListObj().get(0);
         return missTemplate.getUpdateRecord().intValue();
@@ -633,20 +633,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissTemplate missTemplate = new MissTemplate();
         missTemplate.setMtId(megId);
-        missTemplate.setServiceName("findMissTemplateById");
+        missTemplate.setServiceName(ServiceConstant.MISS_TEMPLATE_FIND_BY_ID);//"findMissTemplateById");
         VResultMessage resultMessage = postMessage(missTemplate, missTemplate.getClass().getName(), "missTemplate", true);
         return (MissTemplate)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissTemplate(MissTemplate missTemplate)
     {
-        missTemplate.setServiceName("searchMissTemplate");
+        missTemplate.setServiceName(ServiceConstant.MISS_TEMPLATE_SEARCH);//"searchMissTemplate");
         return postMessage(missTemplate, missTemplate.getClass().getName(), "missTemplate", true);
     }
 
     public Long saveMissTest(MissTest missTest)
     {
-        missTest.setServiceName("saveMissTest");
+        missTest.setServiceName(ServiceConstant.MISS_TEST_SAVE);//"saveMissTest");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         missTest = (MissTest)resultMessage.getResultListObj().get(0);
         return 1l;
@@ -655,7 +655,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissTest(MissTest missTest)
     {
-        missTest.setServiceName("updateMissTest");
+        missTest.setServiceName(ServiceConstant.MISS_TEST_UPDATE);//"updateMissTest");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         missTest = (MissTest)resultMessage.getResultListObj().get(0);
         return missTest.getUpdateRecord().intValue();
@@ -663,7 +663,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissTest(MissTest missTest)
     {
-        missTest.setServiceName("deleteMissTest");
+        missTest.setServiceName(ServiceConstant.MISS_TEST_DELETE);//"deleteMissTest");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         missTest = (MissTest)resultMessage.getResultListObj().get(0);
         return missTest.getUpdateRecord().intValue();
@@ -673,20 +673,20 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissTest missTest = new MissTest();
        // missTest.setMtestId(megId);
-        missTest.setServiceName("findMissTestById");
+        missTest.setServiceName(ServiceConstant.MISS_TEST_FIND_BY_ID);//"findMissTestById");
         VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
         return (MissTest)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissTest(MissTest missTest)
     {
-        missTest.setServiceName("searchMissTest");
+        missTest.setServiceName(ServiceConstant.MISS_TEST_SEARCH);//"searchMissTest");
         return postMessage(missTest, missTest.getClass().getName(), "missTest", true);
     }
 
     public Long saveMissTestResult(MissTestResult missTestResult)
     {
-        missTestResult.setServiceName("saveMissTestResult");
+        missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_SAVE);//"saveMissTestResult");
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getMtrId();
@@ -694,7 +694,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissTestResult(MissTestResult missTestResult)
     {
-        missTestResult.setServiceName("updateMissTestResult");
+        missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_UPDATE);//"updateMissTestResult");
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getUpdateRecord().intValue();
@@ -702,7 +702,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissTestResult(MissTestResult missTestResult)
     {
-        missTestResult.setServiceName("deleteMissTestResult");
+        missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_DELETE);//"deleteMissTestResult");
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getUpdateRecord().intValue();
@@ -712,7 +712,7 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissTestResult missTestResult = new MissTestResult();
         missTestResult.setMtrId(megId);
-        missTestResult.setServiceName("findMissTestResultById");
+        missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_FIND_BY_ID);//"findMissTestResultById");
         VResultMessage resultMessage = postMessage(missTestResult, missTestResult.getClass().getName(), "missTestResult", true);
         return (MissTestResult)resultMessage.getResultListObj().get(0);
     }
@@ -725,7 +725,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public Long saveMissTodo(MissTodo missTodo)
     {
-        missTodo.setServiceName("saveMissTodo");
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_SAVE);//"saveMissTodo");
         VResultMessage resultMessage = postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
         missTodo = (MissTodo)resultMessage.getResultListObj().get(0);
         return missTodo.getMtodoId();
@@ -733,7 +733,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int updateMissTodo(MissTodo missTodo)
     {
-        missTodo.setServiceName("updateMissTodo");
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_UPDATE);//"updateMissTodo");
         VResultMessage resultMessage = postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
         missTodo = (MissTodo)resultMessage.getResultListObj().get(0);
         return missTodo.getUpdateRecord().intValue();
@@ -741,7 +741,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissTodo(MissTodo missTodo)
     {
-        missTodo.setServiceName("deleteMissTodo");
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_DELETE);//"deleteMissTodo");
         VResultMessage resultMessage = postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
         missTodo = (MissTodo)resultMessage.getResultListObj().get(0);
         return missTodo.getUpdateRecord().intValue();
@@ -751,14 +751,14 @@ public class MissExamServiceImpl extends PostCommon
     {
         MissTodo missTodo = new MissTodo();
         missTodo.setMtodoId(megId);
-        missTodo.setServiceName("findMissTodoById");
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_FIND_BY_ID);//"findMissTodoById");
         VResultMessage resultMessage = postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
         return (MissTodo)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissTodo(MissTodo missTodo)
     {
-        missTodo.setServiceName("searchMissTodo");
+        missTodo.setServiceName(ServiceConstant.MISS_TODO_SEARCH);//"searchMissTodo");
         return postMessage(missTodo, missTodo.getClass().getName(), "missTodo", true);
     }
     public String getEmailFromMissTodo(MissTodo missTodo)
@@ -772,7 +772,7 @@ public class MissExamServiceImpl extends PostCommon
      
     public Long saveMissAttach(MissAttach missAttach)
     {
-        missAttach.setServiceName("saveMissAttach");
+        missAttach.setServiceName(ServiceConstant.MISS_ATTACH_SAVE);//"saveMissAttach");
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
         missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
         return missAttach.getMatId();
@@ -788,7 +788,7 @@ public class MissExamServiceImpl extends PostCommon
 
     public int deleteMissAttach(MissAttach missAttach)
     {
-        missAttach.setServiceName("deleteMissAttach");
+        missAttach.setServiceName(ServiceConstant.MISS_ATTACH_DELETE);//"deleteMissAttach");
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
         missAttach = (MissAttach)resultMessage.getResultListObj().get(0);
         return missAttach.getUpdateRecord().intValue();
@@ -800,14 +800,14 @@ public class MissExamServiceImpl extends PostCommon
         missAttach.setMatModule(matModule);
         missAttach.setMatHotlink(hotlink);
         missAttach.setMatRef(matRef);
-        missAttach.setServiceName("findMissAttachById");
+        missAttach.setServiceName(ServiceConstant.MISS_ATTACH_FIND_BY_ID);//"findMissAttachById");
         VResultMessage resultMessage = postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
         return (MissAttach)resultMessage.getResultListObj().get(0);
     }
 
     public VResultMessage searchMissAttach(MissAttach missAttach)
     {
-        missAttach.setServiceName("searchMissAttach");
+        missAttach.setServiceName(ServiceConstant.MISS_ATTACH_SEARCH);//"searchMissAttach");
         return postMessage(missAttach, missAttach.getClass().getName(), "missAttach", true);
     }
     
