@@ -232,18 +232,34 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="10%" align="right">Series :</td>
     					<td width="55%">
     					<c:if test="${candidateForm.missCandidate.mcaStatus=='1'}">
-    					<form:select path="missCandidate.missSery.msId" disabled="true">
-    						<%--  <form:option value="-1">-- Select Series --</form:option> --%>
-    						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
-	    					     
-    					</form:select>
+    					<%-- <form:select path="missCandidate.missSery.msId" disabled="true"> 
+    						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options> 
+    					</form:select> --%>
+    					 <c:if test="${not empty missSeries}">  
+	    					     	 <form:select path="missCandidate.missSery.msId" disabled="true"> 
+	    					     		<form:options itemValue="missSery.msId" itemLabel="missSery.msSeriesName" items="${missSeries}"/>
+	    					    	</form:select>	
+	    					    </c:if>
+	    					    <c:if test="${empty missSeries}"> 
+	    					    	  <form:select path="missCandidate.missSery.msId" disabled="true">  
+	    					     		<form:option value="-1" label="---"/>
+	    					    	</form:select>	 
+	    					    </c:if>	
     					</c:if>
     					<c:if test="${candidateForm.missCandidate.mcaStatus!='1'}">
-    					<form:select path="missCandidate.missSery.msId">
-    						<%--  <form:option value="-1">-- Select Series --</form:option> --%>
-    						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
-	    					     
-    					</form:select>
+    					<%-- <form:select path="missCandidate.missSery.msId"> 
+    						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options> 
+    					</form:select> --%>
+    					 <c:if test="${not empty missSeries}">  
+	    					     	<form:select path="missCandidate.missSery.msId"> 
+	    					     		<form:options itemValue="missSery.msId" itemLabel="missSery.msSeriesName" items="${missSeries}"/>
+	    					    	</form:select>	
+	    					    </c:if>
+	    					    <c:if test="${empty missSeries}"> 
+	    					    	 <form:select path="missCandidate.missSery.msId"> 
+	    					     		<form:option value="-1" label="---"/>
+	    					    	</form:select>	 
+	    					    </c:if>	
     					</c:if>
     					<!-- <select name="bpsGroupId" id="bpgGroupId"> 
 											 <option value="0">Series1</option>

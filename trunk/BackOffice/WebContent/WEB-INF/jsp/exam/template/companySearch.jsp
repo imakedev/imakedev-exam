@@ -47,6 +47,7 @@ $(document).ready(function() {
 	 //alert($("#sortBy").val());
 	$("#sortItemSelect").val($("#orderBy").val());
 	$("#sortOrderSelect").val($("#sortBy").val());  
+	//doAction('search','0');
 });
 function goPrev(){
 	if($("#pageNo").val()!='1'){
@@ -124,31 +125,44 @@ function doDeleteItems(){
 }
 function doCreateCandidate(company_id){
 	//alert(company_id);
-	//alert($("#amount").val());
-	$("#amount").val(amount_G.val());
+	
+	  $("#amount").val(jQuery.trim(amount_G.val()));
+	var amount_val=amount_G.val();
+	//alert($("#amount").val()); 
+	/* if(amount_val.length==0 || ( amount_val.length>0 && !(intRegex.test(amount_val) || floatRegex.test(amount_val)) ) ) {
+			$("#amount").focus();
+	        alert('กรุณากรอกตัวเลข.');   
+	        return false;
+	 }  */
 	//alert($("#mssery_candidate").val());
 	//alert($("select[id=mssery_candidate] option:selected").val());
 	$("#mssery_candidate_hidden").val($("select[id=mssery_candidate] option:selected").val());
 	$("#company_candidate_hidden").val(company_id);	
-	$.get("company/candidate/create",$("#create_candidate_form").serialize(), function(data) {
+	$.get("company/candidate/create",$("#create_candidate_form").serialize(),function(data) {
 		var obj = data;//jQuery.parseJSON(data);
-		   if(obj.updateRecord!=0 && obj.updateRecord!=-1){
-			   $("#message_candidate_create").html("<strong>Add Candidate Success</strong>");
-			  // $("#dialog-create-candidate-alert").css("display","block");
-			   $("#message_candidate_create").attr("class","alert alert-success"); 
-		   }else{
-			   //Can't Create Candidate. / Company: ประเทศไทย / Series: EPT, Customer Mind
-			   $("#message_candidate_create").html("<strong>Can't Create Candidate / Company: "+obj.missAccount.maName+" / Series: "+obj.missSery.msSeriesName+"</strong>");
-			 //  $("#dialog-create-candidate-alert").css("display","block");
+		/* alert(jQuery.type(data)==="string");
+		alert(jQuery.type(data)==='object'); */
+		var size=280;
+		  if(jQuery.type(data)==="string"){
+			  $("#message_candidate_create").html("<strong>Session time out</strong>"); 
 			   $("#message_candidate_create").attr("class","alert alert-error"); 
+		  } else if(obj.updateRecord!=0 && obj.updateRecord!=-1){
+			   $("#message_candidate_create").html("<strong>Add Candidate Success</strong>"); 
+			   $("#message_candidate_create").attr("class","alert alert-success"); 
+		   }else{ 
+			   $("#message_candidate_create").html("<strong>Can't Create Candidate [Unit not enough]/ Company: "+obj.missAccount.maName+" / Series: "+obj.missSery.msSeriesName+"</strong>");
+			   $("#message_candidate_create").attr("class","alert alert-error"); 
+			   size=580;
 		   }
 		   $( "#dialog-create-candidate-alert" ).dialog({
 				/* height: 140, */
+				width:size,
 				modal: true,
 				title:"Messages",
 				buttons: {
 					"Ok": function() { 
 						$( this ).dialog( "close" );
+						doAction('search','0');
 						//return false;
 						//doAction("deleteItems",maIds);
 					}/* ,
@@ -157,13 +171,9 @@ function doCreateCandidate(company_id){
 						//return false;
 					} */
 				}
-			});
-		 //  alert(data.updateRecord);
-		 /*   var myJSONText = JSON.stringify(data, replacer);
-		   alert(myJSONText)  */
-		   //  appendContent(data);
-		  // alert($("#_content").html());
+			}); 
 	});
+	
 }
 function replacer(key, value) {
     if (typeof value === 'number' && !isFinite(value)) {
@@ -181,8 +191,16 @@ function createCandidate(company_id){
 		modal: true,
 		buttons: {
 			"Yes": function() { 
-				$( this ).dialog( "close" );
-				doCreateCandidate(company_id);
+				  var amount_val=amount_G.val();
+				  $("#amount").val(jQuery.trim(amount_G.val()));
+				if(amount_val.length==0 || ( amount_val.length>0 && !(intRegex.test(amount_val) || floatRegex.test(amount_val)) ) ) {
+						$("#amount").focus();
+				        alert('กรุณากรอกตัวเลข.');   
+				        return false;
+				 }else{ 
+					 $( this ).dialog( "close" );
+					 doCreateCandidate(company_id);
+				  } 
 			},
 			"No": function() {
 				$( this ).dialog( "close" );

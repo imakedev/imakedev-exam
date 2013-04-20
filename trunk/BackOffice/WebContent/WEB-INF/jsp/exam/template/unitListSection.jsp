@@ -30,7 +30,8 @@ function doSurvey(){
 	});
 }
 function doOrder(msId){ 
-	var value=parseInt($("#_order_"+msId).val())*parseInt($("#_unitCost_"+msId).val());
+	/* var value=parseInt($("#_order_"+msId).val())*parseInt($("#_unitCost_"+msId).val()); */
+	var value=parseInt($("#_order_"+msId).val()); 
 		$.get("company/item/unit/${companyForm.missAccount.maId}/"+msId+"/"+value, function(data) {
 			// alert(data)
 			 	/* var obj = jQuery.parseJSON(data);

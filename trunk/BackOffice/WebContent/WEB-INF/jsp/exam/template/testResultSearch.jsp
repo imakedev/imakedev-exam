@@ -351,7 +351,9 @@ function setIgnore(){
 }
 function exportComparePDF(){
 	//mtrIds_G $("#mcaSeries").val() 
-	var src = "/MISSProcessImage/compareTest?mcaSeries="+$("#mcaSeries").val()+"&mtrIds="+mtrIds_G;
+	//var src = "/MISSProcessImage/compareTest?mcaSeries="+$("#mcaSeries").val()+"&mtrIds="+mtrIds_G;
+	var src = "/MISSExamBackOffice/reportExport/compareexport?mcaSeries="+$("#mcaSeries").val()+"&mtrIds="+mtrIds_G;
+	
 	//alert(src)
 	var div = document.createElement("div");
     document.body.appendChild(div);
