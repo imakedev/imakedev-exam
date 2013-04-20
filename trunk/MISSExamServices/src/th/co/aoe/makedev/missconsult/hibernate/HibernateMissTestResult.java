@@ -836,8 +836,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				 * row=sheet.getRow(i); cell= row.getCell(column);
 				 * cell.setCellValue("เห็นด้วย");
 				 */
+				
+
 
 				// for(int i=1;i<=size;i++){
+				//System.out.println("start->"+start+",end->"+end+",column->"+column);
 				for (int i = start; i <= end; i++) {
 					row = sheet.getRow(i);
 					// cell_question= row.getCell(0);
@@ -846,6 +849,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					cell_answer = row.getCell(column);
 					int question_no = (int) cell_question.getNumericCellValue();
 					Object obj_value = answerMap.get(question_no + "");
+					//System.out.println("question_no->"+question_no+",obj_value->"+obj_value+",cell_answer->"+cell_answer);
 					// logger.debug("obj_value xxxxxxxxxxxxxx == "+obj_value);
 					if (obj_value != null) {
 						cell_answer.setCellValue(Integer

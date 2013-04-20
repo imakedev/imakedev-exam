@@ -93,9 +93,10 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			//System.err.println("xxxxxxxx 1="+missAccountSeriesMap.getMissSery().getMsSeriesName());
 			//System.err.println("xxxxxxxx 2="+missAccountSeriesMap.getMissAccount().getMaName());
 		}
-		//System.err.println("==========================masmAvailable===>"+masmAvailable.intValue());
-		//System.err.println("==========================msUnitCost===>"+msUnitCost.intValue());
-		
+		 System.err.println(" ===>"+transientInstance.getMissSery().getMsId());
+		 System.err.println("==========================masmAvailable===>"+masmAvailable.intValue());
+		System.err.println("==========================msUnitCost===>"+msUnitCost.intValue());
+		 
 			//change sery
 			if(masmAvailable.intValue()>=msUnitCost.intValue()){
 				try{
