@@ -78,6 +78,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			maUsedUnit=(missAccount.getMaUsedUnit()!=null && missAccount.getMaUsedUnit().intValue()>0)?missAccount.getMaUsedUnit():0l;
 		}
 		int available=maTotalUnit.intValue()-maUsedUnit.intValue();
+		System.out.println("available->"+available+",orderUnit->"+orderUnit);
 		Long returnId=0l;
 		if(orderUnit<=available){
 		sb.setLength(0); 
@@ -383,7 +384,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 		//EPTNormReport eptNormReport =new EPTNormReport();
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		// SELECT * FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT where ma_type=0
-		String queryStr="SELECT sery.ms_id,sery.ms_series_name FROM MISS_CONSULT_EXAM.MISS_SERIES sery "; 
+		String queryStr="SELECT sery.ms_id,sery.ms_series_name FROM "+ServiceConstant.SCHEMA+".MISS_SERIES sery "; 
 		if(maId.intValue()!=1){
 			queryStr="SELECT ac_map.MS_ID,sery.MS_SERIES_NAME FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT_SERIES_MAP ac_map inner join " +
 					" "+ServiceConstant.SCHEMA+".MISS_SERIES sery on ac_map.ms_id=sery.ms_id 	where  not exists (" +

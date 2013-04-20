@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -105,22 +106,26 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 		//	String megName = instance.getMegName();
 			 
 		
-			StringBuffer sb =new StringBuffer(" select count(missTodo) from MissTodo missTodo where missTodo.mtodoResponse!='1'" +
-					" or  missTodo.mtodoResponse is null or missTodo.mtodoResponse='0'");
-			
+			/*StringBuffer sb =new StringBuffer(" select count(missTodo) from MissTodo missTodo where ( missTodo.mtodoResponse!='1'" +
+					" or  missTodo.mtodoResponse is null or missTodo.mtodoResponse='0' ) ");*/
+			StringBuffer sb =new StringBuffer("SELECT count(*)	FROM  "+ServiceConstant.SCHEMA+".MISS_TODO missTodo " +
+					" WHERE   EXISTS ( select *     from  "+ServiceConstant.SCHEMA+".MISS_TEST_RESULT result" +
+							"   where result.mtr_id = missTodo.mtodo_ref ) and ( missTodo.mtodo_response != '1' " +
+					" or  missTodo.mtodo_response is null  or missTodo.mtodo_response='0' ) ");
 			boolean iscriteria = true;
 			if(maId !=null && maId > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
-				  iscriteria = true;
+			//	 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
+				 sb.append(iscriteria?(" and missTodo.ma_id="+maId+""):(" where missTodo.ma_id="+maId+""));
+				 iscriteria = true;
 			}
 		/*	if(megName !=null && megName.trim().length() > 0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and lcase(missTodo.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTodo.megName) like '%"+megName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}*/
-			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); 
+			Query query =session.createSQLQuery(sb.toString());
+				 return ((java.math.BigInteger)query.uniqueResult()).intValue(); 
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
 			throw re;
@@ -138,28 +143,36 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 				MissAccount account = instance.getMissAccount();
 				Long maId= null;
 				if(account!=null)
-					maId=account.getMaId();
-			//	String megName = instance.getMegName();
-			
-			
-				StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo where missTodo.mtodoResponse!='1'" +
-						" or  missTodo.mtodoResponse is null  or missTodo.mtodoResponse='0' ");
+					maId=account.getMaId(); 
+				//System.out.println("maId->"+maId);
+			/*	SELECT count(*)
+				FROM MISS_CONSULT_EXAM.MISS_TODO todo 
+				WHERE   not EXISTS ( select *
+				              from MISS_CONSULT_EXAM.MISS_TEST_RESULT result
+				              where result.mtr_id = todo.mtodo_ref);
+			*/
+				/*StringBuffer sb =new StringBuffer(" select missTodo from MissTodo missTodo where ( missTodo.mtodoResponse!='1'" +
+						" or  missTodo.mtodoResponse is null  or missTodo.mtodoResponse='0' ) ");*/
+				 
+				StringBuffer sb =new StringBuffer("SELECT missTodo.MTODO_ID,missTodo.MTODO_TASK,missTodo.MTODO_TYPE," +
+						"missTodo.MA_ID,missTodo.MTODO_RESPONSE,missTodo.MTODO_REF	FROM  "+ServiceConstant.SCHEMA+".MISS_TODO missTodo " +
+						" WHERE   EXISTS ( select *     from  "+ServiceConstant.SCHEMA+".MISS_TEST_RESULT result" +
+								"   where result.mtr_id = missTodo.mtodo_ref ) and ( missTodo.mtodo_response != '1' " +
+						" or  missTodo.mtodo_response is null  or missTodo.mtodo_response='0' )  ");
 				
 				boolean iscriteria = true;
 				if(maId !=null && maId > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
+					// sb.append(iscriteria?(" and missTodo.missAccount.maId="+maId+""):(" where missTodo.missAccount.maId="+maId+""));
+					 sb.append(iscriteria?(" and missTodo.ma_id="+maId+""):(" where missTodo.ma_id="+maId+""));
 					  iscriteria = true;
 				}
-				/*if(megName !=null && megName.trim().length() > 0){  
-					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missTodo.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTodo.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
-				}*/
+				 
 				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
 						sb.append( " order by missTodo."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
 				}			
-				Query query =session.createQuery(sb.toString());
+				//Query query =session.createQuery(sb.toString());
+				Query query =session.createSQLQuery(sb.toString());
 				// set pagging.
 				 String size = String.valueOf(getSize(session, instance)); 
 				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
@@ -167,8 +180,24 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
 				 query.setMaxResults(pagging.getPageSize());
 				 
-				 List l = query.list();   
-				 transList.add(l); 
+				 List<Object[]> l = query.list(); 
+				 List result=new ArrayList(l.size()); 
+				 for (Object[] objects : l) {
+					 MissTodo todo=new MissTodo();
+					 todo.setMtodoId(Long.valueOf((java.lang.Integer)objects[0]));
+					 todo.setMtodoTask((java.lang.String)objects[1]);
+					 todo.setMtodoType((java.lang.String)objects[2]);
+					 //todo.setType((java.lang.String)objects[2]);
+					 todo.setMtodoResponse((java.lang.String)objects[4]);
+					 todo.setMtodoRef(Long.valueOf((java.lang.Integer)objects[5]));
+					 result.add(todo);
+				//	System.out.println(objects.getClass());
+					 
+				  }
+				 /*for (int i = 0; i < l.size(); i++) {
+					Object[] obj=l.get(i);
+				}*/
+				 transList.add(result); 
 			 	 transList.add(size); 
 				return transList;
 			} catch (Exception re) {
