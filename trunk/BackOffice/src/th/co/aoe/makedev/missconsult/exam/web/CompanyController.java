@@ -57,7 +57,11 @@ public class CompanyController
     {
         model.addAttribute("missExams", missExamService.listMissExam());
         CompanyForm companyForm = null;
+     /*   $("#sortItemSelect").val($("#orderBy").val());
+    	$("#sortOrderSelect").val($("#sortBy").val()); */ 
         companyForm = new CompanyForm();
+        companyForm.getPaging().setOrderBy("MA_NAME");
+        companyForm.getPaging().setSortBy("asc");
         companyForm.getPaging().setPageSize(PAGE_SIZE);
         companyForm.getMissAccount().setPagging(companyForm.getPaging());
         companyForm.getMissAccount().setMaType("0");
@@ -201,33 +205,37 @@ public class CompanyController
     @RequestMapping(value={"/item/unit/{maId}/{msId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET}) 
     public String postItemUnit(HttpServletRequest request, @PathVariable String maId,
     		@PathVariable String msId,@PathVariable String amount, Model model)
-    {
+    { 
     	 CompanyForm companyForm = null;
          if(model.containsAttribute("companyForm"))
              companyForm = (CompanyForm)model.asMap().get("companyForm");
          else
              companyForm = new CompanyForm();
          companyForm.setMode("edit");
-    	
+         Long amountL=Long.valueOf(amount);
+         Long msIdL=Long.valueOf(msId);
+         Long maIdL=Long.valueOf(maId);
+         MissSery missSeryOrder=missExamService.findMissSeryById(msIdL);
+     	Long orderUnit=missSeryOrder.getMsUnitCost()*amountL;
     	MissAccountSeriesMap missAccountSeriesMap = new MissAccountSeriesMap();
-    	missAccountSeriesMap.setMsId(Long.valueOf(msId));
-    	missAccountSeriesMap.setMaId(Long.valueOf(maId));
-    	missAccountSeriesMap.setMasmOrderUnit(Long.valueOf(amount));
+    	missAccountSeriesMap.setMsId(msIdL);
+    	missAccountSeriesMap.setMaId(maIdL);
+    	missAccountSeriesMap.setMasmOrderUnit(orderUnit);
       Long returnRecord=  missExamService.saveMissAccountSeriesMap(missAccountSeriesMap);
       String message="Order success !";
      String message_class="success";
       if(returnRecord!=null && returnRecord.intValue()==0){
     	  message_class="error";
-    	  message="Can't Order ";
-      }else{
+    	  message="Can't Order [Unit not enough] "; 
+      }else{   
     	  MissCandidate missCandidate = new MissCandidate();
           MissSery missSery = new MissSery();
           MissAccount missAccount = new MissAccount();
-          missAccount.setMaId(Long.valueOf(maId));
-          missSery.setMsId(Long.valueOf(msId));
+          missAccount.setMaId(maIdL);
+          missSery.setMsId(msIdL);
           missCandidate.setMissAccount(missAccount);
           missCandidate.setMissSery(missSery);
-          missCandidate.setAmount(amount);
+          missCandidate.setAmount(amountL+"");
           missCandidate = missExamService.saveMissCandidate(missCandidate);
          // Long updateRecord = missCandidate.getMcaId();
       }
@@ -276,6 +284,7 @@ public class CompanyController
   //  public MissAccount doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
     public String doRefill(HttpServletRequest request, @PathVariable String maId,@PathVariable String amount,Model model)
     {
+    
         MissAccount missAccount = new MissAccount();
         missAccount.setMaId(Long.valueOf(maId));
         missAccount.setRefill(Long.valueOf(amount));
@@ -376,19 +385,46 @@ public class CompanyController
    // public String doCreateCandidate(HttpServletRequest request, Model model)
     public @ResponseBody MissCandidate doCreateCandidate(HttpServletRequest request, Model model) 
  //   public MissCandidate doCreateCandidate(HttpServletRequest request, Model model)
-    {
-        MissCandidate missCandidate = new MissCandidate();
+    { 
+    	//String userid=SecurityContextHolder.getContext().getAuthentication().getName();
+    	Long mssery_candidate_hidden=Long.valueOf(request.getParameter("mssery_candidate_hidden"));
+    	Long company_candidate_hidden=Long.valueOf(request.getParameter("company_candidate_hidden"));
+    	Long amount=Long.valueOf(request.getParameter("amount"));
+    	MissSery missSeryOrder=missExamService.findMissSeryById(mssery_candidate_hidden);
+    	Long orderUnit=missSeryOrder.getMsUnitCost()*amount;
+    	//System.out.println("userid="+userid);
+    	MissAccountSeriesMap missAccountSeriesMap = new MissAccountSeriesMap();
+    	missAccountSeriesMap.setMsId(mssery_candidate_hidden);
+    	missAccountSeriesMap.setMaId(company_candidate_hidden);
+    	//missAccountSeriesMap.setMasmOrderUnit(Long.valueOf(request.getParameter("amount")));
+    	missAccountSeriesMap.setMasmOrderUnit(orderUnit);
+      Long returnRecord=  missExamService.saveMissAccountSeriesMap(missAccountSeriesMap);
+      MissCandidate missCandidate = new MissCandidate();
+    //  String message="Order success !";
+    // String message_class="success";
+     //System.out.println("returnRecord===>"+returnRecord);
+      if(returnRecord!=null && returnRecord.intValue()==0){
+    	 // message_class="error";
+    	//  message="Can't Order "; 
+    	  missCandidate.setMissAccount(missExamService.findMissAccountById(company_candidate_hidden));
+    	  missCandidate.setMissSery(missSeryOrder);
+    	  missCandidate.setUpdateRecord(-1);
+      }else{ 
         MissSery missSery = new MissSery();
         MissAccount missAccount = new MissAccount();
-        missAccount.setMaId(Long.valueOf(Long.parseLong(request.getParameter("company_candidate_hidden"))));
-        missSery.setMsId(Long.valueOf(Long.parseLong(request.getParameter("mssery_candidate_hidden"))));
+        //System.out.println("company_candidate_hidden="+request.getParameter("company_candidate_hidden"));
+        //System.out.println("mssery_candidate_hidden="+request.getParameter("mssery_candidate_hidden"));
+        missAccount.setMaId(company_candidate_hidden);
+        missSery.setMsId(mssery_candidate_hidden);
         missCandidate.setMissAccount(missAccount);
         missCandidate.setMissSery(missSery);
         missCandidate.setAmount(request.getParameter("amount"));
         //Long updateRecord = missExamService.saveMissCandidate(missCandidate);
         missCandidate = missExamService.saveMissCandidate(missCandidate);
+        //System.out.println("missCandidate.getMcaId="+missCandidate.getMcaId());
       //  logger.debug((new StringBuilder(" updateRecord=")).append(updateRecord).toString());
         missCandidate.setUpdateRecord(Integer.valueOf(missCandidate.getMcaId().intValue()));
+      }
        // Gson gson=new Gson();
 		//return gson.toJson(missCandidate);
         return missCandidate;

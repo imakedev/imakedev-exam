@@ -59,7 +59,17 @@ public class CandidateController
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
-        model.addAttribute("missSeries", missExamService.listMissSery());
+    	List missSeries=null;// missExamService.listMissSery();
+   	    Long maId=null;
+        //model.addAttribute("missSeries", missExamService.listMissSery());
+        if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	maId=missContact.getMcontactRef();
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
+         }
+        model.addAttribute("missSeries",missSeries);
         CandidateForm candidateForm = new CandidateForm();
         candidateForm.getMissCandidate().getPagging().setPageSize(PAGE_SIZE);
         
@@ -132,7 +142,18 @@ public class CandidateController
                 candidateForm = (CandidateForm)model.asMap().get("candidateForm");
             else
                 candidateForm = new CandidateForm();
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        List missSeries=null;// missExamService.listMissSery();
+   	    Long maId=null;
+        //model.addAttribute("missSeries", missExamService.listMissSery());
+        if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	maId=missContact.getMcontactRef();
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
+         }
+        model.addAttribute("missSeries",missSeries);
+        //model.addAttribute("missSeries", missExamService.listMissSery());
         candidateForm.getPaging().setPageSize(PAGE_SIZE);
         logger.debug((new StringBuilder("xxxx=candidateForm.getMissCandidate().getPagging()=")).append(candidateForm.getMissCandidate().getPagging()).toString());
         logger.debug((new StringBuilder("xxxx=candidateForm.getPaging()=")).append(candidateForm.getPaging()).toString());
@@ -163,7 +184,18 @@ public class CandidateController
             candidateForm.setMcaBirthDate(format1.format(missCandidate.getMcaBirthDate()));
         candidateForm.setMissCandidate(missCandidate);
         model.addAttribute("candidateForm", candidateForm);
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        List missSeries=null;// missExamService.listMissSery();
+   	    Long maId=null;
+        //model.addAttribute("missSeries", missExamService.listMissSery());
+        if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	maId=missContact.getMcontactRef();
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
+         }
+        model.addAttribute("missSeries",missSeries);
+        //model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("display", "display: none");
         model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
@@ -237,7 +269,18 @@ public class CandidateController
         model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         candidateForm.getMissCandidate().setSection(section);
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        List missSeries=null;// missExamService.listMissSery();
+   	    Long maId=null;
+        //model.addAttribute("missSeries", missExamService.listMissSery());
+        if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	maId=missContact.getMcontactRef();
+         	missSeries= missExamService.findMissAccountSeriesMapByRole(maId,missContact.getRcId());
+         }
+        model.addAttribute("missSeries",missSeries);
+       // model.addAttribute("missSeries", missExamService.listMissSery());
         model.addAttribute("candidateForm", candidateForm);
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
