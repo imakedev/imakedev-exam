@@ -264,6 +264,7 @@ public class MissCandidateResource extends BaseResource {
 							//logger.debug("getAmount  getAmount============================>"+xbpsTerm.getAmount());
 							bpsTerm.setMcaCreatedDate(timeStampStartDate);
 							bpsTerm.setMcaUpdatedDate(timeStampStartDate);
+							//System.out.println("xbpsTerm.getAmount()="+xbpsTerm.getAmount());
 							if(xbpsTerm.getAmount()!=null && xbpsTerm.getAmount().length()>0){
 								int size= Integer.parseInt(xbpsTerm.getAmount());
 								for(int i=0;i<size;i++){
