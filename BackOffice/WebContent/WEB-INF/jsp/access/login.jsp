@@ -13,14 +13,28 @@
 <link  href="<c:url value='/resources/css/style-Login.css'/>"  type="text/css" rel="stylesheet"/>
 
 <script type="text/javascript">
+//var url_home=window.location.href;
+//alert(url_home);
 function goHome(){
 	window.location.href="<c:url value='/todolist'/>";
 }
-$(document).ready(function() {
+$(document).ready(function() { 
+	
+	$.get("/MISSExamBackOffice/checksession",function(data) {
+		//var obj = data;//jQuery.parseJSON(data);
+		// alert(data);
+	//	wrapper var n=str.indexOf("welcome");
+		if(data!='anonymousUser' && window.location.href.indexOf("login")!=-1)
+			window.location.href="<c:url value='/'/>";
+		else
+			$("#login_body").slideDown("slow");  	
+		});
+	//alert(url_home+","+xxxxxx);
 	if($("#_message").val().length>0){ 
 		//$("#_message_show").html($("#_message").val())
 		$( "#dialog-Message" ).dialog({
-			/* height: 140, */
+			/* height: 140, */ 
+			 height: 25,
 			modal: true,
 			buttons: {
 				"Ok": function() { 
@@ -35,7 +49,7 @@ $(document).ready(function() {
 });
 </script>
 </head> 
-<body>
+<body id="login_body" style="display: none">
 <c:url value="/j_spring_security_check" var="security_check"/>
  <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	<span id="_message_show">${message}</span>
