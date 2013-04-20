@@ -153,9 +153,20 @@ function loadDynamicPage(pageId){
 			   $("#_content").html(data);
 			});
 }
+document.onHistoryGo = function() { return false; }
+window.onbeforeunload = function() {
+	//alert("ss");
+	//return false;
+	//noBack();
+	}
+ 
+function noBack() { 
+	//alert("can't go Back 1");
+	window.history.forward();
+}
 </script>
 </head>
-<body>
+<body  onload="noBack();" onpageshow="if(event.persisted)noBack();">
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 

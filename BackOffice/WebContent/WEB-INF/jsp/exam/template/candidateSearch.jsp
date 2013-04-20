@@ -271,15 +271,21 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 </td>
 	    					<td align="left" width="17%">Series:</td>
 	    					<td align="left" width="17%">
-	    					 <form:select path="mcaSeries">
+	    					 <%-- <form:select path="mcaSeries">
 	    					      <form:option value="-1">-- Select Series --</form:option>
-	    					      <form:options itemValue="msId" itemLabel="msSeriesName" items="${missSeries}"/>
-	    					      <%--
-	    					      <c:forEach items="${missSeries}" var="missSery" varStatus="loop"> 
-	    					 			 <option value="<c:out value="${missSery.msId}"></c:out>"><c:out value="${missSery.msSeriesName}"></c:out></option>
-	    					 	 </c:forEach>
-	    					 	  --%>
-	    					    </form:select>		
+	    					      <form:options itemValue="msId" itemLabel="msSeriesName" items="${missSeries}"/> 
+	    					    </form:select> --%>	
+	    					    <c:if test="${not empty missSeries}">  
+	    					     	 <form:select path="mcaSeries">
+	    					     	    <form:option value="-1">-- Select Series --</form:option>
+	    					     		<form:options itemValue="missSery.msId" itemLabel="missSery.msSeriesName" items="${missSeries}"/>
+	    					    	</form:select>	
+	    					    </c:if>
+	    					    <c:if test="${empty missSeries}"> 
+	    					    	 <form:select path="mcaSeries"> 
+	    					     		<form:option value="-1" label="---"/>
+	    					    	</form:select>	 
+	    					    </c:if>	
 	    					    
 	    					<!-- <select name="bpsGroupId2" id="bpgGroupId2"> 
 											 <option value="0">1</option>
