@@ -48,13 +48,14 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -262,8 +263,12 @@ public class WelcomeController
     	String mailTo=request.getParameter("mail_to");
     	String mailCC=request.getParameter("mail_cc");
     	String mailBCC=request.getParameter("mail_bcc");
-    	logger.error("request   mail_message==>"+message);
+    	/*logger.error("request   mail_message==>"+message);
     	logger.error("request   mail_subject==>"+subject);
+    	
+    	logger.error("request   mail_attach==>"+request.getParameter("mail_attach"));
+    	*/
+    	//logger.error("request   mail_todo_ref==>"+request.getParameter("mail_todo_ref"));
     	int status=0;
     	//send mail to Approver
     	byte [] fileSize=null;
@@ -272,7 +277,11 @@ public class WelcomeController
     		$("#mail_todo_ref").val(todo_ref);*/ 
     		String todo_ref=request.getParameter("mail_todo_ref");
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
-    		fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
+    		System.out.println("missTestResult->"+missTestResult);
+    		if(missTestResult!=null){
+    			
+    			fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
+    		}
     	}
     	String[] mailTos=null;
     	if(mailTo!=null  && mailTo.length()>0){
@@ -607,7 +616,7 @@ public class WelcomeController
 			e.printStackTrace();
 		}  
 	      // FacesContext.getCurrentInstance().responseComplete(); 
-	   
+	    
 	       
     	}catch (Exception e) {
 			// TODO: handle exception
@@ -624,13 +633,24 @@ public class WelcomeController
 			if (ctx != null) {
 				try {
 					ctx.close();
-				} catch (NamingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (NamingException e) { 
+					  e.printStackTrace();
 				}					
 			}	
 		}
+    	//System.out.println("fileSize->"+fileSize);
     	return fileSize;
+    }
+    @RequestMapping(value={"/checksession"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public @ResponseBody String checksession()
+    { 
+    	Authentication authen=SecurityContextHolder.getContext().getAuthentication();		
+		String userid=null;
+		if(authen!=null)
+			userid=authen.getName();
+       // Gson gson=new Gson();
+		// return gson.toJson(missTheme);
+		return userid;
     }
   
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");

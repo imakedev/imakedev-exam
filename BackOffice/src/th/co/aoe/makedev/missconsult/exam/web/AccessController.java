@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,12 @@ public class AccessController {
 	private MissExamService missExamService;
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request,HttpServletResponse response,Model model, @RequestParam(required=false) String message) {
+		//System.out.println("into login.");
+		Authentication authen=SecurityContextHolder.getContext().getAuthentication();		
+		String userid=null;
+		if(authen!=null)
+			userid=authen.getName();
+		//System.out.println("userid->"+userid);
 		String language=request.getParameter("language");
     	if(language!=null && language.length()>0){
     	 LocaleEditor localeEditor = new LocaleEditor();
