@@ -1,9 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7, IE=9"/>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
 <title>MissConsult</title>
 <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
@@ -18,17 +24,26 @@
 function goHome(){
 	window.location.href="<c:url value='/todolist'/>";
 }
+jQuery(window).bind("unload", function() {
+	location.reload();
+});  
 $(document).ready(function() { 
 	
 	$.get("/MISSExamBackOffice/checksession",function(data) {
 		//var obj = data;//jQuery.parseJSON(data);
-		// alert(data);
+		//  alert(data);
+		//  alert(window.location.href.indexOf("login\/"))
 	//	wrapper var n=str.indexOf("welcome");
-		if(data!='anonymousUser' && window.location.href.indexOf("login")!=-1)
+		//if(data!='anonymousUser' && window.location.href.indexOf("login\/")==-1){
+		if(data!='anonymousUser'){
+		//	alert("redirect")
 			window.location.href="<c:url value='/'/>";
-		else
-			$("#login_body").slideDown("slow");  	
+		}
+		else{
+			$("#login_body").slideDown("slow"); 
+		}
 		});
+	//location.reload();
 	//alert(url_home+","+xxxxxx);
 	if($("#_message").val().length>0){ 
 		//$("#_message_show").html($("#_message").val())
@@ -47,6 +62,9 @@ $(document).ready(function() {
 		});
 	}
 });
+/* window.onbeforeunload = function(){
+    return "are you sure?";
+}; */
 </script>
 </head> 
 <body id="login_body" style="display: none">
@@ -98,6 +116,8 @@ $(document).ready(function() {
   </div>
 	<div class="content_box_bottom"></div>
     <div class="footer">©2012 MISSCONSULT ALL RIGHT RESERVED</div>
-</div>       
+</div>  
+     
 </body>
+
 </html>
