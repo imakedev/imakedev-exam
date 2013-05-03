@@ -13,6 +13,11 @@
 <sec:authentication var="myUser" property="principal.myUser"/> 
 <html>
 <head>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="X-UA-Compatible" content="IE=7, IE=9"/>
 <title></title>  
 <c:url var="url" value="/" />
 <c:url value="/logout" var="logoutUrl"/>
@@ -609,18 +614,18 @@ function openMailDialog(todo_id,todo_ref){
 		}
 	});
 }
+
+/*
 document.onHistoryGo = function() { return false; }
 window.onbeforeunload = function() {
-	/* alert("ss");
-	return false;
-	noBack(); */
+	 
 	}
 
 function noBack() { 
 	//alert("can't go Back 1");
 	window.history.forward();
 }
-
+*/
 </script>
 </head>
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
@@ -647,7 +652,8 @@ function noBack() {
 </c:if> 
    --%>
   
-<body  onload="noBack();" onpageshow="if(event.persisted)noBack();" onunload="" style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); ">
+<%-- <body  onload="noBack();" onpageshow="if(event.persisted)noBack();" onunload="" style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); "> --%>
+<body  style="background-image:url(<c:url value='/resources/images/${UserMissContact.missTheme.mtLogo}'/>); "> 
  <div class="container-fluid">
     <div class="row-fluid" >
     	<div class="span12" align="center"> 

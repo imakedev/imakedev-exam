@@ -2,6 +2,11 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <html>
 <head>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="X-UA-Compatible" content="IE=7, IE=9"/>
 <title></title>  
 <c:url var="url" value="/" />
 <script type="text/javascript"
@@ -152,21 +157,20 @@ function loadDynamicPage(pageId){
 			   alert(data);
 			   $("#_content").html(data);
 			});
-}
+} 
+/*
 document.onHistoryGo = function() { return false; }
-window.onbeforeunload = function() {
-	//alert("ss");
-	//return false;
-	//noBack();
+window.onbeforeunload = function() { 
 	}
  
-function noBack() { 
-	//alert("can't go Back 1");
+function noBack() {  
 	window.history.forward();
 }
+*/
 </script>
 </head>
-<body  onload="noBack();" onpageshow="if(event.persisted)noBack();">
+<!-- <body  onload="noBack();" onpageshow="if(event.persisted)noBack();"> -->
+<body>
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
