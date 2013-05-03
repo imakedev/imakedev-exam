@@ -21,7 +21,8 @@ public class AuthentificationListener  implements AuthenticationFailureHandler{
              throws IOException, ServletException {
     	 	logger.info(" onAuthenticationFailure");
     	 	logger.info("classes "+ae.getClass());
-            UsernamePasswordAuthenticationToken user =(UsernamePasswordAuthenticationToken)ae.getAuthentication();
+            @SuppressWarnings("deprecation")
+			UsernamePasswordAuthenticationToken user =(UsernamePasswordAuthenticationToken)ae.getAuthentication();
             logger.info("xxxxxxxxx1 "+ae.getMessage());
             logger.info("xxxxxxxxx2 "+ae.hashCode());
             logger.info("xxxxxxxxx3 "+ae.toString());

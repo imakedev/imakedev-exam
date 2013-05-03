@@ -9,9 +9,11 @@ import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDepartmentMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
@@ -66,6 +68,7 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		return missTest.getUpdateRecord().intValue();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissTest> findMissTest(MissTest missTest) {
 		// TODO Auto-generated method stub
@@ -207,6 +210,7 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		return missTodo.getUpdateRecord().intValue();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissCareerMaster> listMissCareerMaster(Long maId) {
 		// TODO Auto-generated method stub
@@ -222,6 +226,7 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		return missCareerMasters;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissIndustryMaster> listMissIndustryMaster() {
 		// TODO Auto-generated method stub
@@ -289,5 +294,35 @@ public class MissExamServiceImpl extends PostCommon implements MissExamService {
 		}else
 			return 0;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MissPositionMaster> listMissPositionMaster() { 
+		// TODO Auto-generated method stub
+				MissPositionMaster missPositionMaster =new MissPositionMaster();
+				missPositionMaster.setServiceName(ServiceConstant.POSITION_MASTER_LIST);
+				VResultMessage resultMessage = postMessage(missPositionMaster, missPositionMaster
+						.getClass().getName(), "missPositionMaster", true);
+				List<MissPositionMaster> missPositionMasters=null;
+				if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+					missPositionMasters=resultMessage.getResultListObj();
+				} 
+				return missPositionMasters;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MissDepartmentMaster> listMissDepartmentMaster() {
+		// TODO Auto-generated method stub
+		MissDepartmentMaster missDepartmentMaster =new MissDepartmentMaster();
+		missDepartmentMaster.setServiceName(ServiceConstant.DEPARTMENT_MASTER_LIST);
+		VResultMessage resultMessage = postMessage(missDepartmentMaster, missDepartmentMaster
+				.getClass().getName(), "missDepartmentMaster", true);
+		List<MissDepartmentMaster> missDepartmentMasters=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missDepartmentMasters=resultMessage.getResultListObj();
+		} 
+		return missDepartmentMasters;
+	} 
 
 }
