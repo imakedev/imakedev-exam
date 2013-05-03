@@ -26,6 +26,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
@@ -382,6 +383,9 @@ public interface MissExamService {
 	public abstract List<MissCareerMaster> listMissCareerMaster(Long maId);
 
 	public abstract List<MissIndustryMaster> listMissIndustryMaster();
+	
+	public abstract List<MissPositionMaster> listMissPositionMaster();
+	
 
 	// Report management
 	public abstract int saveMissSystemUse(MissSystemUse transientInstance);
