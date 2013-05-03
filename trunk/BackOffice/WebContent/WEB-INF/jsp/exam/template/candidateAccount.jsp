@@ -428,8 +428,10 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     				<tr valign="top">
     					<td width="25%">Department:</td>
     					<td width="50%" colspan="2">
-    					<c:if test="${candidateForm.missCandidate.missAccount.maId==17}">
-    						<form:input path="missCandidate.mcaDepartment" readonly="true"/>
+    					<c:if test="${candidateForm.missCandidate.missAccount.maId==17}"> 
+    						<form:select path="missCandidate.mcaDepartment" cssStyle="background:#FFFFFF">
+    								 <form:options items="${missDepartmentMasterList}" itemLabel="mdmName" itemValue="mdmName"></form:options> 
+    						</form:select>
     					</c:if>
     					<c:if test="${candidateForm.missCandidate.missAccount.maId!=17}">
     						<form:input path="missCandidate.mcaDepartment"/>
