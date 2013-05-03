@@ -2,8 +2,6 @@ package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
