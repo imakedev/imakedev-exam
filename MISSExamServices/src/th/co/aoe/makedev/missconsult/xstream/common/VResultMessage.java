@@ -18,6 +18,7 @@ public class VResultMessage implements Serializable {
 	private VMessage resultMessage;
 	
 	//@XStreamImplicit(itemFieldName="resultListObj")
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("resultListObj") 
 	private List resultListObj;
 	
@@ -43,9 +44,11 @@ public class VResultMessage implements Serializable {
 		this.resultMessage = resultMessage;
 	}
 	 
+	@SuppressWarnings("rawtypes")
 	public List getResultListObj() {
 		return resultListObj;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setResultListObj(List  resultListObj) {
 		this.resultListObj = resultListObj;
 	}

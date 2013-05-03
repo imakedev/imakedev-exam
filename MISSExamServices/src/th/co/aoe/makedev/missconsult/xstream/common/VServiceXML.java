@@ -3,8 +3,6 @@ package th.co.aoe.makedev.missconsult.xstream.common;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * @author Chatchai Pimtun (Admin)
@@ -31,21 +29,26 @@ public class VServiceXML implements Serializable {
 	public void setFieldId(String fieldId) {
 		this.fieldId = fieldId;
 	}
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("likeExpression")
 	private Map likeExpression;
 	
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("likeFirstExpression")
 	private Map likeFirstExpression;
 	
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("likeEndExpression")
 	private Map likeEndExpression;
 	
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("leExpression")
 	private Map leExpression;
 	
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("geExpression")
 	private Map geExpression;
-	
+	@SuppressWarnings("rawtypes")
 	@XStreamAlias("neExpression")
 	private Map neExpression;
 	
@@ -78,39 +81,51 @@ public class VServiceXML implements Serializable {
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getLikeExpression() {
 		return likeExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setLikeExpression(Map likeExpression) {
 		this.likeExpression = likeExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getLeExpression() {
 		return leExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setLeExpression(Map leExpression) {
 		this.leExpression = leExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getGeExpression() {
 		return geExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setGeExpression(Map geExpression) {
 		this.geExpression = geExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getLikeFirstExpression() {
 		return likeFirstExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setLikeFirstExpression(Map likeFirstExpression) {
 		this.likeFirstExpression = likeFirstExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getLikeEndExpression() {
 		return likeEndExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setLikeEndExpression(Map likeEndExpression) {
 		this.likeEndExpression = likeEndExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getNeExpression() {
 		return neExpression;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setNeExpression(Map neExpression) {
 		this.neExpression = neExpression;
 	}
