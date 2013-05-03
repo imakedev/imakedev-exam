@@ -158,6 +158,7 @@ public class HibernateMissAccount  extends HibernateCommon implements MissAccoun
 						/*"where lcase(missContact.mcontactName) like '%"+maContactName.trim().toLowerCase()+"%' " +
 						" or lcase(missContact.mcontactLastname) like '%"+maContactName.trim().toLowerCase()+"%' ");*/					 
 				query=session.createQuery(sb.toString());
+				@SuppressWarnings("rawtypes")
 				List l = query.list();
 				int size=l.size();
 				if(size>0)
@@ -603,6 +604,7 @@ int result = query.executeUpdate();*/
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<th.co.aoe.makedev.missconsult.xstream.MissSery> listMissAccountSeriesMapByMaId(Long maId)
 			throws DataAccessException {
@@ -615,8 +617,9 @@ int result = query.executeUpdate();*/
 		
 			 sb.append(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId="+maId);
 			Query query=session.createQuery(sb.toString());
-			//query.setParameter("maId", maId);
+			//query.setParameter("maId", maId); 
 			Map  map= null;
+			 
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> missAccountSeriesMapList = query.list();
 			if(missAccountSeriesMapList!=null && missAccountSeriesMapList.size()>0){
 				map=new HashMap(missAccountSeriesMapList.size());
@@ -669,7 +672,8 @@ int result = query.executeUpdate();*/
 				    query =session.createQuery("select missExam from MissSeriesMap missMap, MissExam missExam " +
 					 		"where missMap.id.meId=missExam.meId  and  missMap.id.msId= "+missSery.getMsId()+
 				    		" order by missMap.msmOrder asc ");
-				    List<MissExam> missExams= (List<MissExam>)query.list();
+				    
+					List<MissExam> missExams= (List<MissExam>)query.list();
 					 
 					String str="";
 					 int index=0;

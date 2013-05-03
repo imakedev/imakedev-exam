@@ -1,18 +1,9 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
-import th.co.aoe.makedev.missconsult.hibernate.bean.Xls;
 import th.co.aoe.makedev.missconsult.managers.ConsultantReportService;
 import th.co.aoe.makedev.missconsult.xstream.ConsultantReport;
 
@@ -191,6 +181,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 				" on map.mcontact_id=contact.mcontact_id " +
 				"group by map.mcontact_id ");
 		//Query query =session.createSQLQuery(sb.toString()); 
+		@SuppressWarnings("unchecked")
 		List<Object[]> list=query.list();
 		List<List<String>> results=new ArrayList<List<String>>(list.size());
 	try{
@@ -231,7 +222,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 	} 
 	return consultantReport;
   } 
-	private void getCode(byte[] byteArray){
+	/*private void getCode(byte[] byteArray){
 		ByteArrayInputStream bais = 
 		         new ByteArrayInputStream(byteArray);
 		HSSFWorkbook wb =null;
@@ -252,8 +243,8 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 			}
 		}
 		
-	}
-	private String setAnswer(Session session, String filePath) {
+	}*/
+	/*private String setAnswer(Session session, String filePath) {
 		FileInputStream fileIn = null;
 		//FileOutputStream fileOut = null;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -281,7 +272,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			//byte[] bytes = fs.toByteArray();
 			/*
 			 * Workbook wb=null; try { wb = WorkbookFactory.create(fs); } catch
@@ -305,7 +296,7 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			try {
+			/*try {
 				wb.write(bos);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -332,5 +323,5 @@ public class HibernateConsultantReport  extends HibernateCommon implements Consu
 				}
 		}
 		return outPut;
-	}
+	}*/
 }

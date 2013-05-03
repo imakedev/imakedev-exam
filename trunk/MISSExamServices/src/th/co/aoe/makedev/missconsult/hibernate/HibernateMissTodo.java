@@ -1,7 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -75,6 +74,7 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 		query.setParameter("maId", transientInstance.getMissAccount().getMaId());
 		query.setParameter("mtodoType", transientInstance.getMtodoType());
 		query.setParameter("mtodoRef", transientInstance.getMtodoRef());
+		@SuppressWarnings("rawtypes")
 		List list=query.list();
 		if(list.size()==0){
 			try{

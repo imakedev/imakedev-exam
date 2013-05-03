@@ -1,6 +1,5 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public class HibernateMissManual  extends HibernateCommon implements MissManualService {
 
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
-	private static final SecureRandom random = new SecureRandom();
+	//private static final SecureRandom random = new SecureRandom();
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -88,7 +87,8 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 			    	query=session.createQuery(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap" +
 			    			" where missAccountSeriesMap.id.maId=:maId ");
 			    	query.setParameter("maId", maId);
-			    	List<MissAccountSeriesMap>  missAccountSeriesMaps=query.list();
+			    	@SuppressWarnings("unchecked")
+					List<MissAccountSeriesMap>  missAccountSeriesMaps=query.list();
 			    	int size=missAccountSeriesMaps.size();
 			    	int index=0;
 			    	
@@ -196,6 +196,7 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		Query query=session.createQuery(" select missManual from MissManual missManual " +
 				" where missManual.missSery.msId=:msId ");
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		@SuppressWarnings("rawtypes")
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){

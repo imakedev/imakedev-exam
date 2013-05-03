@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -66,29 +65,9 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 	
 	
 
-	private int getSize(Session session, MissTest instance) throws Exception{
+	/*private int getSize(Session session, MissTest instance) throws Exception{
 		try {
-			 
-		/*	Long mtestId = instance.getMegId();
-			String megName = instance.getMegName();
-			 
-			 
-			StringBuffer sb =new StringBuffer(" select count(missTest) from MissTest missTest ");
-			
-			boolean iscriteria = false;
-			if(mtestId !=null && mtestId > 0){  
-				//criteria.add(Expression.eq("mtestId", mtestId));	
-				 sb.append(iscriteria?(" and missTest.mtestId="+mtestId+""):(" where missTest.mtestId="+mtestId+""));
-				  iscriteria = true;
-			}
-			if(megName !=null && megName.trim().length() > 0){  
-				//criteria.add(Expression.eq("mtestId", mtestId));	
-				sb.append(iscriteria?(" and lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
-			Query query =session.createQuery(sb.toString());
-			
-				 return ((Long)query.uniqueResult()).intValue(); */
+		 
 			return 0;
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
@@ -97,50 +76,12 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 			logger.error("Exception",e);
 			throw e;
 		}
-	}
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	}*/
+	 @SuppressWarnings({ "rawtypes" })
 	 @Transactional(readOnly=true)
 	 public List searchMissTest(MissTest instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			Session session = sessionAnnotationFactory.getCurrentSession();
-			try {
-			/*	Long mtestId = instance.getMegId();
-				String megName = instance.getMegName();
-			
-			
-				StringBuffer sb =new StringBuffer(" select missTest from MissTest missTest ");
-				
-				boolean iscriteria = false;
-				if(mtestId !=null && mtestId > 0){  
-					//criteria.add(Expression.eq("mtestId", mtestId));	
-					 sb.append(iscriteria?(" and missTest.mtestId="+mtestId+""):(" where missTest.mtestId="+mtestId+""));
-					  iscriteria = true;
-				}
-				if(megName !=null && megName.trim().length() > 0){  
-					//criteria.add(Expression.eq("mtestId", mtestId));	
-					sb.append(iscriteria?(" and lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missTest.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
-				}
-				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-						sb.append( " order by missTest."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-				}			
-				Query query =session.createQuery(sb.toString());
-				// set pagging.
-				 String size = String.valueOf(getSize(session, instance)); 
-				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
-				 
-				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-				 query.setMaxResults(pagging.getPageSize());
-				 
-				 List l = query.list();   
-				 transList.add(l); 
-			 	 transList.add(size); */
-				return transList;
-			} catch (Exception re) {
-				//re.printStackTrace();
-				logger.error("find by property name failed", re);
-				 
-			}
+			 
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -156,6 +97,7 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Long saveOrUpdateMissTest(String userid, MissTest missTest)
 			throws DataAccessException {
@@ -228,6 +170,7 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 		// TODO Auto-generated method stub
 		return returnId;
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List findMissTestAnswer(String userid,MissTest missTest)
 			throws DataAccessException {

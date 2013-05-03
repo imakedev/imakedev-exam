@@ -281,7 +281,8 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 		Long msId=	transientInstance.getMsId();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery("delete MissSeriesMap missSeriesMap where missSeriesMap.id.msId ="+msId.intValue());
-		int result = query.executeUpdate();
+	//	int result = query.executeUpdate();
+		 query.executeUpdate();
 		int canUpdate = 0;
 		try{
 			session.update(transientInstance);
@@ -322,7 +323,8 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 		try{
 		session.delete(persistentInstance);
 		Query query=session.createQuery("delete MissSeriesMap missSeriesMap where missSeriesMap.id.msId ="+msId.intValue());
-		int result = query.executeUpdate();
+	//	int result = query.executeUpdate();
+	    query.executeUpdate();
 		canUpdate =1;
 		}finally {
 			if (session != null) {
@@ -332,6 +334,7 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 		return canUpdate;
 		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings("unused")
 	private List<th.co.aoe.makedev.missconsult.xstream.MissSery> getxMissSeryObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> ntcCalendars) {
 		List<th.co.aoe.makedev.missconsult.xstream.MissSery> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>(
@@ -345,6 +348,7 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 		return xntcCalendars;
 	}
  
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listMissSery() throws DataAccessException {
 		// TODO Auto-generated method stub

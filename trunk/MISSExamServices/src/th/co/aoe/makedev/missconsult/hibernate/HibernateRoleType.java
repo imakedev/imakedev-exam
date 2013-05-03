@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -75,22 +74,9 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 	
 	
 
-	private int getSize(Session session, RoleType instance) throws Exception{
+	/*private int getSize(Session session, RoleType instance) throws Exception{
 		try {
-			/*Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
-		
-		
-			StringBuffer sb =new StringBuffer(" select count(roleType) from RoleType roleType ");
-			
-			boolean iscriteria = false;
-			if(msId !=null && msId.intValue()!=0){  
-				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and roleType.missSery.msId="+msId.intValue()+""):(" where roleType.missSery.msId="+msId.intValue()+""));
-				  iscriteria = true;
-			}
-			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); */
+			 
 			return 0;
 				 
 		 
@@ -101,47 +87,12 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 			logger.error("Exception",e);
 			throw e;
 		}
-	}
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	}*/
+	 @SuppressWarnings({ "rawtypes" })
 	 @Transactional(readOnly=true)
 	 public List searchRoleType(RoleType instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			/*Session session = sessionAnnotationFactory.getCurrentSession();
-			try {
-				 
-					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
-				
-					StringBuffer sb =new StringBuffer(" select roleType from RoleType roleType ");
-					
-					boolean iscriteria = false;
-					if(msId !=null && msId.intValue()!=0){  
-						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and roleType.missSery.msId="+msId.intValue()+""):(" where roleType.missSery.msId="+msId.intValue()+""));
-						  iscriteria = true;
-					}
-					
-					
-					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by roleType."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-					}			
-					Query query =session.createQuery(sb.toString());
-					// set pagging.
-					 String size = String.valueOf(getSize(session, instance)); 
-					 logger.info(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
-					 
-					 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-					 query.setMaxResults(pagging.getPageSize());
-					 
-					 List l = query.list();   
-					 transList.add(l); 
-				 	 transList.add(size);
-				return transList;
-			} catch (Exception re) {
-				//re.printStackTrace();
-				logger.error("find by property name failed", re);
-				 
-			}*/
+			 
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -190,6 +141,7 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List listRoleTypeByRcId(Long rcId) throws DataAccessException {
 		// TODO Auto-generated method stub
@@ -225,6 +177,7 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 		}
 		return roles;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List listRoleTypes(Long maId) throws DataAccessException {
 		// TODO Auto-generated method stub

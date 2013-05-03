@@ -2,7 +2,6 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -29,12 +28,12 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
 @Transactional
 public class HibernateMissExam  extends HibernateCommon implements MissExamService {
-	private static String schema="";
-	private static ResourceBundle bundle;
+	//private static String schema="";
+	/*private static ResourceBundle bundle;
 	static{
 		bundle =  ResourceBundle.getBundle( "jdbc" );	
-		schema=bundle.getString("schema");
-	}
+		//schema=bundle.getString("schema");
+	}*/
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
@@ -248,6 +247,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 	return updateCount;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public int copyMissExam(MissExam transientInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
@@ -360,6 +360,7 @@ public class HibernateMissExam  extends HibernateCommon implements MissExamServi
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listMissExam() throws DataAccessException {
 		// TODO Auto-generated method stub
