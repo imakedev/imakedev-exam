@@ -219,6 +219,7 @@ public class MissExamController {
 		//logger.debug("==================================== questionIndex="+questionIndex);
 		String[] mcScores=request.getParameterValues("mcScore");
 		if(mcScores!=null && mcScores.length>0){
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			List<MissTest> missTests = new ArrayList(mcScores.length);
 			MissTest selectTest= new MissTest();
 			for (int i = 0; i < mcScores.length; i++) {

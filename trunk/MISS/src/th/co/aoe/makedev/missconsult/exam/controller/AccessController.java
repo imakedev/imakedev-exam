@@ -1,7 +1,6 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
-import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;

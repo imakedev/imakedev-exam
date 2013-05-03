@@ -66,6 +66,8 @@ public class MediatorController {
 			 model.addAttribute("systemDate", format1.format(date));
 			 model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 			 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
+			 model.addAttribute("missPositionMasterList", missExamService.listMissPositionMaster());
+			 model.addAttribute("missDepartmentMasterList", missExamService.listMissDepartmentMaster());
 		//	 model.addAttribute("timelimit", format2.format(date));
 			return "exam/candidateInfo";
 	}

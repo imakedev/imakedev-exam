@@ -1,7 +1,6 @@
 package th.co.aoe.makedev.missconsult.exam.controller;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -153,7 +152,7 @@ public class UploadController {
 			         }
 			      }
     }
-    private void createDirectoryIfNeeded(String directoryName)
+   /* private void createDirectoryIfNeeded(String directoryName)
   	 {
   	   File theDir = new File(directoryName);
 
@@ -172,5 +171,5 @@ public class UploadController {
   	      sb.append(org.apache.commons.lang.StringUtils.leftPad(Long.toString(Math.round(Math.random() * Math.pow(36, n)), 36), n, '0'));
   	    }
   	    return sb.toString();
-   }
+   }*/
 }

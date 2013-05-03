@@ -2,7 +2,6 @@ package th.co.aoe.makedev.missconsult.exam.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity(name="role")
 public class Role {

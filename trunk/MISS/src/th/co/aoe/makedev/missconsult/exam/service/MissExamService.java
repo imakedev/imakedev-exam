@@ -7,9 +7,11 @@ import th.co.aoe.makedev.missconsult.xstream.MissAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDepartmentMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.xstream.MissSystemUse;
@@ -54,4 +56,8 @@ public interface MissExamService {
 	 
 	 public abstract int saveMissSystemUse(MissSystemUse missSystemUse);
 	 public abstract MissCandidate findMissCandidateByCitizendIdAndEmail(String citizendId,String email);
+	 
+		public abstract List<MissPositionMaster> listMissPositionMaster();
+		
+		public abstract List<MissDepartmentMaster> listMissDepartmentMaster(); 
 }
