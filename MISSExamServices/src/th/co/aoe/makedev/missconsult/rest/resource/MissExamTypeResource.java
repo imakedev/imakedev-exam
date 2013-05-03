@@ -76,12 +76,12 @@ public class MissExamTypeResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_EXAM_TYPE_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missExamTypeService.saveMissExamType(bpsTerm)).intValue();
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_TYPE_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missExamTypeService.updateMissExamType(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -91,8 +91,10 @@ public class MissExamTypeResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_TYPE_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missExamTypeService.searchMissExamType(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -169,12 +171,12 @@ public class MissExamTypeResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_EXAM_TYPE_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missExamTypeService.saveMissExamType(bpsTerm)).intValue();
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_TYPE_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missExamTypeService.updateMissExamType(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}

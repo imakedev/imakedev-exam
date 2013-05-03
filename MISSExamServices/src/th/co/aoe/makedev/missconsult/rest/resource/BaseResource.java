@@ -60,6 +60,7 @@ public abstract class BaseResource extends ServerResource {
 		PATH_REF = getRequest().getResourceRef().getPath();
 	}
 */
+	//@SuppressWarnings("deprecation")
 	public BaseResource() {
 		super();
 		logger.debug("into constructor BaseResource");

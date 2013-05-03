@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -61,7 +60,7 @@ public class MissAccountGroupResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_GROUP_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 						//	bpsTerm.setMaRegisterDate(timeStampStartDate);
 							Long maId=missAccountGroupService.saveMissAccountGroup(bpsTerm);
 							int updateRecord=maId.intValue();
@@ -70,8 +69,10 @@ public class MissAccountGroupResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_GROUP_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missAccountGroupService.searchMissAccountGroup(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -119,10 +120,12 @@ public class MissAccountGroupResource extends BaseResource {
 	
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup();
+		@SuppressWarnings("rawtypes")
 		List result = (List) missAccountGroupService.searchMissAccountGroup(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccountGroup> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountGroup>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountGroup>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);
