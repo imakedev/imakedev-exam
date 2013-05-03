@@ -81,8 +81,10 @@ public class MissSeryProblemResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERY_PROBLEM_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missSeryProblemService.searchMissSeryProblem(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -130,10 +132,12 @@ public class MissSeryProblemResource extends BaseResource {
 	
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem();
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSeryProblemService.searchMissSeryProblem(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSeryProblem> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeryProblem>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

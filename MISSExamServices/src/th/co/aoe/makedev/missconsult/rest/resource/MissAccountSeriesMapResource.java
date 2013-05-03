@@ -95,8 +95,10 @@ public class MissAccountSeriesMapResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SERIES_MAP_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missAccountSeriesMapService.searchMissAccountSeriesMap(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -190,10 +192,12 @@ public class MissAccountSeriesMapResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap();
 	//	bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missAccountSeriesMapService.searchMissAccountSeriesMap(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

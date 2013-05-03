@@ -163,8 +163,10 @@ public class MissContactResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missContactService.searchMissContact(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -182,6 +184,7 @@ public class MissContactResource extends BaseResource {
 							}
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_LIST)){
+							@SuppressWarnings("unchecked")
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact>) missContactService.listContacts(xbpsTerm.getMcontactRef(),xbpsTerm.getMcontactType());
 							List<th.co.aoe.makedev.missconsult.xstream.MissContact> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissContact>();
 							if (ntcCalendars != null && ntcCalendars.size() > 0) {
@@ -227,10 +230,12 @@ public class MissContactResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissContact bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissContact();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missContactService.searchMissContact(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissContact> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissContact>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissContact>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

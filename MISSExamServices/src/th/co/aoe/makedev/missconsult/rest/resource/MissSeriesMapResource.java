@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -81,12 +80,12 @@ public class MissSeriesMapResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missSeriesMapService.saveMissSeriesMap(bpsTerm)).intValue();
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missSeriesMapService.updateMissSeriesMap(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -96,10 +95,12 @@ public class MissSeriesMapResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_MAP_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missSeriesMapService.searchMissSeriesMap(bpsTerm,page);
 							if (result != null && result.size() == 2) {
 								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap>) result
 										.get(0);*/
+								@SuppressWarnings("unchecked")
 								List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -170,10 +171,12 @@ public class MissSeriesMapResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSeriesMapService.searchMissSeriesMap(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesMap>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -75,12 +74,12 @@ public class MissExamGroupResource	extends BaseResource {
 								}
 							} 
 							if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_SAVE)){
-								java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+								//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 								int updateRecord=(missExamGroupService.saveMissExamGroup(bpsTerm)).intValue();
 								returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							}
 							else if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_UPDATE)){
-								java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+								//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 								int updateRecord=missExamGroupService.updateMissExamGroup(bpsTerm);
 								returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							}
@@ -90,8 +89,10 @@ public class MissExamGroupResource	extends BaseResource {
 							}
 							else if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_SEARCH)){
 								Pagging page = xbpsTerm.getPagging(); 
+								@SuppressWarnings("rawtypes")
 								List result = (List) missExamGroupService.searchMissExamGroup(bpsTerm,page);
 								if (result != null && result.size() == 2) {
+									@SuppressWarnings("unchecked")
 									java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup>) result
 											.get(0);
 									String faqs_size = (String) result.get(1);
@@ -168,12 +169,12 @@ public class MissExamGroupResource	extends BaseResource {
 								}
 							} 
 							if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_SAVE)){
-								java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+								//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 								int updateRecord=(missExamGroupService.saveMissExamGroup(bpsTerm)).intValue();
 								returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							}
 							else if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_UPDATE)){
-								java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+								//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 								int updateRecord=missExamGroupService.updateMissExamGroup(bpsTerm);
 								returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							}
@@ -183,8 +184,10 @@ public class MissExamGroupResource	extends BaseResource {
 							}
 							else if(serviceName.equals(ServiceConstant.MISS_EXAM_GROUP_SEARCH)){
 								Pagging page = xbpsTerm.getPagging(); 
+								@SuppressWarnings("rawtypes")
 								List result = (List) missExamGroupService.searchMissExamGroup(bpsTerm,page);
 								if (result != null && result.size() == 2) {
+									@SuppressWarnings("unchecked")
 									java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup>) result
 											.get(0);
 									String faqs_size = (String) result.get(1);
@@ -253,10 +256,12 @@ public class MissExamGroupResource	extends BaseResource {
 			Pagging page =new Pagging(); 
 			th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup();
 			bpsTerm.setMegName("Aoe");
+			@SuppressWarnings("rawtypes")
 			List result = (List) missExamGroupService.searchMissExamGroup(bpsTerm,page);
 			VResultMessage vresultMessage = new VResultMessage();
 			List<th.co.aoe.makedev.missconsult.xstream.MissExamGroup> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissExamGroup>();
 			if (result != null && result.size() == 2) {
+				@SuppressWarnings("unchecked")
 				java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExamGroup>) result
 						.get(0);
 				String faqs_size = (String) result.get(1);

@@ -206,6 +206,13 @@
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
 	
+	<bean id="missDepartmentMasterResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissDepartmentMasterResource"
+		scope="prototype"> 
+		<property name="missDepartmentMasterService" ref="missDepartmentMasterService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>
+	 
 	<!--  Adding Manage Report -->
 	<bean id="missAccountGroupResource"
 		class="th.co.aoe.makedev.missconsult.rest.resource.MissAccountGroupResource"

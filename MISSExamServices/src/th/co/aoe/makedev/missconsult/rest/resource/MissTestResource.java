@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -24,7 +23,7 @@ public class MissTestResource extends BaseResource {
 	private MissTestService missTestService;
 	private com.thoughtworks.xstream.XStream xstream;
 	private static 	final String[] ignore_id=new String[]{"missCandidate","missChoice","missExam","missQuestion","missSery"};
-	private static 	final String[] ignore_id_choice=new String[]{"missQuestion"};
+	//private static 	final String[] ignore_id_choice=new String[]{"missQuestion"};
 	private static 	final String[] ignore_id_exam=new String[]{"missExamGroup","missExamType"};
 	private static 	final String[] ignore_id_question=new String[]{"missExam","missTemplate"}; 
 	
@@ -106,7 +105,7 @@ public class MissTestResource extends BaseResource {
 							}
 						} */
 						if(serviceName.equals(ServiceConstant.MISS_TEST_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=0;
 						    List<th.co.aoe.makedev.missconsult.xstream.MissTest> missTests=xbpsTerm.getMissTests();
 						    		for (th.co.aoe.makedev.missconsult.xstream.MissTest xmissTest : missTests) {
@@ -141,7 +140,8 @@ public class MissTestResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_FIND_ANSWERED)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							@SuppressWarnings("unchecked")
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest>) missTestService.findMissTestAnswer(xbpsTerm.getUserid(),bpsTerm);
 							VResultMessage vresultMessage = new VResultMessage();
 							if(ntcCalendars!=null && ntcCalendars.size()>0){
@@ -155,7 +155,7 @@ public class MissTestResource extends BaseResource {
 							return getRepresentation(entity, vresultMessage, xstream);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestService.updateMissTest(bpsTerm);
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -167,8 +167,10 @@ public class MissTestResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missTestService.searchMissTest(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -239,10 +241,12 @@ public class MissTestResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissTest bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTest();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missTestService.searchMissTest(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissTest> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTest>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

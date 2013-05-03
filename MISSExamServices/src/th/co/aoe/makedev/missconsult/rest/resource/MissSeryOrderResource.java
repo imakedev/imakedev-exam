@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -61,7 +60,7 @@ public class MissSeryOrderResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.MISS_SERY_ORDER_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 						//	bpsTerm.setMaRegisterDate(timeStampStartDate);
 							Long maId=missSeryOrderService.saveMissSeryOrder(bpsTerm);
 							int updateRecord=maId.intValue();
@@ -71,8 +70,10 @@ public class MissSeryOrderResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_SERY_ORDER_SEARCH
 								)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missSeryOrderService.searchMissSeryOrder(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -120,10 +121,12 @@ public class MissSeryOrderResource extends BaseResource {
 	
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder();
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSeryOrderService.searchMissSeryOrder(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSeryOrder> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeryOrder>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryOrder>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

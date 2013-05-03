@@ -23,6 +23,16 @@ public class MissPositionMaster extends VServiceXML implements Serializable {
 	//bi-directional many-to-one association to MissDepartmentMaster
 	@XStreamAlias("missDepartmentMaster")
 	private MissDepartmentMaster missDepartmentMaster;
+	
+	private Integer mpmOrder; 
+
+	public Integer getMpmOrder() {
+		return mpmOrder;
+	}
+
+	public void setMpmOrder(Integer mpmOrder) {
+		this.mpmOrder = mpmOrder;
+	}
 
 	public MissPositionMaster() {
 	}

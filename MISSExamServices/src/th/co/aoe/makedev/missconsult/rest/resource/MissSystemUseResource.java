@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.restlet.data.MediaType;
@@ -85,8 +81,10 @@ public class MissSystemUseResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SYSTEM_USE_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missSystemUseService.searchMissSystemUse(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -134,10 +132,12 @@ public class MissSystemUseResource extends BaseResource {
 	
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse();
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSystemUseService.searchMissSystemUse(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSystemUse> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSystemUse>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -85,7 +84,7 @@ public class RoleSeriesMappingResource extends BaseResource {
 							return getRepresentation(entity, vresultMessage, xstream);
 						} */
 						if(serviceName.equals(ServiceConstant.ROLE_SERIES_MAPPING_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long rcId=0l;
 							
 							rcId=(roleSeriesMappingService.saveRoleSeriesMapping(bpsTerm));
@@ -94,7 +93,7 @@ public class RoleSeriesMappingResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,rcId.intValue());
 						}
 						else if(serviceName.equals(ServiceConstant.ROLE_SERIES_MAPPING_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=roleSeriesMappingService.updateRoleSeriesMapping(xbpsTerm.getRcId(),xbpsTerm.getMsIds());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -111,6 +110,7 @@ public class RoleSeriesMappingResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}*/
 						else if(serviceName.equals(ServiceConstant.ROLE_SERIES_MAPPING_LIST_BY_RC_ID)){
+							@SuppressWarnings("unchecked")
 							List<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping> xntcCalendars = roleSeriesMappingService.listRoleSeriesMappingByrcId(xbpsTerm.getRcId());
 							VResultMessage vresultMessage = new VResultMessage();
 							vresultMessage.setResultListObj(xntcCalendars);
@@ -122,9 +122,11 @@ public class RoleSeriesMappingResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.ROLE_SERIES_MAPPING_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
+							Pagging page = xbpsTerm.getPagging(); 							
+							@SuppressWarnings("rawtypes")
 							List result = (List) roleSeriesMappingService.searchRoleSeriesMapping(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -191,10 +193,12 @@ public class RoleSeriesMappingResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) roleSeriesMappingService.searchRoleSeriesMapping(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

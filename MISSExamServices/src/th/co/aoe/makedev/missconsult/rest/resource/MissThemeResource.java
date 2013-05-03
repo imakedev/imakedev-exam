@@ -73,8 +73,10 @@ public class MissThemeResource extends BaseResource{
 						} 
 						else if(serviceName.equals(ServiceConstant.MISS_THEME_LIST)){
 							//Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missThemeService.listMissTheme(bpsTerm);
 							if (result != null && result.size() >0) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme>) result;
 										
 								String faqs_size = result.size()+"";

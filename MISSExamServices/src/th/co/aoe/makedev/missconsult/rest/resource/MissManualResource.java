@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -88,7 +87,7 @@ public class MissManualResource extends BaseResource {
 							return getRepresentation(entity, vresultMessage, xstream);
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_MANUAL_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mmId=0l;
 							
 							mmId=(missManualService.saveMissManual(bpsTerm));
@@ -97,7 +96,7 @@ public class MissManualResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,mmId.intValue());
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_MANUAL_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missManualService.updateMissManual(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -121,8 +120,10 @@ public class MissManualResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_MANUAL_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missManualService.searchMissManual(bpsTerm,xbpsTerm.getMaId(),page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissManual> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissManual>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
