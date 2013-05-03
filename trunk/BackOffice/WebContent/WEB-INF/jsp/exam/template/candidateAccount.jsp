@@ -413,14 +413,27 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="25%">Position:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" width="100%" /> -->
-    					<form:input path="missCandidate.mcaPosition"/>
+    					<c:if test="${candidateForm.missCandidate.missAccount.maId==17}"> 
+    						 <form:select path="missCandidate.mcaPosition" cssStyle="background:#FFFFFF">
+    								 <form:options items="${missPositionMasterList}" itemLabel="mpmName" itemValue="mpmName"></form:options> 
+    						</form:select>
+    					</c:if>
+    					<c:if test="${candidateForm.missCandidate.missAccount.maId!=17}">
+    						<form:input path="missCandidate.mcaPosition"/>
+    					</c:if>
+    					
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
     				<tr valign="top">
     					<td width="25%">Department:</td>
     					<td width="50%" colspan="2">
-    					<form:input path="missCandidate.mcaDepartment"/>
+    					<c:if test="${candidateForm.missCandidate.missAccount.maId==17}">
+    						<form:input path="missCandidate.mcaDepartment" readonly="true"/>
+    					</c:if>
+    					<c:if test="${candidateForm.missCandidate.missAccount.maId!=17}">
+    						<form:input path="missCandidate.mcaDepartment"/>
+    					</c:if>
     				   <!-- <input type="text" width="100%" /> -->
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
@@ -429,7 +442,7 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="25%">Phone:</td>
     					<td width="50%" colspan="2">
     					<!-- <input type="text" width="100%" /> -->
-    					<form:input path="missCandidate.mcaPhone"/>
+    					<form:input path="missCandidate.mcaPhone"/> 
     					</td>
     					 <!-- <td width="25%">&nbsp;</td> -->
     				</tr>
