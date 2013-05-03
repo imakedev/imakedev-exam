@@ -16,20 +16,20 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.Dom4JDriver;
 /*import th.co.vlink.utils.Pagging;
 import th.co.vlink.xstream.common.VResultMessage;
 import th.co.vlink.xstream.common.VServiceXML;
 */
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.Dom4JDriver;
  
 public class PostCommon {
 	public static final int PAGE_SIZE = 5; 
 	public VResultMessage postMessage(VServiceXML vserviceXML,Class[] className,String endPoint,boolean isReturn) {
 		//HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
 		//HttpPost httppost = new HttpPost("http://localhost:3003/v1/"+endPoint);
-		HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
-		//HttpPost httppost = new HttpPost("http://localhost:8080/MISSExamServices/rest/"+endPoint);
+		//HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
+		HttpPost httppost = new HttpPost("http://localhost:8080/MISSExamServices/rest/"+endPoint);
 				
 				//HttpPost httppost = new HttpPost("http://10.0.20.27:3000/v1/"+endPoint);
 				//Test
