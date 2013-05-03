@@ -15,7 +15,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +40,7 @@ import com.google.gson.Gson;
 @RequestMapping(value={"/reportmanagement"})
 @SessionAttributes(value={"reportManagementForm"})
 public class ReportManagementController {
-	private static Logger logger = Logger.getRootLogger();
+	//private static Logger logger = Logger.getRootLogger();
 	@Autowired
 	private MissExamService missExamService;
 	 @RequestMapping(value={"/eptNormReport"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
@@ -193,13 +192,15 @@ public class ReportManagementController {
 		 consultantReport.setYear(year);
 		 return  missExamService.findConsultantReport(consultantReport);
 	    }
-	 @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 @SuppressWarnings("unchecked")
+	@RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
 	    public void export(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long maId){
 	    		//@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
 	    	try{
 			 String  reportPath= "/opt/attach/ept_norm/export_ept_norm.jasper"; 
 			 JasperPrint jasperPrint=null;
-			 Map p =new HashMap();
+			 @SuppressWarnings("rawtypes")
+			Map p =new HashMap();
 			 p.put("URL", "http://203.150.20.37/MISSProcessImage/export?maId="+maId);
 				 
 			try {

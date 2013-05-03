@@ -1,6 +1,5 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @RequestMapping(value={"/manual"})
 @SessionAttributes(value={"manualForm","UserMissContact","docForm"})
 public class MissManualController {
-	   private static Logger logger = Logger.getRootLogger();
+	 //  private static Logger logger = Logger.getRootLogger();
 	   private static int PAGE_SIZE=100;
 	   @Autowired
 	    private MissExamService missExamService;

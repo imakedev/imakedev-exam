@@ -70,7 +70,7 @@ public class ResultController
 {
 	private static int PAGE_SIZE=20;
 	  private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
+//	  private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy"); 
 	  private static SimpleDateFormat format3 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	  private static String MAIL_SERVER = "";
 	  private static String MAIL_PROTOCAL = "";
@@ -106,7 +106,8 @@ public class ResultController
 			MAIL_PERSONAL_NAME=bundle.getString("mail.personal_name");
 			MAIL_TLS=bundle.getString("mail.TLS");
 		}
-   @RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+   @SuppressWarnings("rawtypes")
+@RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
    public  @ResponseBody Object[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
 		    {
 			 //Gson gson=new Gson();
@@ -135,7 +136,8 @@ public class ResultController
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
-    	 List missSeries=null;// missExamService.listMissSery();
+    	 @SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
     	 Long maId=null;
     	 if(model.containsAttribute("UserMissContact")){
          	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
@@ -189,7 +191,8 @@ public class ResultController
     public String doSearch(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
     {
     	Long maId=null;
-    	 List missSeries=null;// missExamService.listMissSery();
+    	 @SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
      	 if(model.containsAttribute("UserMissContact")){
           	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
           	maId=missContact.getMcontactRef();
@@ -301,7 +304,8 @@ public class ResultController
     {
         return "exam/template/testResultReport";
     }
-    @RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String sendmail(HttpServletRequest request, @ModelAttribute(value="resultForm") ResultForm resultForm, BindingResult result, Model model)
     {
     	logger.debug("==========================resultForm="+resultForm);
@@ -311,10 +315,12 @@ public class ResultController
     	logger.debug("getMailDecision="+resultForm.getMailDecision());
     	logger.debug("getMailMessage="+resultForm.getMailMessage());
     	logger.debug("getMailReactive="+resultForm.getMailReactive());
-    	List recipientsTo= new ArrayList(1);
+    	
+		List recipientsTo= new ArrayList(1);
     	recipientsTo.add(resultForm.getMissTestResult().getMissCandidate().getMcaEmail());
     	String subject="Test Response";
-    	List recipientsCC= null;
+    	
+		List recipientsCC= null;
     	if(resultForm.getMailcc()!=null && resultForm.getMailcc().trim().length()>0){
     		String[] recipientStr=resultForm.getMailcc().trim().split(",");
     		recipientsCC=new ArrayList(recipientStr.length);
@@ -355,7 +361,8 @@ public class ResultController
 		missExamService.updateStatusMissTestResult(resultForm.getMissTestResult().getMtrId(), "mtrRespondedStatus", "1");
     	 return "exam/template/testSendmail";
     }
-    private byte[] getFileSize(Long msId,Long mtrId){
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private byte[] getFileSize(Long msId,Long mtrId){
     	byte [] fileSize=null;
     	Context ctx =null;
 		Connection con = null;
@@ -456,7 +463,8 @@ public class ResultController
         return "exam/template/nopage";
     }*/
     // testPDF?mtrId=8&meId=14&msId=9&mcaId=22
-    @RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
     	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
@@ -676,7 +684,8 @@ public class ResultController
 		}
 	   
     }
-    @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @SuppressWarnings({ "deprecation", "unchecked" })
+	@RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void export(HttpServletRequest request, HttpServletResponse response)
     {
     	

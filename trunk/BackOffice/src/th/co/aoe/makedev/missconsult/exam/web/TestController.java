@@ -45,7 +45,8 @@ public class TestController
         logger.debug("########################### @Autowired TestController #######################");
         this.missExamService = missExamService;
     }*/
-    private List getGroup(){
+    @SuppressWarnings("rawtypes")
+	private List getGroup(){
     Pagging page = new Pagging();
     page.setPageNo(1);
     page.setPageSize(PAGE_SIZE);
@@ -311,7 +312,8 @@ public class TestController
               model.addAttribute("display", "display: block");
          }
       }
-    	List missQuestions=null;
+    	@SuppressWarnings("rawtypes")
+		List missQuestions=null;
     	int countNotOrdered =0;
     	if(meId!=null && !meId.equals("0")){
     		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
@@ -334,7 +336,8 @@ public class TestController
          	testForm = new TestForm();
          testForm.setMode("edit");
         
-    	List missQuestions=null;
+    	@SuppressWarnings("rawtypes")
+		List missQuestions=null;
     	int countNotOrdered =0;
     	if(meId!=null && !meId.equals("0")){
     		missQuestions = missExamService.listMissQuestions(Long.parseLong(meId));
@@ -432,7 +435,8 @@ public class TestController
         
         return "exam/template/testManagement";
     }
-    @RequestMapping(value={"/action/exam/question"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @SuppressWarnings("unchecked")
+	@RequestMapping(value={"/action/exam/question"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doQuestionAction(HttpServletRequest request, @ModelAttribute(value="testForm") TestForm testForm, BindingResult result, Model model)
     {
         String mode = testForm.getModeQuestion();
@@ -461,7 +465,8 @@ public class TestController
       
         String mcIdArrayStr = testForm.getMcIdArray();
         String mcIdNewArrayStr = testForm.getMcIdNewArray();
-        Map mcIdMap=new HashMap();
+        @SuppressWarnings("rawtypes")
+		Map mcIdMap=new HashMap();
         if(mcIdArrayStr!=null && mcIdArrayStr.length()>0){
         	String[] mcIds= mcIdArrayStr.split(",");
         	for (int i = 0; i < mcIds.length; i++) {

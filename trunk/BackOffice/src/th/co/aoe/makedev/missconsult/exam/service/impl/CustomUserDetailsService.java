@@ -162,7 +162,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 //     	  logger.debug("yyyyyyyyyyyyyyyyyyyyyyy "+roleContact.getRcId());
      //      if(roleContact!=null && roleContact.getRcId()!=null ){
 		     if(rcId!=null){
-        	  List<th.co.aoe.makedev.missconsult.xstream.RoleType> roles= missExamService.listRoleTypeByRcId(rcId);
+        	  @SuppressWarnings("unchecked")
+			List<th.co.aoe.makedev.missconsult.xstream.RoleType> roles= missExamService.listRoleTypeByRcId(rcId);
         	  logger.debug("zzzzzzzzzzzzzzzzzzzzzzzzzzz "+roles);
         	  if(roles!=null && roles.size()>0){
         		  for (th.co.aoe.makedev.missconsult.xstream.RoleType roleType : roles) {

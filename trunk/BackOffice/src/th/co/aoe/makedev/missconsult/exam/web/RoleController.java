@@ -33,6 +33,7 @@ public class RoleController {
 	@Autowired
 	private MissExamService missExamService;
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = { "/{maId}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String postItem(HttpServletRequest request,@PathVariable String maId, @ModelAttribute(value="roleForm") RoleForm roleForm, BindingResult result, Model model) {
 		//RoleForm roleForm = null;
@@ -58,6 +59,7 @@ public class RoleController {
 		if(mode!=null ){
 			if(mode.equals("updateRoleMapping")){
 				//String[] rtIdCheckbox=request.getParameterValues("rtIdCheckbox");
+				@SuppressWarnings("rawtypes")
 				Enumeration e_num=request.getParameterNames();
 				List<String> rtIdsList=new ArrayList<String>();
 				List<String> msIdsList=new ArrayList<String>();
@@ -176,6 +178,7 @@ public class RoleController {
 		 model.addAttribute("message_class", message_class); 
 		return "exam/template/roleSection";
 	}
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = { "/{maId}" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	public String getItem(@PathVariable String maId,  Model model) {
 		RoleForm roleForm = null;

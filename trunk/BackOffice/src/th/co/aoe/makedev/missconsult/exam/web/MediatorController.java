@@ -1,23 +1,19 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
 
-import java.text.SimpleDateFormat;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes(value={"missExamForm","systemDate","timelimit"})
 public class MediatorController {
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
-	 private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
+	 //private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
 	 //private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy/HH/mm/ss");
 	@Autowired
 	private MissExamService missExamService;

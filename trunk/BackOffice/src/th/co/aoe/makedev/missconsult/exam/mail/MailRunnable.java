@@ -10,8 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -24,12 +22,11 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
 
 import com.sun.mail.smtp.SMTPTransport;
 
 public class MailRunnable implements Runnable {
-	private static final Logger logger = Logger.getRootLogger();
+//	private static final Logger logger = Logger.getRootLogger();
 	String subject = null;
 	String messagebody = null;
 	String sessionId= null;
@@ -38,17 +35,20 @@ public class MailRunnable implements Runnable {
 	String email =null;
 	String  password=null;
 	String  useAuthen=null;
+	@SuppressWarnings("rawtypes")
 	List recipients=null;
+	@SuppressWarnings("rawtypes")
 	List recipients_cc=null;
+	@SuppressWarnings("rawtypes")
 	List recipients_bcc=null;
 	byte[] fileSize=null;
 	String personal_name=null;
 	String port=null;
 	String tls=null;
 	public MailRunnable(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
-			List recipients
+			@SuppressWarnings("rawtypes") List recipients
 			,String subject,String messagebody,String sessionId,String personal_name,String port,
-			List recipients_cc,List recipients_bcc,byte[] fileSize,String tls) {
+			@SuppressWarnings("rawtypes") List recipients_cc,@SuppressWarnings("rawtypes") List recipients_bcc,byte[] fileSize,String tls) {
 		this.subject = subject;
 		this.messagebody = messagebody;
 		this.sessionId = sessionId;

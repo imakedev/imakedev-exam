@@ -59,7 +59,8 @@ public class CandidateController
     @RequestMapping(value={"/search"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public String init(Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
-    	List missSeries=null;// missExamService.listMissSery();
+    	@SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
    	    Long maId=null;
         //model.addAttribute("missSeries", missExamService.listMissSery());
         if(model.containsAttribute("UserMissContact")){
@@ -142,7 +143,8 @@ public class CandidateController
                 candidateForm = (CandidateForm)model.asMap().get("candidateForm");
             else
                 candidateForm = new CandidateForm();
-        List missSeries=null;// missExamService.listMissSery();
+        @SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
    	    Long maId=null;
         //model.addAttribute("missSeries", missExamService.listMissSery());
         if(model.containsAttribute("UserMissContact")){
@@ -184,7 +186,8 @@ public class CandidateController
             candidateForm.setMcaBirthDate(format1.format(missCandidate.getMcaBirthDate()));
         candidateForm.setMissCandidate(missCandidate);
         model.addAttribute("candidateForm", candidateForm);
-        List missSeries=null;// missExamService.listMissSery();
+        @SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
    	    Long maId=null;
         //model.addAttribute("missSeries", missExamService.listMissSery());
         if(model.containsAttribute("UserMissContact")){
@@ -201,6 +204,7 @@ public class CandidateController
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
 		 model.addAttribute("missPositionMasterList", missExamService.listMissPositionMaster());
+		 model.addAttribute("missDepartmentMasterList", missExamService.listMissDepartmentMaster());
         return "exam/template/candidateAccount";
     }
 
@@ -270,7 +274,8 @@ public class CandidateController
         model.addAttribute("message_class", message_class);
         model.addAttribute("display", "display: block");
         candidateForm.getMissCandidate().setSection(section);
-        List missSeries=null;// missExamService.listMissSery();
+        @SuppressWarnings("rawtypes")
+		List missSeries=null;// missExamService.listMissSery();
    	    Long maId=null;
         //model.addAttribute("missSeries", missExamService.listMissSery());
         if(model.containsAttribute("UserMissContact")){
@@ -286,6 +291,7 @@ public class CandidateController
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
 		 model.addAttribute("missPositionMasterList", missExamService.listMissPositionMaster());
+		 model.addAttribute("missDepartmentMasterList", missExamService.listMissDepartmentMaster());
         return "exam/template/candidateAccount";
     }
     
@@ -294,7 +300,8 @@ public class CandidateController
 	    {
 		 return missExamService.findMissCandidateByCitizendIdAndEmail(request.getParameter("citizendID"), request.getParameter("email"));
 	    }
-    @RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @SuppressWarnings("deprecation")
+	@RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void export(HttpServletRequest request, HttpServletResponse response)
     {
     	
@@ -355,7 +362,8 @@ public class CandidateController
 			    sheet.setColumnWidth((short)1,(short)((50*8)/((double)1/20) ));
 			    sheet.setColumnWidth((short)2,(short)((50*8)/((double)1/20) ));
 			    sheet.setColumnWidth((short)3,(short)((50*8)/((double)1/20) )); 
-			   List<MissCandidate> missCandidates= vresultMessage.getResultListObj();
+			   @SuppressWarnings("unchecked")
+			List<MissCandidate> missCandidates= vresultMessage.getResultListObj();
 			   int rowIndex=1;
 			   for (MissCandidate missCandidate2 : missCandidates) {
 				   row = sheet.createRow(indexRow);

@@ -14,7 +14,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +35,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 @RequestMapping(value={"/reportExport"})
 @SessionAttributes(value={"UserMissContact"})
 public class ReportExportController {
-	private static Logger logger = Logger.getRootLogger();
+//	private static Logger logger = Logger.getRootLogger();
 	@Autowired
 	private MissExamService missExamService;
 	 @RequestMapping(value={"/eptNormReport/{maId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
@@ -79,7 +78,8 @@ public class ReportExportController {
 		 model.addAttribute("mtrIds",mtrIds);
 	        return "exam/report/compare_report";
 	    }
-	 @RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 @SuppressWarnings("rawtypes")
+	@RequestMapping(value={"/compare/{msId}/{mtrIds}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
 	   public  @ResponseBody Object[]  compare(Model model,@PathVariable Long msId,@PathVariable String mtrIds)
 			    {
 				 //Gson gson=new Gson();
@@ -105,14 +105,16 @@ public class ReportExportController {
 		 
 		return missTestResults;
 		}
-	 @RequestMapping(value={"/compareexport"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})  
+	 @SuppressWarnings("unchecked")
+	@RequestMapping(value={"/compareexport"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})  
 	    public void compareexport(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) String mcaSeries,
 	    		@RequestParam(required=false) String mtrIds){
 	    		//@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
 	    	try{
 			 String  reportPath= "/opt/attach/compare/compare.jasper"; 
 			 JasperPrint jasperPrint=null;
-			 Map p =new HashMap();
+			 @SuppressWarnings("rawtypes")
+			Map p =new HashMap();
 			
 			 p.put("URL",  "http://203.150.20.37:8080/MISSProcessImage/compareTest?mcaSeries="+mcaSeries+"&mtrIds="+mtrIds);
 			 //"http://203.150.20.37/MISSProcessImage/compareTest?mcaSeries="+maId);

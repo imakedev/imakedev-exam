@@ -23,7 +23,8 @@ public class AuthentificationListener  implements AuthenticationFailureHandler{
     	 	logger.info("classes "+ae.getClass());
     	 	 
     	 	 //org.springframework.security.web.authentication.session.SessionAuthenticationException
-            UsernamePasswordAuthenticationToken user =(UsernamePasswordAuthenticationToken)ae.getAuthentication();
+            @SuppressWarnings("deprecation")
+			UsernamePasswordAuthenticationToken user =(UsernamePasswordAuthenticationToken)ae.getAuthentication();
             logger.info("xxxxxxxxx1 "+ae.getMessage());
             logger.info("xxxxxxxxx2 "+ae.hashCode());
             logger.info("xxxxxxxxx3 "+ae.toString());
