@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -98,12 +97,12 @@ public class MissTodoResource extends BaseResource {
 							 
 						} 
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missTodoService.saveMissTodo(bpsTerm)).intValue();
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTodoService.updateMissTodo(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -113,8 +112,10 @@ public class MissTodoResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TODO_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missTodoService.searchMissTodo(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -186,10 +187,12 @@ public class MissTodoResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missTodoService.searchMissTodo(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissTodo> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTodo>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTodo>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

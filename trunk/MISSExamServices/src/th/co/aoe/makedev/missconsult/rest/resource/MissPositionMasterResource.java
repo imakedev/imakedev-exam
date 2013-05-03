@@ -13,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.managers.MissPositionMasterService;
-import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public class MissPositionMasterResource extends BaseResource {
@@ -64,9 +63,11 @@ public class MissPositionMasterResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						 if(serviceName.equals(ServiceConstant.POSITION_MASTER_LIST)){
-							Pagging page = xbpsTerm.getPagging(); 
+							//Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missPositionMasterService.listMissPositionMaster();
 							if (result != null && result.size() >0) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissPositionMaster> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissPositionMaster>) result;
 										
 								String faqs_size = ntcCalendars.size()+"";

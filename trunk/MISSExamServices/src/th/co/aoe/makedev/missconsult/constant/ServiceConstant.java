@@ -255,6 +255,9 @@ public class ServiceConstant {
 		//MISS_POSITION_MASTER
 		public static final String POSITION_MASTER_LIST ="listPositionMaster";
 		
+		//MISS_DEPARTMENT_MASTER
+		public static final String DEPARTMENT_MASTER_LIST ="listDepartmentMaster";
+		
 		// MISS_ACCOUNT_GROUP
 		public static final String MISS_ACCOUNT_GROUP_SAVE = "saveMissAccountGroup";
 		public static final String MISS_ACCOUNT_GROUP_SEARCH = "searchMissAccountGroup";

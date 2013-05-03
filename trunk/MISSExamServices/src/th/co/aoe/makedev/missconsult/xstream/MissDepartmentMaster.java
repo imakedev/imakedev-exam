@@ -20,6 +20,16 @@ public class MissDepartmentMaster extends VServiceXML implements Serializable {
 	private String mdmName;
  
 	private Long mdmRef;
+	
+	private Integer mdmOrder; 
+
+	public Integer getMdmOrder() {
+		return mdmOrder;
+	}
+
+	public void setMdmOrder(Integer mdmOrder) {
+		this.mdmOrder = mdmOrder;
+	}
 
 	public MissDepartmentMaster() {
 	}

@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -40,6 +39,7 @@ public class MissTestResultResource extends BaseResource {
 		logger.debug("into doInit");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Representation post(Representation entity, Variant variant)
 			throws ResourceException {
@@ -103,6 +103,7 @@ public class MissTestResultResource extends BaseResource {
 							    int totalScore=0;
 							    */
 								if(mcaId!=null && msId!=null ){
+									
 									List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows=missTestResultService.findMissTestShow(mcaId, msId );
 									if(missTestShows!=null && missTestShows.size()>0){
 										List<th.co.aoe.makedev.missconsult.xstream.MissTestShow> xmissTestShows =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestShow>(missTestShows.size());
@@ -124,17 +125,17 @@ public class MissTestResultResource extends BaseResource {
 							}
 						} 
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missTestResultService.saveOrUpdateMissTestResult(xbpsTerm.getUserid(),bpsTerm)).intValue();
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_START)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.startMissTestResult(xbpsTerm.getUserid(),bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_CHECK)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.checkMissTestResult(xbpsTerm.getUserid(),bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -143,7 +144,7 @@ public class MissTestResultResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.updateMissTestResult(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -151,25 +152,27 @@ public class MissTestResultResource extends BaseResource {
 							int updateRecord=missTestResultService.deleteMissTestResult(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_PROCESS)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.processMissTestResult(bpsTerm,xbpsTerm.getUserid(),xbpsTerm.getRootPath());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}	 
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.updateStatus(xbpsTerm.getMtrId(), xbpsTerm.getColumn(), xbpsTerm.getValue());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS_LIST)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missTestResultService.updateStatus(xbpsTerm.getMtrIds(), xbpsTerm.getColumn(), xbpsTerm.getValue());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,xbpsTerm.getMtrIds(),xbpsTerm.getRoleMC(),page);
 							if (result != null && result.size() == 3) {
+								
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -180,7 +183,9 @@ public class MissTestResultResource extends BaseResource {
 								if (faqs_size != null && !faqs_size.equals(""))
 									vresultMessage.setMaxRow(faqs_size);
 								 
+								@SuppressWarnings("rawtypes")
 								List resultListObj=new ArrayList(2);
+								 
 								resultListObj.add(xntcCalendars);
 								resultListObj.add(result.get(2));
 								vresultMessage.setResultListObj(resultListObj);
@@ -216,7 +221,7 @@ public class MissTestResultResource extends BaseResource {
 	protected Representation get(Variant variant) throws ResourceException {
 		return null;
 	}
-	private List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> getxMissTestResultObject(
+	/*private List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> getxMissTestResultObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult> ntcCalendars) {
 		List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(
 				ntcCalendars.size());
@@ -233,7 +238,7 @@ public class MissTestResultResource extends BaseResource {
 			xntcCalendars.add(xmissTestResult);
 		}
 		return xntcCalendars;
-	} 
+	} */
 	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissTestResult xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>(1);

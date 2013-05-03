@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -76,12 +75,12 @@ public class MissSeryResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_SERIES_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missSeryService.saveMissSery(bpsTerm,xbpsTerm.getMeIds())).intValue();
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							logger.debug("bpsTerm getMsSeriesName="+bpsTerm.getMsSeriesName());
 							int updateRecord=missSeryService.updateMissSery(bpsTerm,xbpsTerm.getMeIds());
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
@@ -104,6 +103,7 @@ public class MissSeryResource extends BaseResource {
 						} 
 						
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_LIST)){
+							@SuppressWarnings({ "unchecked" })
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery>) missSeryService.listMissSery();
 							List<th.co.aoe.makedev.missconsult.xstream.MissSery> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>();
 							if (ntcCalendars != null && ntcCalendars.size() > 0) {
@@ -116,10 +116,12 @@ public class MissSeryResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							
+							@SuppressWarnings({ "rawtypes"})
 							List result = (List) missSeryService.searchMissSery(bpsTerm,page,xbpsTerm.getMeIds());
 							if (result != null && result.size() == 2) {
 								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery>) result
 										.get(0);*/
+								@SuppressWarnings("unchecked")
 								List<th.co.aoe.makedev.missconsult.xstream.MissSery> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -251,6 +253,7 @@ public class MissSeryResource extends BaseResource {
 		}
 		return null;
 	}*/
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
 		// TODO Auto-generated method stub
@@ -290,6 +293,7 @@ public class MissSeryResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSery bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSery();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSeryService.searchMissSery(bpsTerm,page,null);
 		VResultMessage vresultMessage = new VResultMessage();
 		//List<th.co.aoe.makedev.missconsult.xstream.MissSery> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>();

@@ -13,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.managers.MissCareerMasterService;
-import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public class MissCareerMasterResource extends BaseResource {
@@ -59,10 +58,12 @@ public class MissCareerMasterResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						 if(serviceName.equals(ServiceConstant.CAREER_MASTER_LIST)){
-							Pagging page = xbpsTerm.getPagging(); 
+							//Pagging page = xbpsTerm.getPagging(); 
+							 @SuppressWarnings("rawtypes")
 							List result = (List) missCareerMasterService.listMissCareerMaster(xbpsTerm.getMcmRef());
 							VResultMessage vresultMessage = new VResultMessage();
 							if (result != null && result.size()>0) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCareerMaster>) result;
 										
 								String faqs_size = result.size()+"";
@@ -120,7 +121,7 @@ public class MissCareerMasterResource extends BaseResource {
 		}
 		return xntcCalendars;
 	} 
-	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissCareerMaster xbpsTerm,int updateRecord){
+	/*private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissCareerMaster xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissCareerMaster> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCareerMaster>(1);
 		xbpsTerm.setUpdateRecord(updateRecord);
@@ -128,7 +129,7 @@ public class MissCareerMasterResource extends BaseResource {
 		vresultMessage.setResultListObj(xbpsTerms);
 		//export(entity, vresultMessage, xstream);	
 		return getRepresentation(entity, vresultMessage, xstream);
-	}
+	}*/
  
 	public MissCareerMasterService getMissCareerMasterService() {
 		return missCareerMasterService;

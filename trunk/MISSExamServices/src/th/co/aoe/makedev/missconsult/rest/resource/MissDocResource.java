@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -76,7 +75,7 @@ public class MissDocResource extends BaseResource {
 							return getRepresentation(entity, vresultMessage, xstream);
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_DOC_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mdId=0l;
 							
 							mdId=(missDocService.saveMissDoc(bpsTerm));
@@ -85,7 +84,7 @@ public class MissDocResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,mdId.intValue());
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_DOC_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missDocService.updateMissDoc(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -95,8 +94,10 @@ public class MissDocResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_DOC_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missDocService.searchMissDoc(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);

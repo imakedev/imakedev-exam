@@ -186,6 +186,12 @@
 							bean="missPositionMasterResource" />
 					</bean>
 				</entry>
+				<entry key="/missDepartmentMaster">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missDepartmentMasterResource" />
+					</bean>
+				</entry>
 				
 				<!--  Adding manage report router -->
 				<entry key="/missAccountGroup">

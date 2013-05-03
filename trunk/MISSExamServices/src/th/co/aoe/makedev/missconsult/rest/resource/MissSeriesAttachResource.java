@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -61,12 +60,12 @@ public class MissSeriesAttachResource extends BaseResource {
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
 						if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=(missSeriesAttachService.saveMissSeriesAttach(bpsTerm)).intValue();
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missSeriesAttachService.updateMissSeriesAttach(bpsTerm,xbpsTerm.getRootPath());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -76,9 +75,11 @@ public class MissSeriesAttachResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_ATTACH_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missSeriesAttachService.searchMissSeriesAttach(bpsTerm,page);
 							//logger.debug("MISS_SERIES_ATTACH_SEARCH ==>"+result);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -149,10 +150,12 @@ public class MissSeriesAttachResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missSeriesAttachService.searchMissSeriesAttach(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

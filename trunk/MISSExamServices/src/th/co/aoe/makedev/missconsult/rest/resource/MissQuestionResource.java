@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -104,7 +103,7 @@ public class MissQuestionResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_QUESTION_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							Long mqId=missQuestionService.saveMissQuestion(bpsTerm);
 							int updateRecord=mqId.intValue(); 
 							xbpsTerm.setMqId(mqId);
@@ -113,14 +112,14 @@ public class MissQuestionResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=>"+bpsTerm.getMqId());
 							int updateRecord=missQuestionService.updateMissQuestion(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							//returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_CHOICES_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							
 							List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= xbpsTerm.getMissChoicesAdd();
 							if(xmissChoices!=null && xmissChoices.size()>0){
@@ -177,6 +176,7 @@ public class MissQuestionResource extends BaseResource {
 						}
 						
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_LIST)){
+							@SuppressWarnings("unchecked")
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion>) missQuestionService.listMissQuestions(xbpsTerm.getMissExam().getMeId());
 							List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>();
 							if (ntcCalendars != null && ntcCalendars.size() > 0) {
@@ -199,8 +199,10 @@ public class MissQuestionResource extends BaseResource {
 						
 						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missQuestionService.searchMissQuestion(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -276,10 +278,12 @@ public class MissQuestionResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missQuestionService.searchMissQuestion(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

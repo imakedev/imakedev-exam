@@ -33,6 +33,17 @@ public class MissPositionMaster implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="MDM_ID")
 	private MissDepartmentMaster missDepartmentMaster;
+	
+	@Column(name="MPM_ORDER")
+	private Integer mpmOrder; 
+
+	public Integer getMpmOrder() {
+		return mpmOrder;
+	}
+
+	public void setMpmOrder(Integer mpmOrder) {
+		this.mpmOrder = mpmOrder;
+	}
 
 	public MissPositionMaster() {
 	}

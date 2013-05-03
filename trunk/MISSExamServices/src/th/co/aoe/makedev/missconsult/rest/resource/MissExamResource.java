@@ -3,7 +3,6 @@ package th.co.aoe.makedev.missconsult.rest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -97,7 +96,7 @@ public class MissExamResource extends BaseResource {
 							}
 						} 
 						if(serviceName.equals(ServiceConstant.MISS_EXAM_SAVE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType missExamType=new th.co.aoe.makedev.missconsult.hibernate.bean.MissExamType();
 							missExamType.setMetId(1l);
 							if(xbpsTerm.getMissExamGroup().getMegId().intValue()==6)
@@ -112,17 +111,17 @@ public class MissExamResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missExamService.updateMissExam(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_COPY)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missExamService.copyMissExam(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_CREATE_EMPTY)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missExamService.createEmptyMissExam(bpsTerm,Integer.parseInt(xbpsTerm.getQuestionCountEmpty()),Integer.parseInt(xbpsTerm.getChoiceCountEmpty()),xbpsTerm.getMeTimeLimit());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -142,6 +141,7 @@ public class MissExamResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_LIST)){
+							@SuppressWarnings("unchecked")
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam>) missExamService.listMissExam();
 							List<th.co.aoe.makedev.missconsult.xstream.MissExam> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissExam>();
 							if (ntcCalendars != null && ntcCalendars.size() > 0) {
@@ -153,9 +153,11 @@ public class MissExamResource extends BaseResource {
 						}
 						
 						else if(serviceName.equals(ServiceConstant.MISS_EXAM_SEARCH)){
-							Pagging page = xbpsTerm.getPagging(); 
+							Pagging page = xbpsTerm.getPagging();
+							@SuppressWarnings("rawtypes")
 							List result = (List) missExamService.searchMissExam(bpsTerm,page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -317,10 +319,12 @@ public class MissExamResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissExam bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissExam();
 		//bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missExamService.searchMissExam(bpsTerm,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissExam> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissExam>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

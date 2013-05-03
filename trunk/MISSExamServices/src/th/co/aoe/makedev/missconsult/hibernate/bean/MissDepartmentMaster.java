@@ -29,6 +29,18 @@ public class MissDepartmentMaster implements Serializable {
 
 	@Column(name="MDM_REF")
 	private Long mdmRef;
+	
+	@Column(name="MDM_ORDER")
+	private Integer mdmOrder; 
+
+
+	public Integer getMdmOrder() {
+		return mdmOrder;
+	}
+
+	public void setMdmOrder(Integer mdmOrder) {
+		this.mdmOrder = mdmOrder;
+	}
 
 	public MissDepartmentMaster() {
 	}

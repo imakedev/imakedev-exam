@@ -40,6 +40,7 @@ public class MissCandidateResource extends BaseResource {
 		logger.debug("into doInit");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Representation post(Representation entity, Variant variant)
 			throws ResourceException {
@@ -298,7 +299,7 @@ public class MissCandidateResource extends BaseResource {
 							//return returnUpdateRecord(entity,xbpsTerm,mcaId.intValue());
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_UPDATE)){
-							java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							int updateRecord=missCandidateService.updateMissCandidate(bpsTerm,xbpsTerm.getSection());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
@@ -322,6 +323,7 @@ public class MissCandidateResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_EXPORT)){
 							  
 								String[] mcaIds=xbpsTerm.getMcaIds().split(","); 
+								@SuppressWarnings("rawtypes")
 								List result = (List) missCandidateService.exportMissCandidate(mcaIds); 
 								String faqs_size = (String) result.get(1);
 //								 
@@ -343,6 +345,7 @@ public class MissCandidateResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missCandidateService.searchMissCandidate(bpsTerm,xbpsTerm.getRoleMC(), page);
 							if (result != null && result.size() == 2) {
 								/*java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate>) result
@@ -409,7 +412,7 @@ public class MissCandidateResource extends BaseResource {
 			return getRepresentation(null, vresultMessage, xstream);*/
 		return null;
 	}
-	private List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> getxMissCandidateObject(
+	/*private List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> getxMissCandidateObject(
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars) {
 		List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
 				ntcCalendars.size());
@@ -453,7 +456,7 @@ public class MissCandidateResource extends BaseResource {
 			xntcCalendars.add(xmissCandidate);
 		}
 		return xntcCalendars;
-	} 
+	} */
 	private Representation returnUpdateRecord(Representation entity,th.co.aoe.makedev.missconsult.xstream.MissCandidate xbpsTerm,int updateRecord){
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xbpsTerms = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(1);

@@ -139,8 +139,10 @@ public class MissAccountResource extends BaseResource {
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_ACCOUNT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
 							List result = (List) missAccountService.searchMissAccount(bpsTerm,xbpsTerm.getMaContactName(),xbpsTerm.getMeIds(), page);
 							if (result != null && result.size() == 2) {
+								@SuppressWarnings("unchecked")
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount>) result
 										.get(0);
 								String faqs_size = (String) result.get(1);
@@ -191,10 +193,12 @@ public class MissAccountResource extends BaseResource {
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount();
 	//	bpsTerm.setMegName("Aoe");
+		@SuppressWarnings("rawtypes")
 		List result = (List) missAccountService.searchMissAccount(bpsTerm,null,null,page);
 		VResultMessage vresultMessage = new VResultMessage();
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccount> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccount>();
 		if (result != null && result.size() == 2) {
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);

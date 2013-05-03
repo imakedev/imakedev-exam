@@ -61,6 +61,7 @@ public abstract class BaseResource extends ServerResource {
 	}
 */
 	//@SuppressWarnings("deprecation")
+	
 	public BaseResource() {
 		super();
 		logger.debug("into constructor BaseResource");
