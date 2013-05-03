@@ -180,6 +180,13 @@
 					</bean>
 				</entry>
 				
+				<entry key="/missPositionMaster">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missPositionMasterResource" />
+					</bean>
+				</entry>
+				
 				<!--  Adding manage report router -->
 				<entry key="/missAccountGroup">
 					<bean class="org.restlet.ext.spring.SpringFinder">

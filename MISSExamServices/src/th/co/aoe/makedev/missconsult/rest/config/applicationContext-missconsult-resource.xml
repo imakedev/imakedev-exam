@@ -199,6 +199,12 @@
 		<property name="missIndustryMasterService" ref="missIndustryMasterService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean> 
+	<bean id="missPositionMasterResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissPositionMasterResource"
+		scope="prototype"> 
+		<property name="missPositionMasterService" ref="missPositionMasterService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean> 
 	
 	<!--  Adding Manage Report -->
 	<bean id="missAccountGroupResource"
