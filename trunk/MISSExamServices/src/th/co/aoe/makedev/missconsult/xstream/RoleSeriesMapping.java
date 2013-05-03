@@ -19,6 +19,14 @@ public class RoleSeriesMapping extends VServiceXML implements Serializable {
 	private Long maId;
 
 
+	public String getMsName() {
+		return msName;
+	}
+
+	public void setMsName(String msName) {
+		this.msName = msName;
+	}
+
 	private String msName;
 	public Long getRcId() {
 		return rcId;
