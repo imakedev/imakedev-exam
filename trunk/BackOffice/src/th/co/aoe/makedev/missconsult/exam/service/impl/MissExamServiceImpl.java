@@ -28,6 +28,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissExamGroup;
 import th.co.aoe.makedev.missconsult.xstream.MissExamType;
 import th.co.aoe.makedev.missconsult.xstream.MissIndustryMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
@@ -1608,6 +1609,20 @@ public class MissExamServiceImpl extends PostCommon
 		      
   return resultMessage.getResultListObj();
 	        
+	}
+
+	@Override
+	public List<MissPositionMaster> listMissPositionMaster() { 
+		// TODO Auto-generated method stub
+				MissPositionMaster missPositionMaster =new MissPositionMaster();
+				missPositionMaster.setServiceName(ServiceConstant.POSITION_MASTER_LIST);
+				VResultMessage resultMessage = postMessage(missPositionMaster, missPositionMaster
+						.getClass().getName(), "missPositionMaster", true);
+				List<MissPositionMaster> missPositionMasters=null;
+				if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+					missPositionMasters=resultMessage.getResultListObj();
+				} 
+				return missPositionMasters;
 	} 
 	
 	 
