@@ -1,8 +1,14 @@
 package th.co.aoe.makedev.missconsult.hibernate.bean;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
