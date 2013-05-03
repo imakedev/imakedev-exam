@@ -2,7 +2,6 @@ package th.co.aoe.makedev.missconsult.exam.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import th.co.aoe.makedev.missconsult.exam.domain.User;
 import th.co.aoe.makedev.missconsult.exam.domain.UserContact;
 
 //public interface UserRepository extends JpaRepository<User, Long> {
