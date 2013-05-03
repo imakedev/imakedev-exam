@@ -251,6 +251,10 @@ public class ServiceConstant {
 		//MISS_INDUSTRY_MASTER
 		public static final String INDUSTRY_MASTER_LIST ="listIndustryMaster";
 		
+		
+		//MISS_POSITION_MASTER
+		public static final String POSITION_MASTER_LIST ="listPositionMaster";
+		
 		// MISS_ACCOUNT_GROUP
 		public static final String MISS_ACCOUNT_GROUP_SAVE = "saveMissAccountGroup";
 		public static final String MISS_ACCOUNT_GROUP_SEARCH = "searchMissAccountGroup";
