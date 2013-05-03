@@ -33,7 +33,7 @@ public class AccessController {
 		String userid=null;
 		if(authen!=null)
 			userid=authen.getName();
-		//System.out.println("userid->"+userid);
+		 //System.out.println("userid->"+userid);
 		String language=request.getParameter("language");
     	if(language!=null && language.length()>0){
     	 LocaleEditor localeEditor = new LocaleEditor();
