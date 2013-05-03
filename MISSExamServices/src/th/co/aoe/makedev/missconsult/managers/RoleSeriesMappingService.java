@@ -14,5 +14,6 @@ public interface RoleSeriesMappingService {
 	public RoleSeriesMapping findRoleSeriesMappingById(Long mmId)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
 	public  List searchRoleSeriesMapping(RoleSeriesMapping persistentInstance,	Pagging pagging)throws DataAccessException  ;
+	@SuppressWarnings("rawtypes")
 	public  List listRoleSeriesMappingByrcId(Long rcId) throws DataAccessException ;
 }

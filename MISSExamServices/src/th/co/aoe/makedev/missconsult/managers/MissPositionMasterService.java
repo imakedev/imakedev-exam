@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
-public interface MissIndustryMasterService {
+public interface MissPositionMasterService {
 	@SuppressWarnings("rawtypes")
-	public  List listMissIndustryMaster() throws DataAccessException ;
+	public  List listMissPositionMaster() throws DataAccessException ;
 }

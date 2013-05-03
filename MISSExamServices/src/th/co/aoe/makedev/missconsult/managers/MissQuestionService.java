@@ -18,6 +18,7 @@ public interface MissQuestionService {
 		public  th.co.aoe.makedev.missconsult.xstream.MissQuestion findMissQuestionById(Long mqId)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public  List searchMissQuestion(MissQuestion persistentInstance,	Pagging pagging)throws DataAccessException  ;
+		@SuppressWarnings("rawtypes")
 		public List listMissQuestions(Long meId) throws DataAccessException;
 		
 		public void setUpTestMissQuestion()throws DataAccessException;
