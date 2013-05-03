@@ -200,6 +200,7 @@ public class CandidateController
         model.addAttribute("message_class", "success"); 
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
+		 model.addAttribute("missPositionMasterList", missExamService.listMissPositionMaster());
         return "exam/template/candidateAccount";
     }
 
@@ -284,6 +285,7 @@ public class CandidateController
         model.addAttribute("candidateForm", candidateForm);
         model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
 		 model.addAttribute("missCareerMasterList", missExamService.listMissCareerMaster(missCandidate.getMissAccount().getMaId()));
+		 model.addAttribute("missPositionMasterList", missExamService.listMissPositionMaster());
         return "exam/template/candidateAccount";
     }
     
