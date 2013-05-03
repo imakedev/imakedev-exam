@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,7 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.EPTNormReport;
 @Transactional
 public class HibernateEPTNormReport  extends HibernateCommon implements EPTNormReportService {
 
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+//	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private static final String[] CODE = new String[]{"FJPI","FJPE","FJAI","FJAE","FPPI","FPPE","FPAI","FPAE","IJPI","IJPE","IJAI","IJAE","IPPI","IPPE","IPAI","IPAE"};
     private static final String[] BETWEEN_AGE = new String[]{"between 1 and 14 ","between 15 and 35 ","between 36 and 60 "," > 60 "};
 	private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -384,6 +383,7 @@ public class HibernateEPTNormReport  extends HibernateCommon implements EPTNormR
 		// SELECT * FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT where ma_type=0
 		Query query=session.createSQLQuery("SELECT map.ma_id,account.ma_name FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT_SERIES_MAP map left join " +
 				" "+ServiceConstant.SCHEMA+".MISS_ACCOUNT account on map.ma_id=account.ma_id where map.ms_id=12 and  account.ma_type=0 ");
+		@SuppressWarnings("unchecked")
 		List<Object[]> list=query.list();
 		List<List<String>> results=new ArrayList<List<String>>(list.size());
 	try{

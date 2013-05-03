@@ -104,6 +104,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return missTestResult;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly = true)
 	public List findMissTestShow(Long mcaId, Long msId) {
 		Session session = sessionAnnotationFactory.getCurrentSession();
@@ -699,6 +700,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		return returnRecord;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String setAnswer(Session session, String filePath, Long msId,
 			Long mdeId, Long mcaId) {
 		FileInputStream fileIn = null;
@@ -748,13 +750,14 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				 * +".MISS_QUESTION QUESTION " +
 				 * " where QUESTION.ME_ID="+meId.intValue()+"");
 				 */
-				StringBuffer sb = new StringBuffer(" select count(*) from "
+			 	/* StringBuffer sb = new StringBuffer(" select count(*) from "
 						+ schema + ".MISS_QUESTION QUESTION "
 						+ " where QUESTION.ME_ID="
-						+ missSeriesMap.getId().getMeId().intValue() + "");
-				query = session.createSQLQuery(sb.toString());
-				int size = ((java.math.BigInteger) query.uniqueResult())
-						.intValue();
+						+ missSeriesMap.getId().getMeId().intValue() + ""); */
+				StringBuffer sb = new StringBuffer();
+				//query = session.createSQLQuery(sb.toString());
+				/*int size = ((java.math.BigInteger) query.uniqueResult())
+						.intValue();*/
 				sb.setLength(0);
 
 				/*
@@ -1067,6 +1070,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			query.setParameter("mcaId", mcaId);
 			query.setParameter("msId", msId);
 			query.list();
+			@SuppressWarnings("rawtypes")
 			List list = query.list();
 			Long mtrId = null;
 			if (list != null && list.size() > 0) {
@@ -1656,6 +1660,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				 * java.sql.Timestamp timeStampStartDate = new
 				 * java.sql.Timestamp(new Date().getTime());
 				 */
+				@SuppressWarnings("rawtypes")
 				List list = query.list();
 				if (list != null && list.size() > 0) {// update
 					MissTestResult result = (MissTestResult) list.get(0);
@@ -1690,6 +1695,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 									+ "  missSeriesMap.id.msId=:msId ");
 					query.setParameter("msId", missTestResult.getMsId());
 					String meIds = "";
+					@SuppressWarnings("unchecked")
 					List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> maps = query
 							.list();
 					int msId_index = 0;
@@ -1822,7 +1828,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 
 		MissCandidate missCandidate = null;
 		MissExam missExam = null;
-		Long returnId = null;
+	//	Long returnId = null;
 		int timelimit = 0;
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query = session
@@ -1853,6 +1859,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					// query.setParameter("meId", missTestResult.getMeId());
 					query.setParameter("msId", missTestResult.getMsId());
 
+					@SuppressWarnings("rawtypes")
 					List list = query.list();
 					if (list != null && list.size() > 0) {// update
 						MissTestResult testResult = (MissTestResult) list
@@ -1881,7 +1888,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							// returnId
 							// =(th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK)
 							// obj;
-							returnId = 1l;
+						//	returnId = 1l;
 							// update status candidate
 
 							query = session
@@ -2013,6 +2020,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						" where missTestResult.missCandidate.mcaId=:mcaId and missTestResult.msId=:msId order by missTestResult.mtrId desc ");
 		query.setParameter("mcaId", mcaId);
 		query.setParameter("msId", msId);
+		@SuppressWarnings("rawtypes")
 		List list = query.list();  
 		Long mtrId=null;
 		if(list!=null && list.size()>0){

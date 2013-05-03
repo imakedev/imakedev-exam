@@ -2,12 +2,8 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,7 +25,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Transactional
 public class HibernateMissAccountSeriesMap  extends HibernateCommon implements MissAccountSeriesMapService {
 
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	//public static final ResourceBundle bundle;
 	/*public static String SCHEMA="";
 	static{
@@ -88,6 +84,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 		query =session.createQuery(sb.toString());
 		query.setParameter("maId", maId);
 		query.setParameter("msId", msId);
+		@SuppressWarnings("rawtypes")
 		List list=   query.list();
 		if(list!=null && list.size()>0){
 			MissAccountSeriesMap missAccountSeriesMap = (MissAccountSeriesMap)list.get(0);
@@ -160,31 +157,10 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 	}
 	
 	
-
+/*
 	private int getSize(Session session, MissAccountSeriesMap instance) throws Exception{
 		try {
 			 
-			/*Long megId = instance.getMegId();
-			String megName = instance.getMegName();
-			 
-			 
-			StringBuffer sb =new StringBuffer(" select count(missAccountSeriesMap) from MissAccountSeriesMap missAccountSeriesMap ");
-			
-			boolean iscriteria = false;
-			if(megId !=null && megId > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				 sb.append(iscriteria?(" and missAccountSeriesMap.megId="+megId+""):(" where missAccountSeriesMap.megId="+megId+""));
-				  iscriteria = true;
-			}
-			if(megName !=null && megName.trim().length() > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missAccountSeriesMap.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missAccountSeriesMap.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
-			Query query =session.createQuery(sb.toString());
-			
-				// criteria.setProjection(Projections.rowCount()); 
-				 return ((Long)query.uniqueResult()).intValue(); */
 			return 0;
 		} catch (HibernateException re) {
 			logger.error("HibernateException",re);
@@ -193,50 +169,12 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			logger.error("Exception",e);
 			throw e;
 		}
-	}
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	}*/
+	 @SuppressWarnings({ "rawtypes" })
 	 @Transactional(readOnly=true)
 	 public List searchMissAccountSeriesMap(MissAccountSeriesMap instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			Session session = sessionAnnotationFactory.getCurrentSession();
-			try {
-				/*Long megId = instance.getMegId();
-				String megName = instance.getMegName();
-			
-			
-				StringBuffer sb =new StringBuffer(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap ");
-				
-				boolean iscriteria = false;
-				if(megId !=null && megId > 0){  
-					//criteria.add(Expression.eq("megId", megId));	
-					 sb.append(iscriteria?(" and missAccountSeriesMap.megId="+megId+""):(" where missAccountSeriesMap.megId="+megId+""));
-					  iscriteria = true;
-				}
-				if(megName !=null && megName.trim().length() > 0){  
-					//criteria.add(Expression.eq("megId", megId));	
-					sb.append(iscriteria?(" and lcase(missAccountSeriesMap.megName) like '%"+megName.trim().toLowerCase()+"%'"):(" where lcase(missAccountSeriesMap.megName) like '%"+megName.trim().toLowerCase()+"%'"));
-					  iscriteria = true;
-				}
-				if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-						sb.append( " order by missAccountSeriesMap."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-				}			
-				Query query =session.createQuery(sb.toString());
-				// set pagging.
-				 String size = String.valueOf(getSize(session, instance)); 
-				 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
-				 
-				 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-				 query.setMaxResults(pagging.getPageSize());
-				 
-				 List l = query.list();   
-				 transList.add(l); 
-			 	 transList.add(size); */
-				return transList;
-			} catch (Exception re) {
-				//re.printStackTrace();
-				logger.error("find by property name failed", re);
-				 
-			}
+			 
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -257,7 +195,8 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
-		List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xmissAccountSeriesMapList=null;
+		
+		//List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xmissAccountSeriesMapList=null;
 		List<th.co.aoe.makedev.missconsult.xstream.MissSery> xmissSeryList=null;
 		try { 
 			StringBuffer sb =new StringBuffer();
@@ -265,14 +204,16 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			 sb.append(" select missAccountSeriesMap from MissAccountSeriesMap missAccountSeriesMap where missAccountSeriesMap.id.maId="+maId);
 			Query query=session.createQuery(sb.toString());
 			//query.setParameter("maId", maId);
-			Map  map= null;
+			//@SuppressWarnings("rawtypes")
+			//Map  map= null;
+			@SuppressWarnings("unchecked")
 			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap> missAccountSeriesMapList = query.list();
 			if(missAccountSeriesMapList!=null && missAccountSeriesMapList.size()>0){
-				map=new HashMap(missAccountSeriesMapList.size());
+			//	map=new HashMap(missAccountSeriesMapList.size());
 				xmissSeryList=new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>(missAccountSeriesMapList.size());
-				   xmissAccountSeriesMapList=new 
+				  /* xmissAccountSeriesMapList=new 
 						 ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(missAccountSeriesMapList.size());
-				 
+				 */
 				for (th.co.aoe.makedev.missconsult.hibernate.bean.MissAccountSeriesMap missAccountSeriesMap : missAccountSeriesMapList) {
 					th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap xmissAccountSeriesMap =new 
 							th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
@@ -296,18 +237,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 						 xmissSery.setMsId(missSery.getMsId());
 						 xmissSery.setMsSeriesName(missSery.getMsSeriesName());
 					 }
-					/* StringBuffer groupStr=new StringBuffer("");
-					 for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : missSeriesMapList) {
-						 query =session.createQuery("select missExam from MissExam missExam where missExam.meId="+missSeriesMap.getId().getMeId().intValue());
-						 List<th.co.aoe.makedev.missconsult.hibernate.bean.MissExam> missExamList = query.list();
-						 if(missExamList!=null && missExamList.size()>0){
-							 groupStr.append(missExamList.get(0).getMissExamGroup().getMegName()+" ");
-						 }
-					}
-					 xmissAccountSeriesMap.setGroupStr(groupStr.toString());
-					 */
-					/* xmissAccountSeriesMapList.add(xmissAccountSeriesMap);
-					 map.put(maId+"_"+missAccountSeriesMap.getId().getMsId(), xmissAccountSeriesMap);*/
+					 
 					 xmissSeryList.add(xmissSery);
 				}
 			}
@@ -395,12 +325,13 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 		Query query=session.createSQLQuery(queryStr);
 		
 
-		 List<Object[]> list=query.list();
+		 @SuppressWarnings("unchecked")
+		List<Object[]> list=query.list();
 		//List<List<String>> results=new ArrayList<List<String>>(list.size());
 		List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> missAccountSeriesMaps =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>(list.size()); 
 	try{
 		for (Object[] objects : list) {
-			List<String> strings =new ArrayList<String>(objects.length);
+		//	List<String> strings =new ArrayList<String>(objects.length);
 		//	for (int i = 0; i < objects.length; i++) {
 				th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap missAccountSeriesMap=new th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap();
 				th.co.aoe.makedev.missconsult.xstream.MissSery missSery=new th.co.aoe.makedev.missconsult.xstream.MissSery();

@@ -131,6 +131,7 @@ public class HibernateCustomerReport  extends HibernateCommon implements Custome
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createSQLQuery("SELECT * FROM "+ServiceConstant.SCHEMA+".MISS_ACCOUNT_GROUP ");
 		//Query query =session.createSQLQuery(sb.toString()); 
+		@SuppressWarnings("unchecked")
 		List<Object[]> list=query.list();
 		List<List<String>> results=new ArrayList<List<String>>(list.size());
 	try{

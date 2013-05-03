@@ -193,6 +193,7 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
 		query.setParameter("msatRef1", transientInstance.getMsatRef1());
 		if(query_ref2.length()>0)
 			query.setParameter("msatRef2", transientInstance.getMsatRef2());
+		@SuppressWarnings("rawtypes")
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){

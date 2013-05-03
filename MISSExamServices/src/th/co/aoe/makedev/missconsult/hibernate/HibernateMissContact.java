@@ -2,13 +2,10 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissContact;
 import th.co.aoe.makedev.missconsult.hibernate.bean.UserContact;
 import th.co.aoe.makedev.missconsult.managers.MissContactService;
@@ -28,8 +24,8 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Transactional
 public class HibernateMissContact extends HibernateCommon implements MissContactService {
 
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
-	private static final SecureRandom random = new SecureRandom();
+	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	//private static final SecureRandom random = new SecureRandom();
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -98,50 +94,11 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 		return returnId; 
 		
 		
-	}
-	
-	
-
+	} 
+/*
 	private int getSize(Session session, MissContact instance) throws Exception{
 		try {
-		/*	String mcaStatus=instance.getMcaStatus();
-			String mcaSeries=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()+""):null;
-			String mcaUsername=instance.getMcaUsername();
-			String mcaPassword=instance.getMcaPassword();
-			String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
-		
-		
-			StringBuffer sb =new StringBuffer(" select count(missContact) from MissContact missContact ");
-			
-			boolean iscriteria = false;
-			if(mcaStatus !=null && !mcaStatus.equals("-1")){  
-				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and missContact.mcaStatus='"+mcaStatus+"'"):(" where missContact.mcaStatus='"+mcaStatus+"'"));
-				  iscriteria = true;
-			}
-			if(mcaSeries !=null && mcaSeries.trim().length()>0){  
-				//criteria.add(Expression.eq("mcaSeries", mcaSeries));	
-				 sb.append(iscriteria?(" and missContact.missSery.msId="+mcaSeries+""):(" where missContact.missSery.msId="+mcaSeries+""));
-				  iscriteria = true;
-			}
-			if(mcaUsername !=null && mcaUsername.trim().length() > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missContact.mcaUsername) like '%"+mcaUsername.trim().toLowerCase()+"%'"):(" where lcase(missContact.mcaUsername) like '%"+mcaUsername.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
-			if(mcaPassword !=null && mcaPassword.trim().length() > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missContact.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"):(" where lcase(missContact.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
-			if(mcaCompanyName !=null && mcaCompanyName.trim().length() > 0){  
-				//criteria.add(Expression.eq("megId", megId));	
-				sb.append(iscriteria?(" and lcase(missContact.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missContact.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
-				  iscriteria = true;
-			}
-			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); */
+		 
 				 return 0;
 		 
 		} catch (HibernateException re) {
@@ -151,70 +108,12 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 			logger.error("Exception",e);
 			throw e;
 		}
-	}
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	}*/
+	 @SuppressWarnings({ "rawtypes" })
 	 @Transactional(readOnly=true)
 	 public List searchMissContact(MissContact instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			Session session = sessionAnnotationFactory.getCurrentSession();
-			try {
-				 
-/*					String mcaStatus=instance.getMcaStatus();
-					String mcaSeries=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()+""):null;
-					String mcaUsername=instance.getMcaUsername();
-					String mcaPassword=instance.getMcaPassword();
-					String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
-				
-					StringBuffer sb =new StringBuffer(" select missContact from MissContact missContact ");
-					
-					boolean iscriteria = false;
-					if(mcaStatus !=null && !mcaStatus.equals("-1")){  
-						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and missContact.mcaStatus='"+mcaStatus+"'"):(" where missContact.mcaStatus='"+mcaStatus+"'"));
-						  iscriteria = true;
-					}
-					if(mcaSeries !=null && mcaSeries.trim().length()>0){  
-						//criteria.add(Expression.eq("mcaSeries", mcaSeries));	
-						 sb.append(iscriteria?(" and missContact.missSery.msId="+mcaSeries+""):(" where missContact.missSery.msId="+mcaSeries+""));
-						  iscriteria = true;
-					}
-					if(mcaUsername !=null && mcaUsername.trim().length() > 0){  
-						//criteria.add(Expression.eq("megId", megId));	
-						sb.append(iscriteria?(" and lcase(missContact.mcaUsername) like '%"+mcaUsername.trim().toLowerCase()+"%'"):(" where lcase(missContact.mcaUsername) like '%"+mcaUsername.trim().toLowerCase()+"%'"));
-						  iscriteria = true;
-					}
-					if(mcaPassword !=null && mcaPassword.trim().length() > 0){  
-						//criteria.add(Expression.eq("megId", megId));	
-						sb.append(iscriteria?(" and lcase(missContact.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"):(" where lcase(missContact.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"));
-						  iscriteria = true;
-					}
-					if(mcaCompanyName !=null && mcaCompanyName.trim().length() > 0){  
-						//criteria.add(Expression.eq("megId", megId));	
-						sb.append(iscriteria?(" and lcase(missContact.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missContact.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
-						  iscriteria = true;
-					}
-					
-					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by missContact."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-					}			
-					Query query =session.createQuery(sb.toString());
-					// set pagging.
-					 String size = String.valueOf(getSize(session, instance)); 
-					 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
-					 
-					 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-					 query.setMaxResults(pagging.getPageSize());
-					 
-					 List l = query.list();   
-					 transList.add(l); 
-				 	 transList.add(size);
-*/				return transList;
-			} catch (Exception re) {
-				//re.printStackTrace();
-				logger.error("find by property name failed", re);
-				 
-			}
+		 
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -312,7 +211,8 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 	   if(username!=null && username.length()>0){
 		   query=session.createQuery("delete UserContact user where user.username =:username");
 		   query.setParameter("username",username);
-			int result = query.executeUpdate();
+			//int result = query.executeUpdate();
+		    query.executeUpdate();
 	   }
 		
 		canUpdate =1;
@@ -324,6 +224,7 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 		return canUpdate;
 		//return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listContacts(Long long1, String mcontactType)
 			throws DataAccessException {

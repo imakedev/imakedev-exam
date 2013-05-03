@@ -3,8 +3,6 @@ package th.co.aoe.makedev.missconsult.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMapping;
 import th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesMappingPK;
 import th.co.aoe.makedev.missconsult.managers.RoleSeriesMappingService;
@@ -23,7 +20,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Transactional
 public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleSeriesMappingService {
 
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -73,22 +70,9 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 	
 	
 
-	private int getSize(Session session, RoleSeriesMapping instance) throws Exception{
+	/*private int getSize(Session session, RoleSeriesMapping instance) throws Exception{
 		try {
-			/*Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
-		
-		
-			StringBuffer sb =new StringBuffer(" select count(roleSeriesMapping) from RoleSeriesMapping roleSeriesMapping ");
-			
-			boolean iscriteria = false;
-			if(msId !=null && msId.intValue()!=0){  
-				//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-				 sb.append(iscriteria?(" and roleSeriesMapping.missSery.msId="+msId.intValue()+""):(" where roleSeriesMapping.missSery.msId="+msId.intValue()+""));
-				  iscriteria = true;
-			}
-			Query query =session.createQuery(sb.toString());
-				 return ((Long)query.uniqueResult()).intValue(); */
+		 
 			return 0;
 				 
 		 
@@ -99,47 +83,12 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 			logger.error("Exception",e);
 			throw e;
 		}
-	}
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
+	}*/
+	 @SuppressWarnings({ "rawtypes"})
 	 @Transactional(readOnly=true)
 	 public List searchRoleSeriesMapping(RoleSeriesMapping instance,Pagging pagging) throws DataAccessException {
 			ArrayList  transList = new ArrayList ();
-			/*Session session = sessionAnnotationFactory.getCurrentSession();
-			try {
-				 
-					Long msId=(instance.getMissSery()!=null && instance.getMissSery().getMsId()!=null 
-							 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()):null;
-				
-					StringBuffer sb =new StringBuffer(" select roleSeriesMapping from RoleSeriesMapping roleSeriesMapping ");
-					
-					boolean iscriteria = false;
-					if(msId !=null && msId.intValue()!=0){  
-						//criteria.add(Expression.eq("mcaStatus", mcaStatus));	
-						 sb.append(iscriteria?(" and roleSeriesMapping.missSery.msId="+msId.intValue()+""):(" where roleSeriesMapping.missSery.msId="+msId.intValue()+""));
-						  iscriteria = true;
-					}
-					
-					
-					if(pagging.getSortBy()!=null && pagging.getSortBy().length()>0){
-							sb.append( " order by roleSeriesMapping."+pagging.getOrderBy()+" "+pagging.getSortBy().toLowerCase());
-					}			
-					Query query =session.createQuery(sb.toString());
-					// set pagging.
-					 String size = String.valueOf(getSize(session, instance)); 
-					 logger.debug(" first Result="+(pagging.getPageSize()* (pagging.getPageNo() - 1))); 
-					 
-					 query.setFirstResult(pagging.getPageSize() * (pagging.getPageNo() - 1));
-					 query.setMaxResults(pagging.getPageSize());
-					 
-					 List l = query.list();   
-					 transList.add(l); 
-				 	 transList.add(size);
-				return transList;
-			} catch (Exception re) {
-				//re.printStackTrace();
-				logger.error("find by property name failed", re);
-				 
-			}*/
+			 
 			return transList;
 		}
 	@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor={RuntimeException.class})
@@ -188,6 +137,7 @@ public class HibernateRoleSeriesMapping extends HibernateCommon implements RoleS
 		// TODO Auto-generated method stub
 		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List listRoleSeriesMappingByrcId(Long rcId) throws DataAccessException {
 		// TODO Auto-generated method stub

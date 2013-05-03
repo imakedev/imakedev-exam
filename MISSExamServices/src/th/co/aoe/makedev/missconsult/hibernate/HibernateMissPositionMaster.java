@@ -9,11 +9,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import th.co.aoe.makedev.missconsult.managers.MissIndustryMasterService;
+import th.co.aoe.makedev.missconsult.managers.MissPositionMasterService;
 
 @Repository
 @Transactional
-public class HibernateMissIndustryMaster  extends HibernateCommon implements MissIndustryMasterService {
+public class HibernateMissPositionMaster extends HibernateCommon implements MissPositionMasterService {
 
 	//private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 //	private static final SecureRandom random = new SecureRandom();
@@ -27,10 +27,10 @@ public class HibernateMissIndustryMaster  extends HibernateCommon implements Mis
 	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly=true)
 	@Override
-	public List listMissIndustryMaster() throws DataAccessException {
+	public List listMissPositionMaster() throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missIndustryMaster from MissIndustryMaster missIndustryMaster ");
+		Query query=session.createQuery(" select missPositionMaster from MissPositionMaster missPositionMaster ");
 		return query.list();
 	}
 

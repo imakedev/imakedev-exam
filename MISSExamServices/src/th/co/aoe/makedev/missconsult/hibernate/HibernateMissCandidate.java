@@ -85,6 +85,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				" and missAccountSeriesMap.id.msId=:msId");
 		query.setParameter("maId", transientInstance.getMissAccount().getMaId());
 		query.setParameter("msId", transientInstance.getMissSery().getMsId());
+		@SuppressWarnings("unchecked")
 		List<MissAccountSeriesMap> list=query.list();
 		//System.err.println("==========================list===>"+list);
 		if(list!=null && list.size()>0){
@@ -455,6 +456,7 @@ int result = query.executeUpdate();*/
 					" and missAccountSeriesMap.id.msId=:msId");
 			query.setParameter("maId", transientInstance.getMissAccount().getMaId());
 			query.setParameter("msId", transientInstance.getMissSery().getMsId());
+			@SuppressWarnings("unchecked")
 			List<MissAccountSeriesMap> list=query.list();
 			if(list!=null && list.size()>0){
 				MissAccountSeriesMap missAccountSeriesMap = list.get(0);
@@ -651,7 +653,8 @@ int result = query.executeUpdate();*/
 	   if(username!=null && username.length()>0){
 		   query=session.createQuery("delete User user where user.username =:username");
 		   query.setParameter("username",username);
-			int result = query.executeUpdate();
+			//int result = query.executeUpdate();
+		   query.executeUpdate();
 	   }
 	  
 	  /* 1=used,
@@ -694,11 +697,14 @@ int result = query.executeUpdate();*/
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missSeriesMap from MissSeriesMap missSeriesMap where missSeriesMap.id.msId=:msId order by missSeriesMap.msmOrder ");
 		query.setParameter("msId", msId);
+		
+		@SuppressWarnings("unchecked")
 		List<MissSeriesMap> missSeriesMaps=query.list();
 		List<th.co.aoe.makedev.missconsult.xstream.MissExam> xmissExams =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissExam>(missSeriesMaps.size());
 		for (MissSeriesMap missSeriesMap : missSeriesMaps) {
 			query=session.createQuery(" select missExam from MissExam missExam where missExam.meId=:meId order by missExam.meId ");
 			query.setParameter("meId", missSeriesMap.getId().getMeId());
+			@SuppressWarnings("unchecked")
 			List<MissExam> missExams=query.list();
 			for (MissExam missExam : missExams) {
 				th.co.aoe.makedev.missconsult.xstream.MissExam xmissExam=new th.co.aoe.makedev.missconsult.xstream.MissExam();
@@ -707,6 +713,7 @@ int result = query.executeUpdate();*/
 				
 				query=session.createQuery(" select missQuestion from MissQuestion missQuestion where missQuestion.missExam.meId=:meId order by missQuestion.mqId ");
 				query.setParameter("meId", missExam.getMeId());
+				@SuppressWarnings("unchecked")
 				List<MissQuestion> questions = query.list();
 				List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xmissQuestions =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>(questions.size());
 				for (MissQuestion missQuestion : questions) {
@@ -716,6 +723,7 @@ int result = query.executeUpdate();*/
 					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId " +
 							" and missChoice.id.mcLang='1' order by missChoice.id.mcNo ");
 					query.setParameter("mqId", missQuestion.getMqId());
+					@SuppressWarnings("unchecked")
 					List<MissChoice> choices = query.list();
 					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoices =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choices.size());
 					for (MissChoice missChoice : choices) {
@@ -732,6 +740,7 @@ int result = query.executeUpdate();*/
 					query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId " +
 							"and missChoice.id.mcLang='2' order by missChoice.id.mcNo ");
 					query.setParameter("mqId", missQuestion.getMqId());
+					@SuppressWarnings("unchecked")
 					List<MissChoice> choicesEng = query.list();
 					List<th.co.aoe.makedev.missconsult.xstream.MissChoice> xmissChoicesEng =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>(choicesEng.size());
 					for (MissChoice missChoice : choicesEng) {
@@ -752,10 +761,11 @@ int result = query.executeUpdate();*/
 		}
 		return xmissExams;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List exportMissCandidate(String[] mcaIds) throws DataAccessException {
 		// TODO Auto-generated method stub
-
+ 
 		ArrayList  transList = new ArrayList ();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		try {
@@ -770,13 +780,12 @@ int result = query.executeUpdate();*/
 					" order by missCandidate.mcaId asc ");
 			  
 			Query query =session.createQuery(sb.toString());
-			 
-			 
+			  
 			 List<MissCandidate> l = query.list();   
 			 
 			 List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(
 						l.size());
-			  String masmAvailable;
+			//  String masmAvailable;
 			  for (MissCandidate missCandidate : l) {  
 				  th.co.aoe.makedev.missconsult.xstream.MissCandidate xmissCandidate=getxMissCandidateObject(missCandidate); 
 				  xntcCalendars.add(xmissCandidate); 

@@ -2,7 +2,6 @@ package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,13 +10,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTheme;
 import th.co.aoe.makedev.missconsult.managers.MissThemeService;
 @Repository
 @Transactional
 public class HibernateMissTheme extends HibernateCommon implements MissThemeService {
-	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
+//	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER);
 	private SessionFactory sessionAnnotationFactory;
 	public SessionFactory getSessionAnnotationFactory() {
 		return sessionAnnotationFactory;
@@ -25,6 +23,7 @@ public class HibernateMissTheme extends HibernateCommon implements MissThemeServ
 	public void setSessionAnnotationFactory(SessionFactory sessionAnnotationFactory) {
 		this.sessionAnnotationFactory = sessionAnnotationFactory;
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	@Transactional(readOnly=true)
 	public List listMissTheme(MissTheme persistentInstance)
