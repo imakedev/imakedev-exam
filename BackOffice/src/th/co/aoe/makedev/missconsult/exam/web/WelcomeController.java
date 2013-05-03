@@ -44,8 +44,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 import org.springframework.security.core.Authentication;
@@ -213,7 +211,7 @@ public class WelcomeController
     	//logger.error("into init local "+LocaleContextHolder.getLocale());
     	//locale.getDisplayLanguage()
         int pageNo = 1;
-        DateTime dt = new DateTime();
+       // DateTime dt = new DateTime();
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
        
@@ -253,7 +251,8 @@ public class WelcomeController
      
     	  return "exam/template/todoResponse";
     }
-    @RequestMapping(value={"/sendmailToApprove"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value={"/sendmailToApprove"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String sendmail(HttpServletRequest request, Model model)
     {
     	/*logger.error("request   mail_attach ==> "+request.getParameter("mail_attach"));
@@ -356,7 +355,8 @@ public class WelcomeController
     	 //return "exam/template/home";
           return "exam/template/todoTaskComplete";
     }
-    private int sendMail(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
+    @SuppressWarnings("rawtypes")
+	private int sendMail(String protocal_,String  host_,String email_ ,String  password_,String  useAuthen_,
 			List recipients
 			,String subject,String messagebody,String sessionId,String personal_name,String port,
 			List recipients_cc,List recipients_bcc,byte[] fileSize,String tls){
@@ -568,7 +568,8 @@ public class WelcomeController
   	    }
   	    return sb.toString();
    }
-    private byte[] getFileSize(Long msId,Long mtrId){
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private byte[] getFileSize(Long msId,Long mtrId){
     	byte [] fileSize=null;
     	Context ctx =null;
 		Connection con = null;
@@ -654,8 +655,8 @@ public class WelcomeController
     }
   
     private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-    private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    private static Logger logger = Logger.getRootLogger();
+   // private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+   // private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
 

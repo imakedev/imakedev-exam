@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,7 +73,8 @@ public class SurveyController
         return "exam/template/surveySend";
     }
 
-    @RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
     {
       
@@ -82,13 +82,15 @@ public class SurveyController
     	if(surveyForm.getSurvey_email().length>=surveyForm.getAmountSend()){
     		//List recipientsTo=new ArrayList();
     		 Random randomGenerator = new Random();
-    		 Map map=new HashMap<String,String >();
+    		 
+			Map map=new HashMap<String,String >();
     		 while (map.size()<surveyForm.getAmountSend()) {
     			  int randomInt = randomGenerator.nextInt(surveyForm.getSurvey_email().length-1);
     			  map.put(randomInt+"", randomInt+"");
     		}
     	
     		 List<List<String>> userEmail =new ArrayList<List<String>>(map.size());
+    		 
     		 for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
     			 String key = (String) iterator.next();
     			 int keyInt=Integer.parseInt(key);
@@ -110,14 +112,17 @@ public class SurveyController
     		 List<List<String>> candidateReturn= missExamService.sendSurvey(missSurveySend);
     		 if(candidateReturn!=null && candidateReturn.size()>0)
     			 resultReturn=1;
-    		 int size=map.size();
-    		 List recipientsCC=null;
-    		 List recipientsBCC=null;
+    		// int size=map.size();
+    		 
+			List recipientsCC=null;
+    		 
+			List recipientsBCC=null;
     		 byte[] fileSize=null;
     		 String subject=surveyForm.getSubject();//"Aoe";
     		 String mailMessage=surveyForm.getMailMessage();//"Mail Message";
     		 
-    		 List recipients=null;
+    		 
+			List recipients=null;
     		 String message=null;
     		 if(candidateReturn!=null && candidateReturn.size()>0){
     			 for (int i = 0; i < candidateReturn.size(); i++) {
@@ -150,7 +155,7 @@ public class SurveyController
         //return "exam/template/surveySend";
     }
 
-    private static Logger logger = Logger.getRootLogger();
+  //  private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
 

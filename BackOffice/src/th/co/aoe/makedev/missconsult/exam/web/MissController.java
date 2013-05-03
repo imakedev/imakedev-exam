@@ -65,7 +65,8 @@ public class MissController
         model.addAttribute("display", "display: none");
         missForm.getMissAccount().setSection("0");
         model.addAttribute("missForm", missForm);
-    	List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+    	@SuppressWarnings("unchecked")
+		List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
     	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
     	return "exam/template/missAccount";
@@ -74,7 +75,7 @@ public class MissController
     @RequestMapping(value={"/action/{section}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doAction(HttpServletRequest request, @PathVariable String section, @ModelAttribute(value="missForm") MissForm missForm, BindingResult result, Model model)
     {
-        String mode = missForm.getMode();
+       // String mode = missForm.getMode();
         String message = "";
         String message_class="";
         missForm.getMissAccount().setSection(section);
@@ -102,7 +103,8 @@ public class MissController
         model.addAttribute("message_class", message_class);
         missForm.getMissAccount().setSection(section);
         model.addAttribute("missForm", missForm);
-        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+        @SuppressWarnings("unchecked")
+		List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
     	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/missAccount";
@@ -130,7 +132,8 @@ public class MissController
              missExamService.deleteMissContact(contactForm.getMissContact(), ServiceConstant.MISS_CONTACT_DELETE);
          }
          contactForm.getPaging().setPageNo(1);
-    	List missContacts=null;
+    	@SuppressWarnings("rawtypes")
+		List missContacts=null;
     	if(maId!=null && !maId.equals("0")){
     		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
     		contactForm.setMaId(maId);
@@ -152,7 +155,8 @@ public class MissController
         	 contactForm = new ContactForm();
          contactForm.setMode("edit");
         
-    	List missContacts=null;
+    	@SuppressWarnings("rawtypes")
+		List missContacts=null;
     	if(maId!=null && !maId.equals("0")){
     		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
     		contactForm.setMaId(maId);
@@ -260,7 +264,7 @@ public class MissController
 		return gson.toJson(missTheme);
     }
    // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-    private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+   // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static SimpleDateFormat format11 = new SimpleDateFormat("MM-dd-yyyy");
     private static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
     private static Logger logger = Logger.getRootLogger();

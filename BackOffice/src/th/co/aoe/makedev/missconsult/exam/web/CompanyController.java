@@ -187,7 +187,8 @@ public class CompanyController
 			}
         }*/
        // model.addAttribute("roleTypes", roleTypes);
-        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+        @SuppressWarnings("unchecked")
+		List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes); 
     	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         model.addAttribute("display", "display: none");
@@ -317,7 +318,8 @@ public class CompanyController
         companyForm.setMissAccount(missAccount);
         companyForm.setMode("new");
         model.addAttribute("display", "display: none");
-        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+        @SuppressWarnings("unchecked")
+		List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
     	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/companyAccount";
@@ -374,7 +376,8 @@ public class CompanyController
         model.addAttribute("display", "display: block");
         companyForm.getMissAccount().setSection(section);
         model.addAttribute("companyForm", companyForm);
-        List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
+        @SuppressWarnings("unchecked")
+		List<MissTheme> missThemes = missExamService.listMissTheme(new MissTheme());
     	model.addAttribute("missThemes",missThemes);
     	model.addAttribute("missIndustryMasterList", missExamService.listMissIndustryMaster());
         return "exam/template/companyAccount";
@@ -453,7 +456,8 @@ public class CompanyController
              missExamService.deleteMissContact(contactForm.getMissContact(), ServiceConstant.MISS_CONTACT_DELETE);
          }
          contactForm.getPaging().setPageNo(1);
-    	List missContacts=null;
+    	@SuppressWarnings("rawtypes")
+		List missContacts=null;
     	if(maId!=null && !maId.equals("0")){
     		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
     		contactForm.setMaId(maId);
@@ -475,7 +479,8 @@ public class CompanyController
         	 contactForm = new ContactForm();
          contactForm.setMode("edit");
         
-    	List missContacts=null;
+    	@SuppressWarnings("rawtypes")
+		List missContacts=null;
     	if(maId!=null && !maId.equals("0")){
     		missContacts = missExamService.listContacts(Long.parseLong(maId),account_type);
     		contactForm.setMaId(maId);

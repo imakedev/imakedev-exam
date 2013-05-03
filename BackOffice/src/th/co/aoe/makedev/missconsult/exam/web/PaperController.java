@@ -7,7 +7,6 @@ package th.co.aoe.makedev.missconsult.exam.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +26,7 @@ import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 @SessionAttributes(value={"paperForm"})
 public class PaperController
 {
-    private static Logger logger = Logger.getRootLogger();
+  //  private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
     
@@ -51,20 +50,20 @@ public class PaperController
 	}
 	@RequestMapping(value="/exam/template/{mcaId}/{msId}/{set}", method = RequestMethod.GET)
     public String getExamTemplate(HttpServletRequest request,Model model ,@PathVariable String mcaId,@PathVariable Long msId,@PathVariable Long set) {
-		PaperForm paperForm = null;
+		/*PaperForm paperForm = null;
 		 if(model.containsAttribute("paperForm"))
 			 paperForm = (PaperForm)model.asMap().get("paperForm");
        else
-    	   paperForm = new PaperForm();
+    	   paperForm = new PaperForm();*/
         return "exam/template/exam";
     }
 	@RequestMapping(value="/exam/template", method = RequestMethod.POST)
     public String postExamTemplate(HttpServletRequest request, @ModelAttribute(value="missExamForm") MissExamForm missExamForm, BindingResult result,Model model) {
-		PaperForm paperForm = null;
+		/*PaperForm paperForm = null;
 		 if(model.containsAttribute("paperForm"))
 			 paperForm = (PaperForm)model.asMap().get("paperForm");
        else
-    	   paperForm = new PaperForm();
+    	   paperForm = new PaperForm();*/
         return "exam/template/examMessage";
     }
     //return "exam/candidateInfo";

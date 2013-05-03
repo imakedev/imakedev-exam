@@ -21,6 +21,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDepartmentMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
@@ -356,14 +357,15 @@ public class MissExamServiceImpl extends PostCommon
         return postMessage(missExam, missExam.getClass().getName(), "missExam", true);
     }
 
-    public List listMissExam()
+    @SuppressWarnings("rawtypes")
+	public List listMissExam()
     {
         MissExam missExam = new MissExam();
         missExam.setServiceName(ServiceConstant.MISS_EXAM_LIST);//"listMissExam");
         VResultMessage resultMessage = postMessage(missExam, missExam.getClass().getName(), "missExam", true);
         return resultMessage.getResultListObj();
     }
-
+    @SuppressWarnings("rawtypes")
     public List listMissSery()
     {
         MissSery missSery = new MissSery();
@@ -452,7 +454,7 @@ public class MissExamServiceImpl extends PostCommon
         missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_SEARCH);//"searchMissQuestion");
         return postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
     }
-    
+    @SuppressWarnings("rawtypes")
     public   List listMissQuestions(Long meId){
     	
     	 MissExam missExam = new MissExam();
@@ -865,7 +867,7 @@ public class MissExamServiceImpl extends PostCommon
 		missContact.setServiceName(ServiceConstant.MISS_CONTACT_SEARCH);
         return postMessage(missContact, missContact.getClass().getName(), "missContact", true);
 	}
-	 
+	@SuppressWarnings("rawtypes")
 	public List listContacts(Long long1,String mcontactType)
 	    {
 		 
@@ -1131,7 +1133,7 @@ public class MissExamServiceImpl extends PostCommon
 		roleType.setServiceName(ServiceConstant.ROLE_TYPE_SEARCH);
         return postMessage(roleType, roleType.getClass().getName(), "roleType", true);
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listRoleTypeByRcId(Long rcId) {
 		// TODO Auto-generated method stub
@@ -1141,7 +1143,7 @@ public class MissExamServiceImpl extends PostCommon
 	        VResultMessage resultMessage = postMessage(roleType, roleType.getClass().getName(), "roleType", true);
 	       return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listRoleContactBymaId(Long maId) {
 		// TODO Auto-generated method stub
@@ -1151,7 +1153,7 @@ public class MissExamServiceImpl extends PostCommon
 	        VResultMessage resultMessage = postMessage(roleContact, roleContact.getClass().getName(), "roleContact", true);
 	       return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listRoleMappingByrcId(Long rcId) {
 		// TODO Auto-generated method stub
@@ -1161,7 +1163,7 @@ public class MissExamServiceImpl extends PostCommon
 		        VResultMessage resultMessage = postMessage(roleMapping, roleMapping.getClass().getName(), "roleMapping", true);
 		       return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listRoleTypes(Long maId) {
 		// TODO Auto-generated method stub
@@ -1197,6 +1199,7 @@ public class MissExamServiceImpl extends PostCommon
         missTestResult = (MissTestResult)resultMessage.getResultListObj().get(0);
         return missTestResult.getUpdateRecord().intValue();
 	}
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listMissTheme(MissTheme missTheme) {
 		// TODO Auto-generated method stub
@@ -1218,6 +1221,7 @@ public class MissExamServiceImpl extends PostCommon
 	        	return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissCareerMaster> listMissCareerMaster(Long maId) {
 		// TODO Auto-generated method stub
@@ -1233,6 +1237,7 @@ public class MissExamServiceImpl extends PostCommon
 		return missCareerMasters;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissIndustryMaster> listMissIndustryMaster() {
 		// TODO Auto-generated method stub
@@ -1255,7 +1260,7 @@ public class MissExamServiceImpl extends PostCommon
 	    missSystemUse = (MissSystemUse)resultMessage.getResultListObj().get(0);
 	    return missSystemUse.getUpdateRecord().intValue();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissSystemUse(MissSystemUse missSystemUse) {
 		// TODO Auto-generated method stub
@@ -1272,7 +1277,7 @@ public class MissExamServiceImpl extends PostCommon
 	    missSeryUse = (MissSeryUse)resultMessage.getResultListObj().get(0);
 	    return missSeryUse.getMsId();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissSeryUse(MissSeryUse missSeryUse) {
 		// TODO Auto-generated method stub
@@ -1289,7 +1294,7 @@ public class MissExamServiceImpl extends PostCommon
 	    missSeryProblem = (MissSeryProblem)resultMessage.getResultListObj().get(0);
 	    return missSeryProblem.getMcaId();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissSeryProblem(MissSeryProblem missSeryProblem) {
 		// TODO Auto-generated method stub
@@ -1306,7 +1311,7 @@ public class MissExamServiceImpl extends PostCommon
 	    missSeryOrder = (MissSeryOrder)resultMessage.getResultListObj().get(0);
 	    return missSeryOrder.getMsId();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissSeryOrder(MissSeryOrder missSeryOrder) {
 		// TODO Auto-generated method stub
@@ -1323,7 +1328,7 @@ public class MissExamServiceImpl extends PostCommon
 	    missReactiveLog = (MissReactiveLog)resultMessage.getResultListObj().get(0);
 	    return missReactiveLog.getMcaId();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissReactiveLog(MissReactiveLog missReactiveLog) {
 		// TODO Auto-generated method stub
@@ -1331,7 +1336,7 @@ public class MissExamServiceImpl extends PostCommon
 	    VResultMessage resultMessage = postMessage(missReactiveLog, missReactiveLog.getClass().getName(), "missReactiveLog", true);
 	    return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissAccountGroup(MissAccountGroup missAccountGroup) {
 		// TODO Auto-generated method stub
@@ -1339,7 +1344,7 @@ public class MissExamServiceImpl extends PostCommon
 	    VResultMessage resultMessage = postMessage(missAccountGroup, missAccountGroup.getClass().getName(), "missAccountGroup", true);
 	    return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List searchMissAccountMapping(MissAccountMapping missAccountMapping) {
 		// TODO Auto-generated method stub
@@ -1575,7 +1580,7 @@ public class MissExamServiceImpl extends PostCommon
 		roleSeriesMapping.setServiceName(ServiceConstant.ROLE_SERIES_MAPPING_SEARCH);
         return postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List listRoleSeriesMappingByrcId(Long rcId) {
 		// TODO Auto-generated method stub
@@ -1586,7 +1591,7 @@ public class MissExamServiceImpl extends PostCommon
 	        VResultMessage resultMessage = postMessage(roleSeriesMapping, roleSeriesMapping.getClass().getName(), "roleSeriesMapping", true);
 	       return resultMessage.getResultListObj();
 	}
-
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List findMissAccountSeriesMapByMaId(Long maId) {
 		// TODO Auto-generated method stub
@@ -1598,6 +1603,7 @@ public class MissExamServiceImpl extends PostCommon
   return resultMessage.getResultListObj();
 	        
 	} 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List findMissAccountSeriesMapByRole(Long maId,Long rcId) {
 		// TODO Auto-generated method stub
@@ -1610,7 +1616,8 @@ public class MissExamServiceImpl extends PostCommon
   return resultMessage.getResultListObj();
 	        
 	}
-
+ 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MissPositionMaster> listMissPositionMaster() { 
 		// TODO Auto-generated method stub
@@ -1623,6 +1630,21 @@ public class MissExamServiceImpl extends PostCommon
 					missPositionMasters=resultMessage.getResultListObj();
 				} 
 				return missPositionMasters;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MissDepartmentMaster> listMissDepartmentMaster() {
+		// TODO Auto-generated method stub
+		MissDepartmentMaster missDepartmentMaster =new MissDepartmentMaster();
+		missDepartmentMaster.setServiceName(ServiceConstant.DEPARTMENT_MASTER_LIST);
+		VResultMessage resultMessage = postMessage(missDepartmentMaster, missDepartmentMaster
+				.getClass().getName(), "missDepartmentMaster", true);
+		List<MissDepartmentMaster> missDepartmentMasters=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missDepartmentMasters=resultMessage.getResultListObj();
+		} 
+		return missDepartmentMasters;
 	} 
 	
 	 

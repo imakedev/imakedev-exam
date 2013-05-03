@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -39,8 +38,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import com.google.gson.Gson;
 @Controller
 public class UploadController {	
-	private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-	private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	//private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+	//private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private static Logger logger = Logger.getRootLogger();
 	@Autowired
 	private MissExamService missExamService;

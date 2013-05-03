@@ -19,6 +19,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissCareerMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissChoice;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissDepartmentMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissEvaluationTemplate;
 import th.co.aoe.makedev.missconsult.xstream.MissExam;
@@ -88,8 +89,10 @@ public interface MissExamService {
 
 	public abstract MissAccountSeriesMap findMissAccountSeriesMapById(Long long1);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List findMissAccountSeriesMapByMaId(
 			Long maId);
+	@SuppressWarnings("rawtypes")
 	public abstract List findMissAccountSeriesMapByRole
 			(Long maId,Long rcId); 
 
@@ -152,7 +155,7 @@ public interface MissExamService {
 	public abstract int copyMissExam(MissExam missexam);
 
 	public abstract int createEmptyMissExam(MissExam missexam);
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listMissExam();
 
 	public abstract Long saveMissExamType(MissExamType missexamtype);
@@ -176,7 +179,7 @@ public interface MissExamService {
 	public abstract MissQuestion findMissQuestionById(Long long1);
 
 	public abstract VResultMessage searchMissQuestion(MissQuestion missquestion);
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listMissQuestions(Long meId);
 
 	public abstract Long saveMissSeriesMap(MissSeriesMap missseriesmap);
@@ -199,7 +202,7 @@ public interface MissExamService {
 	public abstract MissSery findMissSeryById(Long long1);
 
 	public abstract VResultMessage searchMissSery(MissSery misssery);
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listMissSery();
 
 	public abstract Long saveMissSurveySend(MissSurveySend misssurveysend);
@@ -283,7 +286,7 @@ public interface MissExamService {
 	public abstract int countMissContactByUsername(String username,Long id); 
 
 	public abstract VResultMessage searchMissContact(MissContact missContact);
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listContacts(Long long1, String mcontactType);
 
 	public abstract Long saveMissManual(MissManual missManual);
@@ -325,7 +328,7 @@ public interface MissExamService {
 	public abstract RoleContact findRoleContactById(Long rcId);
 
 	public abstract VResultMessage searchRoleContact(RoleContact roleContact);
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listRoleContactBymaId(Long maId);
 
 	public abstract Long saveRoleMapping(RoleMapping roleMapping);
@@ -339,7 +342,7 @@ public interface MissExamService {
 
 	public abstract VResultMessage searchRoleMapping(RoleMapping roleContact);
 
-
+	@SuppressWarnings("rawtypes")
 	public abstract List listRoleMappingByrcId(Long rcId);
 	
 	//Start RoleSeriesMapping
@@ -354,6 +357,7 @@ public interface MissExamService {
 
 	public abstract VResultMessage searchRoleSeriesMapping(RoleSeriesMapping roleContact);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List listRoleSeriesMappingByrcId(Long rcId);
 	//End RoleSeriesMapping
 
@@ -367,8 +371,10 @@ public interface MissExamService {
 
 	public abstract VResultMessage searchRoleType(RoleType roleContact);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List listRoleTypeByRcId(Long rcId);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List listRoleTypes(Long maId);
 
 	public abstract int getQuestionOrdered(Long meId);
@@ -376,6 +382,8 @@ public interface MissExamService {
 	public abstract int updateStatusMissTestResult(Long mtrId, String column,
 			String value);
 	public abstract int updateStatusMissTestResult(String mtrIds, String column, String value);
+	
+	@SuppressWarnings("rawtypes")
 	public abstract List listMissTheme(MissTheme missTheme);
 
 	public abstract MissTheme findMissThemeById(Long maId, Long mtId);
@@ -386,33 +394,41 @@ public interface MissExamService {
 	
 	public abstract List<MissPositionMaster> listMissPositionMaster();
 	
+	public abstract List<MissDepartmentMaster> listMissDepartmentMaster(); 
 
 	// Report management
 	public abstract int saveMissSystemUse(MissSystemUse transientInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissSystemUse(MissSystemUse persistentInstance);
 
 	public Long saveMissSeryUse(MissSeryUse transientInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissSeryUse(MissSeryUse persistentInstance);
 
 	public abstract Long saveMissSeryProblem(MissSeryProblem transientInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissSeryProblem(
 			MissSeryProblem persistentInstance);
 
 	public abstract Long saveMissSeryOrder(MissSeryOrder transientInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissSeryOrder(MissSeryOrder persistentInstance);
 
 	public abstract Long saveMissReactiveLog(MissReactiveLog transientInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissReactiveLog(
 			MissReactiveLog persistentInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissAccountGroup(
 			MissAccountGroup persistentInstance);
 
+	@SuppressWarnings("rawtypes")
 	public abstract List searchMissAccountMapping(
 			MissAccountMapping persistentInstance);
 	

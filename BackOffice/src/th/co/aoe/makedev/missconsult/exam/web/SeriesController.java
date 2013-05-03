@@ -7,7 +7,6 @@ package th.co.aoe.makedev.missconsult.exam.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -141,7 +140,8 @@ public class SeriesController
         MissSeriesMap missSeriesMap = new MissSeriesMap();
         missSeriesMap.setMsId(Long.valueOf(Long.parseLong(msId)));
         VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMap);
-        List missSeriesMaps = vresultMessage.getResultListObj();
+        @SuppressWarnings("rawtypes")
+		List missSeriesMaps = vresultMessage.getResultListObj();
         StringBuffer sb = new StringBuffer();
         int index = 0;
         /*private String msatFileName;
@@ -212,19 +212,22 @@ public class SeriesController
         return "exam/template/seriesManagement";
     }
 
-    @RequestMapping(value={"/action"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @SuppressWarnings("unchecked")
+	@RequestMapping(value={"/action"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String doAction(HttpServletRequest request, @ModelAttribute(value="seriesForm") SeriesForm seriesForm, BindingResult result, Model model)
     {
         String mode = seriesForm.getMode();
         String message = "";
         String message_class="";
-        String missExam_mapping[] = request.getParameterValues("missExam_mapping");
+        //String missExam_mapping[] = request.getParameterValues("missExam_mapping");
        // logger.debug((new StringBuilder("missExam_mapping=")).append(missExam_mapping).toString());
         String missSeriesMap = request.getParameter("missSeriesMap");
         //logger.debug((new StringBuilder("missSeriesMap=")).append(missSeriesMap).toString());
         logger.info("into action with mode="+mode+",missSeriesMap="+missSeriesMap);
-        Map checkDuplicate = new HashMap();
-        List list = new ArrayList();
+        @SuppressWarnings("rawtypes")
+		Map checkDuplicate = new HashMap();
+        @SuppressWarnings("rawtypes")
+		List list = new ArrayList();
         if(missSeriesMap != null && missSeriesMap.length() > 0)
         {
             String ids[] = missSeriesMap.split(",");
@@ -292,7 +295,8 @@ public class SeriesController
         MissSeriesMap missSeriesMapObj = new MissSeriesMap();
         missSeriesMapObj.setMsId(id);
         VResultMessage vresultMessage = missExamService.searchMissSeriesMap(missSeriesMapObj);
-        List missSeriesMaps = vresultMessage.getResultListObj();
+        @SuppressWarnings("rawtypes")
+		List missSeriesMaps = vresultMessage.getResultListObj();
         StringBuffer sb = new StringBuffer();
         int index = 0;
         /*private String msatFileName;

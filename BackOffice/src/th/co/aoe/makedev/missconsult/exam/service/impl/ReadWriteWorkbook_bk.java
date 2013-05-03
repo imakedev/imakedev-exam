@@ -74,7 +74,7 @@ public class ReadWriteWorkbook_bk {
 					 for (Row row : sheet) {
 			            	//System.out.println("row id="+row.getRowNum()+"");
 						 MissQuestion missQuestion=new MissQuestion();
-			            	int rowId=row.getRowNum();
+			            	//int rowId=row.getRowNum();
 			            	//if(rowId>0){
 			            //	ThaiCustomUser user =new ThaiCustomUser();
 			                for (Cell cell : row) {
