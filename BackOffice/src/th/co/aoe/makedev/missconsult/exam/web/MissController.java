@@ -5,6 +5,8 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -112,7 +114,7 @@ public class MissController
 
     @RequestMapping(value={"/account/{maId}/contacts"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String contactsList(@PathVariable String maId, @ModelAttribute(value="contactForm") ContactForm contactForm, Model model)
-    {
+    { 
     	
     	/* ContactForm contactForm = null;
          if(model.containsAttribute("contactForm"))
@@ -263,6 +265,13 @@ public class MissController
         Gson gson=new Gson();
 		return gson.toJson(missTheme);
     }
+    @RequestMapping(value={"/generatePassword"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public @ResponseBody String generatePassword()
+	    {
+    	 return new BigInteger(40, random).toString(32); 
+	    }
+   
+    private static final SecureRandom random = new SecureRandom();
    // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
    // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static SimpleDateFormat format11 = new SimpleDateFormat("MM-dd-yyyy");
