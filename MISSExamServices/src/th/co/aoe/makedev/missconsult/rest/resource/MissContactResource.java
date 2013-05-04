@@ -148,7 +148,7 @@ public class MissContactResource extends BaseResource {
 							returnUpdateRecord(entity,xbpsTerm,updateRecord);
 							*/
 							String[] mcontactIds=xbpsTerm.getMcontactIds().split(",");
-							logger.debug("    mcontactIds ="+mcontactIds.length);
+							logger.error("    mcontactIds ="+mcontactIds.length);
 							int updateRecord=0;
 							for (int i = 0; i <mcontactIds.length; i++) {
 								th.co.aoe.makedev.missconsult.hibernate.bean.MissContact item = new th.co.aoe.makedev.missconsult.hibernate.bean.MissContact();
@@ -158,6 +158,7 @@ public class MissContactResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_CONTACT_DELETE)){
+							logger.error("into delete contact ->"+bpsTerm.getMcontactId());
 							int updateRecord=missContactService.deleteMissContact(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}

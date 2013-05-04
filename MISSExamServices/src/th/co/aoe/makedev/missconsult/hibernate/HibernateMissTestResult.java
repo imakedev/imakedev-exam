@@ -283,12 +283,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Transactional(readOnly = true)
 	public List searchMissTestResult(MissTestResult instance, String mtrIds,int roleMC,
-			Pagging pagging) throws DataAccessException {
+			Pagging pagging,boolean showAll ) throws DataAccessException {
 		ArrayList transList = new ArrayList();
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Long msId = instance.getMsId();
-		
-			
+		 
 		try {
 			/*
 			 * Long megId = instance.getMegId(); String megName =
@@ -320,8 +319,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					.getMaName() : null;
 			Long maId= (missCandidate != null && missCandidate
 							.getMissAccount() != null) ? missCandidate.getMissAccount()
-							.getMaId() : null;
-
+							.getMaId() : null; 
 			StringBuffer sb = new StringBuffer(
 					" select result.MTR_ID,result.MCA_ID,result.MS_ID,result.ME_ID,result.MTR_TEST_DATE,"
 							+ " result.MTR_START_TIME,result.MTR_END_TIME,result.MTR_STATUS,"
@@ -357,8 +355,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			 * where result.MCA_ID=21 and result.MTR_START_TIME > '2012-06-20'
 			 * and result.MTR_START_TIME < '2012-06-20 23:59:59'
 			 */
-			boolean iscriteria = false;
-			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx roleMC => "+roleMC+",maId="+maId);
+			boolean iscriteria = false; 
 			if(roleMC !=1){// company
 				//sb.append( " where  ( result.MTR_HIDE_STATUS !='0' or result.MTR_HIDE_STATUS is null )  ");
 				//iscriteria=true;
@@ -383,7 +380,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				iscriteria = true;
 			}
 
-			if (mtrIds != null && mtrIds.trim().length() > 0) {
+			if (mtrIds != null && mtrIds.trim().length() > 0 && !mtrIds.trim().equals("-1")) {
 				// criteria.add(Expression.eq("megId", megId));
 				sb.append(iscriteria ? (" and result.MTR_ID in (" + mtrIds + ")")
 						: (" where result.MTR_ID in (" + mtrIds + ")"));
@@ -455,7 +452,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			if (pagging.getSortBy() != null && pagging.getSortBy().length() > 0) {
 				sb.append(" order by " + pagging.getOrderBy()
 						+ " " + pagging.getSortBy().toLowerCase());
-			}
+			} 
 			//logger.debug("sb ========================== >" + sb.toString());
 			// get header
 			Query 	query = session
@@ -498,9 +495,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			logger.debug(" first Result="
 					+ (pagging.getPageSize() * (pagging.getPageNo() - 1)));
 
+			if(!showAll){
 			query.setFirstResult(pagging.getPageSize()
 					* (pagging.getPageNo() - 1));
 			query.setMaxResults(pagging.getPageSize());
+			}
 			List result = query.list();
 			logger.debug(" result ========================== >" + result);
 			int size_result = result.size();

@@ -15,7 +15,7 @@ public interface MissTestResultService {
 		@SuppressWarnings("rawtypes")
 		public List findMissTestShow( Long mcaId,Long msId)throws DataAccessException;
 		@SuppressWarnings("rawtypes")
-		public  List searchMissTestResult(MissTestResult persistentInstance,String mtrIds,int roleMC,Pagging pagging)throws DataAccessException  ;
+		public  List searchMissTestResult(MissTestResult persistentInstance,String mtrIds,int roleMC,Pagging pagging,boolean showAll)throws DataAccessException  ;
 		public int processMissTestResult(MissTestResult persistentInstance,String userid,String rootPath)throws DataAccessException  ; 
 		public Long saveOrUpdateMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
 		public int startMissTestResult(String userid,MissTestResult transientInstance) throws DataAccessException;
