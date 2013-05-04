@@ -43,6 +43,17 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private String column;
 	private String value;
 	private int roleMC; //0=false, 1 =ture;
+	
+	private boolean showAll; //true =show all
+	
+	public boolean isShowAll() {
+		return showAll;
+	}
+
+	public void setShowAll(boolean showAll) {
+		this.showAll = showAll;
+	}
+
 	public int getRoleMC() {
 		return roleMC;
 	}

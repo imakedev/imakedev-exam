@@ -170,7 +170,7 @@ public class MissTestResultResource extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
 							@SuppressWarnings("rawtypes")
-							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,xbpsTerm.getMtrIds(),xbpsTerm.getRoleMC(),page);
+							List result = (List) missTestResultService.searchMissTestResult(bpsTerm,xbpsTerm.getMtrIds(),xbpsTerm.getRoleMC(),page,xbpsTerm.isShowAll());
 							if (result != null && result.size() == 3) {
 								
 								java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>) result
