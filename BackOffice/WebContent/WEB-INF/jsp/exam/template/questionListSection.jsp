@@ -11,7 +11,12 @@ div.inner {
     border: 1px dashed #333;
     margin: 5px;
     padding: 10px;
+    font-size:12px;
 }
+div.inner > table
+{
+    font-size:12px;
+}  
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -136,6 +141,7 @@ function loadQuestion(_url){
 	    					</tr>
 	    					</table> 
     		<div align="right"></div>	
+    		<div style="width: 100%">
     	 <table class="table stable-striped table-bordered table-condensed" border="1" style="font-size: 12px">
         	<thead>
           		<tr>
@@ -186,6 +192,7 @@ function loadQuestion(_url){
           	</tr> --%>
         	</tbody>
       </table>
+      </div>
 			</form:form>	
 			<div>
 			<!-- <input type="checkbox"> -->
