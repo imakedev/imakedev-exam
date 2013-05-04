@@ -253,10 +253,10 @@ $(document).ready(function() {
   //alert(startYear)
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
 //	  $('#defaultCountdown').countdown({until: startYear, compact: true,
-  format: 'DHMS', description: ''});
+ // format: 'DHMS', description: ''});
  // format: 'DHMS', description: ''});
 	//  format: 'hms', description: ''});
-	//  format: 'HMS', description: ''});
+	  format: 'HMS', description: ''});
   
   //alert("new path="+_path)
  // $.jstree._themes = "/BackOffice/resources/js/themes/";
@@ -881,7 +881,7 @@ function noBack() {
 	    </div>
   <div class="span2">
 	    <!--Sidebar content--> 
-            <div class="post_section">
+            <div class="post_section" style="z-index: -20">
 				<h3>
 				<img src="<c:url value='/resources/images/h2bg.gif'/>"  border="0" align="absmiddle"/>&nbsp; <spring:message code="home_description"/></h3>
 				<p>
