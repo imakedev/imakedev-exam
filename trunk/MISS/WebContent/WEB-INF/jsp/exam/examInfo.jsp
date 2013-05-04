@@ -88,7 +88,8 @@ $(document).ready(function() {
   //format: 'YOWDHMS', description: ''});
  // format: 'HMS', description: ''});
 	  //format: 'hms', description: ''});
-	   format: 'DHMS', description: ''});
+	   //format: 'DHMS', description: ''});
+	   format: 'HMS', description: ''});
 });
 function checkAgree(){
 	if(document.getElementById("agree_element").checked){
@@ -146,7 +147,8 @@ function appendContent(data){
 <!-- <body style="background-color:rgb(231, 235, 242)"> -->
  <!-- <body style="background-color:rgb(241, 241, 241)"> -->
  <!--   style="background-color: white;" --> 
- <body  onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload=""  style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
+  <body  onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload=""  style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); "> 
+ <%-- <body  style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); "> --%>
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
