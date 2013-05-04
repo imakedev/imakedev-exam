@@ -61,6 +61,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTestShow;
+import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 @Controller
@@ -686,14 +687,39 @@ public class ResultController
     }
     @SuppressWarnings({ "deprecation", "unchecked" })
 	@RequestMapping(value={"/export"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public void export(HttpServletRequest request, HttpServletResponse response)
+    public void export(HttpServletRequest request, HttpServletResponse response,Model model,SecurityContextHolderAwareRequestWrapper srequest)
     {
     	
     	String mtrIds=request.getParameter("id");
+    	if(mtrIds!=null && mtrIds.equals("-1"))
+    		mtrIds=null;
+    	 Long maId=null;
+    	 if(model.containsAttribute("UserMissContact")){
+         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+         //	missSeries=
+         	//List<MissAccountSeriesMap> missAccountSeriesMaps
+         	maId=missContact.getMcontactRef(); 
+         } 
+    	  int roleMC=0;
+    	  if(srequest.isUserInRole("ROLE_MANAGE_MISSCONSULT"))
+    		  roleMC=1;
+    	 
     	String msId=request.getParameter("mcaSeries");
+    	MissCandidate missCandidate =new MissCandidate();
+    	MissAccount missAccount=new MissAccount(); 
+    	missAccount.setMaId(maId);
+    	missCandidate.setMissAccount(missAccount);
+    	
     	MissTestResult missTestResult =new MissTestResult();
     	missTestResult.setMtrIds(mtrIds);
     	missTestResult.setMsId(Long.parseLong(msId));
+    	missTestResult.setMissCandidate(missCandidate);
+    	missTestResult.setRoleMC(roleMC);
+    	missTestResult.setShowAll(true);
+    	Pagging pagging=new Pagging();
+    	pagging.setOrderBy(request.getParameter("orderBy"));
+    	pagging.setSortBy(request.getParameter("sortBy"));
+    	missTestResult.setPagging(pagging);
     	 
     	   VResultMessage vresultMessage = missExamService.searchMissTestResult(missTestResult);
     	// model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));

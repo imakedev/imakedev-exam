@@ -434,8 +434,8 @@ public class CompanyController
        // return missCandidate;
     }
 
-    @RequestMapping(value={"/account/{maId}/contacts"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public String contactsList(@PathVariable String maId, @ModelAttribute(value="contactForm") ContactForm contactForm, Model model)
+    @RequestMapping(value={"/account/{maId}/contacts/{mode}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public String contactsList(@PathVariable String mode,@PathVariable String maId, @ModelAttribute(value="contactForm") ContactForm contactForm, Model model)
     {
     	
     	/* ContactForm contactForm = null;
@@ -444,15 +444,18 @@ public class CompanyController
          else
          	contactForm = new ContactForm();*/
         
-         String mode = contactForm.getMode();
+     //    String mode = contactForm.getMode();
          logger.debug("into xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx mode="+mode);
+        // System.out.println(" mode->"+mode);
          if(mode != null && mode.equals("deleteItems"))
          {
         	 logger.debug("Start DELETE mode="+contactForm.getMcontactIdArray());
+        	 //System.out.println("Start DELETE mode="+contactForm.getMcontactIdArray());
         	 contactForm.getMissContact().setMcontactIds(contactForm.getMcontactIdArray());
              missExamService.deleteMissContact(contactForm.getMissContact(),ServiceConstant.MISS_CONTACT_ITEMS_DELETE);
              logger.debug("End DELETE mode="+contactForm.getMcontactIdArray());
          }else if(mode != null && mode.equals("delete")){
+        	 //System.out.println(" getMcontactId->"+contactForm.getMissContact().getMcontactId());
              missExamService.deleteMissContact(contactForm.getMissContact(), ServiceConstant.MISS_CONTACT_DELETE);
          }
          contactForm.getPaging().setPageNo(1);
