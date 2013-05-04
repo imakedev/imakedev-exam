@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY_ROLE_CONTACT')" var="isManageCompanyRoleContact"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT_ROLE_CONTACT')" var="isManageMCRoleContact"/>
+<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT')" var="isManageMC"/>
+<sec:authentication property="principal.username"  var="username_check"/>
 <script type="text/javascript">
 $(document).ready(function() {
 //	$('#tabs').tabs();
@@ -199,7 +201,8 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 			 <!--  <pre  class="prettyprint" style="font-family: sans-serif;font-size:12px:;margin-top: 0px"> -->
 			    <table border="0" width="100%" style="font-size: 12px">
 			    	<tr>
-    					<td width="100%" colspan="4"><strong>Contact Point Profile</strong></td>
+    					<td width="100%" colspan="4"><strong>Contact Point Profile
+    					</strong></td> 
     				</tr>
     				<tr valign="top">
     					<td width="25%">Username:</td>
@@ -230,6 +233,9 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<input type="password" value="${contactForm.missContact.mcontactPassword}" id="mcontactPassword" name="missContact.mcontactPassword">
     					<%-- <form:password path="missContact.mcontactPassword" id="mcontactPassword"/> --%>
     					<font color="red">*</font>
+    					<c:if test="${isManageMC && username_check=='admin'}">	
+    						<span > [ ${contactForm.missContact.mcontactPassword} ]</span>
+    					</c:if>
     					</td>
     				</tr>
     				<c:if test="${isManageCompanyRoleContact || isManageMCRoleContact}">	
