@@ -82,7 +82,8 @@ $(document).ready(function() {
   //format: 'YOWDHMS', description: ''});
  // format: 'HMS', description: ''});
 	 // format: 'hms', description: ''});
-	  format: 'DHMS', description: ''});
+	  //format: 'DHMS', description: ''});
+	  format: 'HMS', description: ''});
 	 
 });
 /* window.onbeforeunload = function() {

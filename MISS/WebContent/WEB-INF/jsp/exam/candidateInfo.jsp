@@ -105,8 +105,8 @@ $(document).ready(function() {
   var thisDay='${systemDate}'.split("/");
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
-  format: 'DHMS', description: ''});
- // format: 'HMS', description: ''});
+  //format: 'DHMS', description: ''});
+ format: 'HMS', description: ''});
 	//  format: 'hms', description: ''});
 });
 function doStart(){
@@ -351,10 +351,30 @@ function getCandidateInfo(){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="10%">Position:</td>
-	    					 <td align="left" width="24%"> <form:input path="missCandidate.mcaPosition"/>&nbsp;<font color="red">*</font>
+	    					 <td align="left" width="24%">
+	    					  <%-- <form:input path="missCandidate.mcaPosition"/> --%>
+	    					  <c:if test="${missExamForm.missCandidate.missAccount.maId==17}"> 
+    							 <form:select path="missCandidate.mcaPosition" cssStyle="background:#FFFFFF">
+    									 <form:options items="${missPositionMasterList}" itemLabel="mpmName" itemValue="mpmName"></form:options> 
+    							</form:select>
+    						</c:if>
+    							<c:if test="${missExamForm.missCandidate.missAccount.maId!=17}">
+    								<form:input path="missCandidate.mcaPosition"/>
+    							</c:if>
+	    					  &nbsp;<font color="red">*</font>
 	    					 </td>
 	    					<td align="left" width="10%">Department:</td>
-	    					<td align="left" width="24%"><form:input path="missCandidate.mcaDepartment"/>&nbsp;<font color="red">*</font></td>
+	    					<td align="left" width="24%">
+	    					<%-- <form:input path="missCandidate.mcaDepartment"/> --%>
+	    					<c:if test="${missExamForm.missCandidate.missAccount.maId==17}"> 
+    						<form:select path="missCandidate.mcaDepartment" cssStyle="background:#FFFFFF">
+    								 <form:options items="${missDepartmentMasterList}" itemLabel="mdmName" itemValue="mdmName"></form:options> 
+    						</form:select>
+    						</c:if>
+    						<c:if test="${missExamForm.missCandidate.missAccount.maId!=17}">
+    							<form:input path="missCandidate.mcaDepartment"/>
+    						</c:if>
+	    					&nbsp;<font color="red">*</font></td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>

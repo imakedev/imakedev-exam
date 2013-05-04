@@ -22,7 +22,7 @@
 <link href="<c:url value='/resources/css/custom-theme/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
 
 <link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
-<link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" /> 
+<%-- <link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" />  --%>
 
 <style>
 .ui-widget { font-family: Trebuchet MS, Tahoma, Verdana,
@@ -95,7 +95,8 @@ $(document).ready(function() {
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]);
   $('#defaultCountdown').countdown({since: startYear, compact: true, 
 	//  format: 'hms', description: ''});
-	  format: 'DHMS', description: ''});
+	 // format: 'DHMS', description: ''});
+	  format: 'HMS', description: ''});
   var timelimit=(parseInt('${timelimit}'))+"";
 	 // var endTime =new Date(parseInt(timelimit[2]), parseInt(timelimit[1]),  parseInt(timelimit[0]),timelimit[3],parseInt(timelimit[4])+4,parseInt(timelimit[5]),0);
 	 			// new Date(year        , month                 ,  day                   ,hours       ,minutes                  ,seconds,              milliseconds)
@@ -212,7 +213,8 @@ function appendContent(data){
  <div id="dialog-timeOut" title="TimeOut" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	You're running out of time
 </div>
- <body onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload="" style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); ">
+  <body onload="noBack();"   onpageshow="if (event.persisted) noBack();" onunload="" style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); "> 
+ <%-- <body  style="background-color:rgb(253, 253, 253);background-image:url(<c:url value='/resources/images/body.gif'/>); "> --%>
  <div class="container-fluid">
     <div class="row-fluid">
     	<div class="span12" align="center"> 
@@ -239,7 +241,8 @@ function appendContent(data){
     	<!-- <div class="row-fluid" style="background-color: rgb(0, 136, 204)">  -->
     	<div class="row-fluid"> 
     	<div class="span2">
-    	   <form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid #DDD"> 
+    	   <!-- <form class="well" style="background-color:rgb(245, 245, 245);border: 2px solid #DDD">  -->
+    	     <form   style="background-color:rgb(245, 245, 245);border: 2px solid #DDD;padding: 5px">
     	<%--    <input type="hidden" id="examIndex" value="${missExamForm.examIndex}"/>
     	   <input type="hidden" id="questionIndex" value="${missExamForm.questionIndex}"/> --%>
     	   <%--
