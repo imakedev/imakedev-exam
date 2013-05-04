@@ -100,7 +100,9 @@ function exportTest(){
 	}
 	 
 	mtrIds=mtrIds.substring(0, mtrIds.length-1);
-	
+	if(!(mtrIds.length>0)){
+		mtrIds="-1";
+	}
 	if(!(mtrIds.length>0)){
 		//alert(mtrIds);dialog-empty
 		$( "#dialog-empty" ).dialog({
@@ -113,7 +115,8 @@ function exportTest(){
 			}
 		});
 	}else{
-		src=src+"?id="+mtrIds+"&mcaSeries="+$("#mcaSeries").val();
+		 
+		src=src+"?id="+mtrIds+"&mcaSeries="+$("#mcaSeries").val()+"&orderBy="+$("#sortItemSelect").val()+"&sortBy="+$("#sortOrderSelect").val();
 	     var div = document.createElement("div");
 	    document.body.appendChild(div);
 	    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";  
