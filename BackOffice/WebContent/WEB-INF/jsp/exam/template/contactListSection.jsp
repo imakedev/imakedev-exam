@@ -64,6 +64,7 @@ function loadContact(_url){
 }
  function doContactAction(mode,id){
 	//alert($("#maCustomizePassMessage").val());
+	//alert("mode->"+mode)
 	 $("#mode").val(mode);
 		if(mode=='deleteItems'){
 			$("#mcontactIdArray").val(id);
@@ -75,11 +76,17 @@ function loadContact(_url){
 		var target="miss";
 		if($("#mcontactType").val() != '1'){
 			target="company";
-		}
-		
-		$.post(target+"/account/"+$("#maId").val()+"/contacts",$("#contactForm").serialize(), function(data) {
+			//document.getElementById("mode").value=mode;
+			$.post(target+"/account/"+$("#maId").val()+"/contacts/"+mode,$("#contactForm").serialize(), function(data) {
 			    appendContentWithId(data,"tabs-3");
 			});
+		}else{
+			$.post(target+"/account/"+$("#maId").val()+"/contacts",$("#contactForm").serialize(), function(data) {
+			    appendContentWithId(data,"tabs-3");
+			});
+		}
+		//alert(target)
+		
   }
  function toggleCheckbox(){
 		var _check=document.getElementById("mcontactIdCheckboxAll").checked;
@@ -151,7 +158,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="mcontactIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="20%"><div class="th_class">First-Lastname</div></th> 
+            		<th width="20%"><div class="th_class">First-Lastnamex</div></th> 
             		<th width="15%"><div class="th_class">Position</div></th>
             		<th width="20%"><div class="th_class">Department</div></th> 
             		<th width="15%"><div class="th_class">Mobile Phone</div></th>

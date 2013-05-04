@@ -181,6 +181,18 @@ function getCandidateInfo(){
 			});
 	}
 }
+function generatePassword(){
+	//var password=$("#missCandidate\\.mcaPassword").val();
+	//alert(password);
+	$.ajax({
+		  type: "get",
+		  url: "miss/generatePassword",
+		  cache: false
+		}).done(function( data ) {
+			//alert(data)
+			$("#missCandidate\\.mcaPassword").val(data);
+		});
+}
 /* function checkForm() 
 { if(!checkID(document.form1.txtID.value)) 
 alert('รหัสประชาชนไม่ถูกต้อง'); 
@@ -223,6 +235,12 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="55%">
     					 <form:input path="missCandidate.mcaPassword"/>
     					<!-- <input type="password"/> -->
+    					 
+    					<a class="btn btn-primary" onclick="generatePassword()" style="margin-top: -10px;margin-left: 10px;">
+    					 <i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Generate Password</span></a>
+    					  
+    					 <!-- 
+    					 <span>Generate Password</span> -->
     					</td>
     					  					
     					<td width="25%">&nbsp;</td>

@@ -182,6 +182,18 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
 	 ranges[0].selectNodeContents( newElement ); 
 	// CKEDITOR.dialog.getCurrent().hide();
 }
+function generatePassword(){ 
+
+	$.ajax({
+		  type: "get",
+		  url: "miss/generatePassword",
+		  cache: false
+		}).done(function( data ) { 
+ 		
+			$("#mcontactPassword").val(data);
+			$("#password_show").html("[ "+data+" ]");
+		});
+}
 </script>
  <div  id="message_element_contact"  class="alert alert-${message_class}" style="${display}">
     <button  class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -234,8 +246,17 @@ var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt="" src="http://10
     					<%-- <form:password path="missContact.mcontactPassword" id="mcontactPassword"/> --%>
     					<font color="red">*</font>
     					<c:if test="${isManageMC && username_check=='admin'}">	
-    						<span > [ ${contactForm.missContact.mcontactPassword} ]</span>
+    						 <span id="password_show">[ ${contactForm.missContact.mcontactPassword} ]</span>
     					</c:if>
+    					<a class="btn btn-primary" onclick="generatePassword()">
+    					 <i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Generate Password</span></a>
+    				 
+    					</td>
+    				</tr>
+    				<tr valign="top"  height="10">
+    					<td width="25%"></td>
+    					<td width="50%" colspan="2">
+    					 
     					</td>
     				</tr>
     				<c:if test="${isManageCompanyRoleContact || isManageMCRoleContact}">	
