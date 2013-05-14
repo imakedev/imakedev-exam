@@ -99,7 +99,18 @@ function doSendMail(){
     			         }
     					CKEDITOR.replace( 'mail_message',
     						    {
-    						        toolbar : 'Basic',
+    						       // toolbar : 'Basic',
+    						        toolbar : [
+   										    { name: 'document', items : [ 'Source','-','Preview','-'] }, 
+   											{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike',] },
+   											{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+   											{ name: 'links', items : [ 'Link','Unlink'] },
+   											{ name: 'insert', items : [ 'Image','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
+   											'/',
+   									  	 	{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+   											{ name: 'colors', items : [ 'TextColor','BGColor'] } 
+   											//{ name: 'tools', items : [ 'MyButton' ] }
+   										]
     						      //  uiColor : '#9AB8F3'
     						    });
     					</script></td>
