@@ -26,19 +26,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
-import th.co.aoe.makedev.missconsult.xstream.MissAccount;
-import th.co.aoe.makedev.missconsult.xstream.MissAttach;
-import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
-import th.co.aoe.makedev.missconsult.xstream.MissContact;
-import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissFile;
-import th.co.aoe.makedev.missconsult.xstream.MissManual;
-import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
-import th.co.aoe.makedev.missconsult.xstream.MissSery;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 
 import com.google.gson.Gson;
+
 @Controller
-public class UploadController {	
+@RequestMapping(value={"/reportUpload"})
+public class ReportUploadController {
+	
 	//private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
 	//private static SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private static Logger logger = Logger.getRootLogger();
@@ -55,10 +51,13 @@ public class UploadController {
         logger.debug("########################### @Autowired WelcomeController #######################");
         this.missExamService = missExamService;
     }*/
-    @RequestMapping(value={"/upload/{module}/{id}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value={"/upload/{msId}/{msOrder}/{mraLang}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
-    public  String doUpload(HttpServletRequest request, Model model, @PathVariable String module,@PathVariable String id)
-    {
+    public  String doUpload(HttpServletRequest request, Model model,@PathVariable Long msId
+    		,@PathVariable Long msOrder,@PathVariable String mraLang)
+    { 
+    	 String reportName=request.getParameter("reportName"); 
+    	 //System.out.println("reportName-->"+reportName);
     	 String ndPathFileGen=null;
     	 MissFile missFile =new MissFile();
     	 String hotLink="";
@@ -99,7 +98,7 @@ public class UploadController {
 						  monthStr = monthStr.length()>1?monthStr:"0"+monthStr;
 					
 						  pathFolder=yearStr+"_"+monthStr+"";
-						  ndFilePath = bundle.getString(module+"Path")+pathFolder;
+						  ndFilePath = bundle.getString("reportTemplatePath")+pathFolder;
 						  String path =ndFilePath;
 						  createDirectoryIfNeeded(path);
 						  String filename =s ;// multipart.getOriginalFilename();
@@ -128,79 +127,17 @@ public class UploadController {
 								e.printStackTrace();
 							}	 
 					} 
-				if(module.equals("mcLogo")){
-					 MissAccount missAccount = new MissAccount();
-					 missAccount.setMaId(Long.parseLong(id));
-					 missAccount.setMaCustomizeLogoFileName(s);
-					 missAccount.setMaCustomizeLogoHotlink(hotLink);
-					  missAccount.setMaCustomizeLogoPath(pathFolder);
-					  missExamService.updateMissAccountLogo(missAccount);
-				}else if(module.equals("companyLogo")){
-					 MissAccount missAccount = new MissAccount();
-					 missAccount.setMaId(Long.parseLong(id));
-					 missAccount.setMaCustomizeLogoFileName(s);
-					 missAccount.setMaCustomizeLogoHotlink(hotLink);
-					  missAccount.setMaCustomizeLogoPath(pathFolder);
-					  missExamService.updateMissAccountLogo(missAccount);
-				}else if(module.equals("candidateImg")){
-					 MissCandidate missCandidate = new MissCandidate();
-					 missCandidate.setMcaId(Long.parseLong(id));
-					 missCandidate.setMcaPictureFileName(s);
-					 missCandidate.setMcaPictureHotlink(hotLink);
-					  missCandidate.setMcaPicturePath(pathFolder);
-					  missExamService.updateMissCandidatePhoto(missCandidate);
-				}else if(module.equals("contactImg")){
-								
-					 MissContact missContact = new MissContact();
-					 missContact.setMcontactId(Long.parseLong(id));
-					 missContact.setMcontactPictureFileName(s);
-					 missContact.setMcontactPictureHotlink(hotLink);
-					  missContact.setMcontactPicturePath(pathFolder);
-					  missExamService.updateMissContactPhoto(missContact);
-				}else if(module.equals("attachManual")){
-					 MissManual missManual = new MissManual();
-					 MissSery missSery=new MissSery();
-					 missSery.setMsId(Long.parseLong(id));
-					 missManual.setMissSery(missSery);
-					 missManual.setMmId(Long.parseLong(id));
-					 missManual.setMmFileName(s);
-					 missManual.setMmHotlink(hotLink);
-					  missManual.setMmPath(pathFolder);
-					  missExamService.updateMissManual(missManual);
-				}else if(module.equals("questionImg")){
-					 MissAttach missAttach = new MissAttach();
-					 //missAttach.setMatId((Long.parseLong(id));
-					 missAttach.setMatFileName(s);
-					 missAttach.setMatHotlink(hotLink);
-					 missAttach.setMatPath(pathFolder);
-					 missAttach.setMatRef(Long.parseLong(id));
-					 missAttach.setMatModule(module);
-					 missExamService.updateMissAttach(missAttach);
-				}else if(module.equals("template")){
-					 MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
-					 missSeriesAttach.setMsatRef1(Long.parseLong(id));
-					 missSeriesAttach.setMsatModule(module);
-					 missSeriesAttach.setMsatHotlink(hotLink);
-					 missSeriesAttach.setMsatPath(pathFolder);
-					 missSeriesAttach.setMsatFileName(s);
-					 missExamService.updateMissSeriesAttach(missSeriesAttach);
-				}else if(module.equals("evaluation")){
-					//String[] ids=id.split("_");
-					 MissSeriesAttach missSeriesAttach = new MissSeriesAttach();
-					/* missSeriesAttach.setMsatRef1(Long.parseLong(ids[0])); //msId
-					 missSeriesAttach.setMsatRef1(Long.parseLong(ids[1])); //meId
-*/					 
-					// missSeriesAttach.setMsatRef1(Long.parseLong(id)); //msId
-					/* missSeriesAttach.setMsatRef1(Long.parseLong(request.getParameter("msId")));
-					 missSeriesAttach.setMsatRef2(Long.parseLong(request.getParameter("meId")));*/
-					 missSeriesAttach.setMsatRef1(Long.parseLong(id));
-					 missSeriesAttach.setMsatModule(module);
-					 missSeriesAttach.setMsatHotlink(hotLink);
-					 missSeriesAttach.setMsatPath(pathFolder);
-					 missSeriesAttach.setMsatFileName(s);
-					 missSeriesAttach.setRootPath(bundle.getString(module+"Path"));
-					 missExamService.updateMissSeriesAttach(missSeriesAttach);
-				}
+			  
+					 MissReportAttach missReportAttach = new MissReportAttach();
+					 missReportAttach.setMsId(msId);
+					 missReportAttach.setMsOrder(msOrder);
+					 missReportAttach.setMraLang(mraLang);
+					 missReportAttach.setMraHotlink(hotLink);
+					 missReportAttach.setMraPath(pathFolder);
+					 missReportAttach.setMraFileName(s);
+					 missReportAttach.setMraReportName(reportName);
+					 missExamService.updateMissReportAttach(missReportAttach);
+				 
 		}
        // return missCandidate;
 		missFile.setHotlink(hotLink);
@@ -211,68 +148,24 @@ public class UploadController {
 	//	return hotLink;
 		 return gson.toJson(missFile );
     }
-    @RequestMapping(value={"/getfile/{module}/{id}/{hotlink}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
-    public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable String module
-    		,@PathVariable String id,@PathVariable String hotlink)
+    @RequestMapping(value={"/getfile/{msId}/{msOrder}/{mraLang}/{hotlink}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable Long msId
+    		,@PathVariable Long msOrder,@PathVariable String mraLang,@PathVariable String hotlink)
     {
-    	//String hotlink = request.getQueryString();
-		//String []adminview = hotlink.split("&mode=");
-    	
-		//	String filePath = "/usr/local/Work/TestDownload/1338218105884kqyoujf6uwhsqqwgwqitedq89kpl01u8nitc.jpg";
-    	 
-    	                                          
+    	                                           
     	String  content_type= "image/jpeg";
     	//String  content_disposition= "";
     	String  filename= "";
-    	String path= bundle.getString(module+"Path");
+    	String path= bundle.getString("reportTemplatePath");
     	String ndPathFileGen="";
     	//path+"/"+ndPathFileGen
-    	if(module.equals("mcLogo")){
-    		MissAccount missAccount= missExamService.findMissAccountById(Long.parseLong(id));
-    		ndPathFileGen=path+missAccount.getMaCustomizeLogoPath();
-		}else if(module.equals("companyLogo")){
-			MissAccount missAccount=missExamService.findMissAccountById(Long.parseLong(id));
-	    	ndPathFileGen=path+missAccount.getMaCustomizeLogoPath();
-		}else if(module.equals("candidateImg")){
-			MissCandidate missCandidate =missExamService.findMissCandidateById(Long.parseLong(id));
-			 ndPathFileGen=path+missCandidate.getMcaPicturePath();
-		}else if(module.equals("contactImg")){
-			MissContact missContact=missExamService.findMissContactById(Long.parseLong(id));
-			 ndPathFileGen=path+missContact.getMcontactPicturePath();
-		}else if(module.equals("attachManual")){
-			MissManual missManual=missExamService.findMissManualById(Long.parseLong(id));
-			 ndPathFileGen=path+missManual.getMmPath();
-			 content_type="application/pdf";
-			 //content_disposition="attachment; filename="+missManual.getMmFileName();
-			 filename=missManual.getMmFileName();
-		}else if(module.equals("questionImg")){
-			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id),hotlink);
-			 ndPathFileGen=path+missAttach.getMatPath();
-		}else if(module.equals("template")){ // jasper
-			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(id),null,hotlink);
-			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
+    	  // jasper
+			MissReportAttach missReportAttach =missExamService.findMissReportAttachById(msId, msOrder, mraLang, hotlink);
+			 ndPathFileGen=path+missReportAttach.getMraPath();
 			 content_type="";
-			 //content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
-			 filename=missSeriesAttach.getMsatFileName();
-		}else if(module.equals("evaluation")){
-		//	String[] ids=id.split("_");
-			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(id),null,hotlink);
-			//MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
-			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
-			 content_type="application/vnd.ms-excel";
-			 //content_disposition="attachment; filename="+missSeriesAttach.getMsatFileName();
-			 filename=missSeriesAttach.getMsatFileName();
-			 //content_disposition="attachment; filename=ทดสอบ.xls";
-		}
-		else if(module.equals("doc")){
-			//	String[] ids=id.split("_");
-			MissDoc missDoc =missExamService.findMissDocById(Long.parseLong(id));
-				//MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
-				 ndPathFileGen=path+missDoc.getMdDocPath();
-				 content_type="application/pdf";
-				// content_disposition="attachment; filename="+missDoc.getMdDocFileName();
-				 filename=missDoc.getMdDocFileName();
-			}
+			 //content_disposition="attachment; filename="+missReportAttach.getMsatFileName();
+			 filename=missReportAttach.getMraFileName();
+		 
     	//String filePath =  bundle.getString(module+"Path")+hotlink+".jpg";
 		//	String fileName = null;
 			  
@@ -388,4 +281,5 @@ public class UploadController {
   	    }
   	    return sb.toString();
    }
+
 }

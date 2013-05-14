@@ -30,6 +30,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
@@ -447,4 +448,15 @@ public interface MissExamService {
 	public abstract ConsultantReport findConsultantReport(ConsultantReport consultantReport);
 	public abstract ConsultantReport findSales(ConsultantReport consultantReport);
 	public abstract String getEmailFromMissTodo(MissTodo missTodo);
+	
+	public abstract Long saveMissReportAttach(MissReportAttach missReportAttach);
+
+	public abstract int updateMissReportAttach(MissReportAttach missReportAttach);
+
+	public abstract int deleteMissReportAttach(MissReportAttach missReportAttach);
+	public abstract MissReportAttach findMissReportAttachById(Long msId,
+			Long msOrder,String mraLang, String hotlink) ;
+	 
+	public abstract VResultMessage searchMissReportAttach(MissReportAttach missReportAttach);
+
 }
