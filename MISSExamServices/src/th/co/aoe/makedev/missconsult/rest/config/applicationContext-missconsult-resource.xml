@@ -287,4 +287,10 @@
 		<property name="consultantReportService" ref="consultantReportService"></property> 
 		<property name="xstream" ref="xstream"></property>
 	</bean>
+	<bean id="missReportAttachResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.MissReportAttachResource"
+		scope="prototype"> 
+		<property name="missReportAttachService" ref="missReportAttachService"></property> 
+		<property name="xstream" ref="xstream"></property>
+	</bean>
 </beans>

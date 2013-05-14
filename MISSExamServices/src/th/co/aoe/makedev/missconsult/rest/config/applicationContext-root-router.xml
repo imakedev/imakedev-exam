@@ -267,6 +267,12 @@
 							bean="consultantReportResource" />
 					</bean>					
 				</entry>
+				<entry key="/missReportAttach">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="missReportAttachResource" />
+					</bean>					
+				</entry>
 			</map>
 		</property>
 		<!--<property name="routes[2].template.variables[URI]">
