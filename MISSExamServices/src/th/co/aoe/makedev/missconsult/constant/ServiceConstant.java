@@ -304,4 +304,11 @@ public class ServiceConstant {
 		public static final String MISS_DOC_DELETE = "deleteMissDoc";
 		public static final String MISS_DOC_SEARCH = "searchMissDoc";
 		public static final String MISS_DOC_FIND_BY_ID = "findMissDocById";
+		
+		// MISS_REPORT_ATTACH
+		public static final String MISS_REPORT_ATTACH_SAVE = "saveMissReportAttach";
+		public static final String MISS_REPORT_ATTACH_UPDATE = "updateMissReportAttach";
+		public static final String MISS_REPORT_ATTACH_DELETE = "deleteMissReportAttach";
+		public static final String MISS_REPORT_ATTACH_SEARCH = "searchMissReportAttach";
+		public static final String MISS_REPORT_ATTACH_FIND_BY_ID = "findMissReportAttachById"; 
 }
