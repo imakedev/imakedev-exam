@@ -468,7 +468,8 @@ public class ResultController
 	@RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
-    	logger.debug(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
+    //	logger.debug(;
+    	//System.out.println(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
     	Context ctx =null;
 		Connection con = null;
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
@@ -528,10 +529,12 @@ public class ResultController
 		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
 		 JasperPrint jasperPrint=null;
 		 Map p =new HashMap();
+		 //System.out.println("missTestResult.getMissTestShows()->"+missTestResult.getMissTestShows());
 		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
 		 if(missTestShows!=null && missTestShows.size()>0){
 			 for (MissTestShow missTestShow : missTestShows) {
 				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
+				//System.out.println("mmissTestShow.getMtsColumn()->"+missTestShow.getMtsColumn()+",missTestShow.getValue->"+missTestShow.getMtsValue());
 			}
 		 }
 		/* p.put("SubDataSource", beanCollectionDataSource);

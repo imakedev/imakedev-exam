@@ -32,6 +32,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissPositionMaster;
 import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
@@ -1645,8 +1646,57 @@ public class MissExamServiceImpl extends PostCommon
 			missDepartmentMasters=resultMessage.getResultListObj();
 		} 
 		return missDepartmentMasters;
+	}
+
+	@Override
+	public Long saveMissReportAttach(MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		  missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_SAVE);//"saveMissReportAttach");
+	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	        missReportAttach = (MissReportAttach)resultMessage.getResultListObj().get(0);
+	        return missReportAttach.getMsId();
+	}
+
+	@Override
+	public int updateMissReportAttach(MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		 missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_UPDATE);
+	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	        missReportAttach = (MissReportAttach)resultMessage.getResultListObj().get(0);
+	        return missReportAttach.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int deleteMissReportAttach(MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		  missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_DELETE);//"deleteMissReportAttach");
+	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	        missReportAttach = (MissReportAttach)resultMessage.getResultListObj().get(0);
+	        return missReportAttach.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public MissReportAttach findMissReportAttachById(Long msId,
+			Long msOrder, String mraLang,String hotlink) {
+		// TODO Auto-generated method stub
+		 MissReportAttach missReportAttach = new MissReportAttach();
+	        missReportAttach.setMsId(msId);
+	        missReportAttach.setMsOrder(msOrder);
+	        missReportAttach.setMraHotlink(hotlink);
+	        missReportAttach.setMraLang(mraLang);
+	        missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_FIND_BY_ID);//"findMissReportAttachById");
+	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	        return (MissReportAttach)resultMessage.getResultListObj().get(0);
+	}
+
+	@Override
+	public VResultMessage searchMissReportAttach(
+			MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_SEARCH);//"searchMissReportAttach");
+        return postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
 	} 
 	
-	 
-
+	  
+	    
 }
