@@ -311,4 +311,13 @@ public class ServiceConstant {
 		public static final String MISS_REPORT_ATTACH_DELETE = "deleteMissReportAttach";
 		public static final String MISS_REPORT_ATTACH_SEARCH = "searchMissReportAttach";
 		public static final String MISS_REPORT_ATTACH_FIND_BY_ID = "findMissReportAttachById"; 
+		public static final String MISS_REPORT_ATTACH_GET_TEMPLATE = "getTemplateMissReportAttach";
+		public static final String MISS_REPORT_ATTACH_UPDATE_REPORTNAME = "updateMissReportAttachReportName";
+		public static final String MISS_REPORT_ATTACH_GET_TEMPLATE_FOR_ROLE = "getTemplateMissReportAttachForRole";
+		
+		
+		// role_series_report_mapping 
+		public static final String ROLE_SERIES_REPORT_MAPPING_UPDATE = "updateRoleSeriesReportMapping";   
+		public static final String ROLE_SERIES_REPORT_MAPPING_LIST_BY_RC_ID ="listRoleSeriesReportMappingByRcId";
+		
 }
