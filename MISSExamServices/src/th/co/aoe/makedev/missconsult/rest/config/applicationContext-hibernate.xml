@@ -48,15 +48,15 @@
 		for the required JAR files. Alternatively you can use another connection pool
 		such as C3P0, similarly configured using Spring.
 	-->
-	<!--  
+	<!--    -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
 			 	p:password="${jdbc.password}"/>
-		  -->
+		
 	
-	       
+	     <!--    
      <jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/missdb"/>
-     <!--  -->
+     -->
 	<!-- JNDI DataSource for JEE environments -->
        <!--
          
@@ -158,6 +158,8 @@
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissDepartmentMaster</value>
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissPositionMaster</value> 
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach</value>
+			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.RoleSeriesReportMapping</value>
+			 
 			 
 			 <!-- Test -->
 			 <value>th.co.aoe.makedev.missconsult.hibernate.bean.Xls</value>  
@@ -389,6 +391,9 @@
 	</bean>
 	
 	<bean id="missReportAttachService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateMissReportAttach">
+		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
+	</bean> 
+	<bean id="roleSeriesReportMappingService" class="th.co.aoe.makedev.missconsult.hibernate.HibernateRoleSeriesReportMapping">
 		<property name="sessionAnnotationFactory" ref="sessionFactory"></property>	 
 	</bean>
 	

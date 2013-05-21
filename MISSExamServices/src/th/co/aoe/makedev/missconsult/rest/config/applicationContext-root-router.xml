@@ -272,6 +272,12 @@
 						<lookup-method name="create"
 							bean="missReportAttachResource" />
 					</bean>					
+				</entry> 
+				<entry key="/roleSeriesReportMapping">
+					<bean class="org.restlet.ext.spring.SpringFinder">
+						<lookup-method name="create"
+							bean="roleSeriesReportMappingResource" />
+					</bean>
 				</entry>
 			</map>
 		</property>
