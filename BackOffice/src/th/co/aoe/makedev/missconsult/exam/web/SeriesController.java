@@ -27,6 +27,7 @@ import th.co.aoe.makedev.missconsult.exam.form.SeriesForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
@@ -374,6 +375,65 @@ public class SeriesController
 		 return missExamService.findCompanies(eptNormReport);*/
     	return null;
 	    }
+   /* @RequestMapping(value={"/item/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    public String getItem(@PathVariable String msId, Model model)*/
+    
+    @RequestMapping(value={"/templateSection/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public String  templateSection(Model model,@PathVariable Long msId)
+	    {
+		 //Gson gson=new Gson();
+		/* EPTNormReport eptNormReport = new EPTNormReport();d
+		 eptNormReport.setMode(ServiceConstant.MANAGE_REPORT_MODE_SECTION);
+		 eptNormReport.setQuery("");
+		 return missExamService.findCompanies(eptNormReport);*/
+    	MissReportAttach missReportAttach=new MissReportAttach();
+    	missReportAttach.setMsId(msId);
+    	VResultMessage vresult =	missExamService.getTemplateMissReportAttach(missReportAttach);
+    	 model.addAttribute("templateList", vresult.getResultListObj());
+    //	System.out.println(vresult.getResultListObj());
+    	 model.addAttribute("template_msId", msId);
+    	  return "exam/template/seriesManagementSection";
+	    }
+    @RequestMapping(value={"/delete/templateSection/{msId}/{msOrder}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public String  deleteTemplateSection(Model model,@PathVariable Long msId,@PathVariable Long msOrder)
+	    {
+		 
+   	MissReportAttach missReportAttach=new MissReportAttach();
+   	missReportAttach.setMsId(msId);
+   	missReportAttach.setMsOrder(msOrder); 
+   	
+   	VResultMessage vresult =missExamService.deleteTemplateMissReportAttach(missReportAttach);
+   	 model.addAttribute("templateList", vresult.getResultListObj());
+   //	System.out.println(vresult.getResultListObj());
+   	 model.addAttribute("template_msId", msId);
+   	
+   	  return "exam/template/seriesManagementSection";
+	    } 
+   	/*@RequestMapping(value={"/update/templateSection/{msId}/{msOrder}/{mraReportName}/{mraLang}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+       public  @ResponseBody String updateTemplateSection(HttpServletRequest request,  Model model,
+    		   @PathVariable Long msId,@PathVariable Long msOrder,@PathVariable String mraReportName,@PathVariable String mraLang)
+       {
+    	 System.out.println(mraReportName);
+    	return "success";
+       } */
+    @RequestMapping(value={"/update/templateSection"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public  @ResponseBody String updateTemplateSection(HttpServletRequest request,  Model model)
+    {
+    	MissReportAttach missReportAttach =new MissReportAttach();
+    	missReportAttach.setMraReportName(request.getParameter("mraReportName_section"));
+    	missReportAttach.setMraLang(request.getParameter("mraLang_section"));
+    	missReportAttach.setMsId(Long.valueOf(request.getParameter("msId_section")));
+    	missReportAttach.setMsOrder(Long.valueOf(request.getParameter("msOrder_section")));
+    	int status=missExamService.updateReportNameMissReportAttach(missReportAttach);
+    	//System.out.println("request=>"+request.getParameter("mraReportName_section"));
+    	return "success";
+    } 
+   /* @RequestMapping(value={"/update/templateSection2"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public  @ResponseBody String updateTemplateSection(HttpServletRequest request, @ModelAttribute(value="seriesManagementSectionForm") SeriesManagementSectionForm seriesManagementSectionForm, BindingResult result, Model model)
+    {
+ 	 System.out.println("form->"+seriesManagementSectionForm.getMraReportName_section());
+ 	return "success";
+    } */
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;

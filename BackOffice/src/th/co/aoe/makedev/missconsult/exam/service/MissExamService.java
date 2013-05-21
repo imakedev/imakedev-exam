@@ -453,10 +453,18 @@ public interface MissExamService {
 
 	public abstract int updateMissReportAttach(MissReportAttach missReportAttach);
 
-	public abstract int deleteMissReportAttach(MissReportAttach missReportAttach);
+	//public abstract int deleteMissReportAttach(MissReportAttach missReportAttach);
 	public abstract MissReportAttach findMissReportAttachById(Long msId,
 			Long msOrder,String mraLang, String hotlink) ;
 	 
 	public abstract VResultMessage searchMissReportAttach(MissReportAttach missReportAttach);
+	public abstract VResultMessage getTemplateMissReportAttach(MissReportAttach missReportAttach);
+	public abstract VResultMessage deleteTemplateMissReportAttach(MissReportAttach missReportAttach);
+	public abstract int updateReportNameMissReportAttach(MissReportAttach missReportAttach); 
+	@SuppressWarnings("rawtypes")
+	public abstract List getTemplateMissReportAttachForRole(MissReportAttach missReportAttach);
+	
+	public List listRoleSeriesReportMappingByrcId(Long rcId,Long msId); 
+	public int updateRoleSeriesReportMapping(Long rcId, Long msId,String[] msOrders);
 
 }

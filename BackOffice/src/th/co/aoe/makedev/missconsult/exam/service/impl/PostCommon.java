@@ -28,8 +28,8 @@ public class PostCommon {
 	public VResultMessage postMessage(VServiceXML vserviceXML,@SuppressWarnings("rawtypes") Class[] className,String endPoint,boolean isReturn) {
 		//HttpPost httppost = new HttpPost(ServiceConstant.hostReference+endPoint); 
 		//HttpPost httppost = new HttpPost("http://localhost:3003/v1/"+endPoint);
-		//HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
-		HttpPost httppost = new HttpPost("http://localhost:8080/MISSExamServices/rest/"+endPoint);
+		HttpPost httppost = new HttpPost("http://localhost:3000/v1/"+endPoint);
+		//HttpPost httppost = new HttpPost("http://localhost:8080/MISSExamServices/rest/"+endPoint);
 				
 				//HttpPost httppost = new HttpPost("http://10.0.20.27:3000/v1/"+endPoint);
 				//Test

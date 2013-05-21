@@ -50,6 +50,7 @@ import th.co.aoe.makedev.missconsult.xstream.ProductReport;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleSeriesReportMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 import th.co.aoe.makedev.missconsult.xstream.ServiceReport;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
@@ -1666,14 +1667,14 @@ public class MissExamServiceImpl extends PostCommon
 	        return missReportAttach.getUpdateRecord().intValue();
 	}
 
-	@Override
+/*	@Override
 	public int deleteMissReportAttach(MissReportAttach missReportAttach) {
 		// TODO Auto-generated method stub
 		  missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_DELETE);//"deleteMissReportAttach");
 	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
 	        missReportAttach = (MissReportAttach)resultMessage.getResultListObj().get(0);
 	        return missReportAttach.getUpdateRecord().intValue();
-	}
+	}*/
 
 	@Override
 	public MissReportAttach findMissReportAttachById(Long msId,
@@ -1695,8 +1696,64 @@ public class MissExamServiceImpl extends PostCommon
 		// TODO Auto-generated method stub
 		missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_SEARCH);//"searchMissReportAttach");
         return postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	}
+
+	@Override
+	public VResultMessage getTemplateMissReportAttach(
+			MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE);//"searchMissReportAttach");
+        return postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true); 
+	}
+
+	@Override
+	public VResultMessage deleteTemplateMissReportAttach(
+			MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_DELETE);//"
+		return postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true); 
+	}
+
+	@Override
+	public int updateReportNameMissReportAttach(
+			MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		 missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_UPDATE_REPORTNAME);
+	        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+	        missReportAttach = (MissReportAttach)resultMessage.getResultListObj().get(0);
+	        return missReportAttach.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public List getTemplateMissReportAttachForRole(
+			MissReportAttach missReportAttach) {
+		// TODO Auto-generated method stub
+		missReportAttach.setServiceName(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE_FOR_ROLE); 
+        VResultMessage resultMessage = postMessage(missReportAttach, missReportAttach.getClass().getName(), "missReportAttach", true);
+        return resultMessage.getResultListObj();
 	} 
 	
-	  
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List listRoleSeriesReportMappingByrcId(Long rcId,Long msId) {
+		// TODO Auto-generated listRoleSeriesReportMappingByrcId stub
+		 RoleSeriesReportMapping roleSeriesReportMapping = new RoleSeriesReportMapping();
+		 roleSeriesReportMapping.setRcId(rcId);
+		 roleSeriesReportMapping.setMsId(msId);
+		 roleSeriesReportMapping.setServiceName(ServiceConstant.ROLE_SERIES_REPORT_MAPPING_LIST_BY_RC_ID);
+	        VResultMessage resultMessage = postMessage(roleSeriesReportMapping, roleSeriesReportMapping.getClass().getName(), "roleSeriesReportMapping", true);
+	       return resultMessage.getResultListObj();
+	} 
+	@Override
+	public int updateRoleSeriesReportMapping(Long rcId, Long msId,String[] msOrders){
+		RoleSeriesReportMapping roleSeriesReportMapping = new RoleSeriesReportMapping();
+		roleSeriesReportMapping.setRcId(rcId);
+		roleSeriesReportMapping.setMsId(msId);
+		roleSeriesReportMapping.setMsOrders(msOrders);
+		roleSeriesReportMapping.setServiceName(ServiceConstant.ROLE_SERIES_REPORT_MAPPING_UPDATE);
+        VResultMessage resultMessage = postMessage(roleSeriesReportMapping, roleSeriesReportMapping.getClass().getName(), "roleSeriesReportMapping", true);
+        roleSeriesReportMapping = (RoleSeriesReportMapping)resultMessage.getResultListObj().get(0);
+        return roleSeriesReportMapping.getUpdateRecord().intValue();
+	}
 	    
 }

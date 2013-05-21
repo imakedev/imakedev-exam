@@ -14,20 +14,24 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.exam.form.RoleForm;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
+import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.RoleContact;
 import th.co.aoe.makedev.missconsult.xstream.RoleMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleSeriesMapping;
+import th.co.aoe.makedev.missconsult.xstream.RoleSeriesReportMapping;
 import th.co.aoe.makedev.missconsult.xstream.RoleType;
 
 @Controller
-@RequestMapping(value = { "/role" })
-@SessionAttributes(value={"roleForm"})
+@RequestMapping(value = { "/role" }) 
+@SessionAttributes(value={"UserMissContact","roleForm"})
 public class RoleController {
 	private static Logger logger = Logger.getRootLogger();
 	@Autowired
@@ -246,4 +250,100 @@ public class RoleController {
 		model.addAttribute("display", "display: none");
 		return "exam/template/roleSection";
 	}
+	 @RequestMapping(value={"/get/templateSection/{rcId}/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public  @ResponseBody List<List<MissReportAttach>> getTemplateSection(HttpServletRequest request, @PathVariable Long rcId,@PathVariable Long msId, Model model)
+	    {
+	    	MissReportAttach missReportAttach =new MissReportAttach();
+	    	missReportAttach.setMsId(msId);
+	 	
+	    	List<List<MissReportAttach>> missReportAttachs= missExamService.getTemplateMissReportAttachForRole(missReportAttach);
+	    	//System.out.println(missReportAttachs);
+			List<RoleSeriesReportMapping> roleSeriesReportMappings=missExamService.listRoleSeriesReportMappingByrcId(rcId, msId);
+			
+	    	//System.out.println(roleSeriesReportMappings);
+	    	if(missReportAttachs!=null && missReportAttachs.size()>0){
+				logger.debug(" missReportAttachs =>"+missReportAttachs.size());
+				for (List<MissReportAttach> missReportAttach_loop : missReportAttachs) {
+					if(roleSeriesReportMappings!=null && roleSeriesReportMappings.size()>0){
+						logger.debug(" roleSeriesReportMappings =>"+roleSeriesReportMappings.size());
+						 for (RoleSeriesReportMapping roleSeriesReportMapping : roleSeriesReportMappings) {
+						//	 logger.debug("xxxxxxxxxx roleSeriesMapping.getRtId =>"+roleSeriesMapping.getRtId());
+							 for (MissReportAttach missReportAttach2 : missReportAttach_loop) {
+								 if(roleSeriesReportMapping.getMsId().intValue()==missReportAttach2.getMsId().intValue() 
+											&& roleSeriesReportMapping.getMsOrder().intValue()==missReportAttach2.getMsOrder().intValue()){
+									 missReportAttach2.setSelected("1");
+										//break;
+									}
+							}
+						}
+					}
+				}
+			}
+	    	return missReportAttachs;
+	    } 
+	 @RequestMapping(value={"/updateRoleReportMapping/{rcId}/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+	    public  @ResponseBody int updateRoleReportMapping(HttpServletRequest request, @PathVariable Long rcId,@PathVariable Long msId, Model model)
+	    {
+		      //System.out.println("rcId->"+rcId+",msId->"+msId+"");
+				@SuppressWarnings("rawtypes")
+				Enumeration e_num=request.getParameterNames();
+				List<String> msOrderIdsList=new ArrayList<String>();
+				while (e_num.hasMoreElements()) {
+					String param_name = (String) e_num.nextElement();
+					System.out.println("not filter->"+param_name);
+					if(param_name.startsWith("rtIdCheckbox_radio_report_template_")){
+						System.out.println("param_name->"+param_name);
+						if(!request.getParameter(param_name).equals("0")){
+							msOrderIdsList.add(request.getParameter(param_name));
+						}
+					}
+				}
+				//System.out.println("msOrderIdsList->"+msOrderIdsList);
+				String[] msOrderIdRadio = new String[msOrderIdsList.size()];
+				msOrderIdRadio= msOrderIdsList.toArray(msOrderIdRadio);
+			return	missExamService.updateRoleSeriesReportMapping(rcId, msId, msOrderIdRadio);
+		 //return 1;	
+	 }
+	 @RequestMapping(value={"/get/reportDownload/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public  @ResponseBody List<List<MissReportAttach>> getReportDownload(HttpServletRequest request, @PathVariable Long msId, Model model)
+	    { 
+	    	Long rcId=null;
+	    	 if(model.containsAttribute("UserMissContact")){
+	         	MissContact missContact= (MissContact)model.asMap().get("UserMissContact");
+	         	if(missContact!=null)
+	         		rcId=missContact.getRcId();
+	         }
+	    	 List<List<MissReportAttach>> missReportAttachs=null;
+	 	   if(rcId!=null){
+	 		  MissReportAttach missReportAttach =new MissReportAttach();
+		    	missReportAttach.setMsId(msId);
+		    	//missReportAttach.set(msId);
+		    	/*System.out.println("rcId->"+rcId);
+		    	System.out.println("msId->"+msId);*/
+		    	missReportAttachs= missExamService.getTemplateMissReportAttachForRole(missReportAttach);
+				List<RoleSeriesReportMapping> roleSeriesReportMappings=missExamService.listRoleSeriesReportMappingByrcId(rcId, msId);
+				
+		    	if(missReportAttachs!=null && missReportAttachs.size()>0){
+					for (List<MissReportAttach> missReportAttach_loop : missReportAttachs) {
+						if(roleSeriesReportMappings!=null && roleSeriesReportMappings.size()>0){
+							 for (RoleSeriesReportMapping roleSeriesReportMapping : roleSeriesReportMappings) {
+								 for (MissReportAttach missReportAttach2 : missReportAttach_loop) {
+								  if(rcId.intValue()!=1){
+									 if(roleSeriesReportMapping.getMsId().intValue()==missReportAttach2.getMsId().intValue() 
+												&& roleSeriesReportMapping.getMsOrder().intValue()==missReportAttach2.getMsOrder().intValue()
+												){
+										 missReportAttach2.setSelected("1");
+									 }else {
+											missReportAttachs.remove(missReportAttach_loop);
+									 }
+								  }		
+								}
+							}
+						}
+					}
+				}
+	 	   }
+	    	
+	    	return missReportAttachs;
+	    } 
 }
