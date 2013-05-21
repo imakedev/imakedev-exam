@@ -292,5 +292,12 @@
 		scope="prototype"> 
 		<property name="missReportAttachService" ref="missReportAttachService"></property> 
 		<property name="xstream" ref="xstream"></property>
+	</bean> 
+	<bean id="roleSeriesReportMappingResource"
+		class="th.co.aoe.makedev.missconsult.rest.resource.RoleSeriesReportMappingResource"
+		scope="prototype"> 
+		<property name="roleSeriesReportMappingService" ref="roleSeriesReportMappingService"></property> 
+		<property name="xstream" ref="xstream"></property>
 	</bean>
+	
 </beans>
