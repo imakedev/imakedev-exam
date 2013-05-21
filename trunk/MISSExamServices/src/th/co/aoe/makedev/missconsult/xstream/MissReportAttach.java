@@ -27,7 +27,17 @@ public class MissReportAttach  extends VServiceXML implements Serializable {
 	private String mraPath;
  
 	private String mraReportName;
+	
+	private String selected;
  
+
+	public String getSelected() {
+		return selected;
+	}
+
+	public void setSelected(String selected) {
+		this.selected = selected;
+	}
 
 	@XStreamAlias("missSery")
 	private MissSery missSery;
