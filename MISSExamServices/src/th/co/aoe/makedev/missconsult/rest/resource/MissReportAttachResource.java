@@ -114,6 +114,11 @@ public class MissReportAttachResource  extends BaseResource {
 							int updateRecord=missReportAttachService.updateMissReportAttach(bpsTerm);
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_UPDATE_REPORTNAME)){
+							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+							int updateRecord=missReportAttachService.updateReportNameMissReportAttach(xbpsTerm.getMsId(), xbpsTerm.getMsOrder(), xbpsTerm.getMraLang(), xbpsTerm.getMraReportName());
+							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}
 						/*else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_ITEMS_DELETE)){
 							String[] matIds=xbpsTerm.getMatIds().split(",");
 							//logger.debug("xbpsTerm.getMsIds()="+xbpsTerm.getMsIds());
@@ -126,8 +131,13 @@ public class MissReportAttachResource  extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}*/
 						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_DELETE)){
-							int updateRecord=missReportAttachService.deleteMissReportAttach(bpsTerm);
-							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+							
+							missReportAttachService.deleteTemplateMissReportAttach(xbpsTerm.getMsId(),xbpsTerm.getMsOrder());
+							@SuppressWarnings("rawtypes")
+							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 5); 
+								VResultMessage vresultMessage = new VResultMessage(); 
+								vresultMessage.setResultListObj(result);
+								return getRepresentation(entity, vresultMessage, xstream);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_SEARCH)){
 							Pagging page = xbpsTerm.getPagging(); 
@@ -150,7 +160,24 @@ public class MissReportAttachResource  extends BaseResource {
 								vresultMessage.setResultListObj(xntcCalendars);
 								return getRepresentation(entity, vresultMessage, xstream);
 							}
+						}else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE)){
+							//Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
+							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 5); 
+								VResultMessage vresultMessage = new VResultMessage(); 
+								vresultMessage.setResultListObj(result);
+								return getRepresentation(entity, vresultMessage, xstream);
+							
 						}
+						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE_FOR_ROLE)){
+							//Pagging page = xbpsTerm.getPagging(); 
+							@SuppressWarnings("rawtypes")
+							List result = (List) missReportAttachService.getTemplateMissReportAttachForRole(xbpsTerm.getMsId(), 5); 
+								VResultMessage vresultMessage = new VResultMessage(); 
+								vresultMessage.setResultListObj(result);
+								return getRepresentation(entity, vresultMessage, xstream); 
+						}
+						
 						
 					} else {
 					}
