@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
@@ -485,4 +486,11 @@ public class HibernateCommon {
 	public List search(Session  session ,Object instance,Map likeExpression ,Map leExpression ,Map geExpression,Map likeFirstExpression,Map likeEndExpression) throws DataAccessException {
 		return search(session, instance, likeExpression, leExpression, geExpression,likeFirstExpression,likeEndExpression,null);
 	}	
+	@SuppressWarnings("rawtypes")
+	@Transactional(readOnly = true)
+	public List listObject(Session  session,String queryStr) {
+		// TODO Auto-generated method stub 
+		Query query =session.createQuery(queryStr);
+		  return query.list();
+	}
 }
