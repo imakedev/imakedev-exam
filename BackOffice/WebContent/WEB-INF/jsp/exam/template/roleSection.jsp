@@ -131,6 +131,102 @@ function goActionRole(_mode){
 		 appendContentWithId(data,"tabs-3_1");
 		});
 }
+function goUpdateRoleReportMapping(rcId,msId){
+	$.post("role/updateRoleReportMapping/"+rcId+"/"+msId,$("#report_template_role_form").serialize(), function(data) {
+	 //appendContentWithId(data,"tabs-3_1");
+	 //alert(data)
+	 if(data!=null){
+		 $('#dialog-setRoleReportTemplate-element').html('');
+		 $( "#dialog-setRoleReportTemplate" ).dialog( "option", "height", 130 );
+		 $('#dialog-setRoleReportTemplate-element').slideUp('slow');
+		 $('#dialog-setRoleReportTemplate-element').html('<div align=\"center\">Update Success.</div><br></br><div align=\"center\"><a class=\"btn btn-primary\"  onclick=\"_closeDialog()\"><i class=\"icon-ok icon-white\"></i>&nbsp;<span style=\"color: white;font-weight: bold;\">Ok</span></a></div>');
+		 $('#dialog-setRoleReportTemplate-element').slideDown('slow');
+	 }
+	 //alert(data)
+	});
+}
+function _closeDialog(){
+
+	$("#dialog-setRoleReportTemplate").dialog('close');
+	$("#dialog-setRoleReportTemplate" ).dialog( "destroy" );
+	
+}
+function setRoleReportTemplate(id){
+	   $("#dialog-setRoleReportTemplate-element").html("");
+	 var rcId=$("select[id=rcId] option:selected").val();
+	 //alert(rcId+","+id)
+	//	var _str_table=	"<div id=\"dialog-setRoleReportTemplate-element\"><form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
+		var _str_table=	"<form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
+	    "	<table id=\"table_role_report_list\"  class=\"table stable-striped table-bordered table-condensed\" border=\"1\" style=\"font-size: 12px\">"+
+        "	<thead>"+
+        "  		<tr>"+
+        "    		<th width=\"44%\"><div class=\"th_class\">Thai</div></th>"+ 
+        "    		<th width=\"44%\"><div class=\"th_class\">English</div></th>"+
+        "    		<th width=\"12%\"><div class=\"th_class\">Permission</div></th>"+              		 
+        "  		</tr>"+
+        "	</thead>"+
+        "	<tbody>"; 
+
+	 $.get("role/get/templateSection/"+rcId+"/"+id, function(data) {
+		 var height_dialog=100;
+		if(data!=null && data.length>0){
+			for(var i=0;i<data.length;i++){
+				var no_checked_str="";
+				var yes_checked_str="checked=\"checked\"";
+				_str_table=_str_table+"<tr>"+ 
+            					"<td>&nbsp;"+data[i][0].mraReportName+"</td>"+
+            					"<td>&nbsp;"+data[i][1].mraReportName+"</td>"+
+            					"<td> ";
+            					if(data[i][0].selected=='1'){
+            						no_checked_str="checked=\"checked\"";
+            						yes_checked_str="";
+            					}
+            					_str_table=_str_table+"<input type=\"radio\" value=\""+data[i][0].msOrder+"\" "+no_checked_str+" name=\"rtIdCheckbox_radio_report_template_"+rcId+"_"+id+"_"+data[i][0].msOrder+"\">"+
+            					"<img src=\"<c:url value='/resources/images/Select.png'/>\"/>&nbsp;"+
+            					"<input type=\"radio\" value=\"0\" "+yes_checked_str+" name=\"rtIdCheckbox_radio_report_template_"+rcId+"_"+id+"_"+data[i][0].msOrder+"\">"+
+            					"<img src=\"<c:url value='/resources/images/deSelect.png'/>\"/>"+
+            			 
+            	 	"</td>"+
+          			"</tr>";
+			}
+			_str_table=_str_table+"</tbody>"+
+		      "</table>"+
+		       "<div align=\"center\"><a class=\"btn btn-primary\"  onclick=\"goUpdateRoleReportMapping('"+rcId+"','"+id+"')\"><i class=\"icon-ok icon-white\"></i>&nbsp;<span style=\"color: white;font-weight: bold;\">Save</span></a></div>"+
+		       "</form>";
+		       
+		       //"</form></div>";
+			height_dialog=230;
+		}else{
+			_str_table="<div align=\"center\">Not Found.</div>";
+		}
+		
+		 //   alert(_str_table)
+		   $("#dialog-setRoleReportTemplate-element").html(_str_table);
+		//alert(data.length);
+		//alert($(".ui-dialog,.ui-widget,.ui-widget-content,.ui-corner-all,.ui-draggable,.ui-resizable").length)
+		 // $('.ui-dialog').remove(); 
+		 //$('#dialog-setRoleReportTemplate').remove(); 
+		//alert($('div[class=".ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-draggable .ui-resizable"]').length)
+	//	$(".ui-dialog,.ui-widget,.ui-widget-content,.ui-corner-all,.ui-draggable,.ui-resizable").remove();
+		$( "#dialog-setRoleReportTemplate" ).dialog({
+			height: height_dialog, 
+			width:810,
+			modal: true // ,
+			/* buttons: {
+				"Yes": function() { 
+					$( this ).dialog( "close" );
+					goUpdateRoleReportMapping(rcId,id);
+					//goActionRole("deleteRole");
+				},
+				"No": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			} */
+		});
+	});
+	
+}
 </script>
 <style>
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
@@ -140,10 +236,14 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 <div id="dialog-confirmDelete" title="Delete Role" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to delete Role ?
 </div>
-<div id="dialog-createOrUpdate-role" title="Role" style="display: none;background:'')" class="ui-dialog-titlebar2">
+<div id="dialog-createOrUpdate-role" title="Role" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	<form id="role_form" name="role_form">
 	    Role name&nbsp;:&nbsp;<input type="text" name="rolename" id="rolename" /><br/>
 	</form>
+</div>
+<div id="dialog-setRoleReportTemplate" title="Set Role Report" style="display: none;background:background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+  <div id="dialog-setRoleReportTemplate-element">
+	</div>
 </div>
  <div id="message_element_role" class="alert alert-${message_class}" style="${display}">
     <button class="close" data-dismiss="alert"><span style="font-size: 12px">x</span></button>
@@ -246,7 +346,25 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<tbody>
         	 <c:forEach items="${missAccountSeriesMaps}" var="missAccountSeriesMap" varStatus="loop"> 
           	<tr> 
-            	<td colspan="2">&nbsp;${missAccountSeriesMap.missSery.msSeriesName}</td>
+            	<td colspan="2">&nbsp;
+            	<c:if test="${not empty roleForm.rcId}"> 
+            	 	<c:if test="${roleForm.rcId!=0}">
+            	 		<c:if test="${missAccountSeriesMap.selected!='1'}">
+            				<span style="text-decoration: underline;cursor: pointer;" onclick="setRoleReportTemplate('${missAccountSeriesMap.missSery.msId}')">${missAccountSeriesMap.missSery.msSeriesName}</span>
+            			</c:if>
+            			<c:if test="${missAccountSeriesMap.selected=='1'}">
+            				${missAccountSeriesMap.missSery.msSeriesName}
+            			</c:if>
+            	 	</c:if>
+            	 	<c:if test="${roleForm.rcId==0}">
+            	 		${missAccountSeriesMap.missSery.msSeriesName}
+            	 	</c:if>
+            	</c:if>
+            	 <c:if test="${empty roleForm.rcId}">
+            	 	${missAccountSeriesMap.missSery.msSeriesName}
+            	 </c:if>
+            	 
+            	</td>
             	<td>
             	 <c:if test="${not empty roleForm.rcId}"> 
             	 	<c:if test="${roleForm.rcId!=0}">

@@ -362,6 +362,70 @@ function exportComparePDF(){
     document.body.appendChild(div);
     div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";
 }
+function exportReportPDF(_mtrId,_meId,_msId,_mcaId,_msOrder,_mraLang){
+	//mtrIds_G $("#mcaSeries").val() 
+	//var src = "/MISSProcessImage/compareTest?mcaSeries="+$("#mcaSeries").val()+"&mtrIds="+mtrIds_G;
+	var src = "/MISSExamBackOffice/result/testPDF?mtrId="+_mtrId+"&meId="+_meId+"&msId="+_msId+"&mcaId="+_mcaId+"&msOrder="+_msOrder+"&mraLang="+_mraLang;
+	
+	//alert(src)
+	var div = document.createElement("div");
+    document.body.appendChild(div);
+    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";
+}
+function showFormDownload(_mtrId,_meId,_msId,_mcaId){
+	<%--
+	<c:url value="/result/testPDF" var="downloadUrl">
+	<c:param name="mtrId" value="${missTestResult.mtrId}"></c:param>
+	<c:param name="meId" value="${missTestResult.meId}"></c:param>
+	<c:param name="msId" value="${missTestResult.msId}"></c:param>
+	<c:param name="mcaId" value="${missTestResult.missCandidate.mcaId}"></c:param>
+</c:url>
+--%>
+	   $("#dialog-download-report-element").html("");
+	//	var _str_table=	"<div id=\"dialog-download-report-element\"><form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
+		var _str_table=	"<form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
+	    "	<table id=\"table_role_report_list\"  class=\"table stable-striped table-bordered table-condensed\" border=\"1\" style=\"font-size: 12px\">"+
+     "	<thead>"+
+     "  		<tr>"+
+     "    		<th width=\"6%\"><div class=\"th_class\">#</div></th>"+ 
+     "    		<th width=\"47%\"><div class=\"th_class\">Thai</div></th>"+ 
+     "    		<th width=\"47%\"><div class=\"th_class\">English</div></th>"+             		 
+     "  		</tr>"+
+     "	</thead>"+
+     "	<tbody>"; 
+      
+	 $.get("role/get/reportDownload/"+_msId, function(data) {
+		 var height_dialog=100;
+		// alert(data)
+		if(data!=null && data.length>0){
+			for(var i=0;i<data.length;i++){
+				_str_table=_str_table+"<tr>"+  
+				"<td>&nbsp;"+(i+1)+"</td>"+
+         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][0].msOrder+"','"+data[i][0].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+data[i][0].mraReportName+"</span></td>"+
+         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][1].msOrder+"','"+data[i][1].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+data[i][1].mraReportName+"</span></td>"+
+       			"</tr>";
+			}
+			_str_table=_str_table+"</tbody>"+
+		      "</table>"+
+		       "</form>";
+		       
+		       //"</form></div>";
+			height_dialog=230;
+		}else{
+			_str_table="<div align=\"center\">Not Found.</div>";
+		}
+		
+		 //   alert(_str_table)
+		   $("#dialog-download-report-element").html(_str_table);
+		//alert(data.length);
+		$( "#dialog-download-report" ).dialog({
+			height: height_dialog, 
+			width:810,
+			modal: true
+		});
+	});
+	
+}
 </script>
 
 <style>
@@ -371,6 +435,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 } 
 /* tr:nth-child(odd) {background: #e0e0e0} */ 
 </style>
+<div id="dialog-download-report" title="Download Report" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+  <div id="dialog-download-report-element">
+  </div>
+</div>
 <div id="dialog-confirmIgnore" title="Ignore Result" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	Are you sure you want to ignore Result ?
 </div>
@@ -641,7 +709,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             		<c:param name="msId" value="${missTestResult.msId}"></c:param>
             		<c:param name="mcaId" value="${missTestResult.missCandidate.mcaId}"></c:param>
             	</c:url>
-            	<td>&nbsp;<a href="${downloadUrl}">${missTestResult.mtrResultCode}</a></td>            	
+            	<td>
+            	 <c:if test="${missTestResult.mtrResultCode!=''}">
+            	 	<%-- &nbsp;<a href="${downloadUrl}">${missTestResult.mtrResultCode}</a> --%>
+            	 	<span onclick="showFormDownload('${missTestResult.mtrId}','${missTestResult.meId}','${missTestResult.msId}','${missTestResult.missCandidate.mcaId}')" style="color: #08c;cursor: pointer;">${missTestResult.mtrResultCode}</span>
+            	 </c:if>
+            	  <c:if test="${missTestResult.mtrResultCode==''}">
+            	
+            	 </c:if>
+            	</td>            	
             	<td>
             	<c:if test="${missTestResult.mtrStatus=='0'}">Not finished</c:if>
             	<c:if test="${missTestResult.mtrStatus=='1'}">Finished</c:if>
