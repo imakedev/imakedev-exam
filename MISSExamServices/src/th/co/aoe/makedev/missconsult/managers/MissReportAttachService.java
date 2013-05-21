@@ -15,4 +15,10 @@ public interface MissReportAttachService {
 	public MissReportAttach findMissReportAttachById( Long msId,Long msOrder,String mraLang,String hotlink)throws DataAccessException  ;
 	@SuppressWarnings("rawtypes")
 	public  List searchMissReportAttach(MissReportAttach persistentInstance,	Pagging pagging)throws DataAccessException  ;
+	@SuppressWarnings("rawtypes")
+	public  List getTemplateMissReportAttach(Long msId,int numberReport)throws DataAccessException  ;
+	public  int deleteTemplateMissReportAttach(Long msId,Long msOrder)throws DataAccessException  ;
+	public int updateReportNameMissReportAttach(Long msId, Long msOrder,String mraLang,String reportName) ;
+	@SuppressWarnings("rawtypes")
+	public List getTemplateMissReportAttachForRole(Long msId,int numberReport)throws DataAccessException  ;
 }
