@@ -108,6 +108,13 @@ $(document).ready(function() {
 			//$('#example2 .text').text('Uploaded ' + file);		
 		}		
 	});
+   $.get("series/templateSection/${seriesForm.missSery.msId}",function(data) {
+		  // alert(data);templateElement
+		   appendContentWithId(data,"_templateElement");
+		  // alert($("#_content").html());
+		});
+   
+   /*
    // button1
    new AjaxUpload('template_file_thai_1', {
        action: 'reportUpload/upload/${seriesForm.missSery.msId}/1/0',
@@ -317,6 +324,8 @@ $(document).ready(function() {
 			$('#template_file_eng_5_attached').attr('style','cursor: pointer;');	 
 		}		
 	});
+   */
+   
 	  // new AjaxUpload('evaluation_file_'+i,  {
 		 /*
 		   new AjaxUpload('evaluation_file_1', {
@@ -622,7 +631,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<input type="hidden" id="eval_file_value_4" />
 	    					<input type="hidden" id="eval_file_value_5" />
 	    		</form:form>
-	    		<div>
+	    		<div id="_templateElement">
 	    		<%--
 	    		<table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
@@ -702,6 +711,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	</tbody>
       </table>
        --%>
+       <%--
        <table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
 	    					<td align="left" width="100%">
@@ -791,6 +801,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	
         	</tbody>
       </table>
+      --%>
 	    		</div> 
 	    		<!-- <div align="center"><a class="btn"><i class="icon-refresh"></i>&nbsp;<span style="">Update</span></a></div> -->
 	    					<table  border="0" width="100%" style="font-size: 13px">

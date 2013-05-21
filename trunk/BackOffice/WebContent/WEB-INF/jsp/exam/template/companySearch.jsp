@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %> 
 <style>
 .ui-dialog-titlebar2{
-	    background-image:url("http://www.elementalsurface.com/beech-wood.jpg"); 
+	    /* background-image:url("http://www.elementalsurface.com/beech-wood.jpg"); */ 
 	}
 </style>
 <script type="text/javascript">
