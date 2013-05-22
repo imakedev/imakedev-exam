@@ -148,10 +148,13 @@ function goUpdateRoleReportMapping(rcId,msId){
 function _closeDialog(){
 
 	$("#dialog-setRoleReportTemplate").dialog('close');
-	$("#dialog-setRoleReportTemplate" ).dialog( "destroy" );
+	//$(this).remove();
+	$("#dialog-setRoleReportTemplate").remove();
+	//$("#dialog-setRoleReportTemplate" ).dialog( "destroy" );
 	
 }
 function setRoleReportTemplate(id){
+	 
 	   $("#dialog-setRoleReportTemplate-element").html("");
 	 var rcId=$("select[id=rcId] option:selected").val();
 	 //alert(rcId+","+id)
@@ -209,20 +212,29 @@ function setRoleReportTemplate(id){
 		//alert($('div[class=".ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-draggable .ui-resizable"]').length)
 	//	$(".ui-dialog,.ui-widget,.ui-widget-content,.ui-corner-all,.ui-draggable,.ui-resizable").remove();
 		$( "#dialog-setRoleReportTemplate" ).dialog({
-			height: height_dialog, 
+			//height: height_dialog,
+			height:"auto",
 			width:810,
-			modal: true // ,
-			/* buttons: {
+			modal: true   ,
+			beforeClose: function( event, ui ) {
+				//alert("close");
+				$(this).remove();
+				//$("#dialog-setRoleReportTemplate").remove();
+			}
+			/*
+			 buttons: {
 				"Yes": function() { 
-					$( this ).dialog( "close" );
+					//$( this ).dialog( "close" );
 					goUpdateRoleReportMapping(rcId,id);
+					
 					//goActionRole("deleteRole");
 				},
 				"No": function() {
 					$( this ).dialog( "close" );
 					return false;
 				}
-			} */
+			}  
+		*/
 		});
 	});
 	
