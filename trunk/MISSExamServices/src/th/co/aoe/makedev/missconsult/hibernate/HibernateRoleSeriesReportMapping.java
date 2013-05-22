@@ -63,9 +63,9 @@ public class HibernateRoleSeriesReportMapping extends HibernateCommon implements
 		Query query=session.createQuery("delete RoleSeriesReportMapping roleSeriesReportMapping where roleSeriesReportMapping.id.rcId ="+rcId.intValue()+
 				" and roleSeriesReportMapping.id.msId="+msId);
 		int result = query.executeUpdate();
-		System.out.println("msOrders.length->"+msOrders.length);
+		/*System.out.println("msOrders.length->"+msOrders.length);
 		System.out.println("rcId->"+rcId);
-		System.out.println("msId->"+msId);
+		System.out.println("msId->"+msId);*/ 
 		if(msOrders!=null && msOrders.length>0)
 		for (String msOrder : msOrders) {
 			RoleSeriesReportMapping mapping =new RoleSeriesReportMapping();
