@@ -290,9 +290,9 @@ public class RoleController {
 				List<String> msOrderIdsList=new ArrayList<String>();
 				while (e_num.hasMoreElements()) {
 					String param_name = (String) e_num.nextElement();
-					System.out.println("not filter->"+param_name);
+					//System.out.println("not filter->"+param_name);
 					if(param_name.startsWith("rtIdCheckbox_radio_report_template_")){
-						System.out.println("param_name->"+param_name);
+						//System.out.println("param_name->"+param_name);
 						if(!request.getParameter(param_name).equals("0")){
 							msOrderIdsList.add(request.getParameter(param_name));
 						}
