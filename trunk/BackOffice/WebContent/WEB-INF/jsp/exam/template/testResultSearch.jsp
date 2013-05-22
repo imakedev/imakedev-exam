@@ -419,9 +419,14 @@ function showFormDownload(_mtrId,_meId,_msId,_mcaId){
 		   $("#dialog-download-report-element").html(_str_table);
 		//alert(data.length);
 		$( "#dialog-download-report" ).dialog({
-			height: height_dialog, 
+			//height: height_dialog, 
+			height: "auto",
 			width:810,
-			modal: true
+			modal: true,
+			beforeClose: function( event, ui ) { 
+				$(this).remove();
+				//$("#dialog-setRoleReportTemplate").remove();
+			}
 		});
 	});
 	
