@@ -350,7 +350,7 @@ public class EPTPlusServlet extends HttpServlet {
 left join MISS_CANDIDATE candidate 
 on result.mca_id=candidate.mca_id 
 WHERE result.mtr_id=61
-
+ 
 select * from MISS_EPT_MESSAGE_CONFIG 
 WHERE CODE='FJAE' AND MEMC_LANG='1'
 ORDER BY MEMC_ORDER 
@@ -388,7 +388,7 @@ AND MEC_LANG='1' ORDER BY MEC_ORDER
 							code=result.getString("CODE"); 
 						}
 						// for test
-						code="FJAE";
+						//code="FJAE";
 						sqlSB.setLength(0);
 						sqlSB.append("SELECT * from "+SCHEMA+".MISS_EPT_MESSAGE_CONFIG WHERE CODE='"+code+"' AND MEMC_LANG='"+lang+"' ORDER BY MEMC_ORDER ");
 						pst = con.prepareStatement(sqlSB.toString());
