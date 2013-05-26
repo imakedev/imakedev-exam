@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/process")
 public class ProcessimageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private static final  Runtime rt = Runtime.getRuntime();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,7 +54,7 @@ public class ProcessimageServlet extends HttpServlet {
 		 try {
 			 long start =System.currentTimeMillis();
 			 String fileGen=genToken();
-			 Runtime rt = Runtime.getRuntime();
+			
 			// ProcessBuilder b = new ProcessBuilder(" ");
 			 
 			 /*http://203.150.20.37/MISSProcessImage/process?page=workwheel_1&type=ept_plus&w=1090&lang=1&mtrId=61
@@ -71,11 +71,13 @@ public class ProcessimageServlet extends HttpServlet {
 				  if(lang==null)
 					  lang="1";
 				//  xvfb-run --server-args="-screen 0, 1024x768x24" ./wkhtmltoimage-amd64 --use-xserver --javascript-delay 2000 --window-status Done --enable-plugins http://www.hulu.com hulu.jpg
-					  
-				   proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--use-xserver","--javascript-delay","4000",  
+					 
+				  // server
+				  proc = rt.exec(new String[]{"/opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--use-xserver","--javascript-delay","4000",  
 						  "--quality","100","--crop-w",width,"--crop-h",height,"--format","jpg",
 						  "--load-error-handling","ignore",
-						  "http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});   
+						 // "http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});   
+						  "http://203.150.20.37/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
 				 
 				/*  proc = rt.exec("xvfb-run /opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --use-xserver --javascript-delay 4000"+
 						  " --quality 100 --crop-w "+width+" --crop-h "+height+" --format jpg \"http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
@@ -84,19 +86,23 @@ public class ProcessimageServlet extends HttpServlet {
 						  "--quality","75","--crop-w",width,"--crop-h",height,"--format","jpg","http://203.150.20.37/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
 						  */  
 				//System.out.println("cmd chart 1");
-				//System.out.println("cmd==> /usr/bin/xvfb-run /opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --use-xserver --javascript-delay 4000 --quality 100 --crop-w "+height+" --format jpg \"http://localhost:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg"); 
+				   
+				System.out.println("cmd==> /opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh wkhtmltoimage-amd64 --use-xserver --javascript-delay  4000 --quality 100 --crop-w "+width+" --crop-h "+height+" -f jpg   \"http://203.150.20.37/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
+				//proc=rt.exec("/opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh wkhtmltoimage-amd64 --use-xserver --javascript-delay  4000 --quality 100 --crop-w "+width+" --crop-h "+height+" -f jpg   \"http://203.150.20.37:8080/MISSProcessImage/chart?key="+mdc_key+"&width="+width+"&height="+height+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
 			  }else	  if(page!=null && page.length()>0){
 				  // 1074
-				  String speed="1000";
+				  String speed="3000";
 				  if(page.equals("workwheel_1") || page.indexOf("attitudeDetector_")!=-1)
 						  speed="3000";
 				  if(report!=null && report.length()>0)
 					  servletname=report;
-				  
-				  proc = rt.exec(new String[]{"xvfb-run","/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64","--use-xserver","--javascript-delay",speed,
+				  //server
+				   proc = rt.exec(new String[]{"/opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh","wkhtmltoimage-amd64","--use-xserver","--javascript-delay",speed,
 						  "--quality","100","--crop-w",width,"--format","jpg",
-						  "--load-error-handling","ignore",
-						  "http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
+						 // "--load-error-handling","ignore",
+						 // "http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
+						  "http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"});
+				   
 				/*  proc = rt.exec("/usr/bin/xvfb-run /opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+
 						  " --quality 100 --crop-w "+width+" --format jpg \"http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg"); 
 				*/
@@ -104,7 +110,10 @@ public class ProcessimageServlet extends HttpServlet {
 				 /* proc = rt.exec(new String[]{"/opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-i386","--javascript-delay",speed,  
 						  "--quality","75","--crop-w",width,"--format","jpg","http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"","/tmp/"+fileGen+".jpg"}); */  
 				  //System.out.println("cmd chart 2");
-				  //System.out.println("cmd==> /usr/bin/xvfb-run /opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+" --quality 100 --crop-w "+width+" --format jpg \"http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
+				  System.out.println("cmd2==> /opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+" --quality 100 --crop-w "+width+" -f jpg --username admin --password password  --load-error-handling ignore \"http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
+				  //proc=rt.exec("/usr/bin/xvfb-run /opt/apache2/htdocs/fcimg/bin/wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+" --quality 100 --crop-w "+width+" --format jpg \"http://localhost:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
+				  //proc=rt.exec("/opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+" --quality 100 --crop-w "+width+" -f jpg --username admin --password password \"http://203.150.20.37/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
+				 // proc=rt.exec("/opt/tomcat/apache-tomcat-7.0.34/xvfb-run-aoe.sh wkhtmltoimage-amd64 --use-xserver --javascript-delay "+speed+" --quality 100 --crop-w "+width+" -f jpg   \"http://203.150.20.37:8080/MISSProcessImage/"+servletname+"?page="+page+"&type="+type+"&lang="+lang+"&mtrId="+mtrId+"\" /tmp/"+fileGen+".jpg");
 			  }else{
 				    proc = rt.exec(cmd);
 				    //System.out.println("cmd chart 3");
@@ -130,13 +139,13 @@ public class ProcessimageServlet extends HttpServlet {
 	                                    
 	            // any error???
 	         // any error message?
-	           /* th.co.aoe.makedev.missconsult.thread.StreamGobbler errorGobbler = new 
+	              th.co.aoe.makedev.missconsult.thread.StreamGobbler errorGobbler = new 
 	            		th.co.aoe.makedev.missconsult.thread.StreamGobbler(proc.getErrorStream(), "ERROR");   
-	            errorGobbler.start();*/
+	            errorGobbler.start();  
 	            try {
 					int exitVal = proc.waitFor();
 					
-					//System.out.println("exitVal="+exitVal);
+					System.out.println("exitVal="+exitVal);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -149,7 +158,7 @@ public class ProcessimageServlet extends HttpServlet {
 			File file = new File("/tmp/"+fileGen+".jpg");
 
 			boolean fileExists = file.exists();
-			//System.out.println("filename ===>"+fileGen+".jpg , fileExists ===>"+fileExists);
+			System.out.println("filename ===>"+fileGen+".jpg , fileExists ===>"+fileExists);
 			if(fileExists){
 				InputStream in = null;
 			      OutputStream out=null;
