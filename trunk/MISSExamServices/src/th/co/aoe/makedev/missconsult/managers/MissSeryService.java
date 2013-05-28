@@ -16,5 +16,5 @@ public interface MissSeryService {
 		@SuppressWarnings("rawtypes")
 		public  List searchMissSery(MissSery persistentInstance,	Pagging pagging,String[] meIds)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
-		public  List listMissSery()throws DataAccessException  ;
+		public  List listMissSery(Long msType)throws DataAccessException  ;
 }

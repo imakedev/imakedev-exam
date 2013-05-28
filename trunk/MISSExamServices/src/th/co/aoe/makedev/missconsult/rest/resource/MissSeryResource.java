@@ -104,7 +104,7 @@ public class MissSeryResource extends BaseResource {
 						
 						else if(serviceName.equals(ServiceConstant.MISS_SERIES_LIST)){
 							@SuppressWarnings({ "unchecked" })
-							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery>) missSeryService.listMissSery();
+							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSery>) missSeryService.listMissSery(xbpsTerm.getMsType());
 							List<th.co.aoe.makedev.missconsult.xstream.MissSery> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSery>();
 							if (ntcCalendars != null && ntcCalendars.size() > 0) {
 								xntcCalendars = getxMissSeryObject(ntcCalendars);

@@ -9,7 +9,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class CommonResourceApplication extends Application {
-
     /**
      * Creates a root Restlet that will receive all incoming calls.
      */
@@ -41,5 +40,4 @@ public class CommonResourceApplication extends Application {
         return router;
     	//return guard;
     }
-     
 }

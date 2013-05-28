@@ -1,7 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -46,17 +45,17 @@ public class HibernateMissReportAttach extends HibernateCommon implements
 		// TODO Auto-generated method stub
 		MissReportAttach missReportAttach = null;
 		Session session = sessionAnnotationFactory.getCurrentSession();
-
+ 
 		Query query = session
 				.createQuery(" select missReportAttach from MissReportAttach missReportAttach "
-						+ " where missReportAttach.msId=:msId "
-						+ " and missReportAttach.msOrder=:msOrder "
-						+ " and missReportAttach.mraLang=:mraLang "
-						+ " and missReportAttach.matHotlink=:matHotlink ");
+						+ " where missReportAttach.id.msId=:msId "
+						+ " and missReportAttach.id.msOrder=:msOrder "
+						+ " and missReportAttach.id.mraLang=:mraLang ");
+						//+ " and missReportAttach.matHotlink=:matHotlink ");
 		query.setParameter("msId", msId);
 		query.setParameter("msOrder", msOrder);
 		query.setParameter("mraLang", mraLang);
-		query.setParameter("matHotlink", hotlink);
+		//query.setParameter("matHotlink", hotlink);
 		@SuppressWarnings("rawtypes")
 		List list = query.list();
 		if (list.size() > 0) {
