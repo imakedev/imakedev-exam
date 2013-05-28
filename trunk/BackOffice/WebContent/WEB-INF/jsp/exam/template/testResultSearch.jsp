@@ -367,7 +367,6 @@ function exportReportPDF(_mtrId,_meId,_msId,_mcaId,_msOrder,_mraLang){
 	//var src = "/MISSProcessImage/compareTest?mcaSeries="+$("#mcaSeries").val()+"&mtrIds="+mtrIds_G;
 	var src = "/MISSExamBackOffice/result/testPDF?mtrId="+_mtrId+"&meId="+_meId+"&msId="+_msId+"&mcaId="+_mcaId+"&msOrder="+_msOrder+"&mraLang="+_mraLang;
 	
-	//alert(src)
 	var div = document.createElement("div");
     document.body.appendChild(div);
     div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + src + "'></iframe>";

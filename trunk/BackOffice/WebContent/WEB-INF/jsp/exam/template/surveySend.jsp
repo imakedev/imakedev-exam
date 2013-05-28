@@ -5,7 +5,8 @@ $(document).ready(function() {
 	 if($("#message_element_survey").attr("style").indexOf("block")!=-1){ 
 		 $('html, body').animate({ scrollTop: 0 }, 'slow');
 	 	setTimeout(function(){$("#message_element_survey").slideUp(300)},5000);
-	 }
+	 } 
+	 loadParticipantSection();
 });
 function goBackUnitList(){
 	
@@ -46,6 +47,7 @@ function setSample(tableID) {
 }
 
 function doSendMailAction(){
+	return false;
 	$("#mailMessage").val(CKEDITOR.instances["mailMessage"].getData());
  	$.post("survey/sendmail",$("#surveyForm").serialize(), function(data) {
 		  // alert(data);
@@ -53,6 +55,14 @@ function doSendMailAction(){
 		  // alert($("#_content").html());
 		}); 
   }
+ function loadParticipantSection(){
+	 var msId=$("#msId").val();
+	 $.get("survey/participantSection/"+msId,function(data) {
+		 // alert(data);
+		  appendContentWithId(data,"dataTableElement");
+		 
+		});
+ }
 </script>
 <style>
 th{ font-family:Tahoma; font-size:12px; font-weight:bold;
@@ -100,17 +110,17 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     			 
     			</div>
     			 
-    			 <div> 
+    			 <!-- <div> 
     			 จำนวนสุ่ม : <input type="text" style="width: 35px" name="_sample" id="_sample"/>
     					&nbsp;<a class="btn btn-primary"  onclick="setSample('dataTable')"><span style="color: white;font-weight: bold;">Set</span></a>    			
-    			 </div>
+    			 </div> -->
     			 <div>
     			 Series :
-    					<form:select path="msId" >
+    					<form:select path="msId" onchange="loadParticipantSection()" >
     						 <form:options items="${missSeries}" itemLabel="msSeriesName" itemValue="msId"></form:options>
 	    					     
-    					</form:select>
-    			&nbsp;&nbsp;จำนวนที่ต้องการจะส่ง : <input type="text" style="width: 35px" name="amountSend" id="amountSend"/>
+    					</form:select> 
+    			<!-- &nbsp;&nbsp;จำนวนที่ต้องการจะส่ง : <input type="text" style="width: 35px" name="amountSend" id="amountSend"/> -->
     			 </div>
 			<span id="dataTableElement">
 			
@@ -146,5 +156,5 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 </form:form>
 <div align="center">
 			<a class="btn btn-info"  onclick="goBackUnitList()"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a>	
-    		<a class="btn btn-primary"  onclick="doSendMailAction('')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a>
+    		<a class="btn btn-primary"  onclick="doSendMailAction('')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a> 
 			</div>

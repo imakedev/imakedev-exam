@@ -28,12 +28,12 @@ $(document).ready(function() {
 		 	setTimeout(function(){$("#message_element_series").slideUp(300)},5000);
 		 }
    }
+  /*
    new AjaxUpload('template_file', {
        action: 'upload/template/${seriesForm.missSery.msId}',
 		onSubmit : function(file , ext){
            // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jasper)$/.test(ext)){
-				/* Setting data */
 				this.setData({
 				});					
 			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
@@ -54,6 +54,7 @@ $(document).ready(function() {
 			//$('#template_file_attached').attr('style','cursor: pointer;');	
 		}		
 	});
+   */
    new AjaxUpload('eval_file', {
        action: 'upload/evaluation/${seriesForm.missSery.msId}',
 		onSubmit : function(file , ext){
@@ -113,7 +114,13 @@ $(document).ready(function() {
 		   appendContentWithId(data,"_templateElement");
 		  // alert($("#_content").html());
 		});
-   
+   $.get("series/participantSection/${seriesForm.missSery.msId}",function(data) {
+		 // alert(data);
+		  appendContentWithId(data,"_participantElement");
+		  checkSeryType();
+		  // appendContentWithId(data,"_templateElement");
+		  // alert($("#_content").html());
+		});
    /*
    // button1
    new AjaxUpload('template_file_thai_1', {
@@ -457,6 +464,14 @@ $(document).ready(function() {
 		});
 	   */
 });
+function checkSeryType(){
+	var msType=$("#missSery\\.msType").val()
+	//alert(msType);
+	if(msType=='1'){ 
+		$("#_participantElement").slideDown("show");
+	}else
+		$("#_participantElement").slideUp("show");
+}
 function getReportName(id){
 	alert(id)
 	return $(id).val()
@@ -545,7 +560,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 <td align="left" width="17%">Series Type:</td>
 	    					 <td align="left" width="17%">    					
 	    						<!-- <input type="text"/>  -->
-	    						<form:select path="missSery.msType" cssStyle="width:80px">  
+	    						<form:select path="missSery.msType" cssStyle="width:80px" onchange="checkSeryType()">  
 	    									<form:option value="0">Normal</form:option>
 	    									<form:option value="1">180/360</form:option>
 											 <!-- <option value="1">MCCT</option> -->
@@ -571,7 +586,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
-	    					<tr>
+	    					<%-- <tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Template File:</td>
 	    					 <td align="left" width="51%" colspan="3">   
@@ -582,15 +597,11 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 		    				   <c:if test="${seriesForm.mode=='edit'}">					
 		    					<a class="btn" id="template_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
 		    				  </c:if>
-		    					<%--
-		    					<span id="template_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/template/${seriesForm.missSery.msId}/${seriesForm.missSery.templateFileHotlink}')">
-	    				${seriesForm.missSery.templateFile}</span>
-	    				 		--%>
 	    				 		<span id="template_file_attached">
 	    				${seriesForm.missSery.templateFile}</span>
 	    					 </td>
 	    					<td align="left" width="15%">&nbsp;</td>
-	    					</tr>
+	    					</tr> --%>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Evaluation File:</td>
@@ -631,6 +642,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<input type="hidden" id="eval_file_value_4" />
 	    					<input type="hidden" id="eval_file_value_5" />
 	    		</form:form>
+	    		<div id="_participantElement"></div>
 	    		<div id="_templateElement">
 	    		<%--
 	    		<table  border="0" width="100%" style="font-size: 13px">
