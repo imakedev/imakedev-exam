@@ -128,6 +128,8 @@ public class CandidateController
         candidateForm.getMissCandidate().setMissAccount(missAccount);
         candidateForm.getMissCandidate().setMcaUsername(candidateForm.getMcaUsername());
         candidateForm.getMissCandidate().setMcaPassword(candidateForm.getMcaPassword());
+        candidateForm.getMissCandidate().setMcaFirstName(candidateForm.getMcaFirstName());
+        candidateForm.getMissCandidate().setMcaLastName(candidateForm.getMcaLastName());
         if(mode != null && mode.equals("deleteItems"))
         {
             candidateForm.getMissCandidate().setMcaIds(candidateForm.getMcaIdArray());

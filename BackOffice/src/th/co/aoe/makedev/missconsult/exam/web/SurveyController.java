@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import th.co.aoe.makedev.missconsult.exam.form.SurveyForm;
 import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSurveySend;
 
@@ -69,10 +70,10 @@ public class SurveyController
     	model.addAttribute("surveyForm", surveyForm);
     	model.addAttribute("display", "display: none");
     	model.addAttribute("message", "");
-    	 model.addAttribute("missSeries", missExamService.listMissSery());
+    	 model.addAttribute("missSeries", missExamService.listMissSery(1l));
         return "exam/template/surveySend";
     }
-
+ 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
@@ -148,12 +149,22 @@ public class SurveyController
     	}
     	model.addAttribute("display", "display: block");
     	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success [ Unit not enough ] !!!"));
-    	 model.addAttribute("missSeries", missExamService.listMissSery());
+    	 model.addAttribute("missSeries", missExamService.listMissSery(1l));
     	 model.addAttribute("surveyForm", surveyForm);
     	 model.addAttribute("message_class", ((resultReturn==1)?"success":"error"));
+     
     	 return "exam/template/surveySend";
         //return "exam/template/surveySend";
     }
+    @RequestMapping(value={"/participantSection/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public String participantSection(Model model,@PathVariable Long msId)
+	    { 
+   	List<MissSeriesParticipantsMap> missSeriesParticipantsMaps =	missExamService.listMissSeriesParticipantsMap(msId);
+  	 model.addAttribute("missSeriesParticipantsMaps", missSeriesParticipantsMaps);
+  //	System.out.println(vresult.getResultListObj());
+  	 model.addAttribute("participant_msId", msId);
+  	  return "exam/template/surveyParticipantSection";
+	    }
 
   //  private static Logger logger = Logger.getRootLogger();
     @Autowired

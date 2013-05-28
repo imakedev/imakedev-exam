@@ -6,6 +6,7 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -57,6 +58,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccount;
 import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
+import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
@@ -462,16 +464,19 @@ public class ResultController
     public String viewAnswer()d
     {
         return "exam/template/nopage";
-    }*/
+    }*/  
     // testPDF?mtrId=8&meId=14&msId=9&mcaId=22
+   // testPDF?mtrId="+_mtrId+"&meId="+_meId+"&msId="+_msId+"&mcaId="+_mcaId+"&msOrder="+_msOrder+"&mraLang="+_mraLang;
+	
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value={"/testPDF"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
-    		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){
+    		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId
+    		,@RequestParam(required=false)Long msOrder,@RequestParam(required=false)String mraLang){
    /* public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){*/
     //	logger.debug(;
-    	//System.out.println(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId);
+    	System.out.println(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId+",msOrder="+msOrder+",mraLang="+mraLang);
     	Context ctx =null;
 		Connection con = null;
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
@@ -526,9 +531,13 @@ public class ResultController
 			newList.add(report2);*/
 		// JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
 		 
-		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
+		 //MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
+		 MissReportAttach missReportAttach=missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
+		
+		 //MissSeriesAttachSearch("template", msId, null, null);
 		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
-		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
+		// String  reportPath=  bundle.getString("reportTemplatePath")+missSeriesAttach.getMsatPath();
+		 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 		 JasperPrint jasperPrint=null;
 		 Map p =new HashMap();
 		 //System.out.println("missTestResult.getMissTestShows()->"+missTestResult.getMissTestShows());
@@ -625,8 +634,31 @@ public class ResultController
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		String filename="report";
+		if(missReportAttach.getMraReportName()!=null && missReportAttach.getMraReportName().trim().length()>0)
+			filename=missReportAttach.getMraReportName().trim();
+		if(filename.length()>0){
+			String userAgent = request.getHeader("user-agent");
+			boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
+			// filename="ทดสอบ โอ๋.xls";
+			//System.out.println(fileName);
+			byte[] fileNameBytes=null;
+			try {
+				fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			 
+		    String dispositionFileName = ""; 
+		    for (byte b: fileNameBytes) dispositionFileName += (char)(b & 0xff);
+
+			 String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+			 response.setHeader("Content-disposition", disposition);
+			//response.addHeader("Content-Disposition",content_disposition);
+		}
 	   //  String fileName="เทส.pdf";
-		 response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
+		 //response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
 		/* response.setHeader("Content-Disposition", "inline; filename="
 					+ fileName);*/
 	       ServletOutputStream servletOutputStream=null;

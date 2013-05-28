@@ -117,6 +117,23 @@ public class CandidateForm extends CommonForm
     private String mcaUsername;
     private String mcaPassword;
     private String mcaCompanyName;
+    private String mcaFirstName;  
+	private String mcaLastName;
     private Long maId;
     private String mcaIdArray;
+	public String getMcaFirstName() {
+		return mcaFirstName;
+	}
+
+	public void setMcaFirstName(String mcaFirstName) {
+		this.mcaFirstName = mcaFirstName;
+	}
+
+	public String getMcaLastName() {
+		return mcaLastName;
+	}
+
+	public void setMcaLastName(String mcaLastName) {
+		this.mcaLastName = mcaLastName;
+	}
 }
