@@ -6,6 +6,7 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissManual;
 import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
@@ -89,8 +91,8 @@ public class SeriesController
         seriesForm.setMissExam_selectbox(missExam_selectboxes);
         seriesForm.getMissSery().setMeIds(missExam_selectboxes);
         seriesForm.getPaging().setPageSize(PAGE_SIZE);
-        logger.debug((new StringBuilder("xxxx=seriesForm.getMissSery().getPagging()=")).append(seriesForm.getMissSery().getPagging()).toString());
-        logger.debug((new StringBuilder("xxxx=seriesForm.getPaging()=")).append(seriesForm.getPaging()).toString());
+       // logger.debug((new StringBuilder("xxxx=seriesForm.getMissSery().getPagging()=")).append(seriesForm.getMissSery().getPagging()).toString());
+       // logger.debug((new StringBuilder("xxxx=seriesForm.getPaging()=")).append(seriesForm.getPaging()).toString());
         seriesForm.getMissSery().setPagging(seriesForm.getPaging());
         VResultMessage vresultMessage = missExamService.searchMissSery(seriesForm.getMissSery());
         String meIdArray = "";
@@ -424,10 +426,68 @@ public class SeriesController
     	missReportAttach.setMraLang(request.getParameter("mraLang_section"));
     	missReportAttach.setMsId(Long.valueOf(request.getParameter("msId_section")));
     	missReportAttach.setMsOrder(Long.valueOf(request.getParameter("msOrder_section")));
+    	 
     	int status=missExamService.updateReportNameMissReportAttach(missReportAttach);
     	//System.out.println("request=>"+request.getParameter("mraReportName_section"));
     	return "success";
     } 
+    @RequestMapping(value={"/participantSection/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	 public String participantSection(Model model,@PathVariable Long msId)
+	    { 
+    	List<MissSeriesParticipantsMap> missSeriesParticipantsMaps =	missExamService.getMissSeriesParticipantsMap(msId, 5);
+   	 model.addAttribute("missSeriesParticipantsMaps", missSeriesParticipantsMaps);
+   //	System.out.println(vresult.getResultListObj());
+   	 model.addAttribute("participant_msId", msId);
+   	  return "exam/template/seriesParticipantSection";
+	    }
+    @RequestMapping(value={"/update/participantSection/{participant_msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+    public  @ResponseBody String updateParticipantSection(HttpServletRequest request,  Model model,@PathVariable Long participant_msId)
+    {
+    	MissReportAttach missReportAttach =new MissReportAttach();
+    	 @SuppressWarnings("rawtypes")
+    		Enumeration e_num=request.getParameterNames();
+    		List<String> mspmGroupNameList=new ArrayList<String>();
+    		List<Integer> mspmGroupAmountList=new ArrayList<Integer>();
+    		List<Integer> mspmOrderList=new ArrayList<Integer>();
+    		String group=null;
+    		String number=null;
+    		int index=1;
+    		while (e_num.hasMoreElements()) {
+    			String param_name = (String) e_num.nextElement(); 
+    			//System.out.println("not filter->"+param_name);
+    			
+    			if(param_name.startsWith("participants_group_")){
+    				//System.out.println("param_name->"+param_name);
+    				group=request.getParameter(param_name);
+    				String [] indexs=param_name.split("_");
+    				number=request.getParameter("participants_number_"+indexs[2]);
+    				if(group!=null && group.length()>0 && number!=null && number.length()>0){
+    					mspmGroupNameList.add(group);
+    					mspmGroupAmountList.add(Integer.valueOf(number));
+    					mspmOrderList.add(index++);
+    				}
+    				/*if(!request.getParameter(param_name).equals("0")){
+    					mspmGroupNameList.add(request.getParameter(param_name));
+    				}*/
+    			}
+    			 
+    		}
+    		//System.out.println("msOrderIdsList->"+msOrderIdsList);
+    		String[] mspmGroupName = new String[mspmGroupNameList.size()];
+    		Integer[] mspmGroupAmount = new Integer[mspmGroupAmountList.size()];
+    		Integer[] mspmOrder = new Integer[mspmOrderList.size()];
+    		
+    		mspmGroupName= mspmGroupNameList.toArray(mspmGroupName);
+    		mspmGroupAmount=mspmGroupAmountList.toArray(mspmGroupAmount);
+    		mspmOrder=mspmOrderList.toArray(mspmOrder);
+    		/*System.out.println("mspmGroupName->"+mspmGroupName.length);
+    		System.out.println("mspmGroupAmount->"+mspmGroupAmount.length);
+    		System.out.println("mspmOrder->"+mspmOrder.length);*/
+    	 int status=missExamService.updateMissSeriesParticipantsMap(participant_msId, mspmOrder, mspmGroupAmount, mspmGroupName);
+    	//System.out.println("request=>"+request.getParameter("mraReportName_section"));
+    	return "success";
+    } 
+   
    /* @RequestMapping(value={"/update/templateSection2"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public  @ResponseBody String updateTemplateSection(HttpServletRequest request, @ModelAttribute(value="seriesManagementSectionForm") SeriesManagementSectionForm seriesManagementSectionForm, BindingResult result, Model model)
     {

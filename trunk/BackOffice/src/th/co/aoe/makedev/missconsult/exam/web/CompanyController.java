@@ -69,7 +69,7 @@ public class CompanyController
         model.addAttribute("missAccounts", vresultMessage.getResultListObj());
         companyForm.getPaging().setPageSize(PAGE_SIZE);
         companyForm.setPageCount(IMakeDevUtils.calculatePage(companyForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        model.addAttribute("missSeries", missExamService.listMissSery(null));
         model.addAttribute("companyForm", companyForm);
         return "exam/template/companySearch";
     }
@@ -149,7 +149,7 @@ public class CompanyController
         companyForm.setPageCount(IMakeDevUtils.calculatePage(companyForm.getPaging().getPageSize(), Integer.parseInt(vresultMessage.getMaxRow())));
         model.addAttribute("meIdArray", meIdArray);
         model.addAttribute("missAccounts", vresultMessage.getResultListObj());
-        model.addAttribute("missSeries", missExamService.listMissSery());
+        model.addAttribute("missSeries", missExamService.listMissSery(null));
         model.addAttribute("companyForm", companyForm);
         return "exam/template/companySearch";
     }

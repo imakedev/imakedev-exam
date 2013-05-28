@@ -35,6 +35,7 @@ import th.co.aoe.makedev.missconsult.xstream.MissReactiveLog;
 import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesMap;
+import th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryOrder;
 import th.co.aoe.makedev.missconsult.xstream.MissSeryProblem;
@@ -368,9 +369,10 @@ public class MissExamServiceImpl extends PostCommon
         return resultMessage.getResultListObj();
     }
     @SuppressWarnings("rawtypes")
-    public List listMissSery()
+    public List listMissSery(Long msType)
     {
         MissSery missSery = new MissSery();
+        missSery.setMsType(msType);
         missSery.setServiceName(ServiceConstant.MISS_SERIES_LIST);//"listMissSeries");
         VResultMessage resultMessage = postMessage(missSery, missSery.getClass().getName(), "missSery", true);
         return resultMessage.getResultListObj();
@@ -1754,6 +1756,52 @@ public class MissExamServiceImpl extends PostCommon
         VResultMessage resultMessage = postMessage(roleSeriesReportMapping, roleSeriesReportMapping.getClass().getName(), "roleSeriesReportMapping", true);
         roleSeriesReportMapping = (RoleSeriesReportMapping)resultMessage.getResultListObj().get(0);
         return roleSeriesReportMapping.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public List getMissSeriesParticipantsMap(Long msId, int numberParticipant) {
+		// TODO Auto-generated method stub
+		th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap missSeriesParticipantsMap =new th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap();
+		missSeriesParticipantsMap.setMsId(msId); 
+		missSeriesParticipantsMap.setServiceName(ServiceConstant.MISS_SERIES_PARTICIPANTS_MAP_GET);//"searchMissReportAttach");
+		VResultMessage resultMessage = postMessage(missSeriesParticipantsMap, missSeriesParticipantsMap.getClass().getName(), "missSeriesParticipantsMap", true);
+	    return resultMessage.getResultListObj(); 
+	}
+	@Override
+	public List listMissSeriesParticipantsMap(Long msId) {
+		// TODO Auto-generated method stub
+		th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap missSeriesParticipantsMap =new th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap();
+		missSeriesParticipantsMap.setMsId(msId); 
+		missSeriesParticipantsMap.setServiceName(ServiceConstant.MISS_SERIES_PARTICIPANTS_MAP_LIST);//"searchMissReportAttach");
+		VResultMessage resultMessage = postMessage(missSeriesParticipantsMap, missSeriesParticipantsMap.getClass().getName(), "missSeriesParticipantsMap", true);
+	    return resultMessage.getResultListObj(); 
+	}
+
+	@Override
+	public int deleteMissSeriesParticipantsMap(Long msId, int mspmOrder) {
+		// TODO Auto-generated method stub
+		th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap missSeriesParticipantsMap =new th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap();
+		missSeriesParticipantsMap.setMsId(msId);
+		missSeriesParticipantsMap.setMspmOrder(Long.valueOf(mspmOrder));
+		missSeriesParticipantsMap.setServiceName(ServiceConstant.MISS_SERIES_PARTICIPANTS_MAP_DELETE);//"deleteMissAccountSeriesMap");
+	    VResultMessage resultMessage = postMessage(missSeriesParticipantsMap, missSeriesParticipantsMap.getClass().getName(), "missSeriesParticipantsMap", true);
+	    missSeriesParticipantsMap = (MissSeriesParticipantsMap)resultMessage.getResultListObj().get(0);
+	    return missSeriesParticipantsMap.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int updateMissSeriesParticipantsMap(Long msId, Integer[] mspmOrder,
+			Integer[] mspmGroupAmount, String[] mspmGroupName) {
+		// TODO Auto-generated method stub
+		th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap missSeriesParticipantsMap =new th.co.aoe.makedev.missconsult.xstream.MissSeriesParticipantsMap();
+		missSeriesParticipantsMap.setMsId(msId);
+		missSeriesParticipantsMap.setMspmOrderArray(mspmOrder);
+		missSeriesParticipantsMap.setMspmGroupAmountArray(mspmGroupAmount);
+		missSeriesParticipantsMap.setMspmGroupNameArray(mspmGroupName);
+		missSeriesParticipantsMap.setServiceName(ServiceConstant.MISS_SERIES_PARTICIPANTS_MAP_UPDATE);//"deleteMissAccountSeriesMap");
+	    VResultMessage resultMessage = postMessage(missSeriesParticipantsMap, missSeriesParticipantsMap.getClass().getName(), "missSeriesParticipantsMap", true);
+	    missSeriesParticipantsMap = (MissSeriesParticipantsMap)resultMessage.getResultListObj().get(0);
+	    return missSeriesParticipantsMap.getUpdateRecord().intValue();
 	}
 	    
 }

@@ -204,7 +204,7 @@ public interface MissExamService {
 
 	public abstract VResultMessage searchMissSery(MissSery misssery);
 	@SuppressWarnings("rawtypes")
-	public abstract List listMissSery();
+	public abstract List listMissSery(Long msType);
 
 	public abstract Long saveMissSurveySend(MissSurveySend misssurveysend);
 
@@ -466,5 +466,10 @@ public interface MissExamService {
 	
 	public List listRoleSeriesReportMappingByrcId(Long rcId,Long msId); 
 	public int updateRoleSeriesReportMapping(Long rcId, Long msId,String[] msOrders);
+	public  List getMissSeriesParticipantsMap(Long msId,int numberParticipant)  ;
+	public  List listMissSeriesParticipantsMap(Long msId)  ;
+	
+	public  int deleteMissSeriesParticipantsMap(Long msId,int mspmOrder)  ;
+	public int updateMissSeriesParticipantsMap(Long msId, Integer[] mspmOrder,Integer[] mspmGroupAmount,String[] mspmGroupName) ;
 
 }
