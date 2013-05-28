@@ -310,6 +310,21 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    						<!-- <input type="text" name="registerNo"/> -->
 	    					</td>
 	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr> 
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">First name:</td>
+	    					 <td align="left" width="17%">
+	    					 <form:input path="mcaFirstName"/>
+	    					 <!--  <input type="text" name="registerNo"/>   	 -->				
+	    						
+	    					 </td>
+	    					<td align="left" width="17%">Last name:</td>
+	    					<td align="left" width="17%">
+	    					 <form:input path="mcaLastName"/>
+	    						<!-- <input type="text" name="registerNo"/> -->
+	    					</td>
+	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<c:if test="${UserMissContact.isMC=='1'}">
 	    					<tr>
@@ -382,7 +397,10 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	<td><input type="checkbox" name="mcaIdCheckbox" value="${missCandidate.mcaId}"/>&nbsp;&nbsp;${(candidateForm.paging.pageNo-1)*candidateForm.paging.pageSize+(loop.index+1)}.</td>
             	<td>&nbsp;${missCandidate.mcaUsername}&nbsp;/&nbsp;${missCandidate.mcaPassword}</td>
             	<%-- <td>&nbsp;${missCandidate.mcaPassword}</td> --%>
-            	<td>&nbsp;${missCandidate.missAccount.maName}&nbsp;[${missCandidate.missAccount.maTotalUnit}/${missCandidate.missAccount.maTotalUnit-missCandidate.missAccount.maUsedUnit}]</td>
+            	<td>&nbsp;${missCandidate.missAccount.maName}&nbsp;[${missCandidate.missAccount.maTotalUnit}/${missCandidate.missAccount.maTotalUnit-missCandidate.missAccount.maUsedUnit}]
+            	<br>
+            	<span style="color: blue">&nbsp;${missCandidate.mcaFirstName}&nbsp;${missCandidate.mcaLastName}</span>
+            	</td>
             	<td>&nbsp;${missCandidate.missSery.msSeriesName}&nbsp;[${missCandidate.masmAvailable}]</td>
             	<td>&nbsp;${missCandidate.lastLogin}</td>
             	<td>
