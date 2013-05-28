@@ -350,10 +350,13 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
  
 	@SuppressWarnings("rawtypes")
 	@Override
-	public List listMissSery() throws DataAccessException {
+	public List listMissSery(Long msType) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
-		Query query=session.createQuery(" select missSery from MissSery missSery ");
+		StringBuffer sb=new StringBuffer(" select missSery from MissSery missSery ");
+		if(msType!=null)
+			sb.append(" where missSery.msType="+msType);
+		Query query=session.createQuery(sb.toString());
 		return query.list(); 	 
 	}
 

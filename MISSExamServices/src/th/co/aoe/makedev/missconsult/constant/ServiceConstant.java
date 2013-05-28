@@ -1,6 +1,9 @@
 package th.co.aoe.makedev.missconsult.constant;
 
+import java.util.List;
 import java.util.ResourceBundle;
+
+import org.springframework.dao.DataAccessException;
 
 public class ServiceConstant {
 	public static final String hostReference = "http://10.2.0.76:10000/BPSService/RestletServlet/";
@@ -315,6 +318,10 @@ public class ServiceConstant {
 		public static final String MISS_REPORT_ATTACH_UPDATE_REPORTNAME = "updateMissReportAttachReportName";
 		public static final String MISS_REPORT_ATTACH_GET_TEMPLATE_FOR_ROLE = "getTemplateMissReportAttachForRole";
 		
+		public static final String MISS_SERIES_PARTICIPANTS_MAP_GET = "getMissSeriesParticipantsMap";
+		public static final String MISS_SERIES_PARTICIPANTS_MAP_DELETE = "deleteMissSeriesParticipantsMap";
+		public static final String MISS_SERIES_PARTICIPANTS_MAP_UPDATE = "updateMissSeriesParticipantsMap";
+		public static final String MISS_SERIES_PARTICIPANTS_MAP_LIST = "listMissSeriesParticipantsMap";
 		
 		// role_series_report_mapping 
 		public static final String ROLE_SERIES_REPORT_MAPPING_UPDATE = "updateRoleSeriesReportMapping";   

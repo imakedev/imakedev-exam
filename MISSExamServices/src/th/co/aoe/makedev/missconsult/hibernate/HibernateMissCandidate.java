@@ -161,6 +161,9 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 					 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()+""):null;
 			String mcaUsername=instance.getMcaUsername();
 			String mcaPassword=instance.getMcaPassword();
+			String mcaFirstName=instance.getMcaFirstName();
+			String mcaLastName=instance.getMcaLastName();
+			 
 			String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
 			Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
 		
@@ -195,6 +198,16 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 				sb.append(iscriteria?(" and lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
 				  iscriteria = true;
 			}
+			if(mcaFirstName !=null && mcaFirstName.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and lcase(missCandidate.mcaFirstName) like '%"+mcaFirstName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.mcaFirstName) like '%"+mcaFirstName.trim().toLowerCase()+"%'"));
+				  iscriteria = true;
+			}
+			if(mcaLastName !=null && mcaLastName.trim().length() > 0){  
+				//criteria.add(Expression.eq("megId", megId));	
+				sb.append(iscriteria?(" and lcase(missCandidate.mcaLastName) like '%"+mcaLastName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.mcaLastName) like '%"+mcaLastName.trim().toLowerCase()+"%'"));
+				  iscriteria = true;
+			} 
 			if(maId !=null && maId.intValue()!=0){  
 				//criteria.add(Expression.eq("megId", megId));	
 				sb.append(iscriteria?(" and missCandidate.missAccount.maId="+maId.intValue()+""):(" where missCandidate.missAccount.maId="+maId.intValue()+""));
@@ -223,6 +236,8 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 						 && instance.getMissSery().getMsId().intValue()!=0 )?(instance.getMissSery().getMsId()+""):null;
 				String mcaUsername=instance.getMcaUsername();
 				String mcaPassword=instance.getMcaPassword();
+				String mcaFirstName=instance.getMcaFirstName();
+				String mcaLastName=instance.getMcaLastName();
 				 
 				String mcaCompanyName=(instance.getMissAccount()!=null && instance.getMissAccount().getMaName()!=null)?(instance.getMissAccount().getMaName()):null;
 				Long maId=(instance.getMissAccount()!=null && instance.getMissAccount().getMaId()!=null)?(instance.getMissAccount().getMaId()):null;
@@ -258,6 +273,16 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 					sb.append(iscriteria?(" and lcase(missCandidate.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.mcaPassword) like '%"+mcaPassword.trim().toLowerCase()+"%'"));
 					  iscriteria = true;
 				}
+				if(mcaFirstName !=null && mcaFirstName.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and lcase(missCandidate.mcaFirstName) like '%"+mcaFirstName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.mcaFirstName) like '%"+mcaFirstName.trim().toLowerCase()+"%'"));
+					  iscriteria = true;
+				}
+				if(mcaLastName !=null && mcaLastName.trim().length() > 0){  
+					//criteria.add(Expression.eq("megId", megId));	
+					sb.append(iscriteria?(" and lcase(missCandidate.mcaLastName) like '%"+mcaLastName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.mcaLastName) like '%"+mcaLastName.trim().toLowerCase()+"%'"));
+					  iscriteria = true;
+				} 
 				if(mcaCompanyName !=null && mcaCompanyName.trim().length() > 0){  
 					//criteria.add(Expression.eq("megId", megId));	
 					sb.append(iscriteria?(" and lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"):(" where lcase(missCandidate.missAccount.maName) like '%"+mcaCompanyName.trim().toLowerCase()+"%'"));
