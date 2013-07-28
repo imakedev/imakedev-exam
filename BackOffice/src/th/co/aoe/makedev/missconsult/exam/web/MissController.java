@@ -268,10 +268,12 @@ public class MissController
     @RequestMapping(value={"/generatePassword"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
 	 public @ResponseBody String generatePassword()
 	    {
-    	 return new BigInteger(40, random).toString(32); 
+    	 //return new BigInteger(40, random).toString(32);
+    	return password_gen;
 	    }
-   
+    
     private static final SecureRandom random = new SecureRandom();
+    public static final String password_gen =  new BigInteger(40, random).toString(32);
    // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
    // private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
     private static SimpleDateFormat format11 = new SimpleDateFormat("MM-dd-yyyy");

@@ -13,6 +13,7 @@ public class SurveyForm implements Serializable {
 	public Long msId;
 	public String[] survey_name;
 	public String[] survey_email;
+	public String[] survey_group;
 	public int amountSend;
 	public String subject;
 	public String mailMessage;
@@ -73,6 +74,14 @@ public class SurveyForm implements Serializable {
 
 	public void setMailMessage(String mailMessage) {
 		this.mailMessage = mailMessage;
+	}
+
+	public String[] getSurvey_group() {
+		return survey_group;
+	}
+
+	public void setSurvey_group(String[] survey_group) {
+		this.survey_group = survey_group;
 	}
 	
 }

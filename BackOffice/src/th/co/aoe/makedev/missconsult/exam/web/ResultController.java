@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import th.co.aoe.makedev.missconsult.exam.form.ResultForm;
-import th.co.aoe.makedev.missconsult.exam.mail.MailRunnable;
+import th.co.aoe.makedev.missconsult.exam.mail.MailRunnableAttach;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
@@ -59,7 +59,6 @@ import th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap;
 import th.co.aoe.makedev.missconsult.xstream.MissCandidate;
 import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissReportAttach;
-import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTestShow;
@@ -177,6 +176,8 @@ public class ResultController
         	
         	resultForm.getMissTestResult().setMissCandidate(missCandidate);
         	resultForm.getMissTestResult().setRoleMC(roleMC);
+        	resultForm.getMissTestResult().getPagging().setOrderBy("candidate.MCA_USERNAME");
+        	resultForm.getMissTestResult().getPagging().setSortBy("asc"); 
          VResultMessage vresultMessage = missExamService.searchMissTestResult(resultForm.getMissTestResult());
          model.addAttribute("missTestResults", vresultMessage.getResultListObj().get(0));
           resultForm.getPaging().setPageSize(PAGE_SIZE);
@@ -261,7 +262,8 @@ public class ResultController
         	resultForm.getMissTestResult().setMtrIds(resultForm.getMtrIdArray());
          //   missExamService.ignoreItems(resultForm.getMissSery(), "igMissSeryItems");
             missExamService.updateStatusMissTestResult(resultForm.getMtrIdArray(), "mtrRespondedStatus", "2");
-            resultForm.getPaging().setPageNo(1);
+            resultForm.getMissTestResult().setMtrIds(null);
+          //  resultForm.getPaging().setPageNo(1);
         }else 
         if(mode != null && mode.equals("delete")){
          //   missExamService.deleteMissSery(resultForm.getMissSery(), "deleteMissSery");
@@ -339,17 +341,29 @@ public class ResultController
     			recipientsBCC.add(recipientStr[i]);
 			} 
     	}
-    	byte [] fileSize=null;
-    	if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")){
+    	//byte [] fileSize=null;
+    	/*if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")){
     		fileSize=getFileSize(resultForm.getMissTestResult().getMsId(),resultForm.getMissTestResult().getMtrId());
-    	}
+    	}*/
+    	/*System.out.println("resultForm.getMailAttachReport()->"+resultForm.getMailAttachReport());
+    	System.out.println("resultForm.getMsOrder()->"+resultForm.getMsOrder());
+    	System.out.println("resultForm.getMraLang()->"+resultForm.getMraLang());*/
+    	/*if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")
+    			&& resultForm.getMsOrder()!=null && resultForm.getMsOrder().length()>0 
+    			&& resultForm.getMraLang()!=null && resultForm.getMraLang().length()>0 ){
+    		fileSize=getFileSize(resultForm.getMissTestResult().getMsId(),resultForm.getMissTestResult().getMtrId(),Long.valueOf(resultForm.getMsOrder()),
+    				resultForm.getMraLang());
+    		//  private byte[] getFileSize(Long msId,Long mtrId,Long msOrder,String mraLang){
+    	}*/
+    	//System.out.println("fileSize->"+fileSize);
     //	StringBuffer mailMessageBody=new StringBuffer("");
-    //	mailMessageBody.append("Test Response"); 
-    	MailRunnable mailRunnableToTeam = new MailRunnable(
+    //	mailMessageBody.append("Test Response");  
+    	MailRunnableAttach mailRunnableToTeam = new MailRunnableAttach(missExamService,resultForm.getMissTestResult().getMtrId(),resultForm.getMissTestResult().getMsId(),
+    			resultForm.getMailAttachReport(),resultForm.getMsOrder(),resultForm.getMraLang(),bundle.getString("reportTemplatePath"),
 				MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
 						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
 				recipientsTo, subject,
-				resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
+				resultForm.getMailMessage(), "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,MAIL_TLS);
 		Thread mailThreadToTeam = new Thread(
 				mailRunnableToTeam);
 		mailThreadToTeam.start(); 
@@ -365,19 +379,21 @@ public class ResultController
     	 return "exam/template/testSendmail";
     }
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	private byte[] getFileSize(Long msId,Long mtrId){
+	//private byte[] getFileSize(Long msId,Long mtrId){
+    private byte[] getFileSize(Long msId,Long mtrId,Long msOrder,String mraLang){
     	byte [] fileSize=null;
     	Context ctx =null;
 		Connection con = null;
     	try{
-    	
-		 MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
-		 
-		 String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
+    	 MissReportAttach missReportAttach =missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
+		 //MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
+		 System.out.println("missReportAttach->"+missReportAttach);
+		 //String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
+    	 String  reportPath=  bundle.getString("reportTemplatePath")+missReportAttach.getMraPath();
 		 JasperPrint jasperPrint=null;
 		 
 		 Map p =new HashMap();
-		 p.put("mtrId",mtrId);
+		 p.put("mtrId",mtrId+"");
 			try {
 				ctx = new InitialContext();
 			} catch (NamingException e) {

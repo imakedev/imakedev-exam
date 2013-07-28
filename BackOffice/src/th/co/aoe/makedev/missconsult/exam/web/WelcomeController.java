@@ -58,6 +58,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import th.co.aoe.makedev.missconsult.exam.mail.MailRunnableAttach;
 import th.co.aoe.makedev.missconsult.exam.service.MissExamService;
 import th.co.aoe.makedev.missconsult.exam.utils.IMakeDevUtils;
 import th.co.aoe.makedev.missconsult.xstream.MissAccount;
@@ -110,7 +111,7 @@ public class WelcomeController
       //  logger.debug((new StringBuilder(" name  ===>")).append(name).toString());
        // logger.debug((new StringBuilder(" auth.getAuthorities() ====>")).append(auth.getAuthorities()).toString());
         int pageNo = 1;
-        if(pageNoStr != null && !pageNoStr.equals(""))
+        if(pageNoStr != null && pageNoStr.length()!=0)
             pageNo = Integer.parseInt(pageNoStr);
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
@@ -145,7 +146,7 @@ public class WelcomeController
     	missTodo.setMtodoId(ignore_id);
     	missExamService.deleteMissTodo(missTodo);
         int pageNo = 1;
-        if(pageNoStr != null && !pageNoStr.equals(""))
+        if(pageNoStr != null && pageNoStr.length()!=0)
             pageNo = Integer.parseInt(pageNoStr);
         Pagging page = new Pagging();
         page.setPageNo(pageNo);
@@ -245,6 +246,10 @@ public class WelcomeController
     	MissTodo missTodo=new  MissTodo();
     	missTodo.setMtodoId(mailTodoId);
     	missTodo.setMtodoRef(mailTodoRef);
+    	MissTestResult missTestResult=missExamService.findMissTestResultById(mailTodoRef);
+    	model.addAttribute("mail_msIdG", missTestResult.getMsId());
+    	model.addAttribute("mail_maIdG", missTestResult.getMissCandidate().getMissAccount().getMaId());
+    	//missExamService.findMissCandidateById(missTestResult.getMissCandidate().getMcaId()sCandidate())
     	String mail =missExamService.getEmailFromMissTodo(missTodo);
     	if(mail!=null)
     		model.addAttribute("mail_todo_to", mail);
@@ -262,6 +267,9 @@ public class WelcomeController
     	String mailTo=request.getParameter("mail_to");
     	String mailCC=request.getParameter("mail_cc");
     	String mailBCC=request.getParameter("mail_bcc");
+    	String msOrder=request.getParameter("msOrder");
+    	String mraLang=request.getParameter("mraLang");
+    	String  msId=request.getParameter("msId");
     	/*logger.error("request   mail_message==>"+message);
     	logger.error("request   mail_subject==>"+subject);
     	
@@ -270,10 +278,8 @@ public class WelcomeController
     	//logger.error("request   mail_todo_ref==>"+request.getParameter("mail_todo_ref"));
     	int status=0;
     	//send mail to Approver
-    	byte [] fileSize=null;
-    	if(request.getParameter("mail_attach")!=null && request.getParameter("mail_attach").equals("1")){
-    		/*$("#mail_todo_id").val(todo_id);
-    		$("#mail_todo_ref").val(todo_ref);*/ 
+    	//byte [] fileSize=null;
+    	/*if(request.getParameter("mail_attach")!=null && request.getParameter("mail_attach").equals("1")){
     		String todo_ref=request.getParameter("mail_todo_ref");
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
     		System.out.println("missTestResult->"+missTestResult);
@@ -281,7 +287,7 @@ public class WelcomeController
     			
     			fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
     		}
-    	}
+    	}*/
     	String[] mailTos=null;
     	if(mailTo!=null  && mailTo.length()>0){
     		 mailTos=mailTo.split(",");
@@ -307,10 +313,24 @@ public class WelcomeController
         			 recipientsBCC.add(mailBCCs[i]);
     			}
     		 }
-    		 status= sendMail(MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+    		/* status= sendMail(MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
 						, MAIL_PASSWORD, MAIL_USE_AUTHEN,
 						recipientsTo, subject,
-				message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
+				message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);*/
+    		 try{
+    		 MailRunnableAttach mailRunnableToTeam = new MailRunnableAttach(missExamService,Long.valueOf(request.getParameter("mail_todo_ref")),Long.valueOf(msId),
+    				 request.getParameter("mail_attach"),msOrder,mraLang,bundle.getString("reportTemplatePath"),
+    					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+    							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+    					recipientsTo, subject,
+    					message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,MAIL_TLS);
+    			Thread mailThreadToTeam = new Thread(
+    					mailRunnableToTeam);
+    			mailThreadToTeam.start(); 
+    		 }catch(Exception ex){
+    			 ex.printStackTrace();
+    		 }
+    			status=1;
     	/*	 MailRunnable mailRunnableToTeam = new MailRunnable(
     					;
     			Thread mailThreadToTeam = new Thread(

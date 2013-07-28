@@ -32,6 +32,9 @@ public class ResultForm extends CommonForm implements Serializable {
 	private String mailReactive;
 	private String mailAttachReport;
 	
+	private String msOrder;
+	private String mraLang;
+	
 	public String getMailcc() {
 		return mailcc;
 	}
@@ -184,6 +187,22 @@ public class ResultForm extends CommonForm implements Serializable {
 	public ResultForm() {
 		missTestResult = new MissTestResult();
 		missCandidate =new MissCandidate();
+	}
+
+	public String getMsOrder() {
+		return msOrder;
+	}
+
+	public void setMsOrder(String msOrder) {
+		this.msOrder = msOrder;
+	}
+
+	public String getMraLang() {
+		return mraLang;
+	}
+
+	public void setMraLang(String mraLang) {
+		this.mraLang = mraLang;
 	}
 
 }

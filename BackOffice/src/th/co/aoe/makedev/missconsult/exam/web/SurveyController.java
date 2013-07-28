@@ -6,11 +6,7 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,14 +70,12 @@ public class SurveyController
         return "exam/template/surveySend";
     }
  
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+  /*  @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
     {
-      
     	int resultReturn=0;
     	if(surveyForm.getSurvey_email().length>=surveyForm.getAmountSend()){
-    		//List recipientsTo=new ArrayList();
     		 Random randomGenerator = new Random();
     		 
 			Map map=new HashMap<String,String >();
@@ -99,8 +93,6 @@ public class SurveyController
     			 email.add(surveyForm.getSurvey_name()[keyInt]);
     			 email.add(surveyForm.getSurvey_email()[keyInt]);
     			 userEmail.add(email);		
-    			 /* recipientsTo.add(surveyForm.getSurvey_email()[keyInt]);
-    			  recipientsTo.add(surveyForm.getSurvey_name()[keyInt]);*/
 			}
     		 MissSurveySend missSurveySend =new MissSurveySend();
     		
@@ -113,15 +105,11 @@ public class SurveyController
     		 List<List<String>> candidateReturn= missExamService.sendSurvey(missSurveySend);
     		 if(candidateReturn!=null && candidateReturn.size()>0)
     			 resultReturn=1;
-    		// int size=map.size();
-    		 
 			List recipientsCC=null;
-    		 
 			List recipientsBCC=null;
     		 byte[] fileSize=null;
     		 String subject=surveyForm.getSubject();//"Aoe";
     		 String mailMessage=surveyForm.getMailMessage();//"Mail Message";
-    		 
     		 
 			List recipients=null;
     		 String message=null;
@@ -145,7 +133,6 @@ public class SurveyController
 				}
     			
     		 }
-    		/**/ 
     	}
     	model.addAttribute("display", "display: block");
     	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success [ Unit not enough ] !!!"));
@@ -154,8 +141,75 @@ public class SurveyController
     	 model.addAttribute("message_class", ((resultReturn==1)?"success":"error"));
      
     	 return "exam/template/surveySend";
-        //return "exam/template/surveySend";
-    }
+    }*/
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+  	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+      public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
+      {
+      	int resultReturn=0;
+      	if(surveyForm.getSurvey_email().length>0){
+      		int size=surveyForm.getSurvey_email().length;
+      		MissSurveySend surveySend=new MissSurveySend();
+      		List<MissSurveySend>  surveySends = new ArrayList<MissSurveySend>();
+      		 MissSery missSery = new MissSery();
+      		 String[] survey_emails=surveyForm.getSurvey_email();
+      		 String[] survey_names=surveyForm.getSurvey_name();
+      		 String[] survey_groups=surveyForm.getSurvey_group();
+      		 missSery.setMsId(surveyForm.getMsId());
+      		for (int i = 0; i < size; i++) {
+      			 MissSurveySend missSurveySend =new MissSurveySend();
+          		
+          		 missSurveySend.setMissSery(missSery);
+          		 missSurveySend.setMsEmail(survey_emails[i]);
+          		 missSurveySend.setMsName(survey_names[i]);
+          		 // missSurveySend.setUserEmail(survey_emails[i]);
+          		 missSurveySend.setMssStatus("0");
+          		 missSurveySend.setMspmGroupName(survey_groups[i]);
+          		 missSurveySend.setMaId(surveyForm.getMaId());
+          		 surveySends.add(missSurveySend);
+			}
+      		surveySend.setMissSurveySendList(surveySends);
+      		 //resultReturn=
+      		List<List<String>> candidateReturn= missExamService.sendSurvey(surveySend);
+      		 if(candidateReturn!=null && candidateReturn.size()>0)
+      			 resultReturn=1;
+  			List recipientsCC=null;
+  			List recipientsBCC=null;
+      		 byte[] fileSize=null;
+      		 String subject=surveyForm.getSubject();//"Aoe";
+      		 String mailMessage=surveyForm.getMailMessage();//"Mail Message";
+      		 
+  			List recipients=null;
+      		 String message=null;
+      		 if(candidateReturn!=null && candidateReturn.size()>0){
+      			 for (int i = 0; i < candidateReturn.size(); i++) {
+      				 List<String> list=candidateReturn.get(i);
+      				 recipients=new ArrayList(1);    				 
+      				 recipients.add(list.get(3));
+      				 message=mailMessage.replaceAll("\\$\\{name\\}", list.get(2));
+      				 message=message.replaceAll("\\$\\{username\\}", list.get(0));
+      				 message=message.replaceAll("\\$\\{password\\}", list.get(1));
+      				 // ${name} , ${candidate} , ${password}
+      				 MailRunnable mailRunnableToTeam = new MailRunnable(
+      		  					MAIL_PROTOCAL, MAIL_SERVER, MAIL_EMAIL
+      		  							, MAIL_PASSWORD, MAIL_USE_AUTHEN,
+      		  							recipients, subject,
+      		  							message, "99",MAIL_PERSONAL_NAME,MAIL_PORT,recipientsCC,recipientsBCC,fileSize,MAIL_TLS);
+      		    			 Thread mailThreadToTeam = new Thread(
+      		  					mailRunnableToTeam);
+      		    			 mailThreadToTeam.start();
+  				}
+      			
+      		 }
+      	}
+      	model.addAttribute("display", "display: block");
+      	model.addAttribute("message", ((resultReturn==1)?"Send Success !!!":"Send not Success [ Unit not enough ] !!!"));
+      	 model.addAttribute("missSeries", missExamService.listMissSery(1l));
+      	 model.addAttribute("surveyForm", surveyForm);
+      	 model.addAttribute("message_class", ((resultReturn==1)?"success":"error"));
+       
+      	 return "exam/template/surveySend";
+      }
     @RequestMapping(value={"/participantSection/{msId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
 	 public String participantSection(Model model,@PathVariable Long msId)
 	    { 
