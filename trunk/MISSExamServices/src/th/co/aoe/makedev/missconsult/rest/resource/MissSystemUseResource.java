@@ -67,7 +67,7 @@ public class MissSystemUseResource extends BaseResource {
 					bpsTerm.setMsystemWeek(Long.valueOf(datetime.weekOfWeekyear().get())); 
 					
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -92,7 +92,7 @@ public class MissSystemUseResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissSystemUse> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSystemUse>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissSystemUseObject(ntcCalendars);
@@ -141,7 +141,7 @@ public class MissSystemUseResource extends BaseResource {
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSystemUse>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissSystemUseObject(ntcCalendars);

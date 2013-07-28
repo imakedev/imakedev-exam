@@ -99,7 +99,7 @@ public class MissCandidateResource extends BaseResource {
 						bpsTerm.setMissAccount(missAccount);
 					}
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -209,8 +209,8 @@ public class MissCandidateResource extends BaseResource {
 						if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_FIND_BY_NAME)){
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate ntcCalendarReturn = missCandidateService.findMissCandidateByName(bpsTerm.getMcaUsername());
 						logger.debug(" object return ="+ntcCalendarReturn);
-							if(ntcCalendarReturn!=null){
-								VResultMessage vresultMessage = new VResultMessage();
+						VResultMessage vresultMessage = new VResultMessage();
+							if(ntcCalendarReturn!=null){ 
 								List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>(1);
 								th.co.aoe.makedev.missconsult.xstream.MissCandidate xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissCandidate();
 								BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn,ignore_id);	
@@ -253,10 +253,9 @@ public class MissCandidateResource extends BaseResource {
 								
 								xntcCalendars.add(xntcCalendarReturn);
 								vresultMessage.setResultListObj(xntcCalendars);
-								return getRepresentation(entity, vresultMessage, xstream);
-								 
-								
+								//return getRepresentation(entity, vresultMessage, xstream); 
 							}
+							return getRepresentation(entity, vresultMessage, xstream); 
 						} 
 						
 						else if(serviceName.equals(ServiceConstant.MISS_CANDIDATE_SAVE)){
@@ -278,7 +277,9 @@ public class MissCandidateResource extends BaseResource {
 								mcaId=(missCandidateService.saveMissCandidate(bpsTerm));
 							}
 							xbpsTerm.setMcaId(mcaId);
-						
+							th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate missCandidateDomain =missCandidateService.findMissCandidateById(mcaId);
+							if(missCandidateDomain!=null)
+								xbpsTerm.setMcaUsername(missCandidateDomain.getMcaUsername());
 							th.co.aoe.makedev.missconsult.hibernate.bean.MissAccount missAccount=missCandidateService.findMissAccountById(bpsTerm.getMissAccount().getMaId());
 							if(missAccount!=null){
 								th.co.aoe.makedev.missconsult.xstream.MissAccount xmissAccount=new th.co.aoe.makedev.missconsult.xstream.MissAccount();
@@ -328,7 +329,7 @@ public class MissCandidateResource extends BaseResource {
 								String faqs_size = (String) result.get(1);
 //								 
 								VResultMessage vresultMessage = new VResultMessage();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								/*if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissCandidateObject(ntcCalendars);
@@ -355,7 +356,7 @@ public class MissCandidateResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								//List<th.co.aoe.makedev.missconsult.xstream.MissCandidate> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissCandidate>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								/*if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissCandidateObject(ntcCalendars);
@@ -402,7 +403,7 @@ public class MissCandidateResource extends BaseResource {
 			java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate> ntcCalendars = (java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate>) result
 					.get(0);
 			String faqs_size = (String) result.get(1);
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissCandidateObject(ntcCalendars);

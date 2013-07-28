@@ -56,7 +56,7 @@ public class MissDocResource extends BaseResource {
 					th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc();
 					BeanUtils.copyProperties(xbpsTerm,bpsTerm); 
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -105,7 +105,7 @@ public class MissDocResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissDoc> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissDoc>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissDocObject(ntcCalendars);

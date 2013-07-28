@@ -46,6 +46,8 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	private boolean showAll; //true =show all
 	
+
+	
 	public boolean isShowAll() {
 		return showAll;
 	}
@@ -270,7 +272,6 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 		this.mtrHideStatus = mtrHideStatus;
 	}
 
-	 
 	 
 	
 }

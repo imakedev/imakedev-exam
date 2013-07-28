@@ -1,6 +1,7 @@
 package th.co.aoe.makedev.missconsult.xstream;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 import th.co.aoe.makedev.missconsult.xstream.common.VServiceXML;
@@ -21,7 +22,15 @@ public class MissSurveySend extends VServiceXML implements Serializable {
 
 	private String msEmail;
 	
-	private String msName;
+	private String msName; 
+ 
+ 	private String mspmGroupName;
+ 
+ 	private Timestamp mssCreatedTime;
+ 	 
+ 	private String mssStatus;
+ 	 
+ 	private String mtsKey;
 	
 	@XStreamAlias("missSery")
 	private MissSery missSery;
@@ -34,6 +43,9 @@ public class MissSurveySend extends VServiceXML implements Serializable {
 	
 	@XStreamImplicit(itemFieldName="userEmail")
 	private List<List<String>> userEmail;
+	
+	@XStreamAlias("MissSurveySendList")
+	private List<MissSurveySend> MissSurveySendList;
 	
     public MissSurveySend() {
     }
@@ -92,6 +104,46 @@ public class MissSurveySend extends VServiceXML implements Serializable {
 
 	public void setMsName(String msName) {
 		this.msName = msName;
+	}
+
+	public String getMspmGroupName() {
+		return mspmGroupName;
+	}
+
+	public void setMspmGroupName(String mspmGroupName) {
+		this.mspmGroupName = mspmGroupName;
+	}
+
+	public Timestamp getMssCreatedTime() {
+		return mssCreatedTime;
+	}
+
+	public void setMssCreatedTime(Timestamp mssCreatedTime) {
+		this.mssCreatedTime = mssCreatedTime;
+	}
+
+	public String getMssStatus() {
+		return mssStatus;
+	}
+
+	public void setMssStatus(String mssStatus) {
+		this.mssStatus = mssStatus;
+	}
+
+	public String getMtsKey() {
+		return mtsKey;
+	}
+
+	public void setMtsKey(String mtsKey) {
+		this.mtsKey = mtsKey;
+	}
+
+	public List<MissSurveySend> getMissSurveySendList() {
+		return MissSurveySendList;
+	}
+
+	public void setMissSurveySendList(List<MissSurveySend> missSurveySendList) {
+		MissSurveySendList = missSurveySendList;
 	}
 	 
 	

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -153,7 +155,7 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 		logger.debug("rcId="+rcId);
 		query.setParameter("rcId", rcId);
 		List<th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping> list=query.list();
-		Map map =new HashMap();
+		Map<String,th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping> map =new HashMap();
 		if(list!=null && list.size()>0){
 			for (th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping roleMapping : list) {
 				map.put(roleMapping.getId().getRtId()+"", roleMapping);
@@ -161,8 +163,12 @@ public class HibernateRoleType  extends HibernateCommon implements RoleTypeServi
 			// mapping =(th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping)
 		}
 		if(map.size()>0){
-			for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
-				String rtId_key = (String) iterator.next();
+			  
+			  
+			//for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+			 for (Entry<String, th.co.aoe.makedev.missconsult.hibernate.bean.RoleMapping> entry :map.entrySet() ) {
+				//String rtId_key = (String) iterator.next();
+				 String rtId_key = entry.getKey();
 				query=session.createQuery(" select roleType from RoleType roleType where roleType.rtId="+rtId_key);
 				Object obj=query.uniqueResult();
 				if(obj!=null){

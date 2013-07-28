@@ -20,7 +20,8 @@ public interface MissQuestionService {
 		public  List searchMissQuestion(MissQuestion persistentInstance,	Pagging pagging)throws DataAccessException  ;
 		@SuppressWarnings("rawtypes")
 		public List listMissQuestions(Long meId) throws DataAccessException;
-		
+		@SuppressWarnings("rawtypes")
+		public List listMissQuestionsWithChoices(Long meId) throws DataAccessException;
 		public void setUpTestMissQuestion()throws DataAccessException;
 		
 		

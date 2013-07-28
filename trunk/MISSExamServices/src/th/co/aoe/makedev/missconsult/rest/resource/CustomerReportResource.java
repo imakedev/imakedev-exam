@@ -48,7 +48,7 @@ public class CustomerReportResource extends BaseResource {
 				xbpsTerm = (th.co.aoe.makedev.missconsult.xstream.CustomerReport) ntcCalendarObj;
 				if (xbpsTerm != null) { 
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();

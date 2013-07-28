@@ -74,7 +74,7 @@ public class MissSeriesParticipantsMapResource  extends BaseResource {
 					pk.setMspmOrder(xbpsTerm.getMspmOrder());
 					bpsTerm.setId(pk);
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName(); 

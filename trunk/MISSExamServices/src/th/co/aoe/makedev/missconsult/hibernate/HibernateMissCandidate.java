@@ -94,9 +94,9 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 			//System.err.println("xxxxxxxx 1="+missAccountSeriesMap.getMissSery().getMsSeriesName());
 			//System.err.println("xxxxxxxx 2="+missAccountSeriesMap.getMissAccount().getMaName());
 		}
-		 System.err.println(" ===>"+transientInstance.getMissSery().getMsId());
+		/* System.err.println(" ===>"+transientInstance.getMissSery().getMsId());
 		 System.err.println("==========================masmAvailable===>"+masmAvailable.intValue());
-		System.err.println("==========================msUnitCost===>"+msUnitCost.intValue());
+		System.err.println("==========================msUnitCost===>"+msUnitCost.intValue());*/
 		 
 			//change sery
 			if(masmAvailable.intValue()>=msUnitCost.intValue()){
@@ -426,6 +426,7 @@ public class HibernateMissCandidate  extends HibernateCommon implements MissCand
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		Query query=null;
+		//System.out.println("section->"+section);
 		//logger.debug(" section==>"+transientInstance.getMcaFirstName());
 		//int result = query.executeUpdate();
 		/*Query query = session.createQuery("update Stock set stockName = :stockName" +
@@ -664,7 +665,8 @@ int result = query.executeUpdate();*/
 								query.setParameter("msId",msId);
 								query.executeUpdate();
 								
-								maTotalUnit = new Long(maTotalUnit.intValue()+msUnitCost.intValue());
+							//	maTotalUnit = new Long(maTotalUnit.intValue()+msUnitCost.intValue());
+								maTotalUnit =Long.valueOf(maTotalUnit.intValue()+msUnitCost.intValue());
 								query=session.createQuery("update MissAccount missAccount " +
 										" set missAccount.maTotalUnit =:maTotalUnit  " + 
 										" where missAccount.maId=:maId " +
@@ -708,7 +710,7 @@ int result = query.executeUpdate();*/
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missCandidate=(MissCandidate)obj;
-		}
+		} 
 	  return missCandidate;
 	}
 	@Override
