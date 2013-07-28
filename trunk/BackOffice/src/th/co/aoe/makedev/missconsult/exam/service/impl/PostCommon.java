@@ -90,7 +90,7 @@ public class PostCommon {
 							vresultMessage = (VResultMessage)obj; 
 							 
 							int maxRow = 0;
-							if(vresultMessage.getMaxRow()!=null && !vresultMessage.getMaxRow().equals(""))
+							if(vresultMessage.getMaxRow()!=null && vresultMessage.getMaxRow().length()!=0)
 								maxRow = Integer.parseInt(vresultMessage.getMaxRow());
 							int pageSize = 0;
 							if(vserviceXML.getPagging()!=null )

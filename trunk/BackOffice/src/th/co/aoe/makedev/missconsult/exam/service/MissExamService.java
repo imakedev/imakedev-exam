@@ -54,6 +54,9 @@ import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
 
 public interface MissExamService {
 	// public findByUsername;
+	public abstract MissCandidate findMissCandidateByName(String name);
+	//for check answer
+	 public abstract List<MissTest> findMissTest(MissTest missTest);
 	public abstract Long saveMissExamGroup(MissExamGroup missexamgroup);
 
 	public abstract int updateMissExamGroup(MissExamGroup missexamgroup);
@@ -182,6 +185,8 @@ public interface MissExamService {
 	public abstract VResultMessage searchMissQuestion(MissQuestion missquestion);
 	@SuppressWarnings("rawtypes")
 	public abstract List listMissQuestions(Long meId);
+	@SuppressWarnings("rawtypes")
+	public abstract List listMissQuestionsWithChoices(Long meId);
 
 	public abstract Long saveMissSeriesMap(MissSeriesMap missseriesmap);
 
@@ -228,7 +233,8 @@ public interface MissExamService {
 	public abstract VResultMessage searchMissTemplate(MissTemplate misstemplate);
 
 	public abstract Long saveMissTest(MissTest misstest);
-
+	public abstract Long saveMissTestPaper(MissTest misstest);
+	
 	public abstract int updateMissTest(MissTest misstest);
 
 	public abstract int deleteMissTest(MissTest misstest);
@@ -472,4 +478,9 @@ public interface MissExamService {
 	public  int deleteMissSeriesParticipantsMap(Long msId,int mspmOrder)  ;
 	public int updateMissSeriesParticipantsMap(Long msId, Integer[] mspmOrder,Integer[] mspmGroupAmount,String[] mspmGroupName) ;
 
+	public abstract int saveOrUpdateMissTestResult(MissTestResult missTestResult);
+	public abstract int startMissTestResult(MissTestResult missTestResult); 
+	public abstract int processMissTestResult(MissTestResult missTestResult);
+	public abstract int saveOrUpdateMissTodo(MissTodo missTodo);
+	
 }

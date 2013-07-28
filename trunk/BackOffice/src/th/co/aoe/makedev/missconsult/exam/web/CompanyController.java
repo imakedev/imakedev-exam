@@ -197,11 +197,12 @@ public class CompanyController
 
     @RequestMapping(value={"/messaage/{maId}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     @ResponseBody
-    public String getMessage(@PathVariable String maId, Model model)
+    public MissAccount getMessage(@PathVariable String maId, Model model)
     {
-        MissAccount missAccount = missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
-        Gson gson=new Gson();
-		return gson.toJson(missAccount);
+       // MissAccount missAccount =
+        return  missExamService.findMissAccountById(Long.valueOf(Long.parseLong(maId)));
+       /* Gson gson=new Gson();
+		return gson.toJson(missAccount);*/
     }
     @RequestMapping(value={"/item/unit/{maId}/{msId}/{amount}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET}) 
     public String postItemUnit(HttpServletRequest request, @PathVariable String maId,

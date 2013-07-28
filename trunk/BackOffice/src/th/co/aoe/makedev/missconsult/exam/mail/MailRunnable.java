@@ -116,7 +116,7 @@ public class MailRunnable implements Runnable {
 					
 					 //Session session = Session.getInstance(props, null);
 					 Session session = Session.getDefaultInstance(props, null);
-					    session.setDebug(true);
+					    session.setDebug(false);
 				//	NtcNewsLetterRecipient ntcNewsLetterRecipient = (NtcNewsLetterRecipient)ntcNewsLetterRecipientList.get(i);
 				//	recipients[0] = "siripornc@pttep.com";//ntcNewsLetterRecipient.getNnlrAddress().trim();
 				/*		recipients[0] = "chatchai@vlink.co.th";//ntcNewsLetterRecipient.getNnlrAddress().trim();

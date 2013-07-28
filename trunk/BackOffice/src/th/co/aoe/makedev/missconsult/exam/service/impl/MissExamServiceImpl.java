@@ -1803,5 +1803,94 @@ public class MissExamServiceImpl extends PostCommon
 	    missSeriesParticipantsMap = (MissSeriesParticipantsMap)resultMessage.getResultListObj().get(0);
 	    return missSeriesParticipantsMap.getUpdateRecord().intValue();
 	}
+
+	@Override 
+	public MissCandidate findMissCandidateByName(String name) {
+		// TODO Auto-generated method stub
+		MissCandidate missCandidate = new MissCandidate();
+		missCandidate.setMcaUsername(name);
+		missCandidate
+				.setServiceName(ServiceConstant.MISS_CANDIDATE_FIND_BY_NAME);
+		VResultMessage resultMessage = postMessage(missCandidate, missCandidate
+				.getClass().getName(), "missCandidate", true);
+		if(resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0)
+			return (MissCandidate) resultMessage.getResultListObj().get(0);
+		else
+			return null;
+	}
+
+	@Override
+	public List<MissTest> findMissTest(MissTest missTest) {
+		// TODO Auto-generated method stub
+		missTest.setServiceName(ServiceConstant.MISS_TEST_FIND_ANSWERED);
+		VResultMessage resultMessage = postMessage(missTest, missTest
+				.getClass().getName(), "missTest", true);
+		List<MissTest> missTests=null;
+		if(resultMessage!=null && resultMessage.getResultListObj()!=null && resultMessage.getResultListObj().size()>0){
+			missTests=resultMessage.getResultListObj();
+		} 
+		return missTests;
+	}
+
+	@Override
+	public List listMissQuestionsWithChoices(Long meId) {
+		// TODO Auto-generated method stub
+		 MissExam missExam = new MissExam();
+    	 missExam.setMeId(meId);
+    	 MissQuestion missQuestion =new MissQuestion();
+    	 missQuestion.setServiceName(ServiceConstant.MISS_QUESTION_LIST_WITH_CHOICES);
+         missQuestion.setMissExam(missExam);
+         VResultMessage resultMessage = postMessage(missQuestion, missQuestion.getClass().getName(), "missQuestion", true);
+         return resultMessage.getResultListObj();
+	}
+
+	@Override
+	public int saveOrUpdateMissTestResult(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_SAVE);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int startMissTestResult(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_START);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int processMissTestResult(MissTestResult missTestResult) {
+		// TODO Auto-generated method stub
+		missTestResult.setServiceName(ServiceConstant.MISS_TEST_RESULT_PROCESS);
+		VResultMessage resultMessage = postMessage(missTestResult, missTestResult
+				.getClass().getName(), "missTestResult", true);
+		missTestResult = (MissTestResult) resultMessage.getResultListObj().get(0);
+		return missTestResult.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public int saveOrUpdateMissTodo(MissTodo missTodo) {
+		// TODO Auto-generated method stub
+		missTodo.setServiceName(ServiceConstant.MISS_TODO_SAVE);
+		VResultMessage resultMessage = postMessage(missTodo, missTodo
+				.getClass().getName(), "missTodo", true);
+		missTodo = (MissTodo) resultMessage.getResultListObj().get(0);
+		return missTodo.getUpdateRecord().intValue();
+	}
+
+	@Override
+	public Long saveMissTestPaper(MissTest missTest) {
+		// TODO Auto-generated method stub
+		missTest.setServiceName(ServiceConstant.MISS_TEST_PAPER_SAVE);//"saveMissTest");
+	        VResultMessage resultMessage = postMessage(missTest, missTest.getClass().getName(), "missTest", true);
+	        missTest = (MissTest)resultMessage.getResultListObj().get(0);
+	        return 1l;
+	}
 	    
 }
