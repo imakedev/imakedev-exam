@@ -139,7 +139,43 @@ public class HibernateMissQuestion  extends HibernateCommon implements MissQuest
 		// TODO Auto-generated method stub
 		Session session=sessionAnnotationFactory.getCurrentSession();
 		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue() +" order by missQuestion.mqNo asc ");
-		return query.list(); 	
+		return query.list(); 
+	}
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List listMissQuestionsWithChoices(Long meId) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery(" select missQuestion from MissQuestion missQuestion where  missQuestion.missExam.meId="+meId.intValue() +" order by missQuestion.mqNo asc ");
+		List<th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion> missQuestions =query.list(); 
+		List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xmissQuestions =new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>(missQuestions.size()); 
+		for (MissQuestion missQuestion : missQuestions) {
+			th.co.aoe.makedev.missconsult.xstream.MissQuestion xmissQuestion = new th.co.aoe.makedev.missconsult.xstream.MissQuestion();
+			BeanUtils.copyProperties(missQuestion, xmissQuestion,ignore_id);
+			xmissQuestion.setPagging(null); 
+			for(int i=1;i<=2;i++){
+				query=session.createQuery(" select missChoice from MissChoice missChoice where missChoice.missQuestion.mqId=:mqId and missChoice.id.mcLang=:mcLang  order by missChoice.id.mcNo asc ");
+				query.setParameter("mqId", missQuestion.getMqId());
+				query.setParameter("mcLang", i+"");
+				@SuppressWarnings("unchecked")
+				List<MissChoice> missChoices= (List<MissChoice>) query.list();
+				List<th.co.aoe.makedev.missconsult.xstream.MissChoice>	 xmissChoices= new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissChoice>();
+				for (MissChoice missChoice : missChoices) {
+					th.co.aoe.makedev.missconsult.xstream.MissChoice  xmissChoice= new th.co.aoe.makedev.missconsult.xstream.MissChoice();
+					BeanUtils.copyProperties(missChoice, xmissChoice,ignore_question_id);
+					xmissChoice.setMcNo(missChoice.getId().getMcNo());
+					xmissChoice.setPagging(null);
+					xmissChoices.add(xmissChoice);
+				}
+				 if(i==1)
+					 xmissQuestion.setMissChoices(xmissChoices);
+				 else
+					 xmissQuestion.setMissChoicesEng(xmissChoices);
+				
+				}
+			xmissQuestions.add(xmissQuestion);
+		}
+		return 	xmissQuestions;
 	}
 	@Override
 	public int getQuestionOrdered(Long meId) throws DataAccessException {

@@ -14,7 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissQuestion;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissTest;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestPK;
 import th.co.aoe.makedev.missconsult.managers.MissTestService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 @Repository
@@ -203,6 +207,52 @@ public class HibernateMissTest  extends HibernateCommon implements MissTestServi
 			return query.list();
 		}
 		return null;
+	}
+	@Override
+	public Long saveMissTestPaper(Long mcaId, Long msId, Long meId,
+			String[] mqIdArray, String[] mcNoArray) throws DataAccessException {
+		// TODO Auto-generated method stub
+		Session session=sessionAnnotationFactory.getCurrentSession();
+		Query query=session.createQuery("delete MissTest missTest where missTest.id.missCandidate.mcaId ="+mcaId.intValue()+
+				" and missTest.id.missExam.meId="+meId.intValue()+
+				" and missTest.id.missSery.msId="+msId.intValue());
+		int result = query.executeUpdate();
+		int record=0;
+		if(mqIdArray!=null && mqIdArray.length>0){ 
+			MissCandidate candidate=new MissCandidate();
+			candidate.setMcaId(mcaId);
+			MissSery missSery =new MissSery();
+			missSery.setMsId(msId);
+			MissExam missExam  =new MissExam (); 
+			missExam.setMeId(meId);
+			for (int j = 0; j < mcNoArray.length; j++) {
+				MissTest missTest =new MissTest();
+				MissTestPK pk =new MissTestPK();
+				pk.setMissCandidate(candidate);
+				pk.setMissSery(missSery);
+				pk.setMissExam(missExam);
+				
+				MissQuestion question=new MissQuestion();
+				question.setMqId( Long.valueOf(mqIdArray[j]));
+				pk.setMissQuestion(question);
+				pk.setMcNo(Long.valueOf(mcNoArray[j]));
+				missTest.setId(pk);
+				
+				
+				session.save(missTest);
+				record=record+1;
+				 /*query= session.createQuery("insert into MissTest missTest set missTest.id.missCandidate.mcaId=:mcaId " +
+					 		" ,missTest.id.missSery.msId=:msId ,missTest.id.missExam.meId=:meId " +
+					 		",missTest.id.missQuestion.mqId=:mqId, missTest.id.mcNo=:mcNo ");
+							 query.setParameter("mcaId", mcaId);
+							 query.setParameter("msId", msId);
+							 query.setParameter("meId", meId);
+							 query.setParameter("mqId", Long.valueOf(mqIdArray[j]));
+							 query.setParameter("mcNo",  Long.valueOf(mcNoArray[j]));
+							 record=record+query.executeUpdate();*/
+			}
+		}
+		return Long.valueOf(result);
 	}
 	 
 

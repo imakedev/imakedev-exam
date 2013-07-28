@@ -74,7 +74,7 @@ public class HibernateMissAccountSeriesMap  extends HibernateCommon implements M
 			maUsedUnit=(missAccount.getMaUsedUnit()!=null && missAccount.getMaUsedUnit().intValue()>0)?missAccount.getMaUsedUnit():0l;
 		}
 		int available=maTotalUnit.intValue()-maUsedUnit.intValue();
-		System.out.println("available->"+available+",orderUnit->"+orderUnit);
+		//System.out.println("available->"+available+",orderUnit->"+orderUnit);
 		Long returnId=0l;
 		if(orderUnit<=available){
 		sb.setLength(0); 

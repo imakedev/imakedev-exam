@@ -69,7 +69,7 @@ public class MissTestResultResource extends BaseResource {
 						bpsTerm.setMissCandidate(missCandidate);
 					}
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -180,7 +180,7 @@ public class MissTestResultResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								//List<th.co.aoe.makedev.missconsult.xstream.MissTestResult> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTestResult>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								 
 								@SuppressWarnings("rawtypes")

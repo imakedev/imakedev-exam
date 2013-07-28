@@ -86,7 +86,7 @@ public class MissTestResource extends BaseResource {
 					}
 					bpsTerm.setId(pk);
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -139,7 +139,20 @@ public class MissTestResource extends BaseResource {
 						    		}
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
-						else if(serviceName.equals(ServiceConstant.MISS_TEST_FIND_ANSWERED)){
+						else if(serviceName.equals(ServiceConstant.MISS_TEST_PAPER_SAVE)){
+							//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
+								
+								/*xbpsTerm.getMissCandidate().getMcaId();
+								xbpsTerm.getMissSery().getMsId();
+								xbpsTerm.getMissExam().getMeId();
+								xbpsTerm.getMqIdArray();
+								xbpsTerm.getMcIdArray();*/
+								Long valueReturn =missTestService.saveMissTestPaper(xbpsTerm.getMissCandidate().getMcaId(),
+										xbpsTerm.getMissSery().getMsId(), xbpsTerm.getMissExam().getMeId()
+										, xbpsTerm.getMqIdArray(), xbpsTerm.getMcIdArray());
+								int updateRecord=valueReturn.intValue();
+								return returnUpdateRecord(entity,xbpsTerm,updateRecord);
+						}else if(serviceName.equals(ServiceConstant.MISS_TEST_FIND_ANSWERED)){
 						//	java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 							@SuppressWarnings("unchecked")
 							java.util.ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest> ntcCalendars=(ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTest>) missTestService.findMissTestAnswer(xbpsTerm.getUserid(),bpsTerm);
@@ -178,7 +191,7 @@ public class MissTestResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissTest> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissTest>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissTestObject(ntcCalendars);
@@ -254,7 +267,7 @@ public class MissTestResource extends BaseResource {
 		
 
 		
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissTestObject(ntcCalendars);

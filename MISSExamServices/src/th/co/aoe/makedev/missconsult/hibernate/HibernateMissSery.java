@@ -69,7 +69,8 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 								new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMapPK();
 						pk.setMsId(returnId);
 						pk.setMeId(Long.parseLong(meIds[i]));
-						missSeriesMap.setMsmOrder(new Long(i+1));
+						//missSeriesMap.setMsmOrder(new Long(i+1));
+						missSeriesMap.setMsmOrder(Long.valueOf(i+1));
 						missSeriesMap.setId(pk);
 						session.save(missSeriesMap);
 					}
@@ -295,7 +296,8 @@ public class HibernateMissSery  extends HibernateCommon implements MissSeryServi
 							new th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMapPK();
 					pk.setMsId(msId);
 					pk.setMeId(Long.parseLong(meIds[i]));
-					missSeriesMap.setMsmOrder(new Long(i+1));
+					//missSeriesMap.setMsmOrder(new Long(i+1));
+					missSeriesMap.setMsmOrder(Long.valueOf(i+1));
 					missSeriesMap.setId(pk);
 					session.save(missSeriesMap);
 				}

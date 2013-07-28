@@ -1,9 +1,6 @@
 package th.co.aoe.makedev.missconsult.constant;
 
-import java.util.List;
 import java.util.ResourceBundle;
-
-import org.springframework.dao.DataAccessException;
 
 public class ServiceConstant {
 	public static final String hostReference = "http://10.2.0.76:10000/BPSService/RestletServlet/";
@@ -97,6 +94,9 @@ public class ServiceConstant {
 	public static final String MISS_QUESTION_SEARCH = "searchMissQuestion";
 	public static final String MISS_QUESTION_FIND_BY_ID = "findMissQuestionById"; 
 	public static final String MISS_QUESTION_LIST = "listMissQuestion";
+	public static final String MISS_QUESTION_LIST_WITH_CHOICES = "listMissQuestionWithChoices";
+	
+	
 	
 	public static final String MISS_QUESTION_CHOICES_SAVE = "saveMissChoices"; 
 	public static final String MISS_QUESTION_CHOICES_UPDATE = "updateMissChoices"; 
@@ -156,6 +156,7 @@ public class ServiceConstant {
 	public static final String MISS_TEST_SEARCH = "searchMissTest";
 	public static final String MISS_TEST_FIND_BY_ID = "findMissTestById";
 	public static final String MISS_TEST_FIND_ANSWERED = "findMissTestAnswered"; 
+	public static final String MISS_TEST_PAPER_SAVE = "saveMissTestPaper"; 
 	
 	// MISS_TEST_RESULT
 	public static final String MISS_TEST_RESULT_SAVE = "saveMissTestResult";

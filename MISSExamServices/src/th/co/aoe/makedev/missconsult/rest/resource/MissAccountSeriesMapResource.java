@@ -59,7 +59,7 @@ public class MissAccountSeriesMapResource extends BaseResource {
 					BeanUtils.copyProperties(xbpsTerm,bpsTerm,id_ignore); 
 				 
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -106,7 +106,7 @@ public class MissAccountSeriesMapResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAccountSeriesMap>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissAccountSeriesMapObject(ntcCalendars);
@@ -205,7 +205,7 @@ public class MissAccountSeriesMapResource extends BaseResource {
 		
 
 		
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissAccountSeriesMapObject(ntcCalendars);

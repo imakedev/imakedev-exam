@@ -43,7 +43,10 @@ public class MissTest extends VServiceXML implements Serializable {
 	//ext 
 	private String userid;
 	
-
+	//for do paper
+	private String[] mqIdArray ;
+	private String[] mcIdArray ;
+	
 	@XStreamImplicit(itemFieldName="missTests")
 	private List<MissTest> missTests;
 	
@@ -136,6 +139,22 @@ public class MissTest extends VServiceXML implements Serializable {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public String[] getMqIdArray() {
+		return mqIdArray;
+	}
+
+	public void setMqIdArray(String[] mqIdArray) {
+		this.mqIdArray = mqIdArray;
+	}
+
+	public String[] getMcIdArray() {
+		return mcIdArray;
+	}
+
+	public void setMcIdArray(String[] mcIdArray) {
+		this.mcIdArray = mcIdArray;
 	}
 	
 }

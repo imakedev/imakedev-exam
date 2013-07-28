@@ -89,7 +89,7 @@ public class HibernateMissTodo  extends HibernateCommon implements MissTodoServi
 					} 
 			}
 		}else{
-			returnId= new Long(0);	
+			returnId= Long.valueOf(0);	
 		}
 		return returnId;
 		 

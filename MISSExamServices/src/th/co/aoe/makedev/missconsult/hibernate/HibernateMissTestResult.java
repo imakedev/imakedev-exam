@@ -1132,6 +1132,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 								chartDatas.add(chartData);
 							}
 						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
+							//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
 							session.saveOrUpdate(missDataChart);
 						}
 					}

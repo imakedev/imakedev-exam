@@ -61,7 +61,7 @@ public class MissSurveySendResource extends BaseResource {
 				    	bpsTerm.setMissSery(missSery);
 				    }	
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -125,7 +125,7 @@ public class MissSurveySendResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissSurveySend>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissSurveySendObject(ntcCalendars);
@@ -202,7 +202,7 @@ public class MissSurveySendResource extends BaseResource {
 		
 
 		
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissSurveySendObject(ntcCalendars);

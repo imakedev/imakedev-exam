@@ -72,7 +72,7 @@ public class MissQuestionResource extends BaseResource {
 					}
 					
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -186,7 +186,11 @@ public class MissQuestionResource extends BaseResource {
 							vresultMessage.setResultListObj(xntcCalendars);
 							return getRepresentation(entity, vresultMessage, xstream);
 						}
-						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_GET_ORDERED)){
+						else if(serviceName.equals(ServiceConstant.MISS_QUESTION_LIST_WITH_CHOICES)){
+							VResultMessage vresultMessage = new VResultMessage();
+							vresultMessage.setResultListObj(missQuestionService.listMissQuestionsWithChoices(xbpsTerm.getMissExam().getMeId()));
+							return getRepresentation(entity, vresultMessage, xstream);
+						}else if(serviceName.equals(ServiceConstant.MISS_QUESTION_GET_ORDERED)){
 							
 							int updateRecord=missQuestionService.getQuestionOrdered(xbpsTerm.getMissExam().getMeId());
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
@@ -210,7 +214,7 @@ public class MissQuestionResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissQuestion> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissQuestion>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissQuestionObject(ntcCalendars);
@@ -291,7 +295,7 @@ public class MissQuestionResource extends BaseResource {
 		
 
 		
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissQuestionObject(ntcCalendars);

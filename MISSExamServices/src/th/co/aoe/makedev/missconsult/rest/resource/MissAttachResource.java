@@ -57,7 +57,7 @@ public class MissAttachResource extends BaseResource {
 					BeanUtils.copyProperties(xbpsTerm,bpsTerm); 
 					
 					if (xbpsTerm.getServiceName() != null
-							&& !xbpsTerm.getServiceName().equals("")) {
+							&& xbpsTerm.getServiceName().length()!=0) {
 						logger.debug(" BPS servicename = "
 								+ xbpsTerm.getServiceName());
 						String serviceName = xbpsTerm.getServiceName();
@@ -122,7 +122,7 @@ public class MissAttachResource extends BaseResource {
 								VResultMessage vresultMessage = new VResultMessage();
 
 								List<th.co.aoe.makedev.missconsult.xstream.MissAttach> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAttach>();
-								if (faqs_size != null && !faqs_size.equals(""))
+								if (faqs_size != null && faqs_size.length()!=0)
 									vresultMessage.setMaxRow(faqs_size);
 								if (ntcCalendars != null && ntcCalendars.size() > 0) {
 									xntcCalendars = getxMissAttachObject(ntcCalendars);
@@ -161,28 +161,7 @@ public class MissAttachResource extends BaseResource {
 		// TODO Auto-generated method stub
 		logger.debug("test2"+variant.getMediaType()+","+MediaType.TEXT_PLAIN);
 		logger.debug("into GET MissAttachResource");
-		// Representation result = null;
-		/* th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach ntcCalendarReturn = missAttachService.findMissAttachById(new Long(1));
-		 logger.debug("ntcCalendarReturn="+ntcCalendarReturn.getMegName());
-	        VResultMessage vresultMessage = new VResultMessage();
-			List<th.co.aoe.makedev.missconsult.xstream.MissAttach> xntcCalendars = new ArrayList<th.co.aoe.makedev.missconsult.xstream.MissAttach>(1);
-			th.co.aoe.makedev.missconsult.xstream.MissAttach xntcCalendarReturn = new th.co.aoe.makedev.missconsult.xstream.MissAttach();
-			BeanUtils.copyProperties(ntcCalendarReturn,xntcCalendarReturn);								
-			xntcCalendarReturn.setPagging(null);
-		 
-			xntcCalendars.add(xntcCalendarReturn);
-			vresultMessage.setResultListObj(xntcCalendars);
-			ntcCalendarReturn.setMegName("Aoe update");
-			int updateRecord=missAttachService.updateMissAttach(ntcCalendarReturn);*/
-			/* th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach  xntcCalendarReturn_save = new  th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach ();
-			xntcCalendarReturn_save.setMegName("save new");
-			logger.debug("xxx="+updateRecord);
-			missAttachService.saveMissAttach(xntcCalendarReturn_save);*/
-			//returnUpdateRecord(entity,xbpsTerm,updateRecord);
-			 /*th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach  xntcCalendarReturn_delete= new  th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach ();
-			 xntcCalendarReturn_delete.setMegId(new Long(3));
-			missAttachService.deleteMissAttach(xntcCalendarReturn_delete);*/
-			//return getRepresentation(null, vresultMessage, xstream);
+		// Representation result = null; 
 		Pagging page =new Pagging(); 
 		th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach bpsTerm = new th.co.aoe.makedev.missconsult.hibernate.bean.MissAttach();
 		//bpsTerm.setMegName("Aoe");
@@ -199,7 +178,7 @@ public class MissAttachResource extends BaseResource {
 		
 
 		
-			if (faqs_size != null && !faqs_size.equals(""))
+			if (faqs_size != null && faqs_size.length()!=0)
 				vresultMessage.setMaxRow(faqs_size);
 			if (ntcCalendars != null && ntcCalendars.size() > 0) {
 				xntcCalendars = getxMissAttachObject(ntcCalendars);
