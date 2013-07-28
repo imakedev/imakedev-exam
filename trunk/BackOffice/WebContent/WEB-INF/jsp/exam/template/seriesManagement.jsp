@@ -598,7 +598,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 		    					<a class="btn" id="template_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Template</span></a>
 		    				  </c:if>
 	    				 		<span id="template_file_attached">
-	    				${seriesForm.missSery.templateFile}</span>
+	    				${seriesForm.missSery.templateFile}, ${seriesForm.missSery.evalFileHotlink}</span>
 	    					 </td>
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr> --%>

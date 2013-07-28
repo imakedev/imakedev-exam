@@ -2,10 +2,24 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <script>
 $(document).ready(function() {
-	
+	getReportList();
 });
 function doSendMail(){
-	
+	var mailAttachReport=document.getElementsByName("mailAttachReport")[0];
+    var msOrder=null;
+    var mraLang=null;
+	if(mailAttachReport.checked){
+		if($("#reportShowSelect").val()!=null && $("#reportShowSelect").val()!='null'){
+			//alert($("#reportShowSelect").val())
+			//21_1_0
+			var val_array=$("#reportShowSelect").val().split("_");
+			msOrder=val_array[1];
+			mraLang=val_array[2];
+		} 
+	}
+	$("#msOrder").val(msOrder);
+	$("#mraLang").val(mraLang);
+	//return false;
 	//alert(action)
 	$("#mailMessage").val(CKEDITOR.instances["mailMessage"].getData());
 	$.post("result/sendmail",$("#resultForm").serialize(), function(data) {
@@ -16,9 +30,9 @@ function doSendMail(){
   }
 function _getMessage(id){
 	$.get("company/messaage/${resultForm.missTestResult.missCandidate.missAccount.maId}", function(data) {
-		   //alert(data);
+		  // alert(data.maCustomizePassMessage);
 		 //  $("#_content").html(data);
-		 	var obj = jQuery.parseJSON(data);		 	
+		 	var obj =data;// jQuery.parseJSON(data);		 	
 		 	if(id=='0')
 		  		 CKEDITOR.instances["mailMessage"].setData(obj.maCustomizePassMessage);
 		 	else if(id=='1')
@@ -29,11 +43,47 @@ function _getMessage(id){
 	
 	//
 }
+function getReportList(){
+	//alert('${resultForm.missTestResult.msId}')
+	$.get("role/get/reportDownload/${resultForm.missTestResult.msId}", function(data) {
+		// var height_dialog=100;
+			// alert(data)
+		var _str_table="<select name=\"reportShowSelect\" id=\"reportShowSelect\"   style=\"width: 250px\">";
+			if(data!=null && data.length>0){
+				for(var i=0;i<data.length;i++){
+					_str_table=_str_table+"<option value=\"${resultForm.missTestResult.msId}_"+data[i][0].msOrder+"_"+data[i][0].mraLang+"\">"+data[i][0].mraReportName+"</option>";
+					_str_table=_str_table+"<option value=\"${resultForm.missTestResult.msId}_"+data[i][1].msOrder+"_"+data[i][1].mraLang+"\">"+data[i][1].mraReportName+"</option>";
+				}
+				
+				//height_dialog=230;
+			}else{
+				 
+			}
+			_str_table=_str_table+"</select>";
+			//alert(_str_table)
+			$("#report_list_section").slideUp(300);
+			$("#report_list_section").html(_str_table);
+			//$("#message_element").slideUp(300)
+			
+	});
+}
+function showReport(){
+
+	var mailAttachReport=document.getElementsByName("mailAttachReport")[0];
+//	alert(mailAttachReport)
+	//alert(mailAttachReport.checked)
+	if(mailAttachReport.checked){
+		$("#report_list_section").slideDown(300);
+	}else
+		$("#report_list_section").slideUp(300);
+} 
   </script>
 	    <!--Body content-->
 	    <fieldset style="font-family: sans-serif;">  
 <!--           <form class="well"> -->
           <form:form  id="resultForm" name="resultForm" modelAttribute="resultForm" cssClass="well" cssStyle="border:2px solid #DDD" method="post" action="">
+             	<form:hidden path="msOrder"/>
+             	<form:hidden path="mraLang"/> 
               <table border="0" width="100%" style="font-size: 13px">
               				<tr>
 	    					 <td align="left" width="17%" colspan="6"><strong>Test Response</strong></td>
@@ -47,19 +97,19 @@ function _getMessage(id){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Email:</td>
-	    					 <td align="left" colspan="4"><form:input path="missTestResult.missCandidate.mcaEmail"/>  
+	    					 <td align="left" colspan="4"><form:input path="missTestResult.missCandidate.mcaEmail" cssStyle="width:500px"/>  
 	    					 </td>	    					 
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">CC:</td>
-	    					 <td align="left" colspan="4"><form:input path="mailcc"/>  
+	    					 <td align="left" colspan="4"><form:input path="mailcc" cssStyle="width:500px"/>  
 	    					 </td>	    					 
 	    					</tr>
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">BCC:</td>
-	    					 <td align="left" colspan="4"><form:input path="mailbcc"/>  
+	    					 <td align="left" colspan="4"><form:input path="mailbcc" cssStyle="width:500px"/>  
 	    					 </td>	    					 
 	    					</tr>
 	    					<tr>
@@ -98,7 +148,7 @@ function _getMessage(id){
     					</script></td>
 	    					</tr>
 	    					<tr>
-	    					 <td align="left" colspan="6"><form:checkbox path="mailReactive" value="1"/>  Reactive&nbsp;<form:checkbox path="mailAttachReport" value="1"/> Attach Report(PDF)</td>
+	    					 <td align="left" colspan="6"><form:checkbox path="mailReactive" value="1"/>  Reactive&nbsp;<form:checkbox path="mailAttachReport" onclick="showReport()" value="1"/> Attach Report(PDF)&nbsp;&nbsp;<span id="report_list_section"></span></td>
 	    					</tr>
 	    					</table> 
 	    					</form:form>

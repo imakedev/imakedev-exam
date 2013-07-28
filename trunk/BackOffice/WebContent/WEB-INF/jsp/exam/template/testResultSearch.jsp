@@ -33,6 +33,9 @@ $(document).ready(function() {
 	  
 	
 });
+function loadDopaper(){
+	loadDynamicPage("paper/exam/info");
+}
 function goPrev(){
 	if($("#pageNo").val()!='1'){
 		var prev=parseInt($("#pageNo").val())-1;
@@ -147,16 +150,6 @@ function compareTest(){
 			//alert(data)
 				//missTestResult.setMissCandidate(candidate);
 			if(data!=null){  
-				/* alert(data[0].missCandidate.mcaFirstName)  
-				alert(data[0].missCandidate.mcaFirstName)  
-				alert(data[0].missCandidate.mcaFirstName) */  
-				/* if(data.mcaId!=null){
-					
-				} */
-				 
-				//alert($.datepicker.formatDate("dd/MM/yyyy HH:mm",data[0].missCandidate.mtrStartTime));
-            	/* <td>&nbsp;<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${missTestResult.mtrStartTime}" /></td>  */
-             
     			var mcaTitle1="";
     				if(data[0].missCandidate.mcaTitleType!=null){
     					if(data[0].missCandidate.mcaTitleType=='0')
@@ -423,7 +416,7 @@ function showFormDownload(_mtrId,_meId,_msId,_mcaId){
 			width:810,
 			modal: true,
 			beforeClose: function( event, ui ) { 
-				$(this).remove();
+				//$(this).remove();
 				//$("#dialog-setRoleReportTemplate").remove();
 			}
 		});
@@ -551,7 +544,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             <form:hidden path="pageCount" id="pageCount"/>
             <form:hidden path="paging.orderBy" id="orderBy"/> 
             <form:hidden path="paging.sortBy" id="sortBy"/>
-              <table border="0" width="100%" style="font-size: 13px">
+              <table border="0" width="100%" style="font-size: 13px"> 
               				<tr>
 	    					 <td align="left" width="100%" colspan="6"><strong><spring:message code="page_testsearch_title"/></strong></td>
 	    					</tr>
@@ -653,9 +646,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					<tr>
 	    					<td align="left" width="60%">
 	    					
-	    					<a class="btn btn-success"><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
+	    					<a class="btn btn-success" onclick="loadDopaper()" ><i class="icon-pencil icon-white"></i>&nbsp;<spring:message code="page_testsearch_dopaper"/></a>&nbsp;
 	    					<a class="btn btn-info" onclick="exportTest()"><i class="icon-circle-arrow-up icon-white"></i>&nbsp;<spring:message code="page_testsearch_export"/></a>&nbsp;
-	    					<a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp;
+	    					<%-- <a class="btn btn-info disabled"><i class="icon-list-alt icon-white"></i>&nbsp;<spring:message code="page_testsearch_summary"/></a>&nbsp; --%>
 	    					<a class="btn btn-danger" onclick="setIgnore()"><i class="icon-eject icon-white"></i>&nbsp;<spring:message code="page_testsearch_ignore"/></a>
 	    					<a class="btn btn-info" onclick="compareTest()"><i class="icon-tasks icon-white"></i>&nbsp;<spring:message code="page_testsearch_compare"/></a>
 	    					</td>

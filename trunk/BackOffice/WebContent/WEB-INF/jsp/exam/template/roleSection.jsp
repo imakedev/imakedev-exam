@@ -149,7 +149,7 @@ function _closeDialog(){
 
 	$("#dialog-setRoleReportTemplate").dialog('close');
 	//$(this).remove();
-	$("#dialog-setRoleReportTemplate").remove();
+	//$("#dialog-setRoleReportTemplate").remove();
 	//$("#dialog-setRoleReportTemplate" ).dialog( "destroy" );
 	
 }
@@ -157,7 +157,7 @@ function setRoleReportTemplate(id){
 	 
 	   $("#dialog-setRoleReportTemplate-element").html("");
 	 var rcId=$("select[id=rcId] option:selected").val();
-	 //alert(rcId+","+id)
+	// alert(rcId+","+id);
 	//	var _str_table=	"<div id=\"dialog-setRoleReportTemplate-element\"><form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
 		var _str_table=	"<form id=\"report_template_role_form\" name=\"report_template_role_form\">"+
 	    "	<table id=\"table_role_report_list\"  class=\"table stable-striped table-bordered table-condensed\" border=\"1\" style=\"font-size: 12px\">"+
@@ -203,7 +203,7 @@ function setRoleReportTemplate(id){
 			_str_table="<div align=\"center\">Not Found.</div>";
 		}
 		
-		 //   alert(_str_table)
+		   // alert(_str_table)
 		   $("#dialog-setRoleReportTemplate-element").html(_str_table);
 		//alert(data.length);
 		//alert($(".ui-dialog,.ui-widget,.ui-widget-content,.ui-corner-all,.ui-draggable,.ui-resizable").length)
@@ -218,7 +218,7 @@ function setRoleReportTemplate(id){
 			modal: true   ,
 			beforeClose: function( event, ui ) {
 				//alert("close");
-				$(this).remove();
+				//$(this).remove();
 				//$("#dialog-setRoleReportTemplate").remove();
 			}
 			/*
