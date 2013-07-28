@@ -86,7 +86,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     			 --%>
     				<tr>
     					<td width="20%" align="right">Subject :&nbsp;</td>
-    					<td width="60%"><input type="text" style="width: 250px" name="subject" id="subject"/>
+    					<td width="60%"><input type="text" style="width: 509px" name="subject" id="subject"/>
     					</td>
     					<td width="20%">&nbsp;</td> 
     				</tr>

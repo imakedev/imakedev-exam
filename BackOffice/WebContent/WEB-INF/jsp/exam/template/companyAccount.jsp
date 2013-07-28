@@ -536,7 +536,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     						<option value="1">theme 1</option>
     						<option value="2">theme 2</option>
     					</select> --> 
-    					ที่เก่ากว่า <form:input path="missAccount.maClearTest" cssStyle="width:30px;text-align:right"/> (1 เดือน = 30 วัน)
+    					ที่เก่ากว่า <form:input path="missAccount.maClearTest" cssStyle="width:30px;text-align:right"/>&nbsp;&nbsp;วัน&nbsp;&nbsp;(1 เดือน = 30 วัน)
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -555,7 +555,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     						<option value="1">theme 1</option>
     						<option value="2">theme 2</option>
     					</select> --> 
-    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate1" cssStyle="width:30px;text-align:right"/> (1 เดือน = 30 วัน)
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate1" cssStyle="width:30px;text-align:right"/>&nbsp;&nbsp;วัน&nbsp;&nbsp;(1 เดือน = 30 วัน)
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -567,7 +567,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     						<option value="1">theme 1</option>
     						<option value="2">theme 2</option>
     					</select> --> 
-    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate2" cssStyle="width:30px;text-align:right"/> (1 เดือน = 30 วัน)
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate2" cssStyle="width:30px;text-align:right"/>&nbsp;&nbsp;วัน&nbsp;&nbsp;(1 เดือน = 30 วัน)
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>
@@ -579,7 +579,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     						<option value="1">theme 1</option>
     						<option value="2">theme 2</option>
     					</select> --> 
-    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate3" cssStyle="width:30px;text-align:right"/> (1 เดือน = 30 วัน)
+    					ที่เก่ากว่า <form:input path="missAccount.maClearCandidate3" cssStyle="width:30px;text-align:right"/>&nbsp;&nbsp;วัน&nbsp;&nbsp;(1 เดือน = 30 วัน)
     				 </td>
     					 <td width="25%">&nbsp;</td>
     				</tr>

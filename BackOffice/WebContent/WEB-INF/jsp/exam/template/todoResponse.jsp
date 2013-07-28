@@ -2,16 +2,28 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <script>
 $(document).ready(function() {
-	
+	getReportList();
 });
 function doSendMail(){
+    var msOrder=null;
+    var mraLang=null;
 	
+	var checked="0";
+	 //alert(mail_attach.checked);
+	if(document.getElementById("mail_attach").checked){
+		checked="1";
+		if($("#reportShowSelect").val()!=null && $("#reportShowSelect").val()!='null'){
+			//alert($("#reportShowSelect").val())
+			//21_1_0
+			var val_array=$("#reportShowSelect").val().split("_");
+			msOrder=val_array[1];
+			mraLang=val_array[2];
+		} 
+	}
+	//return false;
 	//alert(action)
 	$("#mail_message").val(CKEDITOR.instances["mail_message"].getData());
-	var checked="1";
-	 //alert(mail_attach.checked);
-	if(!document.getElementById("mail_attach").checked)
-		checked="0";
+	
 	
 	  var data_to_server= { 
 			  mail_todo_id:'${mail_todo_idG}',
@@ -21,6 +33,9 @@ function doSendMail(){
 			  mail_bcc: jQuery.trim($("#mail_bcc").val()),
 			  mail_subject:$("#mail_subject").val(),
 			  mail_message:$("#mail_message").val(),
+			  msOrder:msOrder,
+			  mraLang:mraLang,
+			  msId:'${mail_msIdG}',
 			  mail_attach:checked
 				};
 	 // return false;
@@ -37,7 +52,55 @@ function doSendMail(){
 	$("#table_from_loading").slideDown("slow");  
 	 
   }
+function getReportList(){
+	//alert('${mail_msIdG}')
+	$.get("role/get/reportDownload/${mail_msIdG}", function(data) {
+		// var height_dialog=100;
+			// alert(data)
+		var _str_table="<select name=\"reportShowSelect\" id=\"reportShowSelect\"   style=\"width: 250px\">";
+			if(data!=null && data.length>0){
+				for(var i=0;i<data.length;i++){
+					_str_table=_str_table+"<option value=\"${mail_msIdG}_"+data[i][0].msOrder+"_"+data[i][0].mraLang+"\">"+data[i][0].mraReportName+"</option>";
+					_str_table=_str_table+"<option value=\"${mail_msIdG}_"+data[i][1].msOrder+"_"+data[i][1].mraLang+"\">"+data[i][1].mraReportName+"</option>";
+				}
+				
+				//height_dialog=230;
+			}else{
+				 
+			}
+			_str_table=_str_table+"</select>";
+			//alert(_str_table)
+			$("#report_list_section").slideUp(300);
+			$("#report_list_section").html(_str_table);
+			//$("#message_element").slideUp(300)
+			
+	});
+}
+function showReport(){
 
+	//var mailAttachReport=document.getElementsByName("mailAttachReport")[0];
+//	alert(mailAttachReport)
+	//alert(mailAttachReport.checked)
+	if(document.getElementById("mail_attach").checked){
+		$("#report_list_section").slideDown(300);
+	}else
+		$("#report_list_section").slideUp(300);
+} 
+function _getMessage(id){
+	$.get("company/messaage/${mail_maIdG}", function(data) {
+		  // alert(data.maCustomizePassMessage);
+		 //  $("#_content").html(data);
+		 	var obj =data;// jQuery.parseJSON(data);		 	
+		 	if(id=='0')
+		  		 CKEDITOR.instances["mail_message"].setData(obj.maCustomizePassMessage);
+		 	else if(id=='1')
+		 		CKEDITOR.instances["mail_message"].setData(obj.maCustomizeRejectMessage);
+		 	else if(id=='2')
+		 		CKEDITOR.instances["mail_message"].setData(obj.maCustomizeRetestMessage);
+		});
+	
+	//
+}
   </script>
 	    <!--Body content-->
 	    <fieldset style="font-family: sans-serif;">  
@@ -85,9 +148,18 @@ function doSendMail(){
 	    					<tr>
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="8%">Subject:</td>
-	    					 <td align="left" colspan="4"><input type="text" id="mail_subject" name="mail_subject">
+	    					 <td align="left" colspan="4"><input style="width: 500px" type="text" id="mail_subject" name="mail_subject">
 	    					 </td>	    					 
 	    					</tr> 
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Decision:</td>
+	    					 <td align="left" colspan="4"> 
+	    					 <input type="radio" value="0" name="mailDecision" onclick="_getMessage('0')"/>Pass&nbsp;
+	    					 <input type="radio" value="1" name="mailDecision" onclick="_getMessage('1')"/>Reject&nbsp;
+	    					<input type="radio" value="2" name="mailDecision" onclick="_getMessage('2')"/>Retest&nbsp;				
+	    					 </td> 
+	    					</tr>
 	    					<tr>
 	    					 <td align="left" colspan="6">Message:</td>
 	    					</tr>
@@ -116,7 +188,7 @@ function doSendMail(){
     					</script></td>
 	    					</tr>
 	    					<tr>
-	    					 <td align="left" colspan="6"><input type="checkbox" id="mail_attach" name="mail_attach"/>Attach Report(PDF)</td>
+	    					 <td align="left" colspan="6"><input type="checkbox" id="mail_attach" onclick="showReport()"  name="mail_attach"/>Attach Report(PDF)&nbsp;&nbsp;<span id="report_list_section"></span></td>
 	    					</tr>
 	    					</table> 
 	    			</form>
