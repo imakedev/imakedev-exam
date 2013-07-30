@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -740,37 +742,8 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					.list();
 			int sheet_index = 1;
 			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : missSeriesMaps) {
-
-				//
-
-				/*
-				 * StringBuffer sb=new
-				 * StringBuffer(" select count(*) from "+schema
-				 * +".MISS_QUESTION QUESTION " +
-				 * " where QUESTION.ME_ID="+meId.intValue()+"");
-				 */
-			 	/* StringBuffer sb = new StringBuffer(" select count(*) from "
-						+ schema + ".MISS_QUESTION QUESTION "
-						+ " where QUESTION.ME_ID="
-						+ missSeriesMap.getId().getMeId().intValue() + ""); */
 				StringBuffer sb = new StringBuffer();
-				//query = session.createSQLQuery(sb.toString());
-				/*int size = ((java.math.BigInteger) query.uniqueResult())
-						.intValue();*/
 				sb.setLength(0);
-
-				/*
-				 * sb.append(" select QUESTION.MQ_NO,CHOICE.MC_NO from "+schema+
-				 * ".MISS_QUESTION QUESTION LEFT JOIN" + " "+schema+
-				 * ".MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN" +
-				 * " "
-				 * +schema+".MISS_CHOICE CHOICE ON  (TEST.MC_NO = CHOICE.MC_NO and "
-				 * + " TEST.MQ_ID=CHOICE.MQ_ID ) " +
-				 * " WHERE TEST.MCA_ID="+mcaId.
-				 * intValue()+" AND TEST.MS_ID="+msId.intValue()+"" +
-				 * " AND TEST.ME_ID="+meId.intValue()+" ORDER BY QUESTION.MQ_ID"
-				 * );
-				 */
 				sb.append(" select QUESTION.MQ_NO,CHOICE.MC_NO from "
 						+ schema
 						+ ".MISS_QUESTION QUESTION LEFT JOIN"
@@ -785,14 +758,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						+ msId.intValue() + "" + " AND TEST.ME_ID="
 						+ missSeriesMap.getId().getMeId().intValue()
 						+ " ORDER BY QUESTION.MQ_ID");
-				/*
-				 * select QUESTION.MQ_NO,CHOICE.MC_NO from
-				 * "+schema+".MISS_QUESTION QUESTION LEFT JOIN
-				 * "+schema+".MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT
-				 * JOIN "+schema+".MISS_CHOICE CHOICE ON TEST.MC_ID =
-				 * CHOICE.MC_ID WHERE TEST.MCA_ID=22 AND TEST.MS_ID=9 AND
-				 * TEST.ME_ID=14 ORDER BY QUESTION.MQ_ID
-				 */
 				query = session.createSQLQuery(sb.toString());
 
 				List result = query.list();
@@ -821,33 +786,48 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				Sheet sheet1_0 = wb.getSheetAt(0);
 				Row row_code = sheet1_0.getRow(4);
 				Cell cell_code = row_code.getCell(sheet_index - 2);
-				String columnReference = cell_code.getStringCellValue();
-				String[] sheets = columnReference.split("!");
-				String[] columns = sheets[1].split(":");
-				HSSFSheet sheet = wb.getSheetAt(Integer.parseInt(sheets[0]));
-				// HSSFCell cell =null;
-				CellReference cr = new CellReference(columns[0]);
-				CellReference cr2 = new CellReference(columns[1]);
-				int start = cr.getRow();
-				int end = cr2.getRow();
-				int column = cr.getCol();
-
-				// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-
-				/*
-				 * row=sheet.getRow(i); cell= row.getCell(column);
-				 * cell.setCellValue("เห็นด้วย");
-				 */
+				 Pattern pattern = Pattern.compile("([\\w\\!\\:\\|]+)");
+				 //String s="[4!C9:C96|4!D9:D96][5!C9:C96|5!D9:D96]";
+				 String columnReference = cell_code.getStringCellValue();
+				 columnReference=columnReference.replaceAll(" ", "");
+				 //[5!B9:B96|5!C9:C96]
+			     Matcher m = pattern.matcher(columnReference);
+			     List<String> values=new ArrayList<String>();
+			        while (m.find()) {
+			        	values.add(m.group());
+			        } 
+				String[] question_answer=values.get(0).split("\\|");
+				 
+				String[] questions_sheets = question_answer[0].split("!"); 
+				String[] questions_columns = questions_sheets[1].split(":");
 				
+				String[] answers_sheets = question_answer[1].split("!");
+				String[] answers_columns = answers_sheets[1].split(":");
+				
+				HSSFSheet sheet = wb.getSheetAt(Integer.parseInt(answers_sheets[0]));
+				// HSSFCell cell =null;
+				CellReference questions_cr = new CellReference(questions_columns[0]);
+				//CellReference questions_cr2 = new CellReference(questions_columns[1]);
+				
+				CellReference answers_cr = new CellReference(answers_columns[0]);
+				CellReference answers_cr2 = new CellReference(answers_columns[1]);
+				
+				int start = answers_cr.getRow();
+				int end = answers_cr2.getRow();
+				int column = answers_cr.getCol();
 
-
+				int question_column = questions_cr.getCol();
+				// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 				// for(int i=1;i<=size;i++){
+				
 				//System.out.println("start->"+start+",end->"+end+",column->"+column);
 				for (int i = start; i <= end; i++) {
 					row = sheet.getRow(i);
 					// cell_question= row.getCell(0);
 					//cell_question = row.getCell(column - 2);
-					cell_question = row.getCell(column - 1);
+					//cell_question = row.getCell(column - 1);
+					cell_question = row.getCell(question_column);
+					
 					cell_answer = row.getCell(column);
 					int question_no = (int) cell_question.getNumericCellValue();
 					Object obj_value = answerMap.get(question_no + "");
