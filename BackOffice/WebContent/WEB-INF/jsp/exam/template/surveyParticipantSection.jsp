@@ -52,7 +52,7 @@ function checkBank(txtVal){
 }
 
 </script> 
- <form  id="surveyParticipantsForm" name="surveyParticipantsForm" method="post" action="">
+ <!-- <form  id="surveyParticipantsForm" name="surveyParticipantsForm" method="post" action=""> -->
 	<input type="hidden" id="participant_msId" name="participant_msId" value="${participant_msId}"/>
        <table  border="0" width="100%" style="font-size: 13px">
 	    					<tr>
@@ -63,9 +63,11 @@ function checkBank(txtVal){
 	    					</table> 
 	    					<c:forEach items="${missSeriesParticipantsMaps}" var="missSeriesParticipantsMap" varStatus="loop"> 
 	    					    <div align="center">กลุ่ม&nbsp;&nbsp;<strong style="text-decoration: underline;">${missSeriesParticipantsMap.mspmGroupName}</strong>
-	    					     &nbsp;&nbsp;จำนวนสุ่ม : <input type="text" style="width: 35px" name="_sample" id="_sample"/>
+	    					     <%--
+	    					     &nbsp;&nbsp;จำนวนสุ่ม : <input type="text" style="width: 35px" name="amountSendArray"/>
 	    					      &nbsp;&nbsp;จำนวนที่ต้องการจะส่ง : <input type="text" style="width: 35px" name="amountSend" id="amountSend"/> 
 	    					    &nbsp;&nbsp;<a class="btn btn-primary"  style="margin-top:-10px" onclick="setSample('dataTable')"><span style="color: white;font-weight: bold;">Set</span></a>
+	    					     --%>
 	    					     </div>
 	    						<table class="table stable-striped table-bordered table-condensed" border="0" style="font-size: 12px">
         							<thead>
@@ -92,4 +94,4 @@ function checkBank(txtVal){
      							 </table>
      							 <br/>
 	    					</c:forEach> 
-     				 </form>
+     				 <!-- </form> -->
