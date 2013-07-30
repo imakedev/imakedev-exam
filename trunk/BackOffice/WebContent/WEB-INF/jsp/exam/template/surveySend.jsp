@@ -47,7 +47,7 @@ function setSample(tableID) {
 }
 
 function doSendMailAction(){
-	return false;
+	//return false;
 	$("#mailMessage").val(CKEDITOR.instances["mailMessage"].getData());
  	$.post("survey/sendmail",$("#surveyForm").serialize(), function(data) {
 		  // alert(data);
@@ -156,5 +156,5 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 </form:form>
 <div align="center">
 			<a class="btn btn-info"  onclick="goBackUnitList()"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a>	
-    		<a class="btn btn-primary"  onclick="doSendMailAction('')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a> 
+    		<a class="btn btn-primary"  onclick="doSendMailAction()"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Send</span></a> 
 			</div>
