@@ -112,8 +112,12 @@ $(document).ready(function() {
 function doStart(){
 	//document.forms["missExamForm"].submit();
 //	$("#a_start").click(); 
-//alert("x");
-  $("#mcaBirthDate").val($("#birthdate").val());
+//alert("x"); 
+	;
+	// dd/MM/yyyy
+/* 	alert($("select[name='birth\[day\]']").val()) */
+  $("#mcaBirthDate").val($("select[name='birth\[day\]']").val()+"/"+$("select[name='birth\[month\]']").val()+"/"+$("select[name='birth\[year\]']").val());
+ /* alert($("#mcaBirthDate").val()) */
   $("#selectLang").val($('select[id="changeLangExamElement"]').val());
 	$.post("exam/info",$("#missExamForm").serialize(), function(data) {
 	   window.location.href='${examInfoUrl}';
