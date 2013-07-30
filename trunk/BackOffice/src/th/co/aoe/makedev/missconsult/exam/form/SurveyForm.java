@@ -17,6 +17,9 @@ public class SurveyForm implements Serializable {
 	public int amountSend;
 	public String subject;
 	public String mailMessage;
+	
+	public String[] amountSendArray; 
+	private Long participant_msId;
 	public SurveyForm() {
 	}
 
@@ -82,6 +85,22 @@ public class SurveyForm implements Serializable {
 
 	public void setSurvey_group(String[] survey_group) {
 		this.survey_group = survey_group;
+	}
+
+	public String[] getAmountSendArray() {
+		return amountSendArray;
+	}
+
+	public void setAmountSendArray(String[] amountSendArray) {
+		this.amountSendArray = amountSendArray;
+	}
+
+	public Long getParticipant_msId() {
+		return participant_msId;
+	}
+
+	public void setParticipant_msId(Long participant_msId) {
+		this.participant_msId = participant_msId;
 	}
 	
 }

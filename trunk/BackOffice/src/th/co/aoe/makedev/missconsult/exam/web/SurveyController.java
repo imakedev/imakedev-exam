@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -144,10 +146,33 @@ public class SurveyController
     }*/
     @SuppressWarnings({ "unchecked", "rawtypes" })
   	@RequestMapping(value={"/sendmail"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-      public String sendMail(@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
+      public String sendMail(HttpServletRequest request,@ModelAttribute(value="surveyForm") SurveyForm surveyForm, BindingResult result, Model model)
       {
       	int resultReturn=0;
+    	//System.out.println("surveyForm.getSurvey_email()->"+request.getParameterValues("survey_email"));
+      	/* Random randomGenerator = new Random();
+      	 String[] amountSendArray=surveyForm.getAmountSendArray();
+    		Map map=new HashMap<String,String >();
+		 while (map.size()<surveyForm.getAmountSend()) {
+			  int randomInt = randomGenerator.nextInt(surveyForm.getSurvey_email().length-1);
+			  map.put(randomInt+"", randomInt+"");
+		}
+   		 List<List<String>> userEmail =new ArrayList<List<String>>(map.size());
+		 
+		 for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+			 String key = (String) iterator.next();
+			 int keyInt=Integer.parseInt(key);
+			 List<String> email = new ArrayList<String>(2);
+			 email.add(surveyForm.getSurvey_name()[keyInt]);
+			 email.add(surveyForm.getSurvey_email()[keyInt]);
+			 userEmail.add(email);		
+		}*/
+      	/*System.out.println("surveyForm.getSurvey_email()->"+surveyForm.getSurvey_email());
+      	System.out.println("surveyForm.getParticipant_msId()->"+surveyForm.getParticipant_msId());
+      	System.out.println("surveyForm.getMaId())->"+surveyForm.getMaId());*/
       	if(surveyForm.getSurvey_email().length>0){
+      		//amountSendArray
+      		
       		int size=surveyForm.getSurvey_email().length;
       		MissSurveySend surveySend=new MissSurveySend();
       		List<MissSurveySend>  surveySends = new ArrayList<MissSurveySend>();
@@ -155,7 +180,7 @@ public class SurveyController
       		 String[] survey_emails=surveyForm.getSurvey_email();
       		 String[] survey_names=surveyForm.getSurvey_name();
       		 String[] survey_groups=surveyForm.getSurvey_group();
-      		 missSery.setMsId(surveyForm.getMsId());
+      		 missSery.setMsId(surveyForm.getParticipant_msId());
       		for (int i = 0; i < size; i++) {
       			 MissSurveySend missSurveySend =new MissSurveySend();
           		
@@ -168,6 +193,7 @@ public class SurveyController
           		 missSurveySend.setMaId(surveyForm.getMaId());
           		 surveySends.add(missSurveySend);
 			}
+      		surveySend.setMaId(surveyForm.getMaId());
       		surveySend.setMissSurveySendList(surveySends);
       		 //resultReturn=
       		List<List<String>> candidateReturn= missExamService.sendSurvey(surveySend);
