@@ -35,7 +35,8 @@ import th.co.aoe.makedev.missconsult.xstream.MissTodo;
 @SessionAttributes( { "missExamForm" ,"systemDate","timelimit"})
 public class MissExamController {
 	private static final Logger logger = Logger.getLogger(ServiceConstant.LOG_APPENDER); 
-   private static SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
+  // private static SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+   private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy"); 
 	private static ResourceBundle bundle;
 	static{
 		bundle =  ResourceBundle.getBundle( "config" );				
