@@ -99,7 +99,24 @@ public class MissSurveySendResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}
 						else if(serviceName.equals(ServiceConstant.MISS_SURVEY_SEND)){
-							 List<List<String>> candidateReturn=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
+							// List<List<String>> candidateReturn=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
+							List<th.co.aoe.makedev.missconsult.xstream.MissSurveySend> xMissSurveySends =xbpsTerm.getMissSurveySendList();
+							List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend> missSurveySends =null;
+							if(xMissSurveySends!=null && xMissSurveySends.size()>0){
+								missSurveySends=new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend>(xMissSurveySends.size());
+							 for (th.co.aoe.makedev.missconsult.xstream.MissSurveySend missSurveySend : xMissSurveySends) {
+								 th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend bpsTerms = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSurveySend();
+									BeanUtils.copyProperties(missSurveySend,bpsTerms,ignore_id); 
+								    if(missSurveySend.getMissSery()!=null && missSurveySend.getMissSery().getMsId()!=null){
+								    	th.co.aoe.makedev.missconsult.hibernate.bean.MissSery  missSery = new th.co.aoe.makedev.missconsult.hibernate.bean.MissSery();
+								    	BeanUtils.copyProperties(missSurveySend.getMissSery(),missSery); 
+								    	bpsTerms.setMissSery(missSery);
+								    }
+								    missSurveySends.add(bpsTerms);
+							}
+								
+							}
+							List<List<String>> candidateReturn=missSurveySendService.sendSurveyGroup(missSurveySends,xbpsTerm.getMaId());
 							//int updateRecord=missSurveySendService.sendSurvey(bpsTerm,xbpsTerm.getMaId(),xbpsTerm.getUserEmail());
 							 xbpsTerm.setUserEmail(candidateReturn);
 							 VResultMessage vresultMessage = new VResultMessage();
