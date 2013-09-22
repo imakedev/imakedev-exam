@@ -635,6 +635,24 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
+	    					<tr>
+	    					 <td align="left" width="17%">&nbsp;</td>
+	    					 <td align="left" width="17%">Export Repory By:</td>
+	    					 <td align="left" width="17%">    					
+	    						<!-- <input type="text"/>  -->
+	    						<form:select path="missSery.msExporting" cssStyle="width:80px">  
+	    									<form:option value="0">Jasper</form:option>
+	    									<form:option value="1">Excel</form:option>
+											 <!-- <option value="1">MCCT</option> -->
+	    						</form:select> 
+	    					 </td>
+	    					<td align="left" width="17%"></td>
+	    					<td align="left" width="17%">
+	    					<!-- <input type="text" name="registerNo" class="height_input"/></td> -->
+	    					
+	    					<td align="left" width="15%">&nbsp;</td>
+	    					</tr>
+	    					 
 	    					</table> 
 	    					<input type="hidden" id="eval_file_value_1" />
 	    					<input type="hidden" id="eval_file_value_2" />
@@ -892,12 +910,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="4_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;     	
-	    		<%--				
-	    						<a class="btn" id="evaluation_file_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> 
-	    						<span id="eval_file_attached_4" style="cursor: pointer;">
-	    						</span> (Evaluation File)
-	    						 --%>
+	    		</select>&nbsp;   
 	    		</td>
           	</tr>
           	<tr>
@@ -909,15 +922,21 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
 	    					 		 				<option  value="<c:out value="5_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
 	    								 	  </c:forEach>
-	    		</select>&nbsp;
-	    		<%--     					
-	    						<a class="btn" id="evaluation_file_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a> 
-	    						<span id="eval_file_attached_5" style="cursor: pointer;">
-	    						</span> (Evaluation File)
-	    						 --%>
+	    		</select>&nbsp; 
 	    		</td>
           	</tr>
-          	
+          	<tr>
+            	<td>6</td>
+            	<td>
+            	<select name="missExam_mapping" >
+											 <option value="0">--- Select ---</option>
+											 <!-- <option value="1">MCCT</option> -->
+											  <c:forEach items="${missExams}" var="missExam" varStatus="loop"> 
+	    					 		 				<option  value="<c:out value="6_${missExam.meId}"></c:out>"><c:out value="${missExam.meName}"></c:out></option>
+	    								 	  </c:forEach>
+	    		</select>&nbsp;   
+	    		</td>
+          	</tr>
         	</tbody>
       </table>
       <div align="center"><a class="btn btn-info"  onclick="doAction('search','doBack','0')"><i class="icon-chevron-left icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Back</span></a> <a class="btn btn-primary"  onclick="doAction('action','${seriesForm.mode}','${seriesForm.missSery.msId}')"><i class="icon-ok icon-white"></i>&nbsp;<span style="color: white;font-weight: bold;">Save</span></a></div>
