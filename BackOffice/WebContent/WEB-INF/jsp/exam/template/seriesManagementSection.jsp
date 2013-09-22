@@ -5,15 +5,29 @@ $(document).ready(function() {
  // button1
    new AjaxUpload('template_file_thai_1', {
        action: 'reportUpload/upload/${template_msId}/1/0',
-		onSubmit : function(file , ext){ 
+		onSubmit : function(file , ext){  
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_thai_1").val()
-				});					 
+				});		
+			
 			} else {					 
 				alert('Error: only jasper are allowed') ; 
 				return false;				
-			}		
+			}	
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_1").val()
+				});		
+			
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -29,6 +43,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_eng_1', {
        action: 'reportUpload/upload/${template_msId}/1/1',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_eng_1").val()
@@ -37,6 +52,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_1").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -53,6 +79,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_thai_2', {
        action: 'reportUpload/upload/${template_msId}/2/0',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_thai_2").val()
@@ -60,7 +87,18 @@ $(document).ready(function() {
 			} else {					 
 				alert('Error: only jasper are allowed') ; 
 				return false;				
-			}		
+			}	
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_2").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -75,6 +113,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_eng_2', {
        action: 'reportUpload/upload/${template_msId}/2/1',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_eng_2").val()
@@ -82,7 +121,18 @@ $(document).ready(function() {
 			} else {					 
 				alert('Error: only jasper are allowed') ; 
 				return false;				
-			}		
+			}	
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_2").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -99,6 +149,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_thai_3', {
        action: 'reportUpload/upload/${template_msId}/3/0',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_thai_3").val()
@@ -107,6 +158,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_3").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -121,6 +183,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_eng_3', {
        action: 'reportUpload/upload/${template_msId}/3/1',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_eng_3").val()
@@ -129,6 +192,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_3").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -145,6 +219,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_thai_4', {
        action: 'reportUpload/upload/${template_msId}/4/0',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_thai_4").val()
@@ -153,6 +228,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_4").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -167,6 +253,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_eng_4', {
        action: 'reportUpload/upload/${template_msId}/4/1',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_eng_4").val()
@@ -175,6 +262,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_4").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -191,6 +289,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_thai_5', {
        action: 'reportUpload/upload/${template_msId}/5/0',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_thai_5").val()
@@ -199,6 +298,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_5").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -213,6 +323,7 @@ $(document).ready(function() {
    new AjaxUpload('template_file_eng_5', {
        action: 'reportUpload/upload/${template_msId}/5/1',
 		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
 			if (ext && /^(jasper)$/.test(ext)){ 
 				this.setData({ 
 					reportName:$("#template_report_eng_5").val()
@@ -221,6 +332,17 @@ $(document).ready(function() {
 				alert('Error: only jasper are allowed') ; 
 				return false;				
 			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_5").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
@@ -228,6 +350,76 @@ $(document).ready(function() {
 			 $('#template_file_eng_5_attached').attr('onclick',path_file);
 			 $('#template_file_eng_5_attached').html(file);
 			 $('#template_file_eng_5_attached').attr('style','cursor: pointer;');	
+			 //$('#template_file_eng_5_attached_delete').html("&nbsp;&nbsp;"+"<i class=\"icon-trash\"></i>");
+			 //$('#template_file_eng_5_attached_delete').attr('style','cursor: pointer;');	
+		}		
+	});
+   
+// button6
+   new AjaxUpload('template_file_thai_6', {
+       action: 'reportUpload/upload/${template_msId}/6/0',
+		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
+			if (ext && /^(jasper)$/.test(ext)){ 
+				this.setData({ 
+					reportName:$("#template_report_thai_6").val()
+				});					 
+			} else {					 
+				alert('Error: only jasper are allowed') ; 
+				return false;				
+			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_thai_6").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}
+			</c:if>
+		},
+		onComplete : function(file, response){ 
+			var obj = jQuery.parseJSON(response);
+			var path_file='getFileAttached("getfile/template/${template_msId}/'+obj.hotlink+'")'; 
+			 $('#template_file_thai_6_attached').attr('onclick',path_file);
+			 $('#template_file_thai_6_attached').html(file);
+			 $('#template_file_thai_6_attached').attr('style','cursor: pointer;');	
+			 //$('#template_file_thai_5_attached_delete').html("&nbsp;&nbsp;"+"<i class=\"icon-trash\"></i>");
+			 //$('#template_file_thai_5_attached_delete').attr('style','cursor: pointer;');	
+		}		
+	});
+   new AjaxUpload('template_file_eng_6', {
+       action: 'reportUpload/upload/${template_msId}/6/1',
+		onSubmit : function(file , ext){ 
+			<c:if test="${missSery.msExporting=='0'}">
+			if (ext && /^(jasper)$/.test(ext)){ 
+				this.setData({ 
+					reportName:$("#template_report_eng_6").val()
+				});					 
+			} else {					 
+				alert('Error: only jasper are allowed') ; 
+				return false;				
+			}		
+			</c:if>
+			<c:if test="${missSery.msExporting=='1'}">
+			if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
+				this.setData({ 
+					reportName:$("#template_report_eng_6").val()
+				});					 
+			} else {					 
+				alert('Error: only xls are allowed') ; 
+				return false;				
+			}	
+			</c:if>
+		},
+		onComplete : function(file, response){ 
+			var obj = jQuery.parseJSON(response);
+			var path_file='getFileAttached("getfile/template/${template_msId}/'+obj.hotlink+'")'; 
+			 $('#template_file_eng_6_attached').attr('onclick',path_file);
+			 $('#template_file_eng_6_attached').html(file);
+			 $('#template_file_eng_6_attached').attr('style','cursor: pointer;');	
 			 //$('#template_file_eng_5_attached_delete').html("&nbsp;&nbsp;"+"<i class=\"icon-trash\"></i>");
 			 //$('#template_file_eng_5_attached_delete').attr('style','cursor: pointer;');	
 		}		
@@ -393,6 +585,21 @@ function updateReportName(id,order,lang){
 	    				</span></td>
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','5')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
-          	
+          	<tr>
+            	<td>6</td> 
+            	<td>
+            	<div><input type="text" id="template_report_thai_6" value="${templateList[5][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
+            	<a class="btn" id="template_file_thai_6" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<span id="template_file_thai_6_attached">${templateList[5][0].mraFileName}
+	    				</span><span id="template_file_thai_6_attached_delete">
+	    				</span></td>
+            	<td>
+            	<div><input type="text" id="template_report_eng_6" value="${templateList[5][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
+            	<a class="btn" id="template_file_eng_6"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<span id="template_file_eng_6_attached">${templateList[5][0].mraFileName}
+	    				</span><span id="template_file_eng_6_attached_delete">
+	    				</span></td>
+	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','6')" style="cursor: pointer;" class="icon-trash"></i></td>
+          	</tr>
         	</tbody>
       </table>
