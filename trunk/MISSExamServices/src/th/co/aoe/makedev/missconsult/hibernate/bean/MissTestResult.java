@@ -61,6 +61,13 @@ public class MissTestResult implements Serializable {
 	@Column(name="MTR_HIDE_STATUS")
 	private String mtrHideStatus;
 	
+	@Column(name="MTR_AGE")
+	private String mtrAge;
+	
+	@Column(name="MTR_VERSION")
+	private String mtrVersion;
+	 
+	 
 
 	public String getMtrRespondedStatus() {
 		return mtrRespondedStatus;
@@ -164,6 +171,22 @@ public class MissTestResult implements Serializable {
 
 	public void setMtrHideStatus(String mtrHideStatus) {
 		this.mtrHideStatus = mtrHideStatus;
+	}
+
+	public String getMtrAge() {
+		return mtrAge;
+	}
+
+	public void setMtrAge(String mtrAge) {
+		this.mtrAge = mtrAge;
+	}
+
+	public String getMtrVersion() {
+		return mtrVersion;
+	}
+
+	public void setMtrVersion(String mtrVersion) {
+		this.mtrVersion = mtrVersion;
 	}
 	
 }

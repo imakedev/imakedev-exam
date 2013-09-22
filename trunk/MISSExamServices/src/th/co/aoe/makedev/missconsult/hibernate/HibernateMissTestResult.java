@@ -53,6 +53,7 @@ import th.co.aoe.makedev.missconsult.hibernate.bean.MissEptPlusWorkWheelMessageP
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetector;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissEptTraitsDetectorPK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissExam;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissSery;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblem;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryProblemPK;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissSeryUse;
@@ -658,37 +659,95 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				mcaId = missCandidate.getMcaId();
 				// logger.debug("xxxxxxxxxx="+missCandidate.getMcaId().intValue());
 				query = session
-						.createQuery(" select missSeriesAttach from MissSeriesAttach missSeriesAttach where missSeriesAttach.msatRef1=:msatRef1"
-								+
-								// " and missSeriesAttach.msatRef2=:msatRef2 " +
-								" and missSeriesAttach.msatModule=:msatModule");
-				query.setParameter("msatRef1", msId);
-				// query.setParameter("msatRef2", meId);
-				query.setParameter("msatModule", "evaluation");
-				obj = query.uniqueResult();
-				if (obj != null) {
-					th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach missSeriesAttach = (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach) obj;
-					missSeriesAttach.getMsatFileName();
-					String filePath = rootPath + missSeriesAttach.getMsatPath();
-					String pathOutPut = setAnswer(session, filePath, msId,
-							meId, mcaId);
-					// String code=getCode(session,pathOutPut,mcaId,msId,meId);
-					String code = getCode(session, pathOutPut, mcaId, msId);
-					logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" + code);
+						.createQuery(" select missSery from MissSery "
+								+ " missSery where missSery.msId=:msId  "); ;
+				query.setParameter("msId", msId);
+				Object missSeryObj=query.uniqueResult();
+				MissSery missSery =null;
+				if(missSeryObj!=null)
+					missSery=(MissSery)missSeryObj;
+				
+				if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){ 
+					  query = session
+							.createQuery(" select missReportAttach from MissReportAttach missReportAttach "
+									+ " where missReportAttach.id.msId=:msId order by missReportAttach.id.msOrder , missReportAttach.id.mraLang "  );
+									//+ " and missReportAttach.matHotlink=:matHotlink ");
+					query.setParameter("msId", msId);  
+					@SuppressWarnings("rawtypes")
+					List list = query.list();
+					//String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
+					String code ="";
+					if (list.size() > 0) {  
+						 query=session.createSQLQuery(" select  ((year(curdate()) - year(candidate.MCA_BIRTH_DATE))" +
+						 		" - (right(curdate(), 5) < right(candidate.MCA_BIRTH_DATE, 5))) AS age " +
+						 		"   from  "+ServiceConstant.SCHEMA+".MISS_CANDIDATE candidate where  candidate.MCA_ID="+missCandidate.getMcaId());
+						 List<java.math.BigInteger> list_age=query.list();
+						 String age="";
+						 for (java.math.BigInteger objects : list_age) {
+							 //for (int i = 0; i < objects.length; i++) {
+								 age= objects.intValue()+"";
+							// } 
+						 }
+						 for (int i = 0; i < list.size(); i++) {
+							 th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach missReportAttach = 
+									 (th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach) list.get(i);
+							String filePath = "/opt/attach/reportTemplate/" + missReportAttach.getMraPath(); 
+							String pathOutPut = setAnswerByXLS(session, filePath, msId,
+									meId, mcaId);
+							  code = getCodeByXLS(session, pathOutPut, mcaId, msId,i); 
+						}
+						query = session
+								.createQuery("update MissTestResult missTestResult "
+										+ " set missTestResult.mtrResultCode =:mtrResultCode "
+										+ " , missTestResult.mtrAge =:age "
+										+ " , missTestResult.mtrVersion ='4.1.1.2' "
+										+
+										" where missTestResult.missCandidate.mcaId=:mcaId and "
+										+
+										// " missTestResult.meId=:meId and " +
+										" missTestResult.msId=:msId ");
+						query.setParameter("mcaId", mcaId);
+						query.setParameter("age", age);
+						// query.setParameter("meId", meId);
+						query.setParameter("msId", msId);
+						query.setParameter("mtrResultCode", code);
+						returnRecord = query.executeUpdate();
+					} 
+				}else{
 					query = session
-							.createQuery("update MissTestResult missTestResult "
-									+ " set missTestResult.mtrResultCode =:mtrResultCode "
+							.createQuery(" select missSeriesAttach from MissSeriesAttach missSeriesAttach where missSeriesAttach.msatRef1=:msatRef1"
 									+
-									" where missTestResult.missCandidate.mcaId=:mcaId and "
-									+
-									// " missTestResult.meId=:meId and " +
-									" missTestResult.msId=:msId ");
-					query.setParameter("mcaId", mcaId);
-					// query.setParameter("meId", meId);
-					query.setParameter("msId", msId);
-					query.setParameter("mtrResultCode", code);
-					returnRecord = query.executeUpdate();
+									// " and missSeriesAttach.msatRef2=:msatRef2 " +
+									" and missSeriesAttach.msatModule=:msatModule");
+					query.setParameter("msatRef1", msId);
+					// query.setParameter("msatRef2", meId);
+					query.setParameter("msatModule", "evaluation");
+					obj = query.uniqueResult();
+					if (obj != null) {
+						th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach missSeriesAttach = (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesAttach) obj;
+						missSeriesAttach.getMsatFileName();
+						String filePath = rootPath + missSeriesAttach.getMsatPath();
+						String pathOutPut = setAnswer(session, filePath, msId,
+								meId, mcaId);
+						// String code=getCode(session,pathOutPut,mcaId,msId,meId);
+						String code = getCode(session, pathOutPut, mcaId, msId);
+						logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" + code);
+						query = session
+								.createQuery("update MissTestResult missTestResult "
+										+ " set missTestResult.mtrResultCode =:mtrResultCode "
+										+
+										" where missTestResult.missCandidate.mcaId=:mcaId and "
+										+
+										// " missTestResult.meId=:meId and " +
+										" missTestResult.msId=:msId ");
+						query.setParameter("mcaId", mcaId);
+						// query.setParameter("meId", meId);
+						query.setParameter("msId", msId);
+						query.setParameter("mtrResultCode", code);
+						returnRecord = query.executeUpdate();
+					}
 				}
+				
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -703,6 +762,189 @@ public class HibernateMissTestResult extends HibernateCommon implements
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String setAnswer(Session session, String filePath, Long msId,
+			Long mdeId, Long mcaId) {
+		FileInputStream fileIn = null;
+		FileOutputStream fileOut = null;
+		String[] extensions = filePath.split("\\.");
+		String outPut = "";
+		try {
+			try {
+				fileIn = new FileInputStream(filePath);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			POIFSFileSystem fs = null;
+			try {
+				fs = new POIFSFileSystem(fileIn);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HSSFWorkbook wb = null;
+			try {
+				wb = new HSSFWorkbook(fs);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*
+			 * Workbook wb=null; try { wb = WorkbookFactory.create(fs); } catch
+			 * (IOException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 */
+			Query query = session
+					.createQuery(" select missSeriesMap from MissSeriesMap missSeriesMap "
+							+ "where missSeriesMap.id.msId=:msId order by missSeriesMap.msmOrder asc ");
+			query.setParameter("msId", msId);
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap> missSeriesMaps = query
+					.list();
+			int sheet_index = 1;
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissSeriesMap missSeriesMap : missSeriesMaps) {
+				StringBuffer sb = new StringBuffer();
+				sb.setLength(0);
+				sb.append(" select QUESTION.MQ_NO,CHOICE.MC_NO from "
+						+ schema
+						+ ".MISS_QUESTION QUESTION LEFT JOIN"
+						+ " "
+						+ schema
+						+ ".MISS_TEST TEST ON QUESTION.MQ_ID = TEST.MQ_ID LEFT JOIN"
+						+ " "
+						+ schema
+						+ ".MISS_CHOICE CHOICE ON  (TEST.MC_NO = CHOICE.MC_NO and "
+						+ " TEST.MQ_ID=CHOICE.MQ_ID ) " + " WHERE TEST.MCA_ID="
+						+ mcaId.intValue() + " AND TEST.MS_ID="
+						+ msId.intValue() + "" + " AND TEST.ME_ID="
+						+ missSeriesMap.getId().getMeId().intValue()
+						+ " ORDER BY QUESTION.MQ_ID");
+				query = session.createSQLQuery(sb.toString());
+
+				List result = query.list();
+				int size_result = result.size();
+				Map answerMap = new HashMap();
+				for (int j = 0; j < size_result; j++) {
+					Object[] obj = (Object[]) result.get(j);
+					// logger.debug("obj class="+obj[1].getClass()+",, "+((java.lang.Integer)obj[0]).toString());
+					if (obj[1] != null) {
+						answerMap.put(((java.lang.Integer) obj[0]).toString(),
+								((java.lang.Integer) obj[1]).toString());
+					} else {
+						answerMap.put(((java.lang.Integer) obj[0]).toString(),
+								"0");
+					}
+
+				}
+				HSSFCell cell_question = null;
+				HSSFCell cell_answer = null;
+				HSSFRow row = null;//
+				/*
+				 * NumberFormat format = NumberFormat.getNumberInstance();
+				 * format.setGroupingUsed(false);
+				 */
+				sheet_index++;
+				Sheet sheet1_0 = wb.getSheetAt(0);
+				Row row_code = sheet1_0.getRow(4);
+				Cell cell_code = row_code.getCell(sheet_index - 2);
+				 Pattern pattern = Pattern.compile("([\\w\\!\\:\\|]+)");
+				 //String s="[4!C9:C96|4!D9:D96][5!C9:C96|5!D9:D96]";
+				 String columnReference = cell_code.getStringCellValue();
+				 columnReference=columnReference.replaceAll(" ", "");
+				 //[5!B9:B96|5!C9:C96]
+			     Matcher m = pattern.matcher(columnReference);
+			     List<String> values=new ArrayList<String>();
+			        while (m.find()) {
+			        	values.add(m.group());
+			        } 
+				String[] question_answer=values.get(0).split("\\|");
+				 
+				String[] questions_sheets = question_answer[0].split("!"); 
+				String[] questions_columns = questions_sheets[1].split(":");
+				
+				String[] answers_sheets = question_answer[1].split("!");
+				String[] answers_columns = answers_sheets[1].split(":");
+				
+				HSSFSheet sheet = wb.getSheetAt(Integer.parseInt(answers_sheets[0]));
+				// HSSFCell cell =null;
+				CellReference questions_cr = new CellReference(questions_columns[0]);
+				//CellReference questions_cr2 = new CellReference(questions_columns[1]);
+				
+				CellReference answers_cr = new CellReference(answers_columns[0]);
+				CellReference answers_cr2 = new CellReference(answers_columns[1]);
+				
+				int start = answers_cr.getRow();
+				int end = answers_cr2.getRow();
+				int column = answers_cr.getCol();
+
+				int question_column = questions_cr.getCol();
+				// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+				// for(int i=1;i<=size;i++){
+				
+				//System.out.println("start->"+start+",end->"+end+",column->"+column);
+				for (int i = start; i <= end; i++) {
+					row = sheet.getRow(i);
+					// cell_question= row.getCell(0);
+					//cell_question = row.getCell(column - 2);
+					//cell_question = row.getCell(column - 1);
+					cell_question = row.getCell(question_column);
+					
+					cell_answer = row.getCell(column);
+					int question_no = (int) cell_question.getNumericCellValue();
+					Object obj_value = answerMap.get(question_no + "");
+					//System.out.println("question_no->"+question_no+",obj_value->"+obj_value+",cell_answer->"+cell_answer);
+					// logger.debug("obj_value xxxxxxxxxxxxxx == "+obj_value);
+					if (obj_value != null) {
+						cell_answer.setCellValue(Integer
+								.parseInt((String) obj_value));
+					} else {
+						cell_answer.setCellValue(0);
+					}
+					/*
+					 * cell_question.getNumericCellValue() cell.setCellValue(1);
+					 */
+				}
+
+			}
+
+			// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+
+			HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
+			// Write the output to a file
+			// outPut=extensions[0]+"_"+msId.intValue()+"_"+meId.intValue()+"_"+mcaId.intValue()+"."+extensions[1];
+			outPut = extensions[0] + "_" + msId.intValue() + "_"
+					+ mcaId.intValue() + "." + extensions[1];
+			try {
+				fileOut = new FileOutputStream(outPut);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				wb.write(fileOut);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		} finally {
+			if (fileOut != null)
+				try {
+					fileOut.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			if (fileIn != null)
+				try {
+					fileIn.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return outPut;
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private String setAnswerByXLS(Session session, String filePath, Long msId,
 			Long mdeId, Long mcaId) {
 		FileInputStream fileIn = null;
 		FileOutputStream fileOut = null;
@@ -1058,70 +1300,350 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				mtrId = result.getMtrId();
 			}
 			
-			// set Data Chart
-			Sheet sheet0_Data = wb.getSheetAt(0);
-			Row row_code_Data = sheet0_Data.getRow(1);
-			if (row_code_Data != null) {
-				Cell cell_code_Data = row_code_Data.getCell(1);
-				if (cell_code_Data != null) {
-					String columnReference = cell_code_Data
-							.getStringCellValue();
-					if (columnReference != null && columnReference.length() > 0) {
-						String[] sheets = columnReference.split("!");
-						String[] columns = sheets[1].split(":");
-						// HSSFSheet sheet =
-						// wb.getSheetAt(Integer.parseInt(sheets[0]));
-						// HSSFCell cell =null;
-						CellReference cr = new CellReference(columns[0]);
-						CellReference cr2 = new CellReference(columns[1]);
-						int start = cr.getRow();
-						int end = cr2.getRow();
-						int column = cr.getCol();
-						Sheet sheet1_Data = wb.getSheetAt(Integer
-								.parseInt(sheets[0]));
-						List<MissDataChart> chartDatas = new ArrayList<MissDataChart>();
-						 
-						Row row = null;//
-						Cell cell = null;
-						if (mtrId != null)
-							for (int i = start; i <= end; i++) {
-								row = sheet1_Data.getRow(i);
-								cell = row.getCell(column);
-								String key = cell.getStringCellValue();
-								cell = row.getCell(column + 1);
-								String chartType = cell.getStringCellValue();
-								cell = row.getCell(column + 2);
-								String chartDataStr = cell.getStringCellValue();
-								String mdcType=null;
-								MissDataChart chartData = new MissDataChart();
-								chartData.setMdcData(chartDataStr);
-								// chartData.setMdcType();
+			//get MissSery
+			/*query = session
+					.createQuery(" select missSery from MissSery "
+							+ " missSery where missSery.msId=:msId  "); ;
+			query.setParameter("msId", msId);
+			Object missSeryObj=query.uniqueResult();
+			MissSery missSery =null;
+			if(missSeryObj!=null)
+				missSery=(MissSery)missSeryObj;
+			
+			if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){
+				
+			}else{*/
+				// set Data Chart
+				Sheet sheet0_Data = wb.getSheetAt(0);
+				Row row_code_Data = sheet0_Data.getRow(1);
+				if (row_code_Data != null) {
+					Cell cell_code_Data = row_code_Data.getCell(1);
+					if (cell_code_Data != null) {
+						String columnReference = cell_code_Data
+								.getStringCellValue();
+						if (columnReference != null && columnReference.length() > 0) {
+							String[] sheets = columnReference.split("!");
+							String[] columns = sheets[1].split(":");
+							// HSSFSheet sheet =
+							// wb.getSheetAt(Integer.parseInt(sheets[0]));
+							// HSSFCell cell =null;
+							CellReference cr = new CellReference(columns[0]);
+							CellReference cr2 = new CellReference(columns[1]);
+							int start = cr.getRow();
+							int end = cr2.getRow();
+							int column = cr.getCol();
+							Sheet sheet1_Data = wb.getSheetAt(Integer
+									.parseInt(sheets[0]));
+							List<MissDataChart> chartDatas = new ArrayList<MissDataChart>();
+							 
+							Row row = null;//
+							Cell cell = null;
+							if (mtrId != null)
+								for (int i = start; i <= end; i++) {
+									row = sheet1_Data.getRow(i);
+									cell = row.getCell(column);
+									String key = cell.getStringCellValue();
+									cell = row.getCell(column + 1);
+									String chartType = cell.getStringCellValue();
+									cell = row.getCell(column + 2);
+									String chartDataStr = cell.getStringCellValue();
+									String mdcType=null;
+									MissDataChart chartData = new MissDataChart();
+									chartData.setMdcData(chartDataStr);
+									// chartData.setMdcType();
 
-								MissDataChartPK chartDataPK = new MissDataChartPK();
-								chartDataPK.setMdcKey(key);
-								chartDataPK.setMtrId(mtrId);
-								// Long mcaId,Long msId){
-								chartDataPK.setMdcSwfName(chartType + ".swf");
-								if(chartType.equalsIgnoreCase("Radar"))
-									mdcType="PowerCharts" ;
-								else if(chartType.equalsIgnoreCase("HLED") || chartType.equalsIgnoreCase("HlinearGauge")){
-									mdcType="FusionWidgets" ;
+									MissDataChartPK chartDataPK = new MissDataChartPK();
+									chartDataPK.setMdcKey(key);
+									chartDataPK.setMtrId(mtrId);
+									// Long mcaId,Long msId){
+									chartDataPK.setMdcSwfName(chartType + ".swf");
+									if(chartType.equalsIgnoreCase("Radar"))
+										mdcType="PowerCharts" ;
+									else if(chartType.equalsIgnoreCase("HLED") || chartType.equalsIgnoreCase("HlinearGauge")){
+										mdcType="FusionWidgets" ;
+									}
+									chartData.setId(chartDataPK);
+									chartData.setMdcType(mdcType);
+									chartDatas.add(chartData);
 								}
-								chartData.setId(chartDataPK);
-								chartData.setMdcType(mdcType);
-								chartDatas.add(chartData);
+							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
+								//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
+								session.saveOrUpdate(missDataChart);
 							}
-						for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
-							//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
-							session.saveOrUpdate(missDataChart);
 						}
 					}
 				}
-			}
+			//} 
+			
 			// check EPT && EPT PLUS
 			if(msId.intValue()==12 || msId.intValue()==21){
 				 setEPTData(session,wb,msId,mtrId);
 			}
+
+		} finally {
+
+			if (fileIn != null)
+				try {
+					fileIn.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return code;
+	}
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
+	public String getCodeByXLS(Session session, String filename, Long mcaId,
+			Long msId,int _index) {
+		FileInputStream fileIn = null;
+		// FileOutputStream fileOut = null;
+		String code = null;
+		try {
+			try {
+				fileIn = new FileInputStream(filename);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			POIFSFileSystem fs = null;
+			try {
+				fs = new POIFSFileSystem(fileIn);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Workbook wb = null;
+			try {
+				wb = new HSSFWorkbook(fs);
+				// wb = new XSSFWorkbook(fs);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Sheet sheet1 = wb.getSheetAt(0); // getConfig
+			Row row_code = sheet1.getRow(1);
+			Cell cell_code = null;
+
+			if (row_code != null) {
+				cell_code = row_code.getCell(0);
+
+				String columnReference = cell_code.getStringCellValue();
+				String[] columns = columnReference.split("!");
+				// HSSFCell cell =null;
+				/*
+				 * CellReference cr = new CellReference(columns[0]);
+				 * CellReference cr2 = new CellReference(columns[1]); int
+				 * start=cr.getRow(); int end=cr2.getRow(); int
+				 * column=cr.getCol();
+				 */
+
+				// sheet1 = wb.getSheetAt(1); //get Code
+				sheet1 = wb.getSheetAt(Integer.parseInt(columns[0])); // get
+																		// sheet
+				CellReference cr = new CellReference(columns[1]);
+				row_code = sheet1.getRow(cr.getRow());
+				cell_code = row_code.getCell(cr.getCol());
+				/*
+				 * switch (cell.getCellType()) { case Cell.CELL_TYPE_STRING:
+				 * value = cell.getStringCellValue(); //
+				 * Cell.CELL_TYPE_NUMERIC: }
+				 */
+				logger.debug("  CELL_TYPE_NUMERIC=" + Cell.CELL_TYPE_NUMERIC);
+				logger.debug("  CELL_TYPE_STRING=" + Cell.CELL_TYPE_STRING);
+				logger.debug("  CELL_TYPE_FORMULA=" + Cell.CELL_TYPE_FORMULA);
+
+				// logger.debug("  cell_code.getCellType()="+cell_code.getCellType());
+				if (cell_code.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+					code = cell_code.getNumericCellValue() + "";
+				} else if (cell_code.getCellType() == Cell.CELL_TYPE_STRING) {
+					code = cell_code.getStringCellValue();
+				} else if (cell_code.getCellType() == Cell.CELL_TYPE_FORMULA) {
+					FormulaEvaluator evaluator = wb.getCreationHelper()
+							.createFormulaEvaluator();
+					int type = evaluator.evaluateInCell(cell_code)
+							.getCellType();
+					logger.debug("  type=" + type);
+					if (type == Cell.CELL_TYPE_NUMERIC) {
+						code = cell_code.getNumericCellValue() + "";
+					} else if (type == Cell.CELL_TYPE_STRING) {
+						code = cell_code.getStringCellValue();
+					}
+					// code=cell_code.getNumericCellValue()+"";
+				}
+			}
+			NumberFormat format = NumberFormat.getNumberInstance();
+			format.setGroupingUsed(false);
+			// get config
+			Sheet sheet1_0 = wb.getSheetAt(0);
+
+			int endRow = sheet1_0.getLastRowNum();
+			Row r = null;
+			List<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow> missTestShows = new ArrayList<th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow>();
+			int index = 1;
+			StringBuffer sb = new StringBuffer();
+			for (int i = 7; i <= endRow; i++) {
+				r = sheet1_0.getRow(i);
+				sb.setLength(0);
+				if (r.getCell(2).getBooleanCellValue()) { // 1=true,0=false;
+					sb.append("1");
+				} else
+					sb.append("0");
+				// if(r.getCell(2).getBooleanCellValue()){
+				th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow();
+				th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK pk = new th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShowPK();
+				pk.setMcaId(mcaId);
+				pk.setMsId(msId);
+				// remove pk --> meId
+				// pk.setMeId(meId);
+
+				String[] columns = r.getCell(1).getStringCellValue().split("!");
+				Sheet sheet1_1 = wb.getSheetAt(Integer.parseInt(columns[0]));
+				CellReference cr2 = new CellReference(columns[1]);
+				row_code = sheet1_1.getRow(cr2.getRow());
+				cell_code = row_code.getCell(cr2.getCol());
+
+				pk.setMtsColumn(r.getCell(0).getStringCellValue());
+				pk.setMtsType("2");
+				String value = "";
+				if (cell_code.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+					value = format.format(cell_code.getNumericCellValue());
+				} else if (cell_code.getCellType() == Cell.CELL_TYPE_STRING) {
+					value = cell_code.getStringCellValue();
+				} else if (cell_code.getCellType() == Cell.CELL_TYPE_FORMULA) {
+					FormulaEvaluator evaluator = wb.getCreationHelper()
+							.createFormulaEvaluator();
+					int type = evaluator.evaluateInCell(cell_code)
+							.getCellType();
+					if (type == Cell.CELL_TYPE_NUMERIC) {
+						value = format.format(cell_code.getNumericCellValue());
+					} else if (type == Cell.CELL_TYPE_STRING) {
+						value = cell_code.getStringCellValue();
+					} else if (type == Cell.CELL_TYPE_ERROR) {
+						// value=cell_code.getErrorCellValue();
+					}
+					// code=cell_code.getNumericCellValue()+"";
+				}
+				missTestShow.setMtsValue(value);
+				missTestShow.setId(pk);
+				missTestShow.setMtsOrder(Long.valueOf(index++));
+				missTestShow.setColumnIsShow(sb.toString());
+				missTestShows.add(missTestShow);
+
+				// }
+			}
+			//System.out.println("delete ");
+			Query query = null;
+		if(_index==0){
+			  query = session
+					.createQuery("delete MissTestShow missTestShow "
+							+ " where missTestShow.id.mcaId=:mcaId and " +
+							// " missTestShow.id.meId=:meId and " +
+							" missTestShow.id.msId=:msId ");
+			query.setParameter("mcaId", mcaId);
+			// query.setParameter("meId", meId);
+			query.setParameter("msId", msId);
+			query.executeUpdate();
+			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShows) {
+				/*System.out.println("missTestShow.getId().getMcaId()->"+missTestShow.getId().getMcaId());
+				System.out.println("missTestShow.getId().getMsId()->"+missTestShow.getId().getMsId());
+				System.out.println("missTestShow.getId().getMtsColumn()->"+missTestShow.getId().getMtsColumn());
+				System.out.println("missTestShow.getId().getMtsType()->"+missTestShow.getId().getMtsType());*/
+				session.save(missTestShow);
+			}
+		}
+			 
+			// get mtrId
+			query = session
+					.createQuery(" select missTestResult from MissTestResult "
+							+ " missTestResult where missTestResult.missCandidate.mcaId=:mcaId and "
+							+
+							" missTestResult.msId=:msId  ");
+			query.setParameter("mcaId", mcaId);
+			query.setParameter("msId", msId);
+			query.list();
+			@SuppressWarnings("rawtypes")
+			List list = query.list();
+			Long mtrId = null;
+			if (list != null && list.size() > 0) {
+				MissTestResult result = (MissTestResult) list
+						.get(0);
+				mtrId = result.getMtrId();
+			}
+			
+			//get MissSery
+			/*query = session
+					.createQuery(" select missSery from MissSery "
+							+ " missSery where missSery.msId=:msId  "); ;
+			query.setParameter("msId", msId);
+			Object missSeryObj=query.uniqueResult();
+			MissSery missSery =null;
+			if(missSeryObj!=null)
+				missSery=(MissSery)missSeryObj;
+			
+			if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){
+				
+			}else{*/
+				// set Data Chart
+				/*Sheet sheet0_Data = wb.getSheetAt(0);
+				Row row_code_Data = sheet0_Data.getRow(1);
+				if (row_code_Data != null) {
+					Cell cell_code_Data = row_code_Data.getCell(1);
+					if (cell_code_Data != null) {
+						String columnReference = cell_code_Data
+								.getStringCellValue();
+						if (columnReference != null && columnReference.length() > 0) {
+							String[] sheets = columnReference.split("!");
+							String[] columns = sheets[1].split(":");
+							// HSSFSheet sheet =
+							// wb.getSheetAt(Integer.parseInt(sheets[0]));
+							// HSSFCell cell =null;
+							CellReference cr = new CellReference(columns[0]);
+							CellReference cr2 = new CellReference(columns[1]);
+							int start = cr.getRow();
+							int end = cr2.getRow();
+							int column = cr.getCol();
+							Sheet sheet1_Data = wb.getSheetAt(Integer
+									.parseInt(sheets[0]));
+							List<MissDataChart> chartDatas = new ArrayList<MissDataChart>();
+							 
+							Row row = null;//
+							Cell cell = null;
+							if (mtrId != null)
+								for (int i = start; i <= end; i++) {
+									row = sheet1_Data.getRow(i);
+									cell = row.getCell(column);
+									String key = cell.getStringCellValue();
+									cell = row.getCell(column + 1);
+									String chartType = cell.getStringCellValue();
+									cell = row.getCell(column + 2);
+									String chartDataStr = cell.getStringCellValue();
+									String mdcType=null;
+									MissDataChart chartData = new MissDataChart();
+									chartData.setMdcData(chartDataStr);
+									// chartData.setMdcType();
+
+									MissDataChartPK chartDataPK = new MissDataChartPK();
+									chartDataPK.setMdcKey(key);
+									chartDataPK.setMtrId(mtrId);
+									// Long mcaId,Long msId){
+									chartDataPK.setMdcSwfName(chartType + ".swf");
+									if(chartType.equalsIgnoreCase("Radar"))
+										mdcType="PowerCharts" ;
+									else if(chartType.equalsIgnoreCase("HLED") || chartType.equalsIgnoreCase("HlinearGauge")){
+										mdcType="FusionWidgets" ;
+									}
+									chartData.setId(chartDataPK);
+									chartData.setMdcType(mdcType);
+									chartDatas.add(chartData);
+								}
+							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
+								//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
+								session.saveOrUpdate(missDataChart);
+							}
+						}
+					}
+				}*/
+		 
 
 		} finally {
 

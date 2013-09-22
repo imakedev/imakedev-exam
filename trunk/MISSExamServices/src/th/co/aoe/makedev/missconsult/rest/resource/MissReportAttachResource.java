@@ -130,11 +130,10 @@ public class MissReportAttachResource  extends BaseResource {
 							}
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}*/
-						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_DELETE)){
-							
+						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_DELETE)){ 
 							missReportAttachService.deleteTemplateMissReportAttach(xbpsTerm.getMsId(),xbpsTerm.getMsOrder());
 							@SuppressWarnings("rawtypes")
-							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 5); 
+							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 6); 
 								VResultMessage vresultMessage = new VResultMessage(); 
 								vresultMessage.setResultListObj(result);
 								return getRepresentation(entity, vresultMessage, xstream);
@@ -163,7 +162,7 @@ public class MissReportAttachResource  extends BaseResource {
 						}else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE)){
 							//Pagging page = xbpsTerm.getPagging(); 
 							@SuppressWarnings("rawtypes")
-							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 5); 
+							List result = (List) missReportAttachService.getTemplateMissReportAttach(xbpsTerm.getMsId(), 6); 
 								VResultMessage vresultMessage = new VResultMessage(); 
 								vresultMessage.setResultListObj(result);
 								return getRepresentation(entity, vresultMessage, xstream);
@@ -172,7 +171,7 @@ public class MissReportAttachResource  extends BaseResource {
 						else if(serviceName.equals(ServiceConstant.MISS_REPORT_ATTACH_GET_TEMPLATE_FOR_ROLE)){
 							//Pagging page = xbpsTerm.getPagging(); 
 							@SuppressWarnings("rawtypes")
-							List result = (List) missReportAttachService.getTemplateMissReportAttachForRole(xbpsTerm.getMsId(), 5); 
+							List result = (List) missReportAttachService.getTemplateMissReportAttachForRole(xbpsTerm.getMsId(), 6); 
 								VResultMessage vresultMessage = new VResultMessage(); 
 								vresultMessage.setResultListObj(result);
 								return getRepresentation(entity, vresultMessage, xstream); 
