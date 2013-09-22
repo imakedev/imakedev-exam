@@ -390,8 +390,11 @@ public class SeriesController
 		 return missExamService.findCompanies(eptNormReport);*/
     	MissReportAttach missReportAttach=new MissReportAttach();
     	missReportAttach.setMsId(msId);
+    	MissSery missSery = missExamService.findMissSeryById(msId);
+    	 model.addAttribute("missSery",missSery);
     	VResultMessage vresult =	missExamService.getTemplateMissReportAttach(missReportAttach);
     	 model.addAttribute("templateList", vresult.getResultListObj());
+    	 
     //	System.out.println(vresult.getResultListObj());
     	 model.addAttribute("template_msId", msId);
     	  return "exam/template/seriesManagementSection";
@@ -403,7 +406,8 @@ public class SeriesController
    	MissReportAttach missReportAttach=new MissReportAttach();
    	missReportAttach.setMsId(msId);
    	missReportAttach.setMsOrder(msOrder); 
-   	
+   	MissSery missSery = missExamService.findMissSeryById(msId);
+	 model.addAttribute("missSery",missSery);
    	VResultMessage vresult =missExamService.deleteTemplateMissReportAttach(missReportAttach);
    	 model.addAttribute("templateList", vresult.getResultListObj());
    //	System.out.println(vresult.getResultListObj());

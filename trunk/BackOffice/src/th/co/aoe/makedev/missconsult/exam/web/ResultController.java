@@ -5,8 +5,10 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -64,6 +66,17 @@ import th.co.aoe.makedev.missconsult.xstream.MissTestResult;
 import th.co.aoe.makedev.missconsult.xstream.MissTestShow;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 import th.co.aoe.makedev.missconsult.xstream.common.VResultMessage;
+
+import com.artofsolving.jodconverter.DocumentConverter;
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Controller
 @RequestMapping(value={"/result"}) 
@@ -489,253 +502,268 @@ public class ResultController
     public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
     		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId
     		,@RequestParam(required=false)Long msOrder,@RequestParam(required=false)String mraLang){
-   /* public void testPDF(HttpServletRequest request, HttpServletResponse response ,@RequestParam(required=false) Long mtrId,
-    		@RequestParam(required=false) Long meId,@RequestParam(required=false) Long msId,@RequestParam(required=false) Long mcaId){*/
-    //	logger.debug(;
-    	System.out.println(" testPDF======>  mtrId="+ mtrId+",meId="+meId+",msId="+msId+",mcaId="+mcaId+",msOrder="+msOrder+",mraLang="+mraLang);
     	Context ctx =null;
 		Connection con = null;
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
-    	try{
-    	/* MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
-    	 MissTestResult report=new MissTestResult(); 
-			report.setMeId(Long.valueOf(missTestResult.getLieScore())); */
-			/*byte[] imageInByte=null;
-			BufferedImage originalImage = null;
-			ByteArrayOutputStream baos =null;
-			try{
-				originalImage=ImageIO.read(new File("/root/Desktop/lambo.jpg"));
-			 
-				baos= new ByteArrayOutputStream();
-				ImageIO.write( originalImage, "jpg", baos );
-				baos.flush();
-				imageInByte = baos.toByteArray();
-				baos.close(); 
-				}catch(IOException e){
+		MissSery missSery= missExamService.findMissSeryById(msId);
+		String msExporting=missSery.getMsExporting();
+		 System.out.println("msExporting->"+msExporting);
+		 System.out.println("msOrder->"+msOrder);
+		MissReportAttach missReportAttach=missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
+		if(msExporting!=null && msExporting.equals("1")){
+			 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
+			 String[] extensions = reportPath.split("\\.");
+			 String inputFile = extensions[0] + "_" + msId.intValue() + "_"
+				+ mcaId.intValue() + "." + extensions[1];
+			 String outputFile = extensions[0] + "_" + msId.intValue() + "_"
+						+ mcaId.intValue() + ".pdf";
+			// connect to an OpenOffice.org instance running on port 8100
+				OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
+				try {
+					connection.connect();
+				} catch (ConnectException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} 
-			String encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
-					.encodeBase64(imageInByte));
-			report.setServiceName(encodedImgStr);*/
-			//report.setMtrStatus("Lie Score:\n 45 Mark 90\n(Perface Score)");
-			/*report.setMtrStatus("Lie Score:\n "+missTestResult.getLieScore());
-			report.setMtrResultCode("Line Score");
-			 MissTestResult report2=new MissTestResult(); 
-				report2.setMeId(Long.valueOf(missTestResult.getTotalScore()));*/
-			/*try{
-				originalImage=ImageIO.read(new File("/root/Desktop/lum.jpg"));
-			 
-				baos= new ByteArrayOutputStream();
-				ImageIO.write( originalImage, "jpg", baos );
-				baos.flush();
-				imageInByte = baos.toByteArray();
-				baos.close(); 
-				}catch(IOException e){
-					e.printStackTrace();
-				} 
-			encodedImgStr = org.apache.commons.codec.binary.StringUtils.newStringIso8859_1(org.apache.commons.codec.binary.Base64
-					.encodeBase64(imageInByte));
-			report2.setServiceName(encodedImgStr);*/
-			//report2.setMtrStatus("Honest Score:\n 85 Mark 108\n(Definietly Want)");
-			/*report2.setMtrStatus("Honest Score:\n "+missTestResult.getTotalScore());
-			report2.setMtrResultCode("Honest Score");*/
-			
-		
-		//	logger.debug("encodedImgStr============>"+encodedImgStr);
-		/*	List<MissTestResult> newList=new ArrayList<MissTestResult>();
-			newList.add(report);
-			newList.add(report2);*/
-		// JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(newList); 
-		 
-		 //MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
-		 MissReportAttach missReportAttach=missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
-		
-		 //MissSeriesAttachSearch("template", msId, null, null);
-		 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
-		// String  reportPath=  bundle.getString("reportTemplatePath")+missSeriesAttach.getMsatPath();
-		 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
-		 JasperPrint jasperPrint=null;
-		 Map p =new HashMap();
-		 //System.out.println("missTestResult.getMissTestShows()->"+missTestResult.getMissTestShows());
-		 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
-		 if(missTestShows!=null && missTestShows.size()>0){
-			 for (MissTestShow missTestShow : missTestShows) {
-				p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
-				//System.out.println("mmissTestShow.getMtsColumn()->"+missTestShow.getMtsColumn()+",missTestShow.getValue->"+missTestShow.getMtsValue());
-			}
-		 }
-		/* p.put("SubDataSource", beanCollectionDataSource);
-		 p.put("name",missTestResult.getMissCandidate().getMcaFirstName()+" "+missTestResult.getMissCandidate().getMcaLastName());
-		 p.put("position",missTestResult.getMissCandidate().getMcaPosition());
-		 String testDate="";
-		 
-		 p.put("tel",missTestResult.getMissCandidate().getMcaPhone());
-		
-		 if(missTestResult.getMtrTestDate() != null )
-			testDate=format2.format(missTestResult.getMtrTestDate());
-		 p.put("testDate",testDate);
-		 */
-		  // set Lie Score , Honest Score
-		// missExamService.findMissTestById(long1)SeriesAttachSearch
-		/* p.put("lieScore", missTestResult.getLieScore());
-		 p.put("honestScore", missTestResult.getTotalScore());*/
-		 p.put("mtrId",mtrId+"");
-		 //p.put("lieScore", missTestResult.get)
-	 
-		 /*DefaultPieDataset dataset = new DefaultPieDataset();
-			dataset.setValue("Java", new Double(43.2));
-			dataset.setValue("Visual Basic", new Double(10.0));
-			dataset.setValue("C/C++", new Double(17.5));
-			dataset.setValue("PHP", new Double(32.5));
-			dataset.setValue("Perl", new Double(1.0));
-
-			JFreeChart chart = 
-				ChartFactory.createPieChart3D(
-					"Pie Chart 3D Demo 1",
-					dataset,
-					true,
-					true,
-					false
-					);
- 
-			PiePlot3D plot = (PiePlot3D) chart.getPlot();
-			plot.setStartAngle(290);
-			plot.setDirection(Rotation.CLOCKWISE);
-			plot.setForegroundAlpha(0.5f);
-			plot.setNoDataMessage("No data to display");
-			
-			 
-			 p.put("Chart", new JCommonDrawableRenderer(chart));*/
-			//p.put("Chart",new JFreeChartRenderer(chart));
-		 
-			try {
-				ctx = new InitialContext();
-			} catch (NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  
-			DataSource ds = null;
-			try { 
-				ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
-				//ds = (DataSource)ctx.lookup("jdbc/localOracle");
-			} catch (NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}               
-			 basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
-			//com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs = (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
-			
-		
-			try {
-				con = basicDs.getConnection();//("oracle", "password");//Connection();
-				//con = ds.getConnection();//("oracle", "password");//Connection();
+				}
+			//	  ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+				// convert
+				DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
+				converter.convert(new File(inputFile), new File(outputFile));
 				 
-			} catch (SQLException e) {
+				// close the connection
+				connection.disconnect();
+				
+			 Document document = new Document();
+
+			   /*PdfWriter writer = PdfWriter.getInstance(document,
+			        new FileOutputStream(OUTPUTFILE));*/
+			 String filename="report";
+				if(missReportAttach.getMraReportName()!=null && missReportAttach.getMraReportName().trim().length()>0)
+					filename=missReportAttach.getMraReportName().trim();
+				if(filename.length()>0){
+					String userAgent = request.getHeader("user-agent");
+					boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
+					// filename="ทดสอบ โอ๋.xls";
+					//System.out.println(fileName);
+					byte[] fileNameBytes=null;
+					try {
+						fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+					} catch (UnsupportedEncodingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					 
+				    String dispositionFileName = ""; 
+				    for (byte b: fileNameBytes) dispositionFileName += (char)(b & 0xff);
+
+					 String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+					 response.setHeader("Content-disposition", disposition);
+					 System.out.println("file name->"+filename);
+					//response.addHeader("Content-Disposition",content_disposition);
+				}
+				 ServletOutputStream servletOutputStream=null;
+					try {
+						servletOutputStream = response.getOutputStream();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}  
+					//System.out.println("servletOutputStream before->"+servletOutputStream);
+			 PdfWriter writer=null;
+			try {
+				writer = PdfWriter.getInstance(document,
+						servletOutputStream);
+			} catch (DocumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}           
+			}
+			    document.open();
+			    PdfReader reader=null;
+				try {
+					reader = new PdfReader(outputFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    
+			    int n = reader.getNumberOfPages();
+			    System.out.println("x->"+n);
+			    PdfImportedPage page;
+			   // int start=187; //1
+			    //int start=180; //2
+			   // int start=180; //3
+			    int start=202;
+			    if(msOrder.intValue()==1)
+			       start=209; //3
+			    //int end=174;
+			    // Go through all pages 
+			    PdfContentByte cb = writer.getDirectContent(); // Holds the PDF data
+			    // Go through all pages
+			   // for (int i = 1; i <= n; i++) {
+			    for (int i = start; i <= n; i++) { 
+			    	document.newPage();
+			        page = writer.getImportedPage(reader, i);
+			        cb.addTemplate(page, 0, 0); 
+			    } 
+			    document.close();
+			   // System.out.println("servletOutputStream affter->"+servletOutputStream);
+			    try {
+					servletOutputStream.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			       try {
+					servletOutputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}else{
+			try{ 
+				 //MissSeriesAttachSearch("template", msId, null, null);
+				 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+				// String  reportPath=  bundle.getString("reportTemplatePath")+missSeriesAttach.getMsatPath();
+				 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
+				 JasperPrint jasperPrint=null;
+				 Map p =new HashMap();
+				 //System.out.println("missTestResult.getMissTestShows()->"+missTestResult.getMissTestShows());
+				 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
+				 if(missTestShows!=null && missTestShows.size()>0){
+					 for (MissTestShow missTestShow : missTestShows) {
+						p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
+						//System.out.println("mmissTestShow.getMtsColumn()->"+missTestShow.getMtsColumn()+",missTestShow.getValue->"+missTestShow.getMtsValue());
+					}
+				 }
 			 
-		try {
-			//jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(),new JREmptyDataSource());
-			//String defaultPDFFont = "Arial";
+				 p.put("mtrId",mtrId+"");
+				 
+					try {
+						ctx = new InitialContext();
+					} catch (NamingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}  
+					DataSource ds = null;
+					try { 
+						ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/missdb");
+						//ds = (DataSource)ctx.lookup("jdbc/localOracle");
+					} catch (NamingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}               
+					 basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource)ds;
+					//com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs = (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
+					
+				
+					try {
+						con = basicDs.getConnection();//("oracle", "password");//Connection();
+						//con = ds.getConnection();//("oracle", "password");//Connection();
+						
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}           
+					 
+				try { 
+					
+					//jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
+					jasperPrint = JasperFillManager.fillReport(reportPath, p, con);
+//					 asperPrint.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+//					jasperPrint.setProperty("net.sf.jasperreports.default.font.name", defaultPDFFont);
+					 
+				} catch (JRException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				String filename="report";
+				if(missReportAttach.getMraReportName()!=null && missReportAttach.getMraReportName().trim().length()>0)
+					filename=missReportAttach.getMraReportName().trim();
+				if(filename.length()>0){
+					String userAgent = request.getHeader("user-agent");
+					boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
+					// filename="ทดสอบ โอ๋.xls";
+					//System.out.println(fileName);
+					byte[] fileNameBytes=null;
+					try {
+						fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+					} catch (UnsupportedEncodingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					 
+				    String dispositionFileName = ""; 
+				    for (byte b: fileNameBytes) dispositionFileName += (char)(b & 0xff);
 
-			
-			
-			//jasperPrint = JasperFillManager.fillReport(reportPath, p,new JREmptyDataSource());
-			jasperPrint = JasperFillManager.fillReport(reportPath, p, con);
-			/*jasperPrint.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
-			jasperPrint.setProperty("net.sf.jasperreports.default.font.name", defaultPDFFont);*/
-			 
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+					 String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+					 response.setHeader("Content-disposition", disposition);
+					//response.addHeader("Content-Disposition",content_disposition);
+				}
+			   //  String fileName="เทส.pdf";
+				 //response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
+				/* response.setHeader("Content-Disposition", "inline; filename="
+							+ fileName);*/
+			       ServletOutputStream servletOutputStream=null;
+				try {
+					servletOutputStream = response.getOutputStream();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+			       try {
+					JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+				} catch (JRException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+			      // FacesContext.getCurrentInstance().responseComplete(); 
+			       try {
+					servletOutputStream.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			       try {
+					servletOutputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			       
+		    	}catch (Exception e) {
+					// TODO: handle exception
+		    		e.printStackTrace();
+				}finally{
+					 //aoe add
+					 if (basicDs != null) {
+						try {
+							if(!basicDs.isClosed())
+								basicDs.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}					
+					} 
+					 // end aoe add
+					if (con != null) {
+						try {
+							if(!con.isClosed());
+								con.close();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}					
+					}
+					if (ctx != null) {
+						try {
+							ctx.close();
+						} catch (NamingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}					
+					}	
+				}
 		} 
-		String filename="report";
-		if(missReportAttach.getMraReportName()!=null && missReportAttach.getMraReportName().trim().length()>0)
-			filename=missReportAttach.getMraReportName().trim();
-		if(filename.length()>0){
-			String userAgent = request.getHeader("user-agent");
-			boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
-			// filename="ทดสอบ โอ๋.xls";
-			//System.out.println(fileName);
-			byte[] fileNameBytes=null;
-			try {
-				fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			 
-		    String dispositionFileName = ""; 
-		    for (byte b: fileNameBytes) dispositionFileName += (char)(b & 0xff);
-
-			 String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
-			 response.setHeader("Content-disposition", disposition);
-			//response.addHeader("Content-Disposition",content_disposition);
-		}
-	   //  String fileName="เทส.pdf";
-		 //response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
-		/* response.setHeader("Content-Disposition", "inline; filename="
-					+ fileName);*/
-	       ServletOutputStream servletOutputStream=null;
-		try {
-			servletOutputStream = response.getOutputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-	       try {
-			JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-	      // FacesContext.getCurrentInstance().responseComplete(); 
-	       try {
-			servletOutputStream.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	       try {
-			servletOutputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	       
-    	}catch (Exception e) {
-			// TODO: handle exception
-    		e.printStackTrace();
-		}finally{
-			 
-			/*if (basicDs != null) {
-				try {
-					if(!basicDs.isClosed())
-						basicDs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}					
-			}*/
-			if (con != null) {
-				try {
-					if(!con.isClosed());
-						con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}					
-			}
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}					
-			}	
-		}
 	   
     }
     @SuppressWarnings({ "deprecation", "unchecked" })
