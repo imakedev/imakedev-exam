@@ -34,8 +34,11 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	private String mtrRespondedStatus;
 
 	private Date mtrTestDate;
-	private String mtrHideStatus;
+	private String mtrHideStatus; 
 	
+	private String mtrAge;
+	private String mtrVersion;
+	 
 	//EXT
 	private String msatPath;
 	private int lieScore;
@@ -270,6 +273,22 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 
 	public void setMtrHideStatus(String mtrHideStatus) {
 		this.mtrHideStatus = mtrHideStatus;
+	}
+
+	public String getMtrAge() {
+		return mtrAge;
+	}
+
+	public void setMtrAge(String mtrAge) {
+		this.mtrAge = mtrAge;
+	}
+
+	public String getMtrVersion() {
+		return mtrVersion;
+	}
+
+	public void setMtrVersion(String mtrVersion) {
+		this.mtrVersion = mtrVersion;
 	}
 
 	 

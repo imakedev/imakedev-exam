@@ -24,6 +24,7 @@ public class MissSery extends VServiceXML implements Serializable {
 	private Long msUnitCost;
 	
 	private Long msType;
+	private String msExporting;
 	//ext
 	private String[] meIds;
 	private String testStr;
@@ -212,6 +213,14 @@ public class MissSery extends VServiceXML implements Serializable {
 
 	public void setMsType(Long msType) {
 		this.msType = msType;
+	}
+
+	public String getMsExporting() {
+		return msExporting;
+	}
+
+	public void setMsExporting(String msExporting) {
+		this.msExporting = msExporting;
 	}
 
 	/*public Set<MissAccountSeriesMap> getMissAccountSeriesMaps() {
