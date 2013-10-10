@@ -5,11 +5,20 @@
 
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -19,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -36,10 +47,17 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -71,8 +89,11 @@ import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
@@ -506,17 +527,309 @@ public class ResultController
 		Connection con = null;
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
 		MissSery missSery= missExamService.findMissSeryById(msId);
+		 
 		String msExporting=missSery.getMsExporting();
 		 System.out.println("msExporting->"+msExporting);
 		 System.out.println("msOrder->"+msOrder);
+		 System.out.println("msId->"+msId);
+		 System.out.println("meId->"+meId);
 		MissReportAttach missReportAttach=missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
+		MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+		missTestResult.setMeId(meId);
+		missTestResult.setMsId(msId);
+		missTestResult.setUserid(missTestResult.getMissCandidate().getMcaUsername());
+		System.out.println("missTestResult.getUserid()->"+missTestResult.getUserid());
+		System.out.println("missTestResult.getMeId()->"+missTestResult.getMeId());
+		System.out.println("missTestResult.getMsId()->"+missTestResult.getMsId());
+		 System.out.println("missTestResult.getMissCandidate().getMcaUsername()->"+missTestResult.getMissCandidate().getMcaUsername());
 		if(msExporting!=null && msExporting.equals("1")){
+			/* MissTestResult missTestResult = new MissTestResult();
+			 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
+			 missTestResult.setMsId((missExamForm.getMissCandidate().getMissSery().getMsId()));
+			 */
+			/* missTestResult.setUserid(SecurityContextHolder.getContext().getAuthentication().getName());
+			 java.sql.Timestamp timeStampEndTime = new java.sql.Timestamp(new Date().getTime());
+			 missTestResult.setMtrEndTime(timeStampEndTime);
+			 missTestResult.setMtrStatus("1"); // 0=start test,1=test finish,2 =send response
+			 missTestResult.setMtrRespondedStatus("0");
+			 missTestResult.setRootPath(bundle.getString("evaluationPath"));*/
+			 missTestResult.setMsOrder(msOrder);
+			 missTestResult.setMraLang(mraLang); 
+			 int status=missExamService.processMissTestResult(missTestResult);
+			 //System.out.println("status->"+status);
 			 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 			 String[] extensions = reportPath.split("\\.");
 			 String inputFile = extensions[0] + "_" + msId.intValue() + "_"
 				+ mcaId.intValue() + "." + extensions[1];
+			 String inputFile2 = extensions[0] + "_" + msId.intValue() + "_"
+						+ mcaId.intValue() + "_out." + extensions[1];
 			 String outputFile = extensions[0] + "_" + msId.intValue() + "_"
 						+ mcaId.intValue() + ".pdf";
+			 System.out.println("missTestResult.getMissCandidate().getMcaPicturePath()->"+missTestResult.getMissCandidate().getMcaPicturePath());
+		     String picture_path="/opt/images.jpeg";
+		     if(missTestResult.getMissCandidate()!=null && missTestResult.getMissCandidate().getMcaPicturePath()!=null 
+		    		 && missTestResult.getMissCandidate().getMcaPicturePath().length()>0)
+		    	 picture_path="/opt/attach/candidateImg/"+missTestResult.getMissCandidate().getMcaPicturePath();
+			 // profile Picture
+			 InputStream is=null;
+			Map<String, byte[]> boxMap = new HashMap<String, byte[]>();
+			try {
+				is = new FileInputStream(new File(picture_path));
+			} catch (FileNotFoundException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			// read image into memory
+				ByteArrayOutputStream img_bytes = new ByteArrayOutputStream();
+				int img_b;
+				try {
+					while ((img_b = is.read()) != -1)
+						img_bytes.write(img_b);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
+					is.close();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+
+				byte[] img = img_bytes.toByteArray();
+
+				Pattern pattern = Pattern.compile("([\\w\\!\\w]+)");
+				// [4!B77][4!I417][4!B517]
+
+				Pattern pattern_expand = Pattern.compile("([\\w\\|\\w]+)");
+				//ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+				FileInputStream fin=null;
+				try {
+					fin = new FileInputStream(new File(inputFile));
+				} catch (FileNotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				//HSSFWorkbook wb = new HSSFWorkbook(inputFileUpload.getInputStream());
+				HSSFWorkbook wb=null;
+				try {
+					wb = new HSSFWorkbook(fin);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
+					fin.close();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				/*
+				 * HSSFSheet sheet = wb.getSheetAt(0); sheet.getRow(1);
+				 */
+				Sheet sheet_view = wb.getSheetAt(1); // get View Config
+				 Row row_code = sheet_view.getRow(1);
+				Cell cell_code = null;
+				String view ="";
+				String export_pages ="";
+				String landscape_pages ="";
+				String mode ="";
+				String view_data_ref ="";
+				if (row_code != null) {
+					cell_code = row_code.getCell(0);
+					view = cell_code.getStringCellValue();
+					cell_code = row_code.getCell(1);
+					view_data_ref = cell_code.getStringCellValue(); 
+				}
+				  
+				StringBuffer query = new StringBuffer("SELECT * FROM MISS_CONSULT_EXAM."+view+"  where mtr_id="+mtrId);
+				ResultSet result = null;
+				PreparedStatement pst1 = null;
+				//Connection con = createPoolConnection();
+				 con = createPoolConnection();
+				try {
+					pst1 = con.prepareStatement(query.toString());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					result = pst1.executeQuery();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String[] view_data_ref_split = view_data_ref.split(":");
+				CellReference view_data_cr_start = new CellReference(view_data_ref_split[0]);
+				CellReference view_data_cr_end = new CellReference(view_data_ref_split[1]);
+				
+				if (result != null)
+					try {
+						while (result.next()) {
+							for (int i = view_data_cr_start.getRow(); i <= view_data_cr_end.getRow(); i++) {
+								row_code = sheet_view.getRow(i);
+								cell_code = row_code.getCell(0);
+								String value=result.getString(cell_code.getStringCellValue());
+								cell_code = row_code.getCell(1);
+								String[] view_datacolumns = cell_code.getStringCellValue().split("!"); // 2!A2:A2
+								Sheet sheet_inner = wb.getSheetAt(Integer.parseInt(view_datacolumns[0])); // get sheet
+								CellReference cr_start = new CellReference(view_datacolumns[1]); 
+								sheet_inner.getRow(cr_start.getRow()).getCell(cr_start.getCol()).setCellValue(value);
+								//row_code.getCell(cr_start.getCol()).setCellValue(value);
+							}
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}finally {				
+						try { 
+							if(result!=null){
+								result.close();
+								result = null;
+							}
+							if (pst1 != null) {						 
+								pst1.close();			
+								pst1 = null;
+							}
+							if(con!=null){ 
+								if(!con.isClosed())
+										con.close();
+								con = null;
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							//e.printStackTrace();
+						}
+					} 	
+				Sheet sheet1 = wb.getSheetAt(0); // getImage Config
+				row_code = sheet1.getRow(1);
+				//if(false)
+				if (row_code != null) {
+					cell_code = row_code.getCell(4);
+					export_pages = cell_code.getStringCellValue();
+					
+					cell_code = row_code.getCell(5);
+					if(cell_code!=null)
+						landscape_pages = cell_code.getStringCellValue();
+					cell_code = row_code.getCell(6);
+					if(cell_code!=null)
+						mode = cell_code.getStringCellValue();
+					cell_code = row_code.getCell(1);
+					String columnReference = cell_code.getStringCellValue();
+					String[] columns = columnReference.split("!"); // 2!A2:A2
+					sheet1 = wb.getSheetAt(Integer.parseInt(columns[0])); // get sheet
+					String[] ref_split = columns[1].split(":");
+					CellReference cr_start = new CellReference(ref_split[0]);
+					CellReference cr_end = new CellReference(ref_split[1]);
+					// row_code = sheet1.getRow(cr_start.getRow());
+					System.out.println(" cr_start.getRow()->" + cr_start.getRow());
+					System.out.println(" cr_end.getRow()->" + cr_end.getRow());
+					for (int i = cr_start.getRow(); i <= cr_end.getRow(); i++) {
+						row_code = sheet1.getRow(i);
+						byte[] img_use = null;
+						// Start [Sheet!Column Row Ref]
+						cell_code = row_code.getCell(0);
+						System.out.println("Start [Sheet!Column Row Ref]->"
+								+ cell_code.getStringCellValue());
+						Matcher m = pattern.matcher(cell_code.getStringCellValue());
+						List<String> values = new ArrayList<String>();
+						while (m.find()) {
+							values.add(m.group());
+						}
+						cell_code = row_code.getCell(2);
+						String module = cell_code.getStringCellValue();
+						//System.out.println("Module->" + module);
+						cell_code = row_code.getCell(3);
+						String endpoint = cell_code.getStringCellValue();
+						//System.out.println("End Point->" + endpoint);
+						if (module.equals("profile_image")) {
+							img_use = img;
+
+						} else if (module.equals("chart"))  {
+							//http://203.150.20.37/MISSProcessImage/process?key=chart1&w=700&h=400&mtrId=266
+							img_use =readChartBytes(endpoint+"&mtrId="+mtrId);
+						}else{ 
+							if (!boxMap.containsKey(module + "_" + endpoint)) {
+								boxMap.put(module + "_" + endpoint, readBytes(module
+										+ "_" + endpoint));
+							}
+							img_use = boxMap.get(module + "_" + endpoint);
+						
+						}
+						// Expand Column|Row
+						cell_code = row_code.getCell(1);
+						System.out.println("Expand Column|Row->"
+								+ cell_code.getStringCellValue());
+
+						Matcher m_expand = pattern_expand.matcher(cell_code
+								.getStringCellValue());
+						List<String> values_expand = new ArrayList<String>();
+						while (m_expand.find()) {
+							values_expand.add(m_expand.group());
+						}
+						//System.out.println("values size->" + values.size());
+						for (int j = 0; j < values.size(); j++) {
+							String string = values.get(j);
+							String string_expand = values_expand.get(j);
+							String[] sheet_image = string.split("!");
+							String[] expand_array = string_expand.split("\\|");
+							HSSFSheet sheet = wb.getSheetAt(Integer
+									.parseInt(sheet_image[0]));
+							CellReference image_cr = new CellReference(sheet_image[1]); 
+							HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0,
+									(short) image_cr.getCol(), image_cr.getRow(),
+									(short) (image_cr.getCol() + Integer
+											.parseInt(expand_array[0])),
+									image_cr.getRow()
+											+ Integer.parseInt(expand_array[1]));
+							// other possible image types are: PICTURE_TYPE_PICT,
+							// PICTURE_TYPE_PNG,
+							// PICTURE_TYPE_WMF, PICTURE_TYPE_DIB, PICTURE_TYPE_EMF
+							int index = wb.addPicture(img_use,
+									HSSFWorkbook.PICTURE_TYPE_JPEG);
+							System.out.println("index==>"+index);
+							HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+							
+							// anchor type: ClientAnchor.MOVE_AND_RESIZE
+							// ClientAnchor.MOVE_DONT_RESIZE
+							// ClientAnchor.DONT_MOVE_AND_RESIZE
+							// anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE);
+							 patriarch.createPicture(anchor, index);
+							 
+							// anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE); 
+						}
+
+						// End Point
+						cell_code = row_code.getCell(2);
+						System.out.println("Module->" + cell_code.getStringCellValue());
+						cell_code = row_code.getCell(3);
+						System.out.println("End Point->"
+								+ cell_code.getStringCellValue());
+					} 
+				}
+				HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
+				
+			//	wb.ge
+				FileOutputStream fos=null;
+				try {
+					fos = new FileOutputStream(inputFile);
+				} catch (FileNotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
+					fos.write(wb.getBytes());
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
+					fos.close();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 			// connect to an OpenOffice.org instance running on port 8100
 				OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
 				try {
@@ -592,21 +905,69 @@ public class ResultController
 			   // int start=187; //1
 			    //int start=180; //2
 			   // int start=180; //3
-			    int start=202;
-			    if(msOrder.intValue()==1)
+			  
+			   String[] pages= export_pages.split("-");
+			   Map landscapeMap=new HashMap();
+					   if(landscape_pages!=null && landscape_pages.trim().length()>0){
+							String[] landscapes=landscape_pages.split(",");
+							if(landscapes!=null && landscapes.length>0){
+								for (int i = 0; i < landscapes.length; i++) {
+									int landscape_page=Integer.valueOf(landscapes[i]);
+									landscapeMap.put(landscape_page, landscape_page);
+									//System.out.println("landscape_page-->"+landscape_page);
+								}
+							}
+						}
+			   int start=Integer.valueOf(pages[0]);
+			   int end=Integer.valueOf(pages[1]);
+			   if(mode!=null && mode.trim().equalsIgnoreCase("TEST")){
+				   start=1;
+				   end=n;
+			   }
+			   System.out.println("start->"+start);
+			   System.out.println("end->"+end);
+			   /* if(msOrder.intValue()==1)
 			       start=209; //3
-			    //int end=174;
+*/			    //int end=174;
 			    // Go through all pages 
 			    PdfContentByte cb = writer.getDirectContent(); // Holds the PDF data
 			    // Go through all pages
 			   // for (int i = 1; i <= n; i++) {
-			    for (int i = start; i <= n; i++) { 
-			    	document.newPage();
+			    /*start=1;
+			    end=n;*/
+			    for (int i = start; i <= end; i++) { 
+			   // System.out.println(" index-->"+i);
+					int pageRotation=reader.getPageRotation(i);
 			        page = writer.getImportedPage(reader, i);
+			        if(landscapeMap.containsKey(i)){
+			        	 Image pageImage=null;
+							try {
+								pageImage = Image.getInstance(page);
+							} catch (BadElementException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} 
+			                 pageImage.setAbsolutePosition(0f,0f); 
+			                 if(pageRotation != 0){ 
+			                         pageImage.setRotationDegrees(-pageRotation);  
+			                 } 
+							// document.setPageSize(reader.getPageSizeWithRotation(i));	
+							 document.setPageSize(PageSize.A4.rotate());
+			        }else 
+				    	document.setPageSize(PageSize.A4);
+			    	document.newPage();
 			        cb.addTemplate(page, 0, 0); 
 			    } 
 			    document.close();
 			   // System.out.println("servletOutputStream affter->"+servletOutputStream);
+			    try {
+					img_bytes.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    reader.close();
+			    writer.close();
 			    try {
 					servletOutputStream.flush();
 				} catch (IOException e) {
@@ -621,8 +982,7 @@ public class ResultController
 				}
 		}else{
 			try{ 
-				 //MissSeriesAttachSearch("template", msId, null, null);
-				 MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
+				 //MissSeriesAttachSearch("template", msId, null, null); 
 				// String  reportPath=  bundle.getString("reportTemplatePath")+missSeriesAttach.getMsatPath();
 				 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 				 JasperPrint jasperPrint=null;
@@ -1092,5 +1452,111 @@ public class ResultController
     private static Logger logger = Logger.getRootLogger();
     @Autowired
     private MissExamService missExamService;
+    private Connection createPoolConnection() {
+		Context ctx = null;
+		Connection con = null;
+		try {
+			ctx = new InitialContext();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DataSource ds = null;
+		try {
+			ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/missdb");
+			// ds = (DataSource)ctx.lookup("jdbc/sabaDS");
+			// System.out.println("chatchai debug ds="+ds);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource) ds;
+		// com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs =
+		// (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
+		// System.out.println("basicDs=>"+basicDs);
 
+		try {
+			con = basicDs.getConnection();// ("oracle",
+											// "password");//Connection();
+			// con = ds.getConnection();//("oracle", "password");//Connection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return con;
+	}
+    private byte[] readBytes(String fileName) {
+		InputStream box1_1 = null;
+		try {
+			box1_1 = new FileInputStream(new File("/opt/" + fileName + ".png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ByteArrayOutputStream img_bytes_box = new ByteArrayOutputStream();
+		int b_box;
+		try {
+			while ((b_box = box1_1.read()) != -1)
+				img_bytes_box.write(b_box);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			box1_1.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] img = img_bytes_box.toByteArray();
+		try {
+			img_bytes_box.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return img;
+	}
+    private byte[] readChartBytes(String url) {
+    	System.out.println("get Chart->"+url);
+    	InputStream is_chart=null;
+		try {
+			URL aURL = new URL(url);
+			try {
+				is_chart =aURL.openStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		 
+		ByteArrayOutputStream img_bytes_box = new ByteArrayOutputStream();
+		int b_box;
+		try {
+			while ((b_box = is_chart.read()) != -1)
+				img_bytes_box.write(b_box);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			is_chart.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] img = img_bytes_box.toByteArray();
+		try {
+			img_bytes_box.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return img;
+	}
 }
