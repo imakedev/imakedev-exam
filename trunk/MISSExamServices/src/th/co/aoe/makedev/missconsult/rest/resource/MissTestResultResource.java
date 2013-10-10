@@ -153,7 +153,7 @@ public class MissTestResultResource extends BaseResource {
 							return returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_PROCESS)){
 							//java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
-							int updateRecord=missTestResultService.processMissTestResult(bpsTerm,xbpsTerm.getUserid(),xbpsTerm.getRootPath());
+							int updateRecord=missTestResultService.processMissTestResult(bpsTerm,xbpsTerm.getUserid(),xbpsTerm.getRootPath(),xbpsTerm.getMsOrder(),xbpsTerm.getMraLang());
 						  return	returnUpdateRecord(entity,xbpsTerm,updateRecord);
 						}	 
 						else if(serviceName.equals(ServiceConstant.MISS_TEST_RESULT_UPDATE_STATUS)){

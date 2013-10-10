@@ -4,6 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +18,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -69,6 +78,7 @@ import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 public class HibernateMissTestResult extends HibernateCommon implements
 		MissTestResultService {
 	private static String schema = "";
+	private static String is_get_profile = "";
 	private static final Logger logger = Logger
 			.getLogger(ServiceConstant.LOG_APPENDER);
 	// private static final SimpleDateFormat format = new
@@ -79,6 +89,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 	static {
 		bundle = ResourceBundle.getBundle("jdbc");
 		schema = bundle.getString("schema");
+		is_get_profile = bundle.getString("is_get_profile");
 	}
 	private SessionFactory sessionAnnotationFactory;
 
@@ -640,13 +651,15 @@ public class HibernateMissTestResult extends HibernateCommon implements
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { RuntimeException.class })
 	@Override
 	public int processMissTestResult(MissTestResult persistentInstance,
-			String userid, String rootPath) throws DataAccessException {
+			String userid, String rootPath,Long msOrder,String mraLang) throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		int returnRecord = 0;
 		try {
+			
 			Long meId = persistentInstance.getMeId();
 			Long msId = persistentInstance.getMsId();
+			
 			session = sessionAnnotationFactory.getCurrentSession();
 			Query query = session
 					.createQuery(" select missCandidate from MissCandidate missCandidate where missCandidate.mcaUsername=:mcaUsername");
@@ -670,7 +683,12 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){ 
 					  query = session
 							.createQuery(" select missReportAttach from MissReportAttach missReportAttach "
-									+ " where missReportAttach.id.msId=:msId order by missReportAttach.id.msOrder , missReportAttach.id.mraLang "  );
+									+ " where missReportAttach.id.msId=:msId " +
+									((msOrder!=null && msOrder.intValue()!=0)?(" and  missReportAttach.id.msOrder="+msOrder):"")+
+									((mraLang!=null && mraLang.trim().length()!=0)?(" and  missReportAttach.id.mraLang="+mraLang.trim()):"")+
+									//" and  missReportAttach.id.msOrder=3 " +
+									//" and  missReportAttach.id.mraLang=0 " +
+									" order by missReportAttach.id.msOrder , missReportAttach.id.mraLang "  );
 									//+ " and missReportAttach.matHotlink=:matHotlink ");
 					query.setParameter("msId", msId);  
 					@SuppressWarnings("rawtypes")
@@ -692,8 +710,12 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							 th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach missReportAttach = 
 									 (th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach) list.get(i);
 							String filePath = "/opt/attach/reportTemplate/" + missReportAttach.getMraPath(); 
+							//System.out.println("filePath->"+filePath);
+							System.out.println("getMraFileName->"+missReportAttach.getMraFileName());
+							System.out.println("filePath in->"+filePath);
 							String pathOutPut = setAnswerByXLS(session, filePath, msId,
 									meId, mcaId);
+							System.out.println("pathOutPut ->"+pathOutPut);
 							  code = getCodeByXLS(session, pathOutPut, mcaId, msId,i); 
 						}
 						query = session
@@ -1068,6 +1090,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					// cell_question= row.getCell(0);
 					//cell_question = row.getCell(column - 2);
 					//cell_question = row.getCell(column - 1);
+					
 					cell_question = row.getCell(question_column);
 					
 					cell_answer = row.getCell(column);
@@ -1087,9 +1110,100 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				}
 
 			}
-
+			
 			// cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+			//boolean isProfile=true;
+            // set Profile
+			if(is_get_profile.equals("1")){
+			query = session
+					.createQuery(" select missTestResult from MissTestResult missTestResult where missTestResult.missCandidate.mcaId=:mcaId and "
+							+
+							// " missTestResult.meId=:meId
+							"  " + " missTestResult.msId=:msId  ");
+			query.setParameter("mcaId", mcaId);
+			// query.setParameter("meId", missTestResult.getMeId());
+			query.setParameter("msId", msId);
 
+			@SuppressWarnings("rawtypes")
+			List list = query.list();
+			if (list != null && list.size() > 0) {// update
+				MissTestResult testResult = (MissTestResult) list
+						.get(0);
+				Sheet sheet_view = wb.getSheetAt(1); // get View Config
+				 Row row_code = sheet_view.getRow(1);
+				Cell cell_code = null;
+				String view ="";  
+				String view_data_ref ="";
+				if (row_code != null) {
+					cell_code = row_code.getCell(0);
+					view = cell_code.getStringCellValue();
+					cell_code = row_code.getCell(1);
+					view_data_ref = cell_code.getStringCellValue(); 
+				}
+				  StringBuffer query_profile = new StringBuffer("SELECT * FROM MISS_CONSULT_EXAM."+view+"  where mtr_id="+testResult.getMtrId());
+				  ResultSet result_profile = null;
+					PreparedStatement pst1 = null;
+					//Connection con = createPoolConnection();
+					 
+					Connection  con = createPoolConnection();
+					try {
+						pst1 = con.prepareStatement(query_profile.toString());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						result_profile = pst1.executeQuery();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+				  String[] view_data_ref_split = view_data_ref.split(":");
+					CellReference view_data_cr_start = new CellReference(view_data_ref_split[0]);
+					CellReference view_data_cr_end = new CellReference(view_data_ref_split[1]);
+					
+					if (result_profile != null)
+						try {
+							 while (result_profile.next()) { 
+								for (int i = view_data_cr_start.getRow(); i <= view_data_cr_end.getRow(); i++) {
+									row_code = sheet_view.getRow(i);
+									cell_code = row_code.getCell(0);
+									String value=result_profile.getString(cell_code.getStringCellValue());
+									cell_code = row_code.getCell(1);
+									String[] view_datacolumns = cell_code.getStringCellValue().split("!"); // 2!A2:A2
+									Sheet sheet_inner = wb.getSheetAt(Integer.parseInt(view_datacolumns[0])); // get sheet
+									CellReference cr_start = new CellReference(view_datacolumns[1]); 
+									sheet_inner.getRow(cr_start.getRow()).getCell(cr_start.getCol()).setCellValue(value);
+									//row_code.getCell(cr_start.getCol()).setCellValue(value);
+								}
+							 }
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}finally {				
+							try { 
+								if(result_profile!=null){
+									result_profile.close();
+									result_profile = null;
+								}
+								if (pst1 != null) {						 
+									pst1.close();			
+									pst1 = null;
+								}
+								if(con!=null){ 
+									if(!con.isClosed())
+											con.close();
+									con = null;
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								//e.printStackTrace();
+							}
+						} 
+					 
+			}
+		}
 			HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
 			// Write the output to a file
 			// outPut=extensions[0]+"_"+msId.intValue()+"_"+meId.intValue()+"_"+mcaId.intValue()+"."+extensions[1];
@@ -1102,7 +1216,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				e.printStackTrace();
 			}
 			try {
-				wb.write(fileOut);
+				wb.write(fileOut); 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1366,9 +1480,30 @@ public class HibernateMissTestResult extends HibernateCommon implements
 									chartData.setMdcType(mdcType);
 									chartDatas.add(chartData);
 								}
+							/*if(mtrId!=null){
+								 query = session 
+											.createQuery("delete MissDataChart missDataChart "
+													+ " where missDataChart.id.mtrId=:mtrId  ");
+													// "and missDataChart.id.mdcKey=:mdcKey and " +
+													//" missDataChart.id.mdcSwfName=:mdcSwfName ");
+									query.setParameter("mtrId", mtrId);
+							}*/
 							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
 								//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
-								session.saveOrUpdate(missDataChart);
+								query = session 
+										.createQuery("delete MissDataChart missDataChart "
+												+ " where missDataChart.id.mtrId=:mtrId  "+
+												 "and missDataChart.id.mdcKey=:mdcKey " );
+												//" missDataChart.id.mdcSwfName=:mdcSwfName ");
+								query.setParameter("mtrId", mtrId);
+								query.setParameter("mdcKey", missDataChart.getId().getMdcKey());
+									/*System.out.println("getMtrId->"+missDataChart.getId().getMtrId());
+									System.out.println("getMdcKey->"+missDataChart.getId().getMdcKey());
+									System.out.println("getMdcSwfName->"+missDataChart.getId().getMdcSwfName());
+									System.out.println("getMdcData->"+missDataChart.getMdcData());*/
+									query.executeUpdate();
+								session.save(missDataChart);
+								//session.saveOrUpdate(missDataChart);
 							}
 						}
 					}
@@ -1420,6 +1555,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			Sheet sheet1 = wb.getSheetAt(0); // getConfig
 			Row row_code = sheet1.getRow(1);
 			Cell cell_code = null;
@@ -1584,15 +1720,18 @@ public class HibernateMissTestResult extends HibernateCommon implements
 				
 			}else{*/
 				// set Data Chart
-				/*Sheet sheet0_Data = wb.getSheetAt(0);
+				Sheet sheet0_Data = wb.getSheetAt(0);
 				Row row_code_Data = sheet0_Data.getRow(1);
 				if (row_code_Data != null) {
-					Cell cell_code_Data = row_code_Data.getCell(1);
+					Cell cell_code_Data = row_code_Data.getCell(2);
+					//Cell cell_code_Data = row_code_Data.getCell(0);
 					if (cell_code_Data != null) {
 						String columnReference = cell_code_Data
 								.getStringCellValue();
+						//System.out.println("columnReference-->"+columnReference);
 						if (columnReference != null && columnReference.length() > 0) {
 							String[] sheets = columnReference.split("!");
+							if(sheets!=null && sheets.length>1){
 							String[] columns = sheets[1].split(":");
 							// HSSFSheet sheet =
 							// wb.getSheetAt(Integer.parseInt(sheets[0]));
@@ -1605,7 +1744,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							Sheet sheet1_Data = wb.getSheetAt(Integer
 									.parseInt(sheets[0]));
 							List<MissDataChart> chartDatas = new ArrayList<MissDataChart>();
-							 
+							//HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
 							Row row = null;//
 							Cell cell = null;
 							if (mtrId != null)
@@ -1621,11 +1760,11 @@ public class HibernateMissTestResult extends HibernateCommon implements
 									MissDataChart chartData = new MissDataChart();
 									chartData.setMdcData(chartDataStr);
 									// chartData.setMdcType();
-
+									
 									MissDataChartPK chartDataPK = new MissDataChartPK();
 									chartDataPK.setMdcKey(key);
 									chartDataPK.setMtrId(mtrId);
-									// Long mcaId,Long msId){
+									// Long mcaIdiLong msId){
 									chartDataPK.setMdcSwfName(chartType + ".swf");
 									if(chartType.equalsIgnoreCase("Radar"))
 										mdcType="PowerCharts" ;
@@ -1636,13 +1775,31 @@ public class HibernateMissTestResult extends HibernateCommon implements
 									chartData.setMdcType(mdcType);
 									chartDatas.add(chartData);
 								}
-							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) {
-								//System.out.println(" into save MissDataChart->"+missDataChart.getMdcData());
-								session.saveOrUpdate(missDataChart);
+							//System.out.println("fileName->"+filename);
+							/*if(mtrId!=null){
+								 query = session 
+											.createQuery("delete MissDataChart missDataChart "
+													+ " where missDataChart.id.mtrId=:mtrId  ");
+													// " missDataChart.id.mdcKey=:mdcKey and " +
+													//" missDataChart.id.mdcSwfName=:mdcSwfName ");
+									query.setParameter("mtrId", mtrId);
+							}*/
+							
+							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) { 
+									query.executeUpdate();
+									 query = session 
+												.createQuery("delete MissDataChart missDataChart "
+														+ " where missDataChart.id.mtrId=:mtrId  "+
+														 " missDataChart.id.mdcKey=:mdcKey" );
+														//" missDataChart.id.mdcSwfName=:mdcSwfName ");
+										query.setParameter("mtrId", mtrId);
+										query.setParameter("mdcKey", missDataChart.getId().getMdcKey());
+								session.save(missDataChart);
 							}
 						}
+					  }
 					}
-				}*/
+				}
 		 
 
 		} finally {
@@ -2537,4 +2694,38 @@ public class HibernateMissTestResult extends HibernateCommon implements
 		  
 		return updateRecord;
 	}
+	 private Connection createPoolConnection() {
+			Context ctx = null;
+			Connection con = null;
+			try {
+				ctx = new InitialContext();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataSource ds = null;
+			try {
+				ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/missdb");
+				// ds = (DataSource)ctx.lookup("jdbc/sabaDS");
+				// System.out.println("chatchai debug ds="+ds);
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource) ds;
+			// com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs =
+			// (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
+			// System.out.println("basicDs=>"+basicDs);
+
+			try {
+				con = basicDs.getConnection();// ("oracle",
+												// "password");//Connection();
+				// con = ds.getConnection();//("oracle", "password");//Connection();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return con;
+		}
 }
