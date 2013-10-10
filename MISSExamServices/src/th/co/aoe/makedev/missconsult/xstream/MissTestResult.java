@@ -49,8 +49,26 @@ public class MissTestResult  extends VServiceXML implements Serializable {
 	
 	private boolean showAll; //true =show all
 	
+	private Long msOrder;
+	private String mraLang; 
 
 	
+	public Long getMsOrder() {
+		return msOrder;
+	}
+
+	public void setMsOrder(Long msOrder) {
+		this.msOrder = msOrder;
+	}
+
+	public String getMraLang() {
+		return mraLang;
+	}
+
+	public void setMraLang(String mraLang) {
+		this.mraLang = mraLang;
+	}
+
 	public boolean isShowAll() {
 		return showAll;
 	}
