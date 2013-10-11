@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -198,6 +199,11 @@ public class HibernateMissSeriesAttach  extends HibernateCommon implements MissS
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){
 			missSeriesAttach=(MissSeriesAttach)list.get(0);
+			if(missSeriesAttach.getMsatPath()!=null && missSeriesAttach.getMsatPath().length()>0){
+				 File file_delete=new File("/opt/attach/template/"+missSeriesAttach.getMsatPath().trim());
+				 if(file_delete.exists())
+					 file_delete.delete(); 
+			} 
 			 missSeriesAttach.setMsatFileName(transientInstance.getMsatFileName());
 			 missSeriesAttach.setMsatHotlink(transientInstance.getMsatHotlink());
 			 missSeriesAttach.setMsatPath(transientInstance.getMsatPath());

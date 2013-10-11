@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -603,7 +604,19 @@ int result = query.executeUpdate();*/
 		// TODO Auto-generated method stub
 		java.sql.Timestamp timeStampStartDate = new java.sql.Timestamp(new Date().getTime());
 		Session session = sessionAnnotationFactory.getCurrentSession();
-		Query query=null;
+		Query  query = session
+		.createQuery(" select missCandidate from MissCandidate missCandidate "+
+				" where missCandidate.mcaId ="+transientInstance.getMcaId()); 
+		List list = query.list();
+		if (list.size() > 0) { 
+			MissCandidate missCandidate = (MissCandidate) list.get(0);
+			if(missCandidate.getMcaPicturePath()!=null && missCandidate.getMcaPicturePath().length()>0){
+				 File file_delete=new File("/opt/attach/candidateImg/"+missCandidate.getMcaPicturePath().trim());
+				 if(file_delete.exists())
+					 file_delete.delete(); 
+			} 
+		}
+
 			query=session.createQuery("update MissCandidate missCandidate " +
 					" set missCandidate.mcaPictureHotlink =:mcaPictureHotlink," +
 					" missCandidate.mcaPictureFileName =:mcaPictureFileName ," +

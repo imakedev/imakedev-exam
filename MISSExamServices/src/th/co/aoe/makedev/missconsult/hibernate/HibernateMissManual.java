@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,7 +201,12 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		List list=query.list();
 		logger.debug(" attach size="+list.size());
 		if(list.size()>0){
-			 missManual=(MissManual)list.get(0);
+			 missManual=(MissManual)list.get(0); 
+				if(missManual.getMmPath()!=null && missManual.getMmPath().length()>0){
+					 File file_delete=new File("/opt/attach/attachManual/"+missManual.getMmPath().trim());
+					 if(file_delete.exists())
+						 file_delete.delete(); 
+				} 
 			 missManual.setMmFileName(transientInstance.getMmFileName());
 			 missManual.setMmHotlink(transientInstance.getMmHotlink());
 			 missManual.setMmPath(transientInstance.getMmPath());
