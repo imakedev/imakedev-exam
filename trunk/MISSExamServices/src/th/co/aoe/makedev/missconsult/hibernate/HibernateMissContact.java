@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissCandidate;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissContact;
 import th.co.aoe.makedev.missconsult.hibernate.bean.UserContact;
 import th.co.aoe.makedev.missconsult.managers.MissContactService;
@@ -176,7 +178,19 @@ public class HibernateMissContact extends HibernateCommon implements MissContact
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
-		Query query=null;
+		Query  query = session
+				.createQuery(" select missContact from MissContact missContact "+
+						" where missContact.mcontactId ="+transientInstance.getMcontactId());
+				List list = query.list();
+				if (list.size() > 0) { 
+					MissContact missContact = (MissContact) list.get(0);
+					if(missContact.getMcontactPicturePath()!=null && missContact.getMcontactPicturePath().length()>0){
+						 File file_delete=new File("/opt/attach/contactImg/"+missContact.getMcontactPicturePath().trim());
+						 if(file_delete.exists())
+							 file_delete.delete(); 
+					} 
+				}
+		
 			query=session.createQuery("update MissContact missContact " +
 					" set missContact.mcontactPicturePath =:mcontactPicturePath," +
 					" missContact.mcontactPictureFileName =:mcontactPictureFileName ," +

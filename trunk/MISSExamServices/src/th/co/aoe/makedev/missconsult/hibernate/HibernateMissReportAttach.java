@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,8 +134,14 @@ public class HibernateMissReportAttach extends HibernateCommon implements
 		// System.out.println(" mraHotlink="+
 		// transientInstance.getMraHotlink());
 		// System.out.println(" attach size="+list.size());
-		if (list.size() > 0) {
+		if (list.size() > 0) { 
 			missReportAttach = (MissReportAttach) list.get(0);
+			if(missReportAttach.getMraPath()!=null && missReportAttach.getMraPath().length()>0){
+				 File file_delete=new File("/opt/attach/reportTemplate/"+missReportAttach.getMraPath().trim());
+				 if(file_delete.exists())
+					 file_delete.delete(); 
+			}
+			
 			missReportAttach.setMraFileName(transientInstance.getMraFileName());
 			missReportAttach.setMraHotlink(transientInstance.getMraHotlink());
 			missReportAttach.setMraPath(transientInstance.getMraPath());

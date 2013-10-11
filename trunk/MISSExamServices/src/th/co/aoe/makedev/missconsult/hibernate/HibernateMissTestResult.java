@@ -681,7 +681,8 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					missSery=(MissSery)missSeryObj;
 				
 				if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){ 
-					  query = session
+					if(msOrder!=null && msOrder.intValue()!=0){
+					query = session
 							.createQuery(" select missReportAttach from MissReportAttach missReportAttach "
 									+ " where missReportAttach.id.msId=:msId " +
 									((msOrder!=null && msOrder.intValue()!=0)?(" and  missReportAttach.id.msOrder="+msOrder):"")+
@@ -734,6 +735,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						query.setParameter("msId", msId);
 						query.setParameter("mtrResultCode", code);
 						returnRecord = query.executeUpdate();
+					 } 
 					} 
 				}else{
 					query = session

@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -550,7 +551,18 @@ int result = query.executeUpdate();*/
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		Session session = sessionAnnotationFactory.getCurrentSession();
-		Query query=null;
+		Query  query = session
+				.createQuery(" select missAccount from MissAccount missAccount "+
+						" where missAccount.maId ="+transientInstance.getMaId());
+				List list = query.list();
+				if (list.size() > 0) { 
+					MissAccount missAccount = (MissAccount) list.get(0);
+					if(missAccount.getMaCustomizeLogoPath()!=null && missAccount.getMaCustomizeLogoPath().length()>0){
+						 File file_delete=new File("/opt/attach/mcLogo/"+missAccount.getMaCustomizeLogoPath().trim());
+						 if(file_delete.exists())
+							 file_delete.delete(); 
+					} 
+				} 
 			query=session.createQuery("update MissAccount missAccount " +
 					" set missAccount.maCustomizeLogoPath =:maCustomizeLogoPath," +
 					" missAccount.maCustomizeLogoFileName =:maCustomizeLogoFileName ," +
