@@ -200,7 +200,17 @@ public class UploadController {
 					 missSeriesAttach.setMsatFileName(s);
 					 missSeriesAttach.setRootPath(bundle.getString(module+"Path"));
 					 missExamService.updateMissSeriesAttach(missSeriesAttach);
-				}
+				}else if(module.equals("doc")){
+					//	String[] ids=id.split("_");
+					MissDoc missDoc=new MissDoc();
+					missDoc.setMdDocName(s);
+					missDoc.setMdDocHotlink(hotLink);
+					missDoc.setMdDocPath(pathFolder);
+					missDoc.setMdDocFileName(s);
+					missExamService.saveMissDoc(missDoc);
+						//MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(ids[0]),Long.parseLong(ids[1]),hotlink);
+						
+					}
 		}
        // return missCandidate;
 		missFile.setHotlink(hotLink);
@@ -367,6 +377,15 @@ public class UploadController {
 			         }
 				 }
 			    }
+    }
+    @RequestMapping(value={"/deletefile/doc/{id}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    public  String deletefile(HttpServletRequest request, Model model,@PathVariable String id)
+    {
+    	MissDoc missDoc =new MissDoc();
+    	missDoc.setMdId(Long.valueOf(id));
+    	 missExamService.deleteMissDoc(missDoc); 
+    	 return "";
     }
     private void createDirectoryIfNeeded(String directoryName)
   	 {

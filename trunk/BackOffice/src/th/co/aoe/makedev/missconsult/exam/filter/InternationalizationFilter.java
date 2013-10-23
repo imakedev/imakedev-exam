@@ -21,10 +21,9 @@ public class InternationalizationFilter extends OncePerRequestFilter {
 	    if (newLocale != null) {
 	       /* final Locale locale = StringUtils.parseLocaleString(newLocale
 	                .toLowerCase());
-	    	System.out.println(" locale="+locale.getDisplayLanguage());
 	        LocaleContextHolder.setLocale(locale,true);
-	        
-	        System.out.println(" locale2="+ LocaleContextHolder.getLocale().getDisplayLanguage());*/
+	         
+	        */
 	        
 	        // work --> if in controller
 	       /* LocaleEditor localeEditor = new LocaleEditor();

@@ -282,7 +282,7 @@ public class WelcomeController
     	/*if(request.getParameter("mail_attach")!=null && request.getParameter("mail_attach").equals("1")){
     		String todo_ref=request.getParameter("mail_todo_ref");
     		MissTestResult missTestResult =missExamService.findMissTestResultById(Long.valueOf(todo_ref));
-    		System.out.println("missTestResult->"+missTestResult);
+    		
     		if(missTestResult!=null){
     			
     			fileSize=getFileSize(missTestResult.getMsId(),missTestResult.getMtrId());
