@@ -379,9 +379,7 @@ public class ResultController
     	/*if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")){
     		fileSize=getFileSize(resultForm.getMissTestResult().getMsId(),resultForm.getMissTestResult().getMtrId());
     	}*/
-    	/*System.out.println("resultForm.getMailAttachReport()->"+resultForm.getMailAttachReport());
-    	System.out.println("resultForm.getMsOrder()->"+resultForm.getMsOrder());
-    	System.out.println("resultForm.getMraLang()->"+resultForm.getMraLang());*/
+    	
     	/*if(resultForm.getMailAttachReport()!=null && resultForm.getMailAttachReport().equals("1")
     			&& resultForm.getMsOrder()!=null && resultForm.getMsOrder().length()>0 
     			&& resultForm.getMraLang()!=null && resultForm.getMraLang().length()>0 ){
@@ -389,7 +387,6 @@ public class ResultController
     				resultForm.getMraLang());
     		//  private byte[] getFileSize(Long msId,Long mtrId,Long msOrder,String mraLang){
     	}*/
-    	//System.out.println("fileSize->"+fileSize);
     //	StringBuffer mailMessageBody=new StringBuffer("");
     //	mailMessageBody.append("Test Response");  
     	MailRunnableAttach mailRunnableToTeam = new MailRunnableAttach(missExamService,resultForm.getMissTestResult().getMtrId(),resultForm.getMissTestResult().getMsId(),
@@ -421,7 +418,6 @@ public class ResultController
     	try{
     	 MissReportAttach missReportAttach =missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
 		 //MissSeriesAttach missSeriesAttach=missExamService.findMissSeriesAttachSearch("template", msId, null, null);
-		 System.out.println("missReportAttach->"+missReportAttach);
 		 //String  reportPath=  bundle.getString("templatePath")+missSeriesAttach.getMsatPath();  
     	 String  reportPath=  bundle.getString("reportTemplatePath")+missReportAttach.getMraPath();
 		 JasperPrint jasperPrint=null;
@@ -527,21 +523,21 @@ public class ResultController
 		Connection con = null;
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs =null;
 		MissSery missSery= missExamService.findMissSeryById(msId);
-		 
+		
 		String msExporting=missSery.getMsExporting();
-		 System.out.println("msExporting->"+msExporting);
-		 System.out.println("msOrder->"+msOrder);
-		 System.out.println("msId->"+msId);
-		 System.out.println("meId->"+meId);
+		logger.info("msExporting->"+msExporting);
+		 logger.info("msOrder->"+msOrder);
+		 logger.info("msId->"+msId);
+		 logger.info("meId->"+meId);
 		MissReportAttach missReportAttach=missExamService.findMissReportAttachById(msId, msOrder, mraLang, null);
 		MissTestResult missTestResult=missExamService.findMissTestResultById(mtrId);
 		missTestResult.setMeId(meId);
 		missTestResult.setMsId(msId);
 		missTestResult.setUserid(missTestResult.getMissCandidate().getMcaUsername());
-		System.out.println("missTestResult.getUserid()->"+missTestResult.getUserid());
-		System.out.println("missTestResult.getMeId()->"+missTestResult.getMeId());
-		System.out.println("missTestResult.getMsId()->"+missTestResult.getMsId());
-		 System.out.println("missTestResult.getMissCandidate().getMcaUsername()->"+missTestResult.getMissCandidate().getMcaUsername());
+		 logger.info("missTestResult.getUserid()->"+missTestResult.getUserid());
+		logger.info("missTestResult.getMeId()->"+missTestResult.getMeId());
+		logger.info("missTestResult.getMsId()->"+missTestResult.getMsId());
+		 logger.info("missTestResult.getMissCandidate().getMcaUsername()->"+missTestResult.getMissCandidate().getMcaUsername());
 		if(msExporting!=null && msExporting.equals("1")){
 			/* MissTestResult missTestResult = new MissTestResult();
 			 missTestResult.setMeId(missExamForm.getMissCandidate().getMissSery().getMissExams().get(missExamForm.getExamIndex()).getMeId());
@@ -556,7 +552,7 @@ public class ResultController
 			 missTestResult.setMsOrder(msOrder);
 			 missTestResult.setMraLang(mraLang); 
 			 int status=missExamService.processMissTestResult(missTestResult);
-			 //System.out.println("status->"+status);
+			 //logger.info("status->"+status);
 			 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 			 String[] extensions = reportPath.split("\\.");
 			 String inputFile = extensions[0] + "_" + msId.intValue() + "_"
@@ -565,7 +561,7 @@ public class ResultController
 						+ mcaId.intValue() + "_out." + extensions[1];
 			 String outputFile = extensions[0] + "_" + msId.intValue() + "_"
 						+ mcaId.intValue() + ".pdf";
-			 System.out.println("missTestResult.getMissCandidate().getMcaPicturePath()->"+missTestResult.getMissCandidate().getMcaPicturePath());
+			logger.info("missTestResult.getMissCandidate().getMcaPicturePath()->"+missTestResult.getMissCandidate().getMcaPicturePath());
 		     String picture_path="/opt/images.jpeg";
 		     if(missTestResult.getMissCandidate()!=null && missTestResult.getMissCandidate().getMcaPicturePath()!=null 
 		    		 && missTestResult.getMissCandidate().getMcaPicturePath().length()>0)
@@ -723,15 +719,15 @@ public class ResultController
 					CellReference cr_start = new CellReference(ref_split[0]);
 					CellReference cr_end = new CellReference(ref_split[1]);
 					// row_code = sheet1.getRow(cr_start.getRow());
-					System.out.println(" cr_start.getRow()->" + cr_start.getRow());
-					System.out.println(" cr_end.getRow()->" + cr_end.getRow());
+					logger.info(" cr_start.getRow()->" + cr_start.getRow());
+					logger.info(" cr_end.getRow()->" + cr_end.getRow());
 					for (int i = cr_start.getRow(); i <= cr_end.getRow(); i++) {
 						row_code = sheet1.getRow(i);
 						byte[] img_use = null;
 						// Start [Sheet!Column Row Ref]
 						cell_code = row_code.getCell(0);
-						System.out.println("Start [Sheet!Column Row Ref]->"
-								+ cell_code.getStringCellValue());
+						 logger.info("Start [Sheet!Column Row Ref]->"
+						 		+ cell_code.getStringCellValue());
 						Matcher m = pattern.matcher(cell_code.getStringCellValue());
 						List<String> values = new ArrayList<String>();
 						while (m.find()) {
@@ -739,10 +735,10 @@ public class ResultController
 						}
 						cell_code = row_code.getCell(2);
 						String module = cell_code.getStringCellValue();
-						//System.out.println("Module->" + module);
+						logger.info("Module->" + module);
 						cell_code = row_code.getCell(3);
 						String endpoint = cell_code.getStringCellValue();
-						//System.out.println("End Point->" + endpoint);
+						logger.info("End Point->" + endpoint);
 						if (module.equals("profile_image")) {
 							img_use = img;
 
@@ -759,8 +755,8 @@ public class ResultController
 						}
 						// Expand Column|Row
 						cell_code = row_code.getCell(1);
-						System.out.println("Expand Column|Row->"
-								+ cell_code.getStringCellValue());
+					 logger.info("Expand Column|Row->"
+								+ cell_code.getStringCellValue()); 
 
 						Matcher m_expand = pattern_expand.matcher(cell_code
 								.getStringCellValue());
@@ -768,7 +764,7 @@ public class ResultController
 						while (m_expand.find()) {
 							values_expand.add(m_expand.group());
 						}
-						//System.out.println("values size->" + values.size());
+						logger.info("values size->" + values.size());
 						for (int j = 0; j < values.size(); j++) {
 							String string = values.get(j);
 							String string_expand = values_expand.get(j);
@@ -788,7 +784,7 @@ public class ResultController
 							// PICTURE_TYPE_WMF, PICTURE_TYPE_DIB, PICTURE_TYPE_EMF
 							int index = wb.addPicture(img_use,
 									HSSFWorkbook.PICTURE_TYPE_JPEG);
-							System.out.println("index==>"+index);
+							 
 							HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 							
 							// anchor type: ClientAnchor.MOVE_AND_RESIZE
@@ -802,9 +798,9 @@ public class ResultController
 
 						// End Point
 						cell_code = row_code.getCell(2);
-						System.out.println("Module->" + cell_code.getStringCellValue());
+						logger.info("Module->" + cell_code.getStringCellValue());
 						cell_code = row_code.getCell(3);
-						System.out.println("End Point->"
+						 logger.info("End Point->"
 								+ cell_code.getStringCellValue());
 					} 
 				}
@@ -857,7 +853,6 @@ public class ResultController
 					String userAgent = request.getHeader("user-agent");
 					boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
 					// filename="ทดสอบ โอ๋.xls";
-					//System.out.println(fileName);
 					byte[] fileNameBytes=null;
 					try {
 						fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
@@ -871,7 +866,6 @@ public class ResultController
 
 					 String disposition = "attachment; filename=\"" + dispositionFileName + "\"";
 					 response.setHeader("Content-disposition", disposition);
-					 System.out.println("file name->"+filename);
 					//response.addHeader("Content-Disposition",content_disposition);
 				}
 				 ServletOutputStream servletOutputStream=null;
@@ -881,7 +875,6 @@ public class ResultController
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}  
-					//System.out.println("servletOutputStream before->"+servletOutputStream);
 			 PdfWriter writer=null;
 			try {
 				writer = PdfWriter.getInstance(document,
@@ -900,7 +893,6 @@ public class ResultController
 				}
 			    
 			    int n = reader.getNumberOfPages();
-			    System.out.println("x->"+n);
 			    PdfImportedPage page;
 			   // int start=187; //1
 			    //int start=180; //2
@@ -914,7 +906,6 @@ public class ResultController
 								for (int i = 0; i < landscapes.length; i++) {
 									int landscape_page=Integer.valueOf(landscapes[i]);
 									landscapeMap.put(landscape_page, landscape_page);
-									//System.out.println("landscape_page-->"+landscape_page);
 								}
 							}
 						}
@@ -924,8 +915,8 @@ public class ResultController
 				   start=1;
 				   end=n;
 			   }
-			   System.out.println("start->"+start);
-			   System.out.println("end->"+end);
+			   logger.info("start->"+start);
+			   logger.info("end->"+end);
 			   /* if(msOrder.intValue()==1)
 			       start=209; //3
 */			    //int end=174;
@@ -936,7 +927,6 @@ public class ResultController
 			    /*start=1;
 			    end=n;*/
 			    for (int i = start; i <= end; i++) { 
-			   // System.out.println(" index-->"+i);
 					int pageRotation=reader.getPageRotation(i);
 			        page = writer.getImportedPage(reader, i);
 			        if(landscapeMap.containsKey(i)){
@@ -959,7 +949,6 @@ public class ResultController
 			        cb.addTemplate(page, 0, 0); 
 			    } 
 			    document.close();
-			   // System.out.println("servletOutputStream affter->"+servletOutputStream);
 			    try {
 					img_bytes.close();
 				} catch (IOException e1) {
@@ -987,12 +976,10 @@ public class ResultController
 				 String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 				 JasperPrint jasperPrint=null;
 				 Map p =new HashMap();
-				 //System.out.println("missTestResult.getMissTestShows()->"+missTestResult.getMissTestShows());
 				 List<MissTestShow> missTestShows= missTestResult.getMissTestShows();
 				 if(missTestShows!=null && missTestShows.size()>0){
 					 for (MissTestShow missTestShow : missTestShows) {
 						p.put(missTestShow.getMtsColumn(), missTestShow.getMtsValue());
-						//System.out.println("mmissTestShow.getMtsColumn()->"+missTestShow.getMtsColumn()+",missTestShow.getValue->"+missTestShow.getMtsValue());
 					}
 				 }
 			 
@@ -1043,7 +1030,6 @@ public class ResultController
 					String userAgent = request.getHeader("user-agent");
 					boolean isInternetExplorer = (userAgent.indexOf("MSIE") > -1);
 					// filename="ทดสอบ โอ๋.xls";
-					//System.out.println(fileName);
 					byte[] fileNameBytes=null;
 					try {
 						fileNameBytes = filename.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
@@ -1465,7 +1451,6 @@ public class ResultController
 		try {
 			ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/missdb");
 			// ds = (DataSource)ctx.lookup("jdbc/sabaDS");
-			// System.out.println("chatchai debug ds="+ds);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1473,7 +1458,6 @@ public class ResultController
 		org.apache.tomcat.dbcp.dbcp.BasicDataSource basicDs = (org.apache.tomcat.dbcp.dbcp.BasicDataSource) ds;
 		// com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource basicDs =
 		// (com.ibm.ws.rsadapter.jdbc.WSJdbcDataSource)ds;
-		// System.out.println("basicDs=>"+basicDs);
 
 		try {
 			con = basicDs.getConnection();// ("oracle",
@@ -1519,7 +1503,6 @@ public class ResultController
 		return img;
 	}
     private byte[] readChartBytes(String url) {
-    	System.out.println("get Chart->"+url);
     	InputStream is_chart=null;
 		try {
 			URL aURL = new URL(url);

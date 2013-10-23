@@ -419,7 +419,7 @@ public class SeriesController
        public  @ResponseBody String updateTemplateSection(HttpServletRequest request,  Model model,
     		   @PathVariable Long msId,@PathVariable Long msOrder,@PathVariable String mraReportName,@PathVariable String mraLang)
        {
-    	 System.out.println(mraReportName);
+    	
     	return "success";
        } */
     @RequestMapping(value={"/update/templateSection"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
