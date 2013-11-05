@@ -739,20 +739,21 @@ public class ResultController
 						cell_code = row_code.getCell(3);
 						String endpoint = cell_code.getStringCellValue();
 						logger.info("End Point->" + endpoint);
+					  if(endpoint!=null && endpoint.length()>0){
 						if (module.equals("profile_image")) {
 							img_use = img;
 
 						} else if (module.equals("chart"))  {
 							//http://203.150.20.37/MISSProcessImage/process?key=chart1&w=700&h=400&mtrId=266
 							img_use =readChartBytes(endpoint+"&mtrId="+mtrId);
-						}else{ 
+						}else{  
 							if (!boxMap.containsKey(module + "_" + endpoint)) {
-								boxMap.put(module + "_" + endpoint, readBytes(module
-										+ "_" + endpoint));
+								boxMap.put(module + "_" + endpoint, readBytes(module, endpoint));
 							}
 							img_use = boxMap.get(module + "_" + endpoint);
 						
 						}
+					   
 						// Expand Column|Row
 						cell_code = row_code.getCell(1);
 					 logger.info("Expand Column|Row->"
@@ -782,6 +783,7 @@ public class ResultController
 							// other possible image types are: PICTURE_TYPE_PICT,
 							// PICTURE_TYPE_PNG,
 							// PICTURE_TYPE_WMF, PICTURE_TYPE_DIB, PICTURE_TYPE_EMF
+						if(img_use!=null){
 							int index = wb.addPicture(img_use,
 									HSSFWorkbook.PICTURE_TYPE_JPEG);
 							 
@@ -792,7 +794,7 @@ public class ResultController
 							// ClientAnchor.DONT_MOVE_AND_RESIZE
 							// anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE);
 							 patriarch.createPicture(anchor, index);
-							 
+						}
 							// anchor.setAnchorType(ClientAnchor.MOVE_DONT_RESIZE); 
 						}
 
@@ -802,6 +804,7 @@ public class ResultController
 						cell_code = row_code.getCell(3);
 						 logger.info("End Point->"
 								+ cell_code.getStringCellValue());
+					 }
 					} 
 				}
 				HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
@@ -1470,10 +1473,10 @@ public class ResultController
 		}
 		return con;
 	}
-    private byte[] readBytes(String fileName) {
+    private byte[] readBytes(String folder,String fileName) {
 		InputStream box1_1 = null;
 		try {
-			box1_1 = new FileInputStream(new File("/opt/" + fileName + ".png"));
+			box1_1 = new FileInputStream(new File("/opt/" + folder+"/"+fileName + ".png"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
