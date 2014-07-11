@@ -393,8 +393,8 @@ function showFormDownload(_mtrId,_meId,_msId,_mcaId){
 			for(var i=0;i<data.length;i++){
 				_str_table=_str_table+"<tr>"+  
 				"<td>&nbsp;"+(i+1)+"</td>"+
-         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][0].msOrder+"','"+data[i][0].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+data[i][0].mraReportName+"</span></td>"+
-         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][1].msOrder+"','"+data[i][1].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+data[i][1].mraReportName+"</span></td>"+
+         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][0].msOrder+"','"+data[i][0].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+(data[i][0].mraReportName!=null?data[i][0].mraReportName:"")+"</span></td>"+
+         					"<td>&nbsp;<span onclick=\"exportReportPDF('"+_mtrId+"','"+_meId+"','"+_msId+"','"+_mcaId+"','"+data[i][1].msOrder+"','"+data[i][1].mraLang+"')\" style=\"color: #08c;cursor: pointer;\">"+(data[i][1].mraReportName!=null?data[i][1].mraReportName:"")+"</span></td>"+
        			"</tr>";
 			}
 			_str_table=_str_table+"</tbody>"+

@@ -261,10 +261,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<thead>
           		<tr>
             		<th width="5%"><div class="th_class"><input type="checkbox" id="msIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
+            		<th width="5%"><div class="th_class">ID</div></th> 
             		<th width="20%"><div class="th_class">Name</div></th> 
-            		<th width="5%"><div class="th_class">Price Unit</div></th>
-            		<th width="60%"><div class="th_class">Test</div></th> 
-            		<th width="10%"><div class="th_class">Action</div></th>            		 
+            		<th width="5%"><div class="th_class">Unit</div></th>
+            	<%--	<th width="5%"><div class="th_class">Price Unit</div></th>
+            	 --%>
+            		<th width="58%"><div class="th_class">Test</div></th> 
+            		<th width="7%"><div class="th_class">Action</div></th>            		 
           		</tr>
         	</thead>
         	<tbody>
@@ -272,6 +275,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	 <c:forEach items="${missSeries}" var="missSery" varStatus="loop"> 
           	<tr>
             	<td><input type="checkbox" name="msIdCheckbox" value="${missSery.msId}"/></td>
+            	<td>${missSery.msId}</td>
             	<td>${missSery.msSeriesName}</td>
             	<td>${missSery.msUnitCost}</td>
             	<td>&nbsp;${missSery.testStr}</td>

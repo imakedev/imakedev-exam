@@ -5,9 +5,10 @@
 $(document).ready(function() {
 	//renderPageSelect();
 <%-- <c:if test="${not isManageMC}">	 --%>
-<c:if test="${false}">
+<%-- <c:if test="${false}"> --%>
+<c:if test="${isManageMC}">
 	  new AjaxUpload('doc_file', {
-	       action: 'upload/attachManual/${seriesForm.missSery.msId}',
+	       action: 'upload/doc/1',
 			onSubmit : function(file , ext){
 	           // Allow only images. You should add security check on the server-side.
 				if (ext && /^(pdf|PDF)$/.test(ext)){
@@ -25,6 +26,7 @@ $(document).ready(function() {
 			},
 			onComplete : function(file, response){
 				var obj = jQuery.parseJSON(response);
+				loadDynamicPage("manual/doc");
 				/*
 				//alert(file+","+obj.hotlink);
 				var path_file='getFileAttached("getfile/attachManual/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
@@ -44,7 +46,7 @@ function confirmDelete(mode,id){
 		buttons: {
 			"Yes": function() { 
 				$( this ).dialog( "close" );
-				//doAction(mode,id);
+				doDeleteFile(id)
 			},
 			"No": function() {
 				$( this ).dialog( "close" );
@@ -78,6 +80,13 @@ function getFileAttached(path){
     document.body.appendChild(div);
     div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + path + "'></iframe>";
 	  // Create an IFRAME.
+}
+function doDeleteFile(id){
+	$.get("deletefile/doc/"+id, function(data) {
+		  // alert(data);
+		   loadDynamicPage("manual/doc");
+		  // alert($("#_content").html());
+		});
 }
 function doAction(mode,id){
 	$("#mode").val(mode);
@@ -114,7 +123,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	Are you sure you want to delete Document ?
 </div>
 	    <fieldset style="font-family: sans-serif;">  
-	    <c:if test="${false}">	
+	  <%-- <c:if test="${false}"> --%>
+	<c:if test="${isManageMC}">
 	     <table border="0" width="100%">
 	     	<tr>
 	     		<td align="right">
@@ -134,7 +144,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	 <c:forEach items="${missDocs}" var="missDoc" varStatus="loop"> 
           	<tr> 
             	<td>&nbsp;<span style="cursor: pointer;" onclick="getFileAttached('getfile/doc/${missDoc.mdId}/xxx')">${missDoc.mdDocFileName}</span>&nbsp;
-            	<c:if test="${false}">	
+            	<%-- <c:if test="${false}"> --%>
+				<c:if test="${isManageMC}">	
             		<i title="Delete" onclick="confirmDelete('delete','${missDoc.mdId}')" style="cursor: pointer;" class="icon-trash"></i>
             	</c:if>
             	</td>

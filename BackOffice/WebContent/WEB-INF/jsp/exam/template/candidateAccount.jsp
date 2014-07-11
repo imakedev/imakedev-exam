@@ -224,7 +224,12 @@ else alert('รหัสประชาชนถูกต้อง เชิญ�
     					<td width="10%">&nbsp;</td>
     					<td width="10%" align="right">Username :</td>
     					 <td width="55%" >
-    					 <form:input path="missCandidate.mcaUsername"/>
+    					 <c:if test="${candidateForm.mode=='edit'}">   
+    					 	<form:input path="missCandidate.mcaUsername" readonly="true"/> 
+    					 </c:if>
+    					  <c:if test="${candidateForm.mode!='edit'}">   
+    					 	<form:input path="missCandidate.mcaUsername" /> 
+    					 </c:if>
     					 <!-- <input type="text"/> -->
     					 </td>
     					<td width="25%">&nbsp;</td>

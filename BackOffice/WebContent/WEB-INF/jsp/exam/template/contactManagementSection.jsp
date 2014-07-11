@@ -220,8 +220,8 @@ function generatePassword(){
     					<td width="25%">Username:</td>
     					<td width="50%" colspan="2">
     					<c:if test="${contactForm.mode=='edit'}">    					
-    						<%-- <form:input path="missContact.mcontactUsername" id="mcontactUsername" readonly="true"/> --%>
-    						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>
+    						 <form:input path="missContact.mcontactUsername" id="mcontactUsername" readonly="true"/> 
+    						<%-- <form:input path="missContact.mcontactUsername" id="mcontactUsername"/> --%>
     					</c:if>
     					<c:if test="${contactForm.mode!='edit'}">    					
     						<form:input path="missContact.mcontactUsername" id="mcontactUsername"/>

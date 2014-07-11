@@ -60,7 +60,9 @@ function getReportList(){
 		var _str_table="<select name=\"reportShowSelect\" id=\"reportShowSelect\"   style=\"width: 250px\">";
 			if(data!=null && data.length>0){
 				for(var i=0;i<data.length;i++){
+					if(data[i][0].mraReportName!=null) 
 					_str_table=_str_table+"<option value=\"${mail_msIdG}_"+data[i][0].msOrder+"_"+data[i][0].mraLang+"\">"+data[i][0].mraReportName+"</option>";
+					if(data[i][1].mraReportName!=null)
 					_str_table=_str_table+"<option value=\"${mail_msIdG}_"+data[i][1].msOrder+"_"+data[i][1].mraLang+"\">"+data[i][1].mraReportName+"</option>";
 				}
 				
