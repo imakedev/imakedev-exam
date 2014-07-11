@@ -561,6 +561,9 @@ public class ResultController
 						+ mcaId.intValue() + "_out." + extensions[1];
 			 String outputFile = extensions[0] + "_" + msId.intValue() + "_"
 						+ mcaId.intValue() + ".pdf";
+			/* System.out.println("inputFile->"+inputFile);
+			 System.out.println("inputFile2->"+inputFile2);
+			 System.out.println("outputFile->"+outputFile); */
 			logger.info("missTestResult.getMissCandidate().getMcaPicturePath()->"+missTestResult.getMissCandidate().getMcaPicturePath());
 		     String picture_path="/opt/images.jpeg";
 		     if(missTestResult.getMissCandidate()!=null && missTestResult.getMissCandidate().getMcaPicturePath()!=null 
@@ -748,7 +751,9 @@ public class ResultController
 							img_use =readChartBytes(endpoint+"&mtrId="+mtrId);
 						}else{  
 							if (!boxMap.containsKey(module + "_" + endpoint)) {
-								boxMap.put(module + "_" + endpoint, readBytes(module, endpoint));
+								byte[] data_byte= readBytes(module, endpoint);
+								if(data_byte!=null)		
+								boxMap.put(module + "_" + endpoint,data_byte);
 							}
 							img_use = boxMap.get(module + "_" + endpoint);
 						
@@ -1474,9 +1479,12 @@ public class ResultController
 		return con;
 	}
     private byte[] readBytes(String folder,String fileName) {
+    	byte[] img =null;
+    	File file=new File("/opt/" + folder+"/"+fileName + ".png");
+    if(file.exists()){
 		InputStream box1_1 = null;
 		try {
-			box1_1 = new FileInputStream(new File("/opt/" + folder+"/"+fileName + ".png"));
+			box1_1 = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1496,13 +1504,14 @@ public class ResultController
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		byte[] img = img_bytes_box.toByteArray();
+		img= img_bytes_box.toByteArray();
 		try {
 			img_bytes_box.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
 		return img;
 	}
     private byte[] readChartBytes(String url) {

@@ -219,7 +219,8 @@ public class UploadController {
 		Gson gson=new Gson();
 		gson.toJson(missFile );
 	//	return hotLink;
-		 return gson.toJson(missFile );
+	 	 return gson.toJson(missFile );
+	//	 return "xx" ;
     }
     @RequestMapping(value={"/getfile/{module}/{id}/{hotlink}"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
     public void getFile(HttpServletRequest request,HttpServletResponse response,@PathVariable String module
