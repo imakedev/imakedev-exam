@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_COMPANY_ROLE_CONTACT')" var="isManageCompanyRoleContactAccount"/>
 <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGE_MISSCONSULT_ROLE_CONTACT')" var="isManageMCRoleContactAccount"/>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#tabs').tabs();
@@ -77,11 +78,12 @@ $(document).ready(function() {
 	var _company_section=$("#_company_section").val().length>0?parseInt($("#_company_section").val()):5;
 	//$('#tabs').tabs('select', parseInt($("#_company_section").val())-3);
 	$('#tabs').tabs('select', _company_section-5);
-	
+	<%-- 
 	new AjaxUpload('company_upload', {
 		 action: 'upload/companyLogo/${companyForm.missAccount.maId}',
 		onSubmit : function(file , ext){
             // Allow only images. You should add security check on the server-side.
+               
 			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
 				this.setData({
 					'key': 'This string will be send with the file',
@@ -94,14 +96,77 @@ $(document).ready(function() {
 				// cancel upload
 				return false;				
 			}		
+			 
+			$('#company_photo').attr('src', _path+"resources/images/loading.gif");
 		},
 		onComplete : function(file, response){
 			var obj = jQuery.parseJSON(response); //obj.hotlink			
+			//alert("ss")
 			$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
+	 --%> 
 	 
-	 
+	  $('#company_upload').fileupload({
+        add: function(e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                /*
+                if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                    uploadErrors.push('Not an accepted file type 1');
+                    alert('Not an accepted file type 2')
+                }
+                if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                    uploadErrors.push('Filesize is too big');
+                }
+                */
+                if(uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                } else {
+                    data.submit();
+                }
+        },
+	        url: 'upload/companyLogo/${companyForm.missAccount.maId}',
+	        dataType: 'json',
+	        // dataType: 'iframejson',
+	         /*
+	         converters: {
+	        	    'html iframejson': function(htmlEncodedJson) {
+	        	      return $.parseJSON($('<div/>').html(htmlEncodedJson).text());
+	        	    },
+	        	    'iframe iframejson': function (iframe) {
+	        	      return $.parseJSON(iframe.find('body').text());
+	        	    }
+	        	  },
+	        	  */
+	        autoUpload: false,
+	     //   acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+	        done: function (e, data) {
+	        //	alert(data.jqXHR.status)
+	        //	alert(data._response)
+	        //	var xx=JSON.stringify(data);
+// alert("xx->"+xx)
+	        //	alert(data.result.hotlink)
+	         var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+           /*
+            if (msie > 0)      // If Internet Explorer, return version number
+                alert(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))));
+            else                 // If another browser, return 0
+                alert('otherbrowser');
+            */
+				$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+data.result.hotlink);
+	        },
+	        fail: function (e, data) {
+	            $.each(data.messages, function (index, error) {
+	            	alert('error->'+error);
+	            });
+	        },
+	        progressall: function (e, data) {
+	        	$('#company_photo').attr('src', _path+"resources/images/loading.gif");
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	 if($("#message_element").attr("style").indexOf("block")!=-1){
 		 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
 		 setTimeout(function(){$("#message_element").slideUp(300)},5000);
@@ -472,8 +537,17 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					<c:if test="${(not empty companyForm.missAccount.maCustomizeLogoHotlink) && (empty companyForm.missAccount.maCustomizeLogoFileName)}">
     						<%-- <img id="company_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>  --%>
     						<img id="company_photo"  width="350" height="66" src="getfile/mcLogo/1/${companyForm.missAccount.maCustomizeLogoHotlink}" />
-    					</c:if>    					
+    					</c:if>    	
+    					<%--				
     					<input  id="company_upload" type="button" value="Upload">(350px × 66px)
+    					 --%>
+    					 <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select file </span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="company_upload" type="file" name="userfile" multiple>(350px × 66px)
+    </span>
+    				
     					</td>
     					 <td width="25%">&nbsp;</td>
     				</tr>

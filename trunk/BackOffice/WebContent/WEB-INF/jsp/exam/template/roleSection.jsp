@@ -163,9 +163,9 @@ function setRoleReportTemplate(id){
 	    "	<table id=\"table_role_report_list\"  class=\"table stable-striped table-bordered table-condensed\" border=\"1\" style=\"font-size: 12px\">"+
         "	<thead>"+
         "  		<tr>"+
-        "    		<th width=\"44%\"><div class=\"th_class\">Thai</div></th>"+ 
-        "    		<th width=\"44%\"><div class=\"th_class\">English</div></th>"+
-        "    		<th width=\"12%\"><div class=\"th_class\">Permission</div></th>"+              		 
+        "    		<th width=\"42%\"><div class=\"th_class\">Thai</div></th>"+ 
+        "    		<th width=\"42%\"><div class=\"th_class\">English</div></th>"+
+        "    		<th width=\"16%\"><div class=\"th_class\">Permission</div></th>"+              		 
         "  		</tr>"+
         "	</thead>"+
         "	<tbody>"; 
@@ -294,8 +294,8 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           		<tr>
             		<!-- <th width="5%"><div class="th_class"><input type="checkbox" id="rtIdCheckboxAll" onclick="toggleCheckbox()"/></div></th> -->
             		<th width="30%"><div class="th_class">Role</div></th> 
-            		<th width="58%"><div class="th_class">Description</div></th>
-            		<th width="12%"><div class="th_class">Permission</div></th>              		 
+            		<th width="56%"><div class="th_class">Description</div></th>
+            		<th width="14%"><div class="th_class">Permission</div></th>              		 
           		</tr>
         	</thead>
         	<tbody>

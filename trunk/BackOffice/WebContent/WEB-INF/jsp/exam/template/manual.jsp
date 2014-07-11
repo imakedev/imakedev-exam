@@ -84,7 +84,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<tbody>
         	 <c:forEach items="${missManuals}" var="missManual" varStatus="loop"> 
           	<tr> 
-            	<td>&nbsp;<span style="cursor: pointer;" onclick="getFileAttached('getfile/attachManual/10/${missManual.mmHotlink}')">${missManual.mmFileName}</span>&nbsp;(Series&nbsp;:&nbsp;${missManual.missSery.msSeriesName})</td>
+            	<td>&nbsp;<span style="cursor: pointer;" onclick="getFileAttached('getfile/attachManual/${missManual.mmId}/${missManual.mmHotlink}')">${missManual.mmFileName}</span>&nbsp;(Series&nbsp;:&nbsp;${missManual.missSery.msSeriesName})</td>
           	</tr>
           	</c:forEach>
         	</tbody>

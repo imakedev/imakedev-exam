@@ -31,8 +31,9 @@ $(document).ready(function() {
 		},
 		onComplete : function(file, response){ 
 			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${template_msId}/'+obj.hotlink+'")'; 
+			var path_file='getFileAttached("reportUpload/getfile/${template_msId}/1/0/'+obj.hotlink+'")'; 
 			 $('#template_file_thai_1_attached').attr('onclick',path_file);
+			 //alert(file) 
 			 $('#template_file_thai_1_attached').html(file);
 			 $('#template_file_thai_1_attached').attr('style','cursor: pointer;');
 			 //$('#template_file_thai_1_attached_delete').html("&nbsp;&nbsp;"+"<i title=\"Update\" class=\"icon-trash\"></i>");
@@ -507,15 +508,26 @@ function updateReportName(id,order,lang){
 	private String mraReportName -->
             	 <div><input type="text" id="template_report_thai_1" value="${templateList[0][0].mraReportName}">&nbsp;&nbsp;<i onclick="updateReportName('${template_msId}','1','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_thai_1" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>  
-            	<span id="template_file_thai_1_attached">${templateList[0][0].mraFileName}
-	    				</span><span  id="template_file_thai_1_attached_delete">
-	    				</span></td>
+            	 <c:if test="${templateList[0][0].mraFileName!=null}">
+            		<span id="template_file_thai_1_attached" style="cursor: pointer;"  
+            		 onclick="getFileAttached('reportUpload/getfile/${template_msId}/1/0/${templateList[0][0].mraHotlink}')">
+            		 ${templateList[0][0].mraFileName}
+	    			</span>
+	    			<span  id="template_file_thai_1_attached_delete">
+	    			</span>
+	    		  </c:if>
+	    		   </td>
             	<td>
             	<div><input type="text" id="template_report_eng_1" value="${templateList[0][1].mraReportName}">&nbsp;&nbsp;<i onclick="updateReportName('${template_msId}','1','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_1"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_1_attached">${templateList[0][1].mraFileName}
+            	<c:if test="${templateList[0][1].mraFileName!=null}">
+            		<span id="template_file_eng_1_attached" style="cursor: pointer;" 
+            		onclick="getFileAttached('reportUpload/getfile/${template_msId}/1/1/${templateList[0][1].mraHotlink}')">
+            		${templateList[0][1].mraFileName}
 	    				</span><span id="template_file_eng_1_attached_delete">
-	    				</span></td> 
+	    				</span>
+	    		</c:if>		
+	    		</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','1')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
           	<tr>
@@ -523,15 +535,25 @@ function updateReportName(id,order,lang){
             	 <td>
             	 <div><input type="text" id="template_report_thai_2" value="${templateList[1][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','2','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             		<a class="btn" id="template_file_thai_2" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_thai_2_attached">${templateList[1][0].mraFileName}
+            	<c:if test="${templateList[1][0].mraFileName!=null}">
+            		<span id="template_file_thai_2_attached" style="cursor: pointer;" 
+            			onclick="getFileAttached('reportUpload/getfile/${template_msId}/2/0/${templateList[1][0].mraHotlink}')">
+            				${templateList[1][0].mraFileName}
 	    				</span><span id="template_file_thai_2_attached_delete">
-	    				</span></td>
+	    				</span>
+	    				</c:if>
+	    				</td>
             	<td>
             	 <div><input type="text" id="template_report_eng_2" value="${templateList[1][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','2','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_2"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_2_attached">${templateList[1][1].mraFileName}
+            		<c:if test="${templateList[1][1].mraFileName!=null}">
+            			<span id="template_file_eng_2_attached"  style="cursor: pointer;" 
+            			onclick="getFileAttached('reportUpload/getfile/${template_msId}/2/1/${templateList[1][1].mraHotlink}')">
+            			${templateList[1][1].mraFileName}
 	    				</span><span id="template_file_eng_2_attached_delete">
-	    				</span></td> 
+	    				</span>
+	    				</c:if>
+	    				</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','2')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
           	<tr>
@@ -539,16 +561,26 @@ function updateReportName(id,order,lang){
             	<td>
             	<div><input type="text" id="template_report_thai_3" value="${templateList[2][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','3','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_thai_3" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_thai_3_attached">${templateList[2][0].mraFileName}
+            	<c:if test="${templateList[2][0].mraFileName!=null}">	
+            	<span id="template_file_thai_3_attached" style="cursor: pointer;"
+            	 onclick="getFileAttached('reportUpload/getfile/${template_msId}/3/0/${templateList[2][0].mraHotlink}')">
+            	 ${templateList[2][0].mraFileName}
 	    				</span><span id="template_file_thai_3_attached_delete">
-	    				</span></td>
+	    				</span>
+	    			</c:if>	
+	    				</td>
 	    				
             	<td>
             	<div><input type="text" id="template_report_eng_3" value="${templateList[2][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','3','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_3"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_3_attached">${templateList[2][1].mraFileName}
+            	<c:if test="${templateList[2][1].mraFileName!=null}">	
+            		<span id="template_file_eng_3_attached" style="cursor: pointer;"
+            		 onclick="getFileAttached('reportUpload/getfile/${template_msId}/3/1/${templateList[2][1].mraHotlink}')">
+            			${templateList[2][1].mraFileName}
 	    				</span><span id="template_file_eng_3_attached_delete">
-	    				</span></td>
+	    				</span>
+	    		</c:if>		
+	    			</td>
 	    			<td><i title="Delete" onclick="confirmDelete('${template_msId}','3')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
           	<tr>
@@ -557,15 +589,25 @@ function updateReportName(id,order,lang){
             	<td>
             	<div><input type="text" id="template_report_thai_4" value="${templateList[3][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','4','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_thai_4" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_thai_4_attached">${templateList[3][0].mraFileName}
+            	<c:if test="${templateList[3][0].mraFileName!=null}">	
+            	<span id="template_file_thai_4_attached" style="cursor: pointer;"
+            	onclick="getFileAttached('reportUpload/getfile/${template_msId}/4/0/${templateList[3][0].mraHotlink}')">
+            	${templateList[3][0].mraFileName}
 	    				</span><span id="template_file_thai_4_attached_delete">
-	    				</span></td>
+	    				</span>
+	    			</c:if>	
+	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_4" value="${templateList[3][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','4','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_4_attached">${templateList[3][1].mraFileName}
+            	<c:if test="${templateList[3][1].mraFileName!=null}">	
+            		<span id="template_file_eng_4_attached"  style="cursor: pointer;"
+            		onclick="getFileAttached('reportUpload/getfile/${template_msId}/4/1/${templateList[3][1].mraHotlink}')">
+            		${templateList[3][1].mraFileName}
 	    				</span><span id="template_file_eng_4_attached_delete">
-	    				</span></td> 
+	    				</span>
+	    				</c:if>
+	    				</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','4')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
           	<tr>
@@ -574,15 +616,25 @@ function updateReportName(id,order,lang){
             	<td>
             	<div><input type="text" id="template_report_thai_5" value="${templateList[4][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','5','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_thai_5" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_thai_5_attached">${templateList[4][0].mraFileName}
+            	<c:if test="${templateList[4][0].mraFileName!=null}">	
+            		<span id="template_file_thai_5_attached" style="cursor: pointer;"
+           		 	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/0/${templateList[4][0].mraHotlink}')">
+            		${templateList[4][0].mraFileName}
 	    				</span><span id="template_file_thai_5_attached_delete">
-	    				</span></td>
+	    				</span>
+	    				</c:if>
+	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_5" value="${templateList[4][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','5','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_5_attached">${templateList[4][0].mraFileName}
+            	<c:if test="${templateList[4][1].mraFileName!=null}">
+            	<span id="template_file_eng_5_attached" style="cursor: pointer;"
+            	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/1/${templateList[4][1].mraHotlink}')">
+            	${templateList[4][1].mraFileName}
 	    				</span><span id="template_file_eng_5_attached_delete">
-	    				</span></td>
+	    				</span>
+	    				</c:if>
+	    				</td>
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','5')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
           	<tr>
@@ -590,15 +642,25 @@ function updateReportName(id,order,lang){
             	<td>
             	<div><input type="text" id="template_report_thai_6" value="${templateList[5][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_thai_6" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_thai_6_attached">${templateList[5][0].mraFileName}
+            	<c:if test="${templateList[5][0].mraFileName!=null}"> 
+            	<span id="template_file_thai_6_attached" style="cursor: pointer;"
+            	onclick="getFileAttached('reportUpload/getfile/${template_msId}/6/0/${templateList[5][0].mraHotlink}')">
+            	${templateList[5][0].mraFileName}
 	    				</span><span id="template_file_thai_6_attached_delete">
-	    				</span></td>
+	    				</span>
+	    				</c:if>
+	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_6" value="${templateList[5][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
             	<a class="btn" id="template_file_eng_6"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<span id="template_file_eng_6_attached">${templateList[5][0].mraFileName}
+            	<c:if test="${templateList[5][1].mraFileName!=null}">
+            	<span id="template_file_eng_6_attached" style="cursor: pointer;"
+            	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/1/${templateList[5][1].mraHotlink}')">
+            	${templateList[5][1].mraFileName}
 	    				</span><span id="template_file_eng_6_attached_delete">
-	    				</span></td>
+	    				</span>
+	    			</c:if>
+	    			</td>
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','6')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
         	</tbody>

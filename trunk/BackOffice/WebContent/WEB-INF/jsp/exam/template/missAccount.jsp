@@ -85,6 +85,7 @@ $(document).ready(function() {
 		onComplete : function(file, response){
 			//alert(response)
 			var obj = jQuery.parseJSON(response); //obj.hotlink
+			//alert(obj.hotlink)
 			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
