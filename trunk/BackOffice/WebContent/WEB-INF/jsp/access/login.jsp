@@ -5,7 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%--
 <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9"/>
+ --%>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <meta http-equiv="cache-control" content="max-age=0" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
@@ -16,8 +19,16 @@
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script>
 <link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" /> 
-<link  href="<c:url value='/resources/css/style-Login.css'/>"  type="text/css" rel="stylesheet"/>
-
+<%--  <link  href="<c:url value='/resources/css/style-Login.css'/>"  type="text/css" rel="stylesheet"/> --%>
+<link  href="<c:url value='/resources/css/stylesheet_nbtc.css'/>"  type="text/css" rel="stylesheet"/> 
+<style type="text/css">
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+</style>
 <script type="text/javascript">
 //var url_home=window.location.href;
 //alert(url_home);
@@ -72,6 +83,30 @@ $(document).ready(function() {
  <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
 	<span id="_message_show">${message}</span>
 </div>
+<div class="mainframe">
+	<div class="insideframe">
+                    <div class="co1"></div>
+                      <form id="form" name="form" method="post" action='${security_check}'> 
+                        <input type="hidden" id="_message" value="${message}"/>
+<div class="co5">
+                    	<ul class="datalogin_corporate">
+                        	  <li class="datalogin1"><input type="text" name="j_username" id="name"  class="loginbox"/></li><br />
+                                <li class="datalogin1"><input type="password" name="j_password" id="password" class="loginbox"/></li><br />
+                                 <li>
+                                  <input  type="image" src="<c:url value='/resources/images/loginbtn2.png'/>" style="width:145;height:47;border:0;" />
+                                 </li>
+                        </ul>
+                    </div>
+                    </form>
+    </div>
+</div>
+</body>
+<%-- 
+<body id="login_body" style="display: none">
+<c:url value="/j_spring_security_check" var="security_check"/>
+ <div id="dialog-Message" title="Message" style="display: none;background: ('images/ui-bg_highlight-soft_75_cccccc_1x100.png') repeat-x scroll 50% 50% rgb(204, 204, 204)">
+	<span id="_message_show">${message}</span>
+</div>
 <div class="bg2">&nbsp;</div>
 <div id="wrapper">
 <div align="left" style="padding-top:25px;"><a href="#" title="MissConsult"><img src="<c:url value='/resources/images/logowebmc-b.png'/>"  border="0"/></a></div>
@@ -119,5 +154,5 @@ $(document).ready(function() {
 </div>  
      
 </body>
-
+ --%>
 </html>
