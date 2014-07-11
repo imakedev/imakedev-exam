@@ -17,15 +17,27 @@
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="pragma" content="no-cache" />
+<%-- 
 <meta http-equiv="X-UA-Compatible" content="IE=7, IE=9"/>
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+--%>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+
 <title></title>  
 <c:url var="url" value="/" />
 <c:url value="/logout" var="logoutUrl"/>
 <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon" />  
+<%--
 <script  src="<c:url value='/resources/js/jquery-1.7.2.min.js'/>" type="text/javascript"></script>  
-<script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script> 
-<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.8.21.custom.min.js'/>"></script>  
+ --%>
+ <script  src="<c:url value='/resources/js/jquery-1.8.3.min.js'/>" type="text/javascript"></script>  
+<script src="<c:url value='/resources/bootstrap2.3.2/js/bootstrap.min.js'/>" type="text/javascript"></script> 
+
+<script type="text/javascript" src="<c:url value='/resources/js/smoothness/jquery-ui-1.9.1.custom.min.js'/>"></script>  
+<script type="text/javascript" src="<c:url value='/resources/fileupload/js/jquery.iframe-transport.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/fileupload/js/jquery.fileupload.js'/>"></script>  
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.ui.selectmenu.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/jquery.jstree.js'/>"></script>
 
@@ -34,14 +46,21 @@
  
  <script type="text/javascript" src="<c:url value='/resources/ckeditorV2/ckeditor.js'/>"></script>
  <script type="text/javascript" src="<c:url value='/resources/js/bday-picker.min.js'/>"></script> 
+   <%-- 
+  <script src="<c:url value='/resources/js/ajaxuploadV2.js'/>"></script>
  
-<link href="<c:url value='/resources/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
+
+ --%>  
+
  
-<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.8.21.custom.css'/>" type="text/css"  rel="stylesheet" />
+<link href="<c:url value='/resources/bootstrap2.3.2/css/bootstrap.min.css'/>" rel="stylesheet"  type="text/css">
+ 
+<link href="<c:url value='/resources/css/smoothness/jquery-ui-1.9.1.custom.css'/>" type="text/css"  rel="stylesheet" />
 <link  href="<c:url value='/resources/css/jquery.ui.selectmenu.css'/>" rel="stylesheet" type="text/css">
 
 <link href="<c:url value='/resources/css/3column.css'/>"  type="text/css" rel="stylesheet" />
 <link href="<c:url value='/resources/css/menubar.css'/>"  type="text/css" rel="stylesheet" />  
+<link href="<c:url value='/resources/fileupload/css/jquery.fileupload.css'/>" type="text/css"  rel="stylesheet" /> 
 <!-- Bootstrap CSS fixes for IE6 -->
 <!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
 <!-- Bootstrap Image Gallery styles -->
@@ -49,7 +68,9 @@
 <link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
  -->
 <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<%--
 <link rel="stylesheet" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
+ --%>
 <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->  
 <style>
@@ -108,6 +129,7 @@ $(document).ready(function() {
   var startYear=new Date(thisDay[2], parseInt(thisDay[1])-1, thisDay[0]); 
   $('#defaultCountdown').countdown({since: startYear, compact: true,  
 	  format: 'HMS', description: ''}); 
+  
    $.jstree._themes = "/MISSExamBackOffice/resources/js/themes/";
 	$("#demo1").jstree({ 
 		"json_data" : {
@@ -222,6 +244,12 @@ $(document).ready(function() {
 					          ] 					
 				}
 				</c:if>
+				,
+				{ 
+					"data" : {title:"ตรวจข้อสอบ OCM",icon : "<c:url value='/resources/js/_demo/file.png'/>" },
+					"metadata" : { id : "child_ocm" ,"link":"template/todolist"},
+					"attr" : { "id" : "ocm_node" }, 
+				}
 			]
 		},
 		"plugins" : [ "themes", "json_data", "ui" ],
@@ -395,32 +423,35 @@ function noBack() {
 	 
     	<c:if test="${myUser.missContact.maGrade=='2'}">
     	<h1>
-    	<img width="230px" height="60px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
+    	<img style="height:60px;width:230px;"  width="230px" height="60px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
     	<%-- <img src="<c:url value='/resources/images/logowebmc.png'/>" width="230px" height="60px" />  --%>	
     	 </h1> 
     	 </c:if>
     	 </div> 
     	 <div align="center" style="position: absolute;top:0px; left:0px;right:0px; padding-top:10px;">
     	 <c:if test="${myUser.missContact.maGrade=='1'}">
-    	 <h1><img width="347px" height="66px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
+    	 <h1><img style="height:66px;width:347px;" width="347px" height="66px" src="getfile/mcLogo/1/${myUser.missContact.maCustomizeLogoMCPath}" />
     	</h1>
     	</c:if>
     	<c:if test="${myUser.missContact.maGrade=='2'}">
-    	 <h1><img   width="347px" height="66px" src="getfile/companyLogo/${myUser.missContact.mcontactRef}/${myUser.missContact.maCustomizeLogoPath}" />
+    	 <h1><img  style="height:66px;width:347px;" width="347px" height="66px" src="getfile/companyLogo/${myUser.missContact.mcontactRef}/${myUser.missContact.maCustomizeLogoPath}" />
     	</h1>
     	</c:if>
     	  </div> 
     	<!-- <div align="right" style="position: absolute; z-index:-5; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;"> -->
     	<div align="right" style="position: absolute; z-index:0; width:300px; right:0;top:0; padding-top:10px; padding-right:10px;">
        <strong><spring:message code="home_system_time"/>:</strong>&nbsp;&nbsp;${systemDate}&nbsp;&nbsp;<span id="defaultCountdown"></span><br/><br/>
-      <a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> 
+      	<a  style="cursor: pointer;" href="?language=th_TH"><spring:message code="home_lang_th"/></a> | <a  style="cursor: pointer;" href="?language=en"><spring:message code="home_lang_en"/></a> 
            <%-- Current Locale : ${pageContext.response.locale} --%>
-        </div>
-         <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
+           <br/><br/>
            <%=SecurityContextHolder.getContext().getAuthentication().getName()%> <a href="${logoutUrl}">Logout</a>
-          
-          <!--  <a  style="cursor: pointer;" href="?language=th_TH">TH</a> | <a  style="cursor: pointer;" href="?language=en">EN</a> -->
+           
+        </div>
+        <%--
+         <div align="right" style="position: absolute;right:0;top:75; padding-right:10px;">
+            =SecurityContextHolder.getContext().getAuthentication().getName() <a href="${logoutUrl}">Logout</a> 
             </div>
+             --%>
            </div>
           
           <!--  <div   align="right" >
@@ -551,7 +582,7 @@ function noBack() {
         <thead>
           <tr>
             <th width="65%"><div class="th_class"><spring:message code="home_task"/></div></th>
-            <th width="15%"><div class="th_class">Status</div></th>
+            <th width="15%"><div class="th_class">ssStatus</div></th>
             <th width="15%"><div class="th_class"><spring:message code="home_respond"/></div></th>
             <th width="5%"><div class="th_class">Ignore</div></th>    
           </tr>
@@ -591,6 +622,5 @@ function noBack() {
 	 </div>
     </div>
 </div> 
-   <script src="<c:url value='/resources/js/ajaxupload.js'/>"></script> 
 </body>
 </html>
