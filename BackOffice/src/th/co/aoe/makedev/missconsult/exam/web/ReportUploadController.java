@@ -57,7 +57,7 @@ public class ReportUploadController {
     		,@PathVariable Long msOrder,@PathVariable String mraLang)
     { 
     	 String reportName=request.getParameter("reportName"); 
-    	 //System.out.println("reportName-->"+reportName);
+    	 // System.out.println("reportName-->"+reportName);
     	 String ndPathFileGen=null;
     	 MissFile missFile =new MissFile();
     	 String hotLink="";
@@ -142,6 +142,7 @@ public class ReportUploadController {
        // return missCandidate;
 		missFile.setHotlink(hotLink);
 		missFile.setFilename(s);
+		missFile.setId(String.valueOf(msOrder));
 		missFile.setFilepath(pathFolder);
 		Gson gson=new Gson();
 		gson.toJson(missFile );

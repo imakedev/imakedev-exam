@@ -70,4 +70,22 @@ public class MissManualController {
 	        model.addAttribute("docForm", docForm);
 	        return "exam/template/doc";
 	    }
+	    @RequestMapping(value={"/ocm"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public String ocm(Model model)
+	    {
+	    	 
+	        return "exam/template/ocm";
+	    }
+	    @RequestMapping(value={"/sap"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public String sap(Model model)
+	    {
+	    	 
+	        return "exam/template/sap";
+	    }
+	    @RequestMapping(value={"/userprofile"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+	    public String userprofile(Model model)
+	    {
+	    	 
+	        return "exam/template/userprofile";
+	    }
 }

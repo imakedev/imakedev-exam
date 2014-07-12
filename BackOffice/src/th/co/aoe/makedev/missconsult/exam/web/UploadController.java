@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.exam.web;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,10 +35,12 @@ import th.co.aoe.makedev.missconsult.xstream.MissContact;
 import th.co.aoe.makedev.missconsult.xstream.MissDoc;
 import th.co.aoe.makedev.missconsult.xstream.MissFile;
 import th.co.aoe.makedev.missconsult.xstream.MissManual;
+import th.co.aoe.makedev.missconsult.xstream.MissQuestion;
 import th.co.aoe.makedev.missconsult.xstream.MissSeriesAttach;
 import th.co.aoe.makedev.missconsult.xstream.MissSery;
 
 import com.google.gson.Gson;
+import com.mortennobel.imagescaling.ResampleOp;
 @Controller
 public class UploadController {	
 	//private static SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -114,6 +118,31 @@ public class UploadController {
 					//	 FileInputStream fin= new FileInputStream(file)
 						 fos = new FileOutputStream(path+"/"+ndPathFileGen);								
 						 fos.write(filesize);
+						 if(module.equals("candidateImg")){
+							/* System.out.println("xxxxxxxx->"+module);
+							 System.out.println("path->"+path+"/"+ndPathFileGen);
+							 System.out.println("extension->"+extension);*/
+							 BufferedImage src=null;
+							 
+								try {
+									src = ImageIO.read(new File(path+"/"+ndPathFileGen));
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+						         
+						         ResampleOp resampleOp = new ResampleOp (180,180);
+						      //   resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.VerySharp);
+						         BufferedImage rescaled = resampleOp.filter(src, null);
+						         
+						         try {
+									ImageIO.write(rescaled,extension, 
+									                 new File(path+"/"+ndPathFileGen));
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+						 }
 						}
 					}catch (Exception e) {
 						// TODO: handle exception
@@ -165,7 +194,7 @@ public class UploadController {
 					 missManual.setMmId(Long.parseLong(id));
 					 missManual.setMmFileName(s);
 					 missManual.setMmHotlink(hotLink);
-					  missManual.setMmPath(pathFolder);
+					 missManual.setMmPath(pathFolder);
 					  missExamService.updateMissManual(missManual);
 				}else if(module.equals("questionImg")){
 					 MissAttach missAttach = new MissAttach();
@@ -257,8 +286,16 @@ public class UploadController {
 			 //content_disposition="attachment; filename="+missManual.getMmFileName();
 			 filename=missManual.getMmFileName();
 		}else if(module.equals("questionImg")){
-			MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id),hotlink);
-			 ndPathFileGen=path+missAttach.getMatPath();
+			
+			MissQuestion missQuestion =missExamService.findMissQuestionById(Long.parseLong(id));
+			if(hotlink.equals("0")){//thai
+				 ndPathFileGen=path+missQuestion.getMqImgTh1();
+			}else{
+				ndPathFileGen=path+missQuestion.getMqImgEng1();
+			}
+			
+			/*MissAttach missAttach =missExamService.findMissAttachById(module,Long.parseLong(id),hotlink);
+			 ndPathFileGen=path+missAttach.getMatPath();*/
 		}else if(module.equals("template")){ // jasper
 			MissSeriesAttach missSeriesAttach =missExamService.findMissSeriesAttachSearch(module,Long.parseLong(id),null,hotlink);
 			 ndPathFileGen=path+missSeriesAttach.getMsatPath();
