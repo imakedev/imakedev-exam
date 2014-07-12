@@ -4,12 +4,13 @@
 <script type="text/javascript">
 var indexRow=parseInt('${testForm.mcSize}')+1;
 $(document).ready(function() {
+	/*
 	new AjaxUpload('question_img', {
         action: 'upload/questionImg/${testForm.missQuestion.mqId}',
 		onSubmit : function(file , ext){
             // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jpg|png|jpeg|gif|JPG|GIF)$/.test(ext)){
-				/* Setting data */
+				 
 				this.setData({
 					'key': 'This string will be send with the file',
 					'test':'chatchai'
@@ -26,19 +27,70 @@ $(document).ready(function() {
 			var _src="getfile/questionImg/${testForm.missQuestion.mqId}/"+obj.hotlink;
 			$("#mqImgEng1").val(_src);
 			$("#_upload_image").html("<img alt=\"\" src=\""+_src+"\" />");
-		/*
-			var editor_data =CKEDITOR.instances['mqNameEng1']; //alert(editor2) // [obj]
-				var selection = editor_data.getSelection();//alert(selection) // [obj]
-				var text = selection.getNative();//alert(text) // ""
-				var ranges = selection.getRanges();// alert(ranges) //[obj]
-				var type = selection.getType();// alert(type) // 2 
-			var	 newElement=CKEDITOR.dom.element.createFromHtml( '<img alt=\"\" src=\"getfile/questionImg/${testForm.missQuestion.mqId}/'+obj.hotlink+'\" />');
-				 ranges[0].deleteContents();
-				 ranges[0].insertNode(newElement);
-				 ranges[0].selectNodeContents( newElement ); 
-				 */
+		 
 		}		
 	});
+	*/
+	  $('#question_img').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i;
+	                
+	               
+	                if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	                    uploadErrors.push('Error: only images are allowed');
+	                  //  alert('Not an accepted file type 2')
+	                }
+	                /*
+	                if(data.originalFiles[0]['size'].length>0 && data.originalFiles[0]['size'] > 5000000) {
+	                    uploadErrors.push('Filesize is too big');
+	                }
+	                */
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                    data.submit();
+	                }
+	        },
+		        url: 'upload/questionImg/${testForm.missQuestion.mqId}',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+			if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/questionImg/${testForm.missQuestion.mqId}/1/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){ 
+	          				var _src=data.hotlink; 
+	    					$("#mqImgEng1").val(_src);
+	    					$("#_upload_image").html("<img alt=\"\" src=\""+_src+"\" />");
+	          			  }
+	          		});
+	            }else{
+	            	var _src="getfile/questionImg/${testForm.missQuestion.mqId}/"+data.result.hotlink;
+					$("#mqImgEng1").val(_src);
+					$("#_upload_image").html("<img alt=\"\" src=\""+_src+"\" />");
+	            }
+					//$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					// var obj = jQuery.parseJSON(response); //obj.hotlink
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	 if($("#message_element_en").attr("style").indexOf("block")!=-1){
 		 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
 		 setTimeout(function(){$("#message_element_en").slideUp(300)},5000);
@@ -231,7 +283,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     				</tr>
     				<tr style="padding: 2pt">
     					<td width="25%" align="left" colspan="2">
+    					 <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload Image</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="question_img" type="file" name="userfile" multiple>
+    </span>
+    <%-- 
     					<a class="btn" id="question_img"><i class="icon-picture"></i>&nbsp;<span style="">Upload Image</span></a> | 
+    					 --%> |
     					<a class="btn" id="question_img_delete">&nbsp;<span style="" onclick="clearImage()">Clear Image</span></a><br/>
     					 </td> 
     				</tr>

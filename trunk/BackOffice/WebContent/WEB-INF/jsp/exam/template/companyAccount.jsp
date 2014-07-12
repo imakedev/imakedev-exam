@@ -110,16 +110,19 @@ $(document).ready(function() {
 	  $('#company_upload').fileupload({
         add: function(e, data) {
                 var uploadErrors = [];
-                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
-                /*
-                if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                    uploadErrors.push('Not an accepted file type 1');
-                    alert('Not an accepted file type 2')
+                var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i;
+                
+                
+                if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                    uploadErrors.push('Error: only images are allowed');
+                    //alert('Not an accepted file type 2')
                 }
+                /*
                 if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
                     uploadErrors.push('Filesize is too big');
                 }
                 */
+                
                 if(uploadErrors.length > 0) {
                     alert(uploadErrors.join("\n"));
                 } else {
@@ -149,14 +152,22 @@ $(document).ready(function() {
 	        //	alert(data.result.hotlink)
 	         var ua = window.navigator.userAgent;
             var msie = ua.indexOf("MSIE ");
-           /*
-            if (msie > 0)      // If Internet Explorer, return version number
-                alert(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))));
-            else                 // If another browser, return 0
-                alert('otherbrowser');
-            */
+            if (true)   {   // If Internet Explorer, return version number{
+            	
+            	$.ajax({
+          		  type: "get",
+          		  url: "ajax/getMissFile/companyLogo/${companyForm.missAccount.maId}/0/0",
+          		  cache: false
+          		 // data: { name: "John", location: "Boston" }
+          		}).done(function( data ) {
+          			if(data!=null){ 
+          				$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+data.hotlink);
+          			  }
+          		});
+            }else{
 				$("#company_photo").attr("src","getfile/companyLogo/${companyForm.missAccount.maId}/"+data.result.hotlink);
-	        },
+            }
+	       },
 	        fail: function (e, data) {
 	            $.each(data.messages, function (index, error) {
 	            	alert('error->'+error);
@@ -543,7 +554,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     					 --%>
     					 <span class="btn btn-success fileinput-button">
         <i class="glyphicon glyphicon-plus"></i>
-        <span>Select file </span>
+        <span>Upload</span>
         <!-- The file input field used as target for the file upload widget -->
        	 <input id="company_upload" type="file" name="userfile" multiple>(350px × 66px)
     </span>

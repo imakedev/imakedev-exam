@@ -32,27 +32,49 @@ $(document).ready(function() {
 			}		
 		});
   */
-	  $('#doc_file').fileupload({
+	  $('#sap_file').fileupload({
 	        add: function(e, data) {
 	                var uploadErrors = [];
-	                var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
+	                var acceptFileTypes = /(\.|\/)(xls|XLS|xlsx|XLSX)$/i; 
 	                
-	                 
-	                if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-	                    uploadErrors.push('Error: only pdf are allowed');
+	              //  var xx=JSON.stringify(data);
+	               // alert(xx)
+	                 // alert(data.originalFiles[0]['name'])
+	                  	
+	                 var ua = window.navigator.userAgent;
+	                var msie = ua.indexOf("MSIE ");
+	                  	 if (msie > 0)  {
+	                  		if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	    	                    uploadErrors.push('Error: only excel are allowed');
+	    	                   // alert('Not an accepted file type 2')
+	    	                }
+	    	                
+	                  	 }
+	           		 else {
+	           			if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+		                    uploadErrors.push('Error: only excel are allowed');
+		                   // alert('Not an accepted file type 2')
+		                }
+		                if(data.originalFiles[0]['size'].length>0 && data.originalFiles[0]['size'] > 5000000) {
+		                    uploadErrors.push('Filesize is too big');
+		                }
+	           		 }
+	                /*
+	                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	                    uploadErrors.push('Error: only excel are allowed');
 	                   // alert('Not an accepted file type 2')
 	                }
 	                if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
 	                    uploadErrors.push('Filesize is too big');
 	                }
-	                
+	                */
 	                if(uploadErrors.length > 0) {
 	                    alert(uploadErrors.join("\n"));
 	                } else {
 	                    data.submit();
 	                }
 	        },
-		        url: 'upload/doc/1',
+		        url: 'upload/sap/1',
 		        dataType: 'json', 
 		        autoUpload: false, 
 		        done: function (e, data) { 
@@ -64,7 +86,10 @@ $(document).ready(function() {
 	            else                 // If another browser, return 0
 	                alert('otherbrowser');
 	            */
-	            loadDynamicPage("manual/doc");
+	            //loadDynamicPage("manual/doc");
+	           // var xx=JSON.stringify(data);
+               // alert(xx)
+              // alert(data.jqXHR.status)
 		        },
 		        fail: function (e, data) {
 		            $.each(data.messages, function (index, error) {
@@ -164,7 +189,19 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 </div>
 	    <fieldset style="font-family: sans-serif;">  
 	  <%-- <c:if test="${false}"> --%>
-	<c:if test="${isManageMC}">
+	
+		 <table class="table table-striped table-bordered table-condensed"  border="1" style="font-size: 12px;width: 100%;"> 
+		<!-- <table  border="1" style="font-size: 12px;width: 100%;"> -->
+        	<thead>
+          		<tr>
+            		<th width="100%"><div class="th_class">SAP</div></th>            		 
+          		</tr>
+        	</thead>
+        	<tbody>
+        	  
+          	<tr> 
+            	<td>
+            	<c:if test="${isManageMC}">
 	     <table border="0" width="100%">
 	     	<tr>
 	     		<td align="right">
@@ -173,30 +210,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         <i class="glyphicon glyphicon-plus"></i>
         <span>Upload</span>
         <!-- The file input field used as target for the file upload widget -->
-       	 <input id="doc_file" type="file" name="userfile" multiple>
+       	 <input id="sap_file" type="file" name="userfile" multiple>
     </span>
 	     		</td>
 	     	</tr>
 	     </table>
 	     </c:if>
-		 <table class="table table-striped table-bordered table-condensed"  border="1" style="font-size: 12px;width: 100%;"> 
-		<!-- <table  border="1" style="font-size: 12px;width: 100%;"> -->
-        	<thead>
-          		<tr>
-            		<th width="100%"><div class="th_class">Document Download</div></th>            		 
-          		</tr>
-        	</thead>
-        	<tbody>
-        	 <c:forEach items="${missDocs}" var="missDoc" varStatus="loop"> 
-          	<tr> 
-            	<td>&nbsp;<span style="cursor: pointer;" onclick="getFileAttached('getfile/doc/${missDoc.mdId}/xxx')">${missDoc.mdDocFileName}</span>&nbsp;
-            	<%-- <c:if test="${false}"> --%>
-				<c:if test="${isManageMC}">	
-            		<i title="Delete" onclick="confirmDelete('delete','${missDoc.mdId}')" style="cursor: pointer;" class="icon-trash"></i>
-            	</c:if>
             	</td>
           	</tr>
-          	</c:forEach>
+           
         	</tbody>
       </table>
 </fieldset>
