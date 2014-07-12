@@ -124,7 +124,7 @@ public class SeriesController
             seriesForm = new SeriesForm();
         seriesForm.setMode("edit");
         MissSery missSery = missExamService.findMissSeryById(Long.valueOf(Long.parseLong(msId)));
-        MissManual missManual=missExamService.findMissManualById(Long.parseLong(msId));
+        MissManual missManual=missExamService.findMissManualById(Long.parseLong(msId)); 
         if(missManual!=null){
         	missSery.setManualFile(missManual.getMmFileName());
         	missSery.setManualFileHotlink(missManual.getMmHotlink());
