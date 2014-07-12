@@ -653,6 +653,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 	public int processMissTestResult(MissTestResult persistentInstance,
 			String userid, String rootPath,Long msOrder,String mraLang) throws DataAccessException {
 		// TODO Auto-generated method stub
+		
 		Session session = sessionAnnotationFactory.getCurrentSession();
 		int returnRecord = 0;
 		try {
@@ -681,7 +682,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					missSery=(MissSery)missSeryObj;
 				
 				if(missSery.getMsExporting()!=null && missSery.getMsExporting().equals("1")){ 
-					if(msOrder!=null && msOrder.intValue()!=0){
+					//if(msOrder!=null && msOrder.intValue()!=0){
 					query = session
 							.createQuery(" select missReportAttach from MissReportAttach missReportAttach "
 									+ " where missReportAttach.id.msId=:msId " +
@@ -694,6 +695,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					query.setParameter("msId", msId);  
 					@SuppressWarnings("rawtypes")
 					List list = query.list();
+					//System.out.println("size->"+list.size());
 					//String  reportPath=  bundle.getString("reportTemplatePath")+ missReportAttach.getMraPath(); 
 					String code ="";
 					if (list.size() > 0) {  
@@ -712,11 +714,12 @@ public class HibernateMissTestResult extends HibernateCommon implements
 									 (th.co.aoe.makedev.missconsult.hibernate.bean.MissReportAttach) list.get(i);
 							String filePath = "/opt/attach/reportTemplate/" + missReportAttach.getMraPath(); 
 							//System.out.println("filePath->"+filePath);
-							System.out.println("getMraFileName->"+missReportAttach.getMraFileName());
-							System.out.println("filePath in->"+filePath);
+						logger.info("getMraFileName->"+missReportAttach.getMraFileName());
+						logger.info("filePath in->"+filePath);
 							String pathOutPut = setAnswerByXLS(session, filePath, msId,
 									meId, mcaId);
-							System.out.println("pathOutPut ->"+pathOutPut);
+							logger.info("pathOutPut ->"+pathOutPut);
+							//System.out.println("pathOutPut ->"+pathOutPut);
 							  code = getCodeByXLS(session, pathOutPut, mcaId, msId,i); 
 						}
 						query = session
@@ -736,7 +739,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 						query.setParameter("mtrResultCode", code);
 						returnRecord = query.executeUpdate();
 					 } 
-					} 
+					//} 
 				}else{
 					query = session
 							.createQuery(" select missSeriesAttach from MissSeriesAttach missSeriesAttach where missSeriesAttach.msatRef1=:msatRef1"
@@ -789,6 +792,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			Long mdeId, Long mcaId) {
 		FileInputStream fileIn = null;
 		FileOutputStream fileOut = null;
+		
 		String[] extensions = filePath.split("\\.");
 		String outPut = "";
 		try {
@@ -936,7 +940,7 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			// outPut=extensions[0]+"_"+msId.intValue()+"_"+meId.intValue()+"_"+mcaId.intValue()+"."+extensions[1];
 			outPut = extensions[0] + "_" + msId.intValue() + "_"
 					+ mcaId.intValue() + "." + extensions[1];
-			try {
+		    try {
 				fileOut = new FileOutputStream(outPut);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -1682,10 +1686,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 			query.setParameter("msId", msId);
 			query.executeUpdate();
 			for (th.co.aoe.makedev.missconsult.hibernate.bean.MissTestShow missTestShow : missTestShows) {
-				/*System.out.println("missTestShow.getId().getMcaId()->"+missTestShow.getId().getMcaId());
-				System.out.println("missTestShow.getId().getMsId()->"+missTestShow.getId().getMsId());
-				System.out.println("missTestShow.getId().getMtsColumn()->"+missTestShow.getId().getMtsColumn());
-				System.out.println("missTestShow.getId().getMtsType()->"+missTestShow.getId().getMtsType());*/
 				session.save(missTestShow);
 			}
 		}
@@ -1730,7 +1730,6 @@ public class HibernateMissTestResult extends HibernateCommon implements
 					if (cell_code_Data != null) {
 						String columnReference = cell_code_Data
 								.getStringCellValue();
-						//System.out.println("columnReference-->"+columnReference);
 						if (columnReference != null && columnReference.length() > 0) {
 							String[] sheets = columnReference.split("!");
 							if(sheets!=null && sheets.length>1){
@@ -1749,6 +1748,8 @@ public class HibernateMissTestResult extends HibernateCommon implements
 							//HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
 							Row row = null;//
 							Cell cell = null;
+							/*System.out.println("start->"+start);
+							System.out.println("end->"+end);*/
 							if (mtrId != null)
 								for (int i = start; i <= end; i++) {
 									row = sheet1_Data.getRow(i);
@@ -1786,18 +1787,31 @@ public class HibernateMissTestResult extends HibernateCommon implements
 													//" missDataChart.id.mdcSwfName=:mdcSwfName ");
 									query.setParameter("mtrId", mtrId);
 							}*/
-							
+							/* query = session 
+										.createQuery("delete MissDataChart missDataChart "
+												+ " where missDataChart.id.mtrId=:mtrId  ");
+												// " and missDataChart.id.mdcKey=:mdcKey" );
+												//" missDataChart.id.mdcSwfName=:mdcSwfName ");
+								query.setParameter("mtrId", mtrId); 
+								query.executeUpdate(); */
 							for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) { 
-									query.executeUpdate();
-									 query = session 
+									//query.executeUpdate();
+									  query = session 
 												.createQuery("delete MissDataChart missDataChart "
 														+ " where missDataChart.id.mtrId=:mtrId  "+
-														 " missDataChart.id.mdcKey=:mdcKey" );
+														 " and missDataChart.id.mdcKey=:mdcKey" );
 														//" missDataChart.id.mdcSwfName=:mdcSwfName ");
 										query.setParameter("mtrId", mtrId);
 										query.setParameter("mdcKey", missDataChart.getId().getMdcKey());
-								session.save(missDataChart);
+										query.executeUpdate();  
+							/*	System.out.println(""+missDataChart.getId().getMdcKey());
+								System.out.println(""+missDataChart.getId().getMdcSwfName());
+								System.out.println(""+missDataChart.getId().getMtrId());*/
+								 session.saveOrUpdate(missDataChart);
 							}
+							/*for (th.co.aoe.makedev.missconsult.hibernate.bean.MissDataChart missDataChart : chartDatas) { 								 
+							        session.save(missDataChart);
+						    }*/
 						}
 					  }
 					}

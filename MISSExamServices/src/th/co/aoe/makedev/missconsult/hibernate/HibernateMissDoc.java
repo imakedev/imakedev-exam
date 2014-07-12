@@ -1,5 +1,6 @@
 package th.co.aoe.makedev.missconsult.hibernate;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import th.co.aoe.makedev.missconsult.constant.ServiceConstant;
 import th.co.aoe.makedev.missconsult.hibernate.bean.MissDoc;
+import th.co.aoe.makedev.missconsult.hibernate.bean.MissTestResult;
 import th.co.aoe.makedev.missconsult.managers.MissDocService;
 import th.co.aoe.makedev.missconsult.xstream.common.Pagging;
 
@@ -139,7 +141,27 @@ public class HibernateMissDoc  extends HibernateCommon implements MissDocService
 	public int deleteMissDoc(MissDoc persistentInstance)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
-		return delete(sessionAnnotationFactory.getCurrentSession(), persistentInstance);
+	
+		MissDoc missDoc = null;
+		Session session = sessionAnnotationFactory.getCurrentSession();
+		Query query = session
+				.createQuery(" select missDoc from MissDoc missDoc where missDoc.mdId=:mdId");
+		query.setParameter("mdId", persistentInstance.getMdId());
+		Object obj = query.uniqueResult();
+		int returnRecord=0;
+		if (obj != null) {
+			missDoc = (MissDoc) obj;
+			 File file_delete=new File("/opt/attach/doc/"+missDoc.getMdDocPath().trim());
+			 if(file_delete.exists())
+				 file_delete.delete(); 
+			  query = session
+						.createQuery(" delete MissDoc missDoc   "
+								+ " where missDoc.mdId=:mdId " +
+								" ");
+			  query.setParameter("mdId", persistentInstance.getMdId());
+			  returnRecord=query.executeUpdate();
+		}
+		return returnRecord;
 	}
 	 
 

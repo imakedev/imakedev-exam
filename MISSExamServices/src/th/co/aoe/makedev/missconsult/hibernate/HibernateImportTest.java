@@ -35,7 +35,7 @@ public class HibernateImportTest implements ImportTestService {
 			sessionAnnotationFactory.getCurrentSession().saveOrUpdate(missEptMessageConfig);
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(missEptMessageConfig.getId().getCode());
+			System.err.println(missEptMessageConfig.getId().getCode());
 		}
 		
 		return null;

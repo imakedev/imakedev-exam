@@ -39,9 +39,9 @@ public class HibernateMissManual  extends HibernateCommon implements MissManualS
 		// TODO Auto-generated method stub
 		MissManual missManual = null;
 		Session session=sessionAnnotationFactory.getCurrentSession();
-	//	Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
-		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.missSery.msId=:msId");
-		query.setParameter("msId", mmId);
+		Query query=session.createQuery(" select missManual from MissManual missManual where missManual.mmId=:mmId");
+	//	Query query=session.createQuery(" select missManual from MissManual missManual where missManual.missSery.msId=:msId");
+		query.setParameter("mmId", mmId);
 		Object obj=query.uniqueResult(); 	 
 		if(obj!=null){
 			missManual=(MissManual)obj;
