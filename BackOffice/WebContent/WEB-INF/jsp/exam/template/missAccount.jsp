@@ -64,7 +64,7 @@ $(document).ready(function() {
 	//setter
 	$( ".selector" ).tabs( "option", "selected", 3 ); */
 	//getPhoto('','');
-	
+	/*
 	new AjaxUpload('mc_upload', {
 		 action: 'upload/mcLogo/${missForm.missAccount.maId}',
 		onSubmit : function(file , ext){
@@ -89,6 +89,61 @@ $(document).ready(function() {
 			$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+obj.hotlink);
 		}		
 	});
+	*/
+	$('#mc_upload').fileupload({
+        add: function(e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i;
+                
+                
+                if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                    uploadErrors.push('Error: only images are allowed');
+                    //alert('Not an accepted file type 2')
+                }
+                /*
+                if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                    uploadErrors.push('Filesize is too big');
+                }
+                */
+                if(uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                } else {
+                    data.submit();
+                }
+        },
+	        url: 'upload/mcLogo/${missForm.missAccount.maId}',
+	        dataType: 'json', 
+	        autoUpload: false, 
+	        done: function (e, data) { 
+	         var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (true)   {   // If Internet Explorer, return version number{
+            	
+            	$.ajax({
+          		  type: "get",
+          		  url: "ajax/getMissFile/mcLogo/${missForm.missAccount.maId}/0/0",
+          		  cache: false
+          		 // data: { name: "John", location: "Boston" }
+          		}).done(function( data ) {
+          			if(data!=null){ 
+          				$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+data.hotlink);
+          			  }
+          		});
+            }else{
+				$("#mc_photo").attr("src","getfile/mcLogo/${missForm.missAccount.maId}/"+data.result.hotlink);
+             }
+	        },
+	        fail: function (e, data) {
+	            $.each(data.messages, function (index, error) {
+	            	alert('error->'+error);
+	            });
+	        },
+	        progressall: function (e, data) { 
+	        	$('#mc_photo').attr('src', _path+"resources/images/loading.gif");
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
 	 if($("#message_element").attr("style").indexOf("block")!=-1){
 		 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
 		 	setTimeout(function(){$("#message_element").slideUp(300)},5000);
@@ -414,7 +469,15 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
     						<img id="mc_photo" width="350" height="66" src="<c:url value='/resources/images/logowebmc.png'/>"/>
     					</c:if>
     					<div>
-    					<input  id="mc_upload" type="button" value="Upload">(350px × 66px)
+    					 <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="mc_upload" type="file" name="userfile" multiple>(350px × 66px)
+    </span>
+    					<%-- <input  id="mc_upload" type="button" value="Upload">  --%>
+    					
+    					
     					</div></td>
     					
     					 <td width="25%">&nbsp;</td>

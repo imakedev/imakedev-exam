@@ -2,6 +2,7 @@
  <%@ include file="/WEB-INF/jsp/includes.jsp" %>
 <script>
 $(document).ready(function() {
+	<%-- 
  // button1
    new AjaxUpload('template_file_thai_1', {
        action: 'reportUpload/upload/${template_msId}/1/0',
@@ -425,6 +426,999 @@ $(document).ready(function() {
 			 //$('#template_file_eng_5_attached_delete').attr('style','cursor: pointer;');	
 		}		
 	});
+	--%>
+	<%-- 
+	for(var i=1;i<=6;i++){
+		// button1 
+		  $('#template_file_thai_'+i).fileupload({
+		        add: function(e, data) {
+		                var uploadErrors = [];
+		                var acceptFileTypes ;//= /^image\/(gif|jpe?g|png)$/i;
+		                <c:if test="${missSery.msExporting=='0'}">
+		                acceptFileTypes=/(\.|\/)(jasper)$/i;
+		                 if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+		                	 uploadErrors.push('Error: only jasper are allowed');
+						
+						} 	
+						</c:if>
+						<c:if test="${missSery.msExporting=='1'}"> 
+						 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+						 if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+							 uploadErrors.push('Error: only xls are allowed');
+						
+						} 
+						</c:if>
+		               
+		                if(uploadErrors.length > 0) {
+		                    alert(uploadErrors.join("\n"));
+		                } else {
+		                	 
+		                	data.formData= {
+		        		        	reportName: $("#template_report_thai_"+i).val() 
+		      	          };
+		                	 
+		                    data.submit();
+		                }
+		        },
+		       
+			        url: 'reportUpload/upload/${template_msId}/'+i+'/0',
+			        dataType: 'json', 
+			        autoUpload: false, 
+			        done: function (e, data) { 
+			         var ua = window.navigator.userAgent;
+		            var msie = ua.indexOf("MSIE ");
+		            
+						var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+						 $('#template_file_thai_'+data.result.id+'_attached').attr('onclick',path_file);
+						 //alert(file) 
+						 $('#template_file_thai_'+data.result.id+'_attached').html(data.result.filename);
+						 $('#template_file_thai_'+data.result.id+'_attached').attr('style','cursor: pointer;');
+			        },
+			        fail: function (e, data) {
+			            $.each(data.messages, function (index, error) {
+			            	alert('error->'+error);
+			            });
+			        },
+			        progressall: function (e, data) {
+			        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+			        }
+			    }).prop('disabled', !$.support.fileInput)
+			        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+		  
+		        
+		  $('#template_file_eng_'+i).fileupload({
+		        add: function(e, data) {
+		                var uploadErrors = [];
+		                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+		                <c:if test="${missSery.msExporting=='0'}">
+		                acceptFileTypes=/(\.|\/)(jasper)$/i;
+		               if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+		            	   uploadErrors.push('Error: only jasper are allowed');
+						
+						}  
+						</c:if>
+						<c:if test="${missSery.msExporting=='1'}"> 
+						 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+						 if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+							 uploadErrors.push('Error: only xls are allowed');
+						}  	
+						</c:if>
+		              
+		                if(uploadErrors.length > 0) {
+		                    alert(uploadErrors.join("\n"));
+		                } else {
+		                	 
+		                	data.formData={
+		        		        	 reportName: $("#template_report_eng_"+i).val() 
+		        	        };
+		                	 
+		                    data.submit();
+		                }
+		        },
+		        
+			        url: 'reportUpload/upload/${template_msId}/'+i+'/1',
+			        dataType: 'json', 
+			        autoUpload: false, 
+			        done: function (e, data) { 
+			         var ua = window.navigator.userAgent;
+		            var msie = ua.indexOf("MSIE ");
+		           
+						var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+						 $('#template_file_eng_'+data.result.id+'_attached').attr('onclick',path_file);
+						  alert(data.result.id+","+data.result.filename) 
+						  template_file_eng_2_attached
+						 $('#template_file_eng_'+data.result.id+'_attached').html(data.result.filename);
+						 $('#template_file_eng_'+data.result.id+'_attached').attr('style','cursor: pointer;');
+			        },
+			        fail: function (e, data) {
+			            $.each(data.messages, function (index, error) {
+			            	alert('error->'+error);
+			            });
+			        },
+			        progressall: function (e, data) {
+			        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+			        }
+			    }).prop('disabled', !$.support.fileInput)
+			        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	}
+	 --%> 
+	// button1 
+	  $('#template_file_thai_1').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_thai_1").val() 
+	                   };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/1/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+  			 if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/1/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_1_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_1_attached').html(data.filename);
+	   					 $('#template_file_thai_1_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+	            	var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_1_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_1_attached').html(data.result.filename);
+					 $('#template_file_thai_1_attached').attr('style','cursor: pointer;');
+	            }
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_1').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_eng_1").val() 
+	                 };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/1/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+ 			if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/1/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_1_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_1_attached').html(data.filename);
+	   					 $('#template_file_eng_1_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+	            	var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_1_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_1_attached').html(data.result.filename);
+					 $('#template_file_eng_1_attached').attr('style','cursor: pointer;');
+	            }
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	// button2
+	  $('#template_file_thai_2').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 // e.g. {id: 123}
+	                	 data.formData = {
+	             	        				reportName:  $("#template_report_thai_2").val() 
+	                     				};
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/2/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+			if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/2/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){ 
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_2_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_2_attached').html(data.filename);
+	   					 $('#template_file_thai_2_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+	            	var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_2_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_2_attached').html(data.result.filename);
+					 $('#template_file_thai_2_attached').attr('style','cursor: pointer;');
+	            }
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_2').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	data.formData= {
+	        	        	reportName: $("#template_report_eng_2").val() 
+	                };
+	                    data.submit();
+	                }
+	        },
+	        
+		        url: 'reportUpload/upload/${template_msId}/2/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+				if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/2/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_2_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_2_attached').html(data.filename);
+	   					 $('#template_file_eng_2_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_2_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_2_attached').html(data.result.filename);
+					 $('#template_file_eng_2_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	// button3
+	  $('#template_file_thai_3').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData={
+	         	        	reportName: $("#template_report_thai_3").val() 
+	                   };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/3/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+				if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/3/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_3_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_3_attached').html(data.filename);
+	   					 $('#template_file_thai_3_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+	            	var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_3_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_3_attached').html(data.result.filename);
+					 $('#template_file_thai_3_attached').attr('style','cursor: pointer;');
+	            }
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_3').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_eng_3").val() 
+	                 };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/3/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+				if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/3/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_3_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_3_attached').html(data.filename);
+	   					 $('#template_file_eng_3_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+	            	var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_3_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_3_attached').html(data.result.filename);
+					 $('#template_file_eng_3_attached').attr('style','cursor: pointer;');
+	            }
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	// button4
+	  $('#template_file_thai_4').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_thai_4").val() 
+	                   };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/4/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+			if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/4/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_4_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_4_attached').html(data.filename);
+	   					 $('#template_file_thai_4_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_4_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_4_attached').html(data.result.filename);
+					 $('#template_file_thai_4_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_4').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_eng_4").val() 
+	                 };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/4/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/4/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_4_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_4_attached').html(data.filename);
+	   					 $('#template_file_eng_4_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_4_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_4_attached').html(data.result.filename);
+					 $('#template_file_eng_4_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	// button5
+	  $('#template_file_thai_5').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	  data.formData= {
+	          	        	reportName: $("#template_report_thai_5").val() 
+	                    };
+	                    data.submit();
+	                }
+	        },
+	      
+		        url: 'reportUpload/upload/${template_msId}/5/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/5/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_5_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_5_attached').html(data.filename);
+	   					 $('#template_file_thai_5_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_5_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_5_attached').html(data.result.filename);
+					 $('#template_file_thai_5_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_5').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_eng_5").val() 
+	                 };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/5/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/5/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_5_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_5_attached').html(data.filename);
+	   					 $('#template_file_eng_5_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_5_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_5_attached').html(data.result.filename);
+					 $('#template_file_eng_5_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	// button6
+	  $('#template_file_thai_6').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	              
+	               
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_thai_6").val() 
+	                	 };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/6/0',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/6/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_thai_6_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_thai_6_attached').html(data.filename);
+	   					 $('#template_file_thai_6_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response);
+					 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_thai_6_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_thai_6_attached').html(data.result.filename);
+					 $('#template_file_thai_6_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
+	        
+	  $('#template_file_eng_6').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes ;// /^image\/(gif|jpe?g|png)$/i;
+	                <c:if test="${missSery.msExporting=='0'}">
+	                acceptFileTypes=/(\.|\/)(jasper)$/i;
+	               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	            	   uploadErrors.push('Error: only jasper are allowed');
+					
+					}  
+					</c:if>
+					<c:if test="${missSery.msExporting=='1'}"> 
+					 acceptFileTypes=/(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+					 if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+						 uploadErrors.push('Error: only xls are allowed');
+					}  	
+					</c:if>
+	               
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                	 data.formData= {
+	         	        	reportName: $("#template_report_eng_6").val() 
+	                    };
+	                    data.submit();
+	                }
+	        },
+	       
+		        url: 'reportUpload/upload/${template_msId}/6/1',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/template/${template_msId}/6/1",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				var path_file='getFileAttached("getfile/template/${template_msId}/'+data.hotlink+'")'; 
+	   					 $('#template_file_eng_6_attached').attr('onclick',path_file);
+	   					 //alert(file) 
+	   					 $('#template_file_eng_6_attached').html(data.filename);
+	   					 $('#template_file_eng_6_attached').attr('style','cursor: pointer;');
+	          			  }
+	          		});
+	            }else{
+					// $("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					//var obj = jQuery.parseJSON(response); 
+					var path_file='getFileAttached("getfile/template/${template_msId}/'+data.result.hotlink+'")'; 
+					 $('#template_file_eng_6_attached').attr('onclick',path_file);
+					 //alert(file) 
+					 $('#template_file_eng_6_attached').html(data.result.filename);
+					 $('#template_file_eng_6_attached').attr('style','cursor: pointer;');
+	            }
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	  
 });
 function confirmDelete(id,order){
 	$( "#dialog-confirm-template-Delete" ).dialog({
@@ -507,26 +1501,42 @@ function updateReportName(id,order,lang){
  
 	private String mraReportName -->
             	 <div><input type="text" id="template_report_thai_1" value="${templateList[0][0].mraReportName}">&nbsp;&nbsp;<i onclick="updateReportName('${template_msId}','1','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_thai_1" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>  
+            	<%-- <a class="btn" id="template_file_thai_1" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	 --%> 
+            	 <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_1" type="file" name="userfile" multiple>
+    </span>				 
+       <%-- 
             	 <c:if test="${templateList[0][0].mraFileName!=null}">
+            	  --%>
             		<span id="template_file_thai_1_attached" style="cursor: pointer;"  
             		 onclick="getFileAttached('reportUpload/getfile/${template_msId}/1/0/${templateList[0][0].mraHotlink}')">
             		 ${templateList[0][0].mraFileName}
 	    			</span>
 	    			<span  id="template_file_thai_1_attached_delete">
 	    			</span>
-	    		  </c:if>
+	    		 <%--  </c:if>  --%>
 	    		   </td>
             	<td>
             	<div><input type="text" id="template_report_eng_1" value="${templateList[0][1].mraReportName}">&nbsp;&nbsp;<i onclick="updateReportName('${template_msId}','1','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_1"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<c:if test="${templateList[0][1].mraFileName!=null}">
+            	<%-- <a class="btn" id="template_file_eng_1"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_1" type="file" name="userfile" multiple>
+    </span>		
+            	<%-- <c:if test="${templateList[0][1].mraFileName!=null}">  --%>
             		<span id="template_file_eng_1_attached" style="cursor: pointer;" 
             		onclick="getFileAttached('reportUpload/getfile/${template_msId}/1/1/${templateList[0][1].mraHotlink}')">
             		${templateList[0][1].mraFileName}
 	    				</span><span id="template_file_eng_1_attached_delete">
 	    				</span>
-	    		</c:if>		
+	    		<%-- </c:if>  --%>		
 	    		</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','1')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
@@ -534,25 +1544,43 @@ function updateReportName(id,order,lang){
             	<td>2</td>
             	 <td>
             	 <div><input type="text" id="template_report_thai_2" value="${templateList[1][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','2','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            		<a class="btn" id="template_file_thai_2" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            		<%-- <a class="btn" id="template_file_thai_2" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            		--%>
+            		<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_2" type="file" name="userfile" multiple>
+    </span>		
+            	<%-- 
             	<c:if test="${templateList[1][0].mraFileName!=null}">
+            	 --%>
             		<span id="template_file_thai_2_attached" style="cursor: pointer;" 
             			onclick="getFileAttached('reportUpload/getfile/${template_msId}/2/0/${templateList[1][0].mraHotlink}')">
             				${templateList[1][0].mraFileName}
 	    				</span><span id="template_file_thai_2_attached_delete">
 	    				</span>
+	    				<%-- 
 	    				</c:if>
+	    				 --%>
 	    				</td>
             	<td>
             	 <div><input type="text" id="template_report_eng_2" value="${templateList[1][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','2','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_2"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            		<c:if test="${templateList[1][1].mraFileName!=null}">
+            	<%-- <a class="btn" id="template_file_eng_2"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_2" type="file" name="userfile" multiple>
+    </span>		
+            		<%-- <c:if test="${templateList[1][1].mraFileName!=null}">  --%>
             			<span id="template_file_eng_2_attached"  style="cursor: pointer;" 
             			onclick="getFileAttached('reportUpload/getfile/${template_msId}/2/1/${templateList[1][1].mraHotlink}')">
             			${templateList[1][1].mraFileName}
 	    				</span><span id="template_file_eng_2_attached_delete">
 	    				</span>
-	    				</c:if>
+	    				<%-- </c:if>  --%>
 	    				</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','2')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
@@ -560,26 +1588,42 @@ function updateReportName(id,order,lang){
             	<td>3</td> 
             	<td>
             	<div><input type="text" id="template_report_thai_3" value="${templateList[2][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','3','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_thai_3" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
-            	<c:if test="${templateList[2][0].mraFileName!=null}">	
+            	<%-- <a class="btn" id="template_file_thai_3" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_3" type="file" name="userfile" multiple>
+    </span>		
+            	<%-- <c:if test="${templateList[2][0].mraFileName!=null}">  --%>	
             	<span id="template_file_thai_3_attached" style="cursor: pointer;"
             	 onclick="getFileAttached('reportUpload/getfile/${template_msId}/3/0/${templateList[2][0].mraHotlink}')">
             	 ${templateList[2][0].mraFileName}
 	    				</span><span id="template_file_thai_3_attached_delete">
 	    				</span>
-	    			</c:if>	
+	    			<%-- </c:if>  --%>	
+	    			
 	    				</td>
 	    				
             	<td>
             	<div><input type="text" id="template_report_eng_3" value="${templateList[2][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','3','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_3"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_eng_3"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_3" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[2][1].mraFileName!=null}">	
-            		<span id="template_file_eng_3_attached" style="cursor: pointer;"
+            		
+	    		</c:if>
+	    		<span id="template_file_eng_3_attached" style="cursor: pointer;"
             		 onclick="getFileAttached('reportUpload/getfile/${template_msId}/3/1/${templateList[2][1].mraHotlink}')">
             			${templateList[2][1].mraFileName}
 	    				</span><span id="template_file_eng_3_attached_delete">
-	    				</span>
-	    		</c:if>		
+	    				</span>		
 	    			</td>
 	    			<td><i title="Delete" onclick="confirmDelete('${template_msId}','3')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
@@ -588,25 +1632,41 @@ function updateReportName(id,order,lang){
             	
             	<td>
             	<div><input type="text" id="template_report_thai_4" value="${templateList[3][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','4','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_thai_4" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_thai_4" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_4" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[3][0].mraFileName!=null}">	
-            	<span id="template_file_thai_4_attached" style="cursor: pointer;"
+            	
+	    			</c:if>	
+	    			<span id="template_file_thai_4_attached" style="cursor: pointer;"
             	onclick="getFileAttached('reportUpload/getfile/${template_msId}/4/0/${templateList[3][0].mraHotlink}')">
             	${templateList[3][0].mraFileName}
 	    				</span><span id="template_file_thai_4_attached_delete">
 	    				</span>
-	    			</c:if>	
 	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_4" value="${templateList[3][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','4','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_eng_4"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_4" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[3][1].mraFileName!=null}">	
-            		<span id="template_file_eng_4_attached"  style="cursor: pointer;"
+            		
+	    				</c:if>
+	    				<span id="template_file_eng_4_attached"  style="cursor: pointer;"
             		onclick="getFileAttached('reportUpload/getfile/${template_msId}/4/1/${templateList[3][1].mraHotlink}')">
             		${templateList[3][1].mraFileName}
 	    				</span><span id="template_file_eng_4_attached_delete">
 	    				</span>
-	    				</c:if>
 	    				</td> 
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','4')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
@@ -615,25 +1675,41 @@ function updateReportName(id,order,lang){
             	
             	<td>
             	<div><input type="text" id="template_report_thai_5" value="${templateList[4][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','5','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_thai_5" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_thai_5" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_5" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[4][0].mraFileName!=null}">	
-            		<span id="template_file_thai_5_attached" style="cursor: pointer;"
+            		
+	    				</c:if>
+	    				<span id="template_file_thai_5_attached" style="cursor: pointer;"
            		 	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/0/${templateList[4][0].mraHotlink}')">
             		${templateList[4][0].mraFileName}
 	    				</span><span id="template_file_thai_5_attached_delete">
 	    				</span>
-	    				</c:if>
 	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_5" value="${templateList[4][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','5','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_eng_5"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_5" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[4][1].mraFileName!=null}">
-            	<span id="template_file_eng_5_attached" style="cursor: pointer;"
+            	
+	    				</c:if>
+	    				<span id="template_file_eng_5_attached" style="cursor: pointer;"
             	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/1/${templateList[4][1].mraHotlink}')">
             	${templateList[4][1].mraFileName}
 	    				</span><span id="template_file_eng_5_attached_delete">
 	    				</span>
-	    				</c:if>
 	    				</td>
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','5')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>
@@ -641,25 +1717,41 @@ function updateReportName(id,order,lang){
             	<td>6</td> 
             	<td>
             	<div><input type="text" id="template_report_thai_6" value="${templateList[5][0].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','thai')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_thai_6" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_thai_6" ><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	--%>
+            	<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_thai_6" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[5][0].mraFileName!=null}"> 
-            	<span id="template_file_thai_6_attached" style="cursor: pointer;"
+            	
+	    				</c:if>
+	    				<span id="template_file_thai_6_attached" style="cursor: pointer;"
             	onclick="getFileAttached('reportUpload/getfile/${template_msId}/6/0/${templateList[5][0].mraHotlink}')">
             	${templateList[5][0].mraFileName}
 	    				</span><span id="template_file_thai_6_attached_delete">
 	    				</span>
-	    				</c:if>
 	    				</td>
             	<td>
             	<div><input type="text" id="template_report_eng_6" value="${templateList[5][1].mraReportName}">&nbsp;&nbsp;<i  onclick="updateReportName('${template_msId}','6','eng')" title="Update Report name" style="cursor: pointer;" class="icon-refresh"></i></div>
-            	<a class="btn" id="template_file_eng_6"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            	<%-- <a class="btn" id="template_file_eng_6"><i class="icon-file"></i>&nbsp;<span style="">Upload</span></a>
+            --%>
+            <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="template_file_eng_6" type="file" name="userfile" multiple>
+    </span>		
             	<c:if test="${templateList[5][1].mraFileName!=null}">
-            	<span id="template_file_eng_6_attached" style="cursor: pointer;"
+            	
+	    			</c:if>
+	    			<span id="template_file_eng_6_attached" style="cursor: pointer;"
             	onclick="getFileAttached('reportUpload/getfile/${template_msId}/5/1/${templateList[5][1].mraHotlink}')">
             	${templateList[5][1].mraFileName}
 	    				</span><span id="template_file_eng_6_attached_delete">
 	    				</span>
-	    			</c:if>
 	    			</td>
 	    				<td><i title="Delete" onclick="confirmDelete('${template_msId}','6')" style="cursor: pointer;" class="icon-trash"></i></td>
           	</tr>

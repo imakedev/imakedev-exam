@@ -28,33 +28,7 @@ $(document).ready(function() {
 		 	setTimeout(function(){$("#message_element_series").slideUp(300)},5000);
 		 }
    }
-  /*
-   new AjaxUpload('template_file', {
-       action: 'upload/template/${seriesForm.missSery.msId}',
-		onSubmit : function(file , ext){
-           // Allow only images. You should add security check on the server-side.
-			if (ext && /^(jasper)$/.test(ext)){
-				this.setData({
-				});					
-			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
-			//$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
-			} else {					
-				// extension is not allowed
-				alert('Error: only jasper are allowed') ;
-				// cancel upload
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){
-			//alert(file+","+response);
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")';
-			//$('#template_file_attached').attr('onclick',path_file);
-			$('#template_file_attached').html(file);
-			//$('#template_file_attached').attr('style','cursor: pointer;');	
-		}		
-	});
-   */
+ /*
    new AjaxUpload('eval_file', {
        action: 'upload/evaluation/${seriesForm.missSery.msId}',
 		onSubmit : function(file , ext){
@@ -87,7 +61,7 @@ $(document).ready(function() {
 		onSubmit : function(file , ext){
            // Allow only images. You should add security check on the server-side.
 			if (ext && /^(pdf|PDF)$/.test(ext)){
-				/* Setting data */
+			 
 				this.setData({
 				});					
 			//$('#contact_photo').attr('src', _path+"resources/images/ui-anim_basic_16x16.gif");
@@ -109,6 +83,123 @@ $(document).ready(function() {
 			//$('#example2 .text').text('Uploaded ' + file);		
 		}		
 	});
+   */
+   $('#eval_file').fileupload({
+       add: function(e, data) {
+               var uploadErrors = [];
+               var acceptFileTypes = /(\.|\/)(xls|XLS|xlsx|XLSX)$/i;
+               
+                
+               if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                   uploadErrors.push('Error: only xls are allowed');
+                //   alert('Not an accepted file type 2')
+               }
+               /*
+               if(data.originalFiles[0]['size'].length>0 && data.originalFiles[0]['size'] > 5000000) {
+                   uploadErrors.push('Filesize is too big');
+               }
+               */
+               
+               if(uploadErrors.length > 0) {
+                   alert(uploadErrors.join("\n"));
+               } else {
+                   data.submit();
+               }
+       },
+	        url: 'upload/evaluation/${seriesForm.missSery.msId}',
+	        dataType: 'json', 
+	        autoUpload: false, 
+	        done: function (e, data) { 
+	         var ua = window.navigator.userAgent;
+           var msie = ua.indexOf("MSIE ");
+           if (true)   {   // If Internet Explorer, return version number{
+           	
+           	$.ajax({
+         		  type: "get",
+         		  url: "ajax/getMissFile/evaluation/${seriesForm.missSery.msId}/0/0",
+         		  cache: false
+         		 // data: { name: "John", location: "Boston" }
+         		}).done(function( data ) {
+         			if(data!=null){ 
+         				var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}/'+data.hotlink+'")';
+         				$('#eval_file_attached').attr('onclick',path_file);
+         				$('#eval_file_attached').html(data.filename);
+         				$('#eval_file_attached').attr('style','cursor: pointer;');
+         			  }
+         		});
+           }else{
+        	   var path_file='getFileAttached("getfile/evaluation/${seriesForm.missSery.msId}/'+data.result.hotlink+'")';
+   			$('#eval_file_attached').attr('onclick',path_file);
+   			$('#eval_file_attached').html(data.result.filename);
+   			$('#eval_file_attached').attr('style','cursor: pointer;');
+           }
+				//$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+          //  var obj = jQuery.parseJSON(response);
+			//alert(file+","+obj.hotlink);
+			
+	        },
+	        fail: function (e, data) {
+	            $.each(data.messages, function (index, error) {
+	            	alert('error->'+error);
+	            });
+	        },
+	        progressall: function (e, data) {
+	        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+   
+   $('#manual_file').fileupload({
+       add: function(e, data) {
+               var uploadErrors = [];
+               var acceptFileTypes = /(\.|\/)(pdf|PDF)$/i;
+               
+                
+               if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                   uploadErrors.push('Error: only pdf are allowed');
+                   
+               }
+               if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                   uploadErrors.push('Filesize is too big');
+               }
+                
+               if(uploadErrors.length > 0) {
+                   alert(uploadErrors.join("\n"));
+               } else {
+                   data.submit();
+               }
+       },
+	        url: 'upload/attachManual/${seriesForm.missSery.msId}',
+	        dataType: 'json', 
+	        autoUpload: false, 
+	        done: function (e, data) { 
+	         var ua = window.navigator.userAgent;
+           var msie = ua.indexOf("MSIE ");
+          /*
+           if (msie > 0)      // If Internet Explorer, return version number
+               alert(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))));
+           else                 // If another browser, return 0
+               alert('otherbrowser');
+           */
+				//$("#candidate_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+          // var obj = jQuery.parseJSON(response);
+			//alert(file+","+obj.hotlink);
+			
+			var path_file='getFileAttached("getfile/attachManual/${seriesForm.missSery.msId}/'+data.result.hotlink+'")';
+			$('#manual_file_attached').attr('onclick',path_file);
+			$('#manual_file_attached').html(data.result.filename);
+			$('#manual_file_attached').attr('style','cursor: pointer;');
+	        },
+	        fail: function (e, data) {
+	            $.each(data.messages, function (index, error) {
+	            	alert('error->'+error);
+	            });
+	        },
+	        progressall: function (e, data) {
+	        	//$('#candidate_photo').attr('src', _path+"resources/images/loading.gif");
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
    $.get("series/templateSection/${seriesForm.missSery.msId}",function(data) {
 		  // alert(data);templateElement
 		   appendContentWithId(data,"_templateElement");
@@ -121,348 +212,7 @@ $(document).ready(function() {
 		  // appendContentWithId(data,"_templateElement");
 		  // alert($("#_content").html());
 		});
-   /*
-   // button1
-   new AjaxUpload('template_file_thai_1', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/1/0',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_thai_1").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_thai_1_attached').attr('onclick',path_file);
-			 $('#template_file_thai_1_attached').html(file+"&nbsp;&nbsp;"+"<i class=\"icon-trash\"></i>");
-			$('#template_file_thai_1_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   new AjaxUpload('template_file_eng_1', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/1/1',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_eng_1").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_eng_1_attached').attr('onclick',path_file);
-			 $('#template_file_eng_1_attached').html(file);
-			$('#template_file_eng_1_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-    
-// button2
-   new AjaxUpload('template_file_thai_2', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/2/0',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_thai_2").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_thai_2_attached').attr('onclick',path_file);
-			 $('#template_file_thai_2_attached').html(file);
-			$('#template_file_thai_2_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   new AjaxUpload('template_file_eng_2', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/2/1',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_eng_2").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_eng_2_attached').attr('onclick',path_file);
-			 $('#template_file_eng_2_attached').html(file);
-			$('#template_file_eng_2_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   
-// button3
-   new AjaxUpload('template_file_thai_3', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/3/0',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_thai_3").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_thai_3_attached').attr('onclick',path_file);
-			 $('#template_file_thai_3_attached').html(file);
-			$('#template_file_thai_3_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   new AjaxUpload('template_file_eng_3', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/3/1',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_eng_3").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_eng_3_attached').attr('onclick',path_file);
-			 $('#template_file_eng_3_attached').html(file);
-			$('#template_file_eng_3_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   
-  //button4
-   new AjaxUpload('template_file_thai_4', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/4/0',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_thai_4").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_thai_4_attached').attr('onclick',path_file);
-			 $('#template_file_thai_4_attached').html(file);
-			$('#template_file_thai_4_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   new AjaxUpload('template_file_eng_4', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/4/1',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_eng_4").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_eng_4_attached').attr('onclick',path_file);
-			 $('#template_file_eng_4_attached').html(file);
-			$('#template_file_eng_4_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   
-// button5
-   new AjaxUpload('template_file_thai_5', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/5/0',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_thai_5").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_thai_5_attached').attr('onclick',path_file);
-			 $('#template_file_thai_5_attached').html(file);
-			$('#template_file_thai_5_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   new AjaxUpload('template_file_eng_5', {
-       action: 'reportUpload/upload/${seriesForm.missSery.msId}/5/1',
-		onSubmit : function(file , ext){ 
-			if (ext && /^(jasper)$/.test(ext)){ 
-				this.setData({ 
-					reportName:$("#template_report_eng_5").val()
-				});					 
-			} else {					 
-				alert('Error: only jasper are allowed') ; 
-				return false;				
-			}		
-		},
-		onComplete : function(file, response){ 
-			var obj = jQuery.parseJSON(response);
-			var path_file='getFileAttached("getfile/template/${seriesForm.missSery.msId}/'+obj.hotlink+'")'; 
-			 $('#template_file_eng_5_attached').attr('onclick',path_file);
-			 $('#template_file_eng_5_attached').html(file);
-			$('#template_file_eng_5_attached').attr('style','cursor: pointer;');	 
-		}		
-	});
-   */
-   
-	  // new AjaxUpload('evaluation_file_'+i,  {
-		 /*
-		   new AjaxUpload('evaluation_file_1', {
-	       action: 'upload/evaluation/seriesForm.missSery.msId',
-			onSubmit : function(file , ext){
-	           // Allow only images. You should add security check on the server-side.
-				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1],
-						'msId': document.getElementById("msId").value
-					});					
-				} else {					
-					// extension is not allowed
-					alert('Error: only xls are allowed') ;
-					// cancel upload
-					return false;				
-				}		
-			},
-			onComplete : function(file, response){
-				var obj = jQuery.parseJSON(response);
-				var meId= document.getElementsByName("missExam_mapping")[1-1].value.split("_")[1];
-				//alert(meId);
-				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
-				$('#eval_file_attached_1').attr('onclick',path_file);
-				$('#eval_file_attached_1').html(file);
-				$('#eval_file_attached_1').attr('style','cursor: pointer;');
-			}		
-		});
-   //}
-	   new AjaxUpload('evaluation_file_2', {
-	       action: 'upload/evaluation/seriesForm.missSery.msId',
-			onSubmit : function(file , ext){
-	           // Allow only images. You should add security check on the server-side.
-				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1] ,
-						'msId': document.getElementById("msId").value
-					});	 				
-				} else {					
-					// extension is not allowed
-					alert('Error: only xls are allowed') ;
-					// cancel upload
-					return false;				
-				}		
-			},
-			onComplete : function(file, response){
-				var obj = jQuery.parseJSON(response);
-				var meId= document.getElementsByName("missExam_mapping")[2-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
-				$('#eval_file_attached_2').attr('onclick',path_file);
-				$('#eval_file_attached_2').html(file);
-				$('#eval_file_attached_2').attr('style','cursor: pointer;');
-			}		
-		});
-	   new AjaxUpload('evaluation_file_3', {
-	       action: 'upload/evaluation/seriesForm.missSery.msId',
-			onSubmit : function(file , ext){
-	           // Allow only images. You should add security check on the server-side.
-				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1] ,
-						'msId': document.getElementById("msId").value
-					});	 			
-				} else {					
-					// extension is not allowed
-					alert('Error: only xls are allowed') ;
-					// cancel upload
-					return false;				
-				}		
-			},
-			onComplete : function(file, response){
-				var obj = jQuery.parseJSON(response);
-				var meId= document.getElementsByName("missExam_mapping")[3-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
-				$('#eval_file_attached_3').attr('onclick',path_file);
-				$('#eval_file_attached_3').html(file);
-				$('#eval_file_attached_3').attr('style','cursor: pointer;');
-			}		
-		});
-	   new AjaxUpload('evaluation_file_4', {
-	       action: 'upload/evaluation/seriesForm.missSery.msId',
-			onSubmit : function(file , ext){
-	           // Allow only images. You should add security check on the server-side.
-				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1] ,
-						'msId': document.getElementById("msId").value
-					});	 
-				} else {					
-					// extension is not allowed
-					alert('Error: only xls are allowed') ;
-					// cancel upload
-					return false;				
-				}		
-			},
-			onComplete : function(file, response){
-				var obj = jQuery.parseJSON(response);
-				var meId= document.getElementsByName("missExam_mapping")[4-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
-				$('#eval_file_attached_4').attr('onclick',path_file);
-				$('#eval_file_attached_4').html(file);
-				$('#eval_file_attached_4').attr('style','cursor: pointer;');
-			}		
-		});
-	   new AjaxUpload('evaluation_file_5', {
-	       action: 'upload/evaluation/seriesForm.missSery.msId',
-			onSubmit : function(file , ext){
-	           // Allow only images. You should add security check on the server-side.
-				if (ext && /^(xls|XLS|xlsx|XLSX)$/.test(ext)){
-					 this.setData({
-						'meId': document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1] ,
-						'msId': document.getElementById("msId").value
-					});	 
-				} else {					
-					// extension is not allowed
-					alert('Error: only xls are allowed') ;
-					// cancel upload
-					return false;				
-				}		
-			},
-			onComplete : function(file, response){
-				var obj = jQuery.parseJSON(response);
-				var meId= document.getElementsByName("missExam_mapping")[5-1].value.split("_")[1];
-				var path_file='getFileAttached("getfile/evaluation/seriesForm.missSery.msId_'+meId+"/"+obj.hotlink+'")';
-				$('#eval_file_attached_5').attr('onclick',path_file);
-				$('#eval_file_attached_5').html(file);
-				$('#eval_file_attached_5').attr('style','cursor: pointer;');
-			}		
-		});
-	   */
+  
 });
 function checkSeryType(){
 	var msType=$("#missSery\\.msType").val()
@@ -607,11 +357,25 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 <td align="left" width="17%">Evaluation File:</td>
 	    					 <td align="left" width="51%" colspan="3">    	
 	    					 <c:if test="${seriesForm.mode=='new'}">		
-	    						<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+	    					  <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload Evaluation</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="eval_file" type="file" name="userfile" multiple>
+    </span>
+	    						<%-- <a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+	    						 --%>
 	    					 	(You must save before)
 	    					 </c:if>
-	    					  <c:if test="${seriesForm.mode=='edit'}">					
-		    					<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+	    					  <c:if test="${seriesForm.mode=='edit'}">		
+	    					  <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload Evaluation</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="eval_file" type="file" name="userfile" multiple>
+    </span>			
+		    				<%--	<a class="btn" id="eval_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Evaluation</span></a>
+		    				 --%>
 		    				  </c:if>
 	    						<span id="eval_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/evaluation/${seriesForm.missSery.msId}/${seriesForm.missSery.evalFileHotlink}')">
 	    						${seriesForm.missSery.evalFile}</span>
@@ -622,17 +386,33 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
 	    					 <td align="left" width="17%">&nbsp;</td>
 	    					 <td align="left" width="17%">Manual File:</td>
 	    					 <td align="left" width="51%" colspan="3">    	
-	    					 <c:if test="${seriesForm.mode=='new'}">		
+	    					 <c:if test="${seriesForm.mode=='new'}">	
+	    					   <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload Manual</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="manual_file" type="file" name="userfile" multiple>
+    </span>				
+    <%-- 
 	    						<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
+	    						--%>
 	    					 	(You must save before)
 	    					 </c:if>		
 	    					 <c:if test="${seriesForm.mode=='edit'}">					
+	    					  <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload Manual</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="manual_file" type="file" name="userfile" multiple>
+    </span>				
+    <%--
 		    					<a class="btn" id="manual_file"><i class="icon-file"></i>&nbsp;<span style="">Upload Manual</span></a>
+		    					 --%>
 		    				  </c:if>
 	    						<span id="manual_file_attached" style="cursor: pointer;" onclick="getFileAttached('getfile/attachManual/${seriesForm.missSery.msId}/${seriesForm.missSery.manualFileHotlink}')">
 	    						${seriesForm.missSery.manualFile}</span>
 	    					 </td>
-	    					 
+	    					      
 	    					<td align="left" width="15%">&nbsp;</td>
 	    					</tr>
 	    					<tr>

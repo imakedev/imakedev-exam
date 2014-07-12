@@ -46,6 +46,7 @@ $(document).ready(function() {
 	/* if($("#mcontactType").val() != '1'){
 		target="company";
 	} */
+	/*
 	new AjaxUpload('contact_upload', {
         action: 'upload/'+target+'/${contactForm.missContact.mcontactId}',
 		onSubmit : function(file , ext){
@@ -55,7 +56,7 @@ $(document).ready(function() {
 			}else{
 				 // Allow only images. You should add security check on the server-side.
 				if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-					/* Setting data */
+				 
 					this.setData({
 						'key': 'This string will be send with the file',
 						'test':'chatchai'
@@ -72,24 +73,78 @@ $(document).ready(function() {
            		
 		},
 		onComplete : function(file, response){
-			//alert(response);
-			/* response=response.replace("<pre>","");
-			response=response.replace("</pre>","");
-			  var obj = jQuery.parseJSON(response);
-			  alert(obj); */
+			 
 			  var obj = jQuery.parseJSON(response); //obj.hotlink
 			$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+obj.hotlink);
 			$("#mcontactPictureFileName").val(obj.filename);
 			$("#mcontactPictureHotlink").val(obj.hotlink);
 			$("#mcontactPicturePath").val(obj.filepath);
 			 
-			//$('#example2 .text').text('Uploaded ' + file);		
-			//alert(file);
-			//alert(response)
-		
 		}		
 	});
-	
+	*/
+	  $('#contact_upload').fileupload({
+	        add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i;
+	                 
+	                if(data.originalFiles[0]['name'].length>0 && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	                    uploadErrors.push('Error: only images are allowed');
+	                    //alert('Not an accepted file type')
+	                }
+	                /*
+	                if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+	                    uploadErrors.push('Filesize is too big');
+	                }
+	                */
+	                
+	                if(uploadErrors.length > 0) {
+	                    alert(uploadErrors.join("\n"));
+	                } else {
+	                    data.submit();
+	                }
+	        },
+		        url: 'upload/'+target+'/${contactForm.missContact.mcontactId}',
+		        dataType: 'json', 
+		        autoUpload: false, 
+		        done: function (e, data) { 
+		         var ua = window.navigator.userAgent;
+	            var msie = ua.indexOf("MSIE ");
+			if (true)   {   // If Internet Explorer, return version number{
+	            	
+	            	$.ajax({
+	          		  type: "get",
+	          		  url: "ajax/getMissFile/"+target+"/${contactForm.missContact.mcontactId}/0/0",
+	          		  cache: false
+	          		 // data: { name: "John", location: "Boston" }
+	          		}).done(function( data ) {
+	          			if(data!=null){  
+	          				$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+data.hotlink);
+							$("#mcontactPictureFileName").val(data.filename);
+							$("#mcontactPictureHotlink").val(data.hotlink);
+							$("#mcontactPicturePath").val(data.filepath);
+	          			  }
+	          		});
+	            }else{
+	            	$("#contact_photo").attr("src","getfile/"+target+"/${contactForm.missContact.mcontactId}/"+data.result.hotlink);
+					$("#mcontactPictureFileName").val(data.result.filename);
+					$("#mcontactPictureHotlink").val(data.result.hotlink);
+					$("#mcontactPicturePath").val(data.result.filepath);
+	            }
+					//$("#company_photo").attr("src","getfile/candidateImg/${candidateForm.missCandidate.mcaId}/"+data.result.hotlink);
+					// var obj = jQuery.parseJSON(response); //obj.hotlink
+						
+		        },
+		        fail: function (e, data) {
+		            $.each(data.messages, function (index, error) {
+		            	alert('error->'+error);
+		            });
+		        },
+		        progressall: function (e, data) {
+		        	$('#contact_photo').attr('src', _path+"resources/images/loading.gif");
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	if($("#message_element_contact").attr("style").indexOf("block")!=-1){ 
 		 $('html, body').animate({ scrollTop: 0 }, 'slow');
 	 	setTimeout(function(){$("#message_element_contact").slideUp(300)},5000);
@@ -235,7 +290,16 @@ function generatePassword(){
 						 	<img id="contact_photo" width="128"  height="128" src="<c:url value='/resources/images/photo.png'/>" />
 						 </c:if>
     					 
-    					 <div align="right"><input  id="contact_upload" type="button" value="Upload"></div>
+    					 <div align="right">
+    					  <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Upload</span>
+        <!-- The file input field used as target for the file upload widget -->
+       	 <input id="contact_upload" type="file" name="userfile" multiple>
+    </span>
+    					<%--  <input  id="contact_upload" type="button" value="Upload">
+    					 --%>
+    					</div> 
     					 <div align="right">(128px × 128px)</div>
     					 </td>
     				</tr>
