@@ -6,11 +6,12 @@ var mail_subjectG;
 var mail_messageG;
 var mail_attachG;
 $(document).ready(function() {
-	$( "#dialog-modal" ).dialog( "destroy" );
+  /*$( "#dialog-modal" ).dialog( "destroy" );
 	mail_toG= $( "#mail_to" );
 	mail_subjectG= $( "#mail_subject" );
 	mail_messageG= $( "#mail_message" );
 	mail_attachG= $( "#mail_attach" );
+	*/
 	renderTodoPageSelect();
 });
 function testAlert(){
