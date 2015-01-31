@@ -58,6 +58,10 @@ $(document).ready(function() {
 	$("#sortItemSelect").val("msuDdateTime");
 	$("#sortOrderSelect").val("desc");
 });
+function doSendInfoMail(mcaID){ 
+	//sendInfo.jsp
+	loadDynamicPage("sendInfomail/"+mcaID); 
+  }
 function goPrev(){
 	if($("#pageNo").val()!='1'){
 		var prev=parseInt($("#pageNo").val())-1;
@@ -380,13 +384,13 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
         	<thead>
           		<tr> 
             		<th width="7%"><div class="th_class"><input type="checkbox" id="mcaIdCheckboxAll" onclick="toggleCheckbox()"/></div></th>
-            		<th width="17%"><div class="th_class">Username/Password</div></th> 
+            		<th width="11%"><div class="th_class">Username/Password</div></th> 
             		<!-- <th width="10%"><div class="th_class">Password</div></th> -->
             		<th width="35%"><div class="th_class">Company [Total/Available Unit]</div></th> 
             		<th width="20%"><div class="th_class">Series [Available Unit]</div></th>
             		<th width="10%"><div class="th_class">Last Login</div></th> 
             		<th width="5%"><div class="th_class">Status</div></th>
-            		<th width="6%"><div class="th_class">Action</div></th>  
+            		<th width="12%"><div class="th_class">Action</div></th>  
           		</tr>
         	</thead>
         	<tbody>
@@ -412,7 +416,9 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
             	</c:if>  
             	</td>
             	<td style="text-align: center;">
-            	<i title="Edit" onclick="loadDynamicPage('candidate/item/${missCandidate.mcaId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;&nbsp;
+            	 
+            	 <i title="Send Mail" onclick="doSendInfoMail('${missCandidate.mcaId}')" style="cursor: pointer;" class="icon-envelope"></i>&nbsp;
+            	<i title="Edit" onclick="loadDynamicPage('candidate/item/${missCandidate.mcaId}')" style="cursor: pointer;" class="icon-edit"></i>&nbsp;
             	<i title="Delete" onclick="confirmDelete('delete','${missCandidate.mcaId}')" style="cursor: pointer;" class="icon-trash"></i>
             	</td>
             	 
@@ -423,30 +429,7 @@ th{ font-family:Tahoma; font-size:12px; font-weight:bold;
           	<tr>
           		<td colspan="7" style="text-align: center;">&nbsp;<spring:message code="searh_result_not_found"/>&nbsp;</td>
           	</tr>
-          </c:if>
-         <!--  <tr>
-            	<td><input type="checkbox" /></td>
-            	<td>Company</td>
-            	<td>Company A chatchai pimtun co.th make dev aoe</td>
-            	<td>0848810484</td>
-            	<td>M000000</td>
-            	<td>D/M/Y h:m</td>
-            	<td>300</td>
-            	<td>xx</td>
-            	<td><a onclick="loadDynamicPage('candidate/account/2')">xx</a></td>
-            	<td>xx</td> 
-          	</tr><tr>
-            	<td><input type="checkbox" /></td>
-            	<td>Company</td>
-            	<td>Company A</td>
-            	<td>0848810484</td>
-            	<td>M000000</td>
-            	<td>D/M/Y h:m</td>
-            	<td>300</td>
-            	<td>xx</td>
-            	<td><a onclick="loadDynamicPage('candidate/account/3')">xx</a></td>
-            	<td>xx</td> 
-          	</tr> -->
+          </c:if> 
         	</tbody>
       </table>
      <!--  </pre> -->
