@@ -52,14 +52,14 @@ public class VServiceXML implements Serializable {
 	@XStreamAlias("neExpression")
 	private Map neExpression;
 	
-	@XStreamAlias("pagging")
-	private Pagging pagging;
+	@XStreamAlias("paging")
+	private Paging paging;
 	
 /*	@XStreamAlias("vcriteria")
 	private VCriteria vcriteria;*/
 	
 	public VServiceXML() {
-		pagging = new Pagging();
+		paging = new Paging();
 		//vcriteria = new VCriteria();
 		
 	}
@@ -69,11 +69,11 @@ public class VServiceXML implements Serializable {
 	public void setVcriteria(VCriteria vcriteria) {
 		this.vcriteria = vcriteria;
 	}*/
-	public Pagging getPagging() {
-		return pagging;
+	public Paging getPaging() {
+		return paging;
 	}
-	public void setPagging(Pagging pagging) {
-		this.pagging = pagging;
+	public void setPaging(Paging paging) {
+		this.paging = paging;
 	}
 	public String getServiceName() {
 		return serviceName;
