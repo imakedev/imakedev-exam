@@ -16,8 +16,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author not attributable
  * @version 1.0
  */
-@XStreamAlias("pagging")
-public class Pagging implements Serializable{
+@XStreamAlias("paging")
+public class Paging implements Serializable{
 	/**
 	 * 
 	 */
@@ -40,14 +40,14 @@ public class Pagging implements Serializable{
 	@XStreamAlias("sortBy")
 	private String sortBy = "";
 
-	public Pagging(int pageNo, int pageSize, String orderBy) {
+	public Paging(int pageNo, int pageSize, String orderBy) {
 		this.pageNo = pageNo;
 		this.pageSize = pageSize;
 		this.orderBy = orderBy;
 		this.sortBy = "DESC";
 	}
 
-	public Pagging() {
+	public Paging() {
 		pageNo = 1;
 		pageSize = 10;
 		totalRecord = 0;
